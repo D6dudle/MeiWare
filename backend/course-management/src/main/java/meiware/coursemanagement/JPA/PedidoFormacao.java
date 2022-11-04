@@ -25,6 +25,7 @@ public class PedidoFormacao {
     private String formador;
 
     @NotNull
+    @Column(columnDefinition = "DATE")
     private LocalDate dataInicio;
 
     @NotNull

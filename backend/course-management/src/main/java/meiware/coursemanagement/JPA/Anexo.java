@@ -1,5 +1,7 @@
 package meiware.coursemanagement.JPA;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,6 +12,7 @@ public class Anexo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
+    @NotNull
     private String path;
 
     public Anexo() {

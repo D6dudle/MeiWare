@@ -1,5 +1,7 @@
 package meiware.coursemanagement.JPA;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,8 +11,9 @@ public class Budget {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
-
+    @NotNull
     private int budget;
+    @NotNull
     private int ano;
 
     public Budget() {

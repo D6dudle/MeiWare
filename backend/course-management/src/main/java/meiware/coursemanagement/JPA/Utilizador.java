@@ -97,7 +97,7 @@ public class Utilizador {
     }
 
     public boolean isAdmnistrador() {
-        return roles.contains(Role.ADMNISTRADOR);
+        return roles.contains(Role.ADMINISTRADOR);
     }
 
     public boolean isGestor() {

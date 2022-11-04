@@ -13,6 +13,7 @@ public class FormacaoRejeitada extends PedidoFormacao{
     @NotNull
     @Column(columnDefinition = "DATE")
     private LocalDate dataRejeicao;
+
     private String comentario;
 
     public FormacaoRejeitada(){
@@ -24,4 +25,19 @@ public class FormacaoRejeitada extends PedidoFormacao{
         this.dataRejeicao = dataRejeicao;
     }
 
+    public LocalDate getDataRejeicao() {
+        return dataRejeicao;
+    }
+
+    public void setDataRejeicao(LocalDate dataRejeicao) {
+        this.dataRejeicao = dataRejeicao;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
 }
