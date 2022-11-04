@@ -96,7 +96,7 @@ public class Utilizador {
         this.listBudget = listBudget;
     }
 
-    public boolean isAdmnistrador() {
+    public boolean isAdministrador() {
         return roles.contains(Role.ADMINISTRADOR);
     }
 

@@ -39,4 +39,13 @@ public class Budget {
     public void setAno(int ano) {
         this.ano = ano;
     }
+
+    @Override
+    public String toString() {
+        return "Budget{" +
+                "id=" + id +
+                ", budget=" + budget +
+                ", ano=" + ano +
+                '}';
+    }
 }

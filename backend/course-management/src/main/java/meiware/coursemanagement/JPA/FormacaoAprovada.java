@@ -5,6 +5,7 @@ import com.sun.istack.NotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -17,6 +18,9 @@ public class FormacaoAprovada extends PedidoFormacao{
     @Column(columnDefinition = "DATE")
     private LocalDate dataConclusao;
     private boolean concluida;
+
+    @ManyToOne
+    private Utilizador quemAprovou;
 
     public FormacaoAprovada(){
 
@@ -49,5 +53,13 @@ public class FormacaoAprovada extends PedidoFormacao{
 
     public void setConcluida(boolean concluida) {
         this.concluida = concluida;
+    }
+
+    public Utilizador getQuemAprovou() {
+        return quemAprovou;
+    }
+
+    public void setQuemAprovou(Utilizador quemAprovou) {
+        this.quemAprovou = quemAprovou;
     }
 }

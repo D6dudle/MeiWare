@@ -5,6 +5,7 @@ import com.sun.istack.NotNull;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 
 @Entity
@@ -15,6 +16,9 @@ public class FormacaoRejeitada extends PedidoFormacao{
     private LocalDate dataRejeicao;
 
     private String comentario;
+
+    @ManyToOne
+    private Utilizador quemRejeitou;
 
     public FormacaoRejeitada(){
 
@@ -39,5 +43,13 @@ public class FormacaoRejeitada extends PedidoFormacao{
 
     public void setComentario(String comentario) {
         this.comentario = comentario;
+    }
+
+    public Utilizador getQuemRejeitou() {
+        return quemRejeitou;
+    }
+
+    public void setQuemRejeitou(Utilizador quemRejeitou) {
+        this.quemRejeitou = quemRejeitou;
     }
 }

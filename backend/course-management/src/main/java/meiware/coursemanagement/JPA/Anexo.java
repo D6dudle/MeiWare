@@ -19,6 +19,10 @@ public class Anexo {
 
     }
 
+    public Anexo(String path) {
+        this.path = path;
+    }
+
     public Long getId() {
         return id;
     }
@@ -29,5 +33,13 @@ public class Anexo {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    @Override
+    public String toString() {
+        return "Anexo{" +
+                "id=" + id +
+                ", path='" + path + '\'' +
+                '}';
     }
 }
