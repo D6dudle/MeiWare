@@ -20,6 +20,9 @@ module.exports = {
         'error' : '#FF9090',
         'success' : '#93D1AD',
       },
+      boxShadow: {
+        'btn': '0 0 4px 0.5px rgba(236, 192, 57, 1)',
+      }
     },
     fontFamily : {
       'IBM' : "'IBM Plex Sans', sans-serif",
