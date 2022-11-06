@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Menus } from "../constants/menuConstants";
 import { FiLogOut } from "react-icons/fi";
+import { NavLink, Outlet } from 'react-router-dom';
+
 
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
@@ -11,7 +13,7 @@ const Sidebar = () => {
       <div
         className={`${
           open ? "w-[15.5rem]" : "w-[5rem]"
-        } duration-300 bg-darkBlack relative`}
+        } duration-300 bg-darkBlack border-r-2 border-r-black2 relative`}
       >
         <img
           src="./src/assets/sidebar/control.png"
@@ -29,8 +31,9 @@ const Sidebar = () => {
           {Menus.map((menu, index) => (
             <>
               <div className="relative h-12 w-[12.5rem] left-3">
-                <li
+                <NavLink
                   key={index}
+                  to={menu.to}
                   className={`h-8 text-white text-sm flex items-center gap-x-4 cursor-pointer mt-9 hover:bg-primary hover:rounded-sm hover:text-darkBlack ${
                     open ? "w-44" : "w-12"
                   }`}
@@ -51,20 +54,22 @@ const Sidebar = () => {
                   >
                     {menu.title}
                   </span>
-                </li>
+                </NavLink>
               </div>
+              
 
               {menu.submenu && menu.opened && open && (
                 <ul>
                   {menu.submenuItems.map((submenuItem, index) => (
-                    <div className="relative h-12 w-[12.5rem] border-l-2 border-l-black2 left-8 pl-4 ative:border-r-2 active:border-r-primary">
-                      <li
+                    <div className="relative h-12 w-[12.5rem] border-l-2 border-l-black2 left-8 pl-4 active:border-r-2 active:border-r-primary">
+                      <NavLink
                         key={index}
+                        to={submenuItem.to}
                         className="w-44 h-8 text-white text-sm flex items-end gap-2 cursor-pointer hover:text-primary "
                         onClick={() => {}}
                       >
                         {submenuItem.title}
-                      </li>
+                      </NavLink>
                     </div>
                   ))}
                 </ul>
@@ -115,7 +120,9 @@ const Sidebar = () => {
             </div>
           </div>
         </div>
+        
       </div>
+      
     </>
     
   );

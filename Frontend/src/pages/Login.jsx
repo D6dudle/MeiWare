@@ -26,7 +26,7 @@ const Login = () => {
 		e.preventDefault();
 
 		console.log(emailValue, passwordValue);
-		navigate(`/main`); 
+		navigate(`/home`); 
 	};
 	return (
 		<div className='h-screen flex bg-darkBlack'>
