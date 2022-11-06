@@ -31,7 +31,7 @@ const Sidebar = () => {
               <div className="relative h-12 w-[12.5rem] left-3">
                 <li
                   key={index}
-                  className={`h-8 text-white text-sm flex items-center gap-x-4 cursor-pointer mt-9 hover:bg-yellow-500 hover:rounded-sm hover:text-darkBlack ${
+                  className={`h-8 text-white text-sm flex items-center gap-x-4 cursor-pointer mt-9 hover:bg-primary hover:rounded-sm hover:text-darkBlack ${
                     open ? "w-44" : "w-12"
                   }`}
                   onClick={() => {
@@ -57,10 +57,10 @@ const Sidebar = () => {
               {menu.submenu && menu.opened && open && (
                 <ul>
                   {menu.submenuItems.map((submenuItem, index) => (
-                    <div className="relative h-12 w-[12.5rem] border-l-2 border-l-gray-800 left-8 pl-4 ative:border-r-2 active:border-r-amber-400">
+                    <div className="relative h-12 w-[12.5rem] border-l-2 border-l-black2 left-8 pl-4 ative:border-r-2 active:border-r-primary">
                       <li
                         key={index}
-                        className="w-44 h-8 text-white text-sm flex items-end gap-2 cursor-pointer hover:text-amber-400 "
+                        className="w-44 h-8 text-white text-sm flex items-end gap-2 cursor-pointer hover:text-primary "
                         onClick={() => {}}
                       >
                         {submenuItem.title}
@@ -76,7 +76,7 @@ const Sidebar = () => {
         <ul className="absolute bottom-20">
           <div className="relative h-12 w-[12.5rem] left-3">
             <li
-              className={`h-8 text-white text-sm flex items-center gap-x-4 cursor-pointer mt-9 hover:bg-yellow-500 hover:rounded-sm hover:text-darkBlack ${
+              className={`h-8 text-white text-sm flex items-center gap-x-4 cursor-pointer mt-9 hover:bg-primary hover:rounded-sm hover:text-darkBlack ${
                 open ? "w-44" : "w-12"
               }`}
               onClick={() => {}}
@@ -103,11 +103,11 @@ const Sidebar = () => {
               <span className="font-IBM font-normal text-sm text-white ">
                 Utilizador Teste
               </span>
-              <span className="font-IBM font-normal text-xs text-gray-400">
+              <span className="font-IBM font-normal text-xs text-gray4">
                 teste@gmail.com
               </span>
 
-              <div className="relative top-2 flex flex-col items-center justify-center py-[0.125rem] px-1 gap-2 border border-gray-300 rounded-sm">
+              <div className="relative top-2 flex flex-col items-center justify-center py-[0.125rem] px-1 gap-2 border border-gray4 rounded-sm">
                 <span className="font-IBM font-normal text-xs text-white ">
                   Manager
                 </span>
