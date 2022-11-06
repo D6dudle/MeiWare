@@ -41,7 +41,7 @@ const Login = () => {
 						<label htmlFor='email' className='text-gray5 text-[14px] '>email</label>
 						<input
 							type='email'
-							className={`w-full p-2 bg-transparent text-white placeholder-gray3 border border-gray3 rounded-[3px]  text-sm transition duration-150 ease-in-out mb-4 mt-2 focus:border-primary focus:outline-0 focus:backdrop-blur-lg focus:shadow-btn focus:rounded-[2px]`}
+							className='inputText'
 							id='email'
 							placeholder='username@email.com'
 							onChange={(e) => { setEmailValue({ email :e.target.value}) }}
@@ -54,7 +54,7 @@ const Login = () => {
 						<div className='relative'>
 							<input
 								type={passwordValue.showPassword ? "text" : "password"}
-								className={`w-full p-2 bg-transparent text-white placeholder-gray3 border border-gray3 rounded-[3px]  text-sm transition duration-150 ease-in-out mb-4 mt-2 focus:border-primary focus:outline-0 focus:shadow-btn focus:rounded-[2px]`}
+								className='inputText'
 								id='password'
 								placeholder='password'
 								onChange={(e) => { setPasswordValue({ password: e.target.value }) }}
