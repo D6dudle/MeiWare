@@ -13,7 +13,8 @@
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-icons": "^4.6.0",
-    "react-router-dom": "^6.4.3"
+    "react-router-dom": "^6.4.3",
+    "use-react-router-breadcrumbs": "^4.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.22",

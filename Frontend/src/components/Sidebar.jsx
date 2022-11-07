@@ -36,7 +36,7 @@ const Sidebar = () => {
                   to={menu.to}
                   className={`h-8 text-white text-sm flex items-center gap-x-4 cursor-pointer mt-9 hover:bg-primary hover:rounded-sm hover:text-darkBlack ${
                     open ? "w-44" : "w-12"
-                  }`}
+                  }` }
                   onClick={() => {
                     if (menu.submenu) {
                       menu.opened = !submenuOpen;
