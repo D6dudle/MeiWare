@@ -4,12 +4,8 @@ import meiware.coursemanagement.JPA.PedidoFormacao;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface IPedidoFormacaoRepository {
-    List<PedidoFormacao> findAll();
-    PedidoFormacao findById(Long id);
-    PedidoFormacao save(PedidoFormacao pf);
-    void delete(PedidoFormacao pf);
+public interface IPedidoFormacaoRepository extends CrudRepository<PedidoFormacao, Long> {
+    PedidoFormacao findByNome(String nome);
+    // TODO: adicionar findAllByQUEMFEZPEDIDO
 }

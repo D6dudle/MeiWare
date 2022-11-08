@@ -1,4 +1,4 @@
 package meiware.coursemanagement.Controllers;
 
-public class teste {
+public class UtlizadorController {
 }

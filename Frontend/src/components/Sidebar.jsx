@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { Menus } from "../constants/menuConstants";
 import { FiLogOut } from "react-icons/fi";
-<<<<<<< Updated upstream
-=======
 import { NavLink } from "react-router-dom";
 import SidebarArrow from "../assets/sidebar/sidebarArrow.png";
 import LogoGrama from "../assets/sidebar/logoGrama.png";
->>>>>>> Stashed changes
 
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
@@ -31,55 +28,6 @@ const Sidebar = () => {
           className={`absolute cursor-pointer duration-500 w-[1.7rem] h-[2.3rem] left-6 top-6`}
         />
 
-<<<<<<< Updated upstream
-        <ul className="relative top-24">
-          {Menus.map((menu, index) => (
-            <>
-              <div className="relative h-12 w-[12.5rem] left-3">
-                <li
-                  key={index}
-                  className={`h-8 text-white text-sm flex items-center gap-x-4 cursor-pointer mt-9 hover:bg-primary hover:rounded-sm hover:text-darkBlack ${
-                    open ? "w-44" : "w-12"
-                  }`}
-                  onClick={() => {
-                    if (menu.submenu) {
-                      menu.opened = !submenuOpen;
-                      setSubmenuOpen(!submenuOpen);
-                    }
-                  }}
-                >
-                  <span className="w-4 h-4 absolute float-left left-[0.875rem]">
-                    {menu.icon}
-                  </span>
-                  <span
-                    className={`relative text-sm font-IBM font-medium flex-1 duration-400 left-[2.375rem] ${
-                      !open && "hidden"
-                    }`}
-                  >
-                    {menu.title}
-                  </span>
-                </li>
-              </div>
-
-              {menu.submenu && menu.opened && open && (
-                <ul>
-                  {menu.submenuItems.map((submenuItem, index) => (
-                    <div className="relative h-12 w-[12.5rem] border-l-2 border-l-black2 left-8 pl-4 ative:border-r-2 active:border-r-primary">
-                      <li
-                        key={index}
-                        className="w-44 h-8 text-white text-sm flex items-end gap-2 cursor-pointer hover:text-primary"
-                        onClick={() => {}}
-                      >
-                        {submenuItem.title}
-                      </li>
-                    </div>
-                  ))}
-                </ul>
-              )}
-            </>
-          ))}
-        </ul>
-=======
         {/* Menu */}
         {Menus.map((menu, index) => (
           <div key={index} className="relative top-24">
@@ -120,7 +68,6 @@ const Sidebar = () => {
             )}
           </div>
         ))}
->>>>>>> Stashed changes
 
         {/* Logout */}
         <ul className="absolute bottom-20">

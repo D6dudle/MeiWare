@@ -4,34 +4,61 @@ import { FiBriefcase, FiCreditCard, FiBook } from "react-icons/fi";
 export const Menus = [
   {
     title: "Formações",
+    to: "formacao",
     icon: <FiBriefcase />,
     submenu: true,
     opened: false,
     submenuItems: [
-      { title: "Adicionar formação" },
-      { title: "Pesquisar formação" },
+      {
+        title: "Adicionar formação",
+        to: "formacao/adicionar-formacao"
+      },
+      {
+        title: "Pesquisar formação",
+        to: "formacao/adicionar-formacao"
+      },
     ],
   },
   {
     title: "Controlo de budget",
+    to: "controlo",
     icon: <FiCreditCard />,
     submenu: true,
     opened: false,
     submenuItems: [
-      { title: "Dashboard" },
-      { title: "Gerir pedidos" },
-      { title: "Colaboradores" },
+      {
+        title: "Dashboard",
+        to: "controlo/adicionar-formacao",
+      },
+      {
+        title: "Gerir pedidos",
+        to: "controlo/adicionar-formacao",
+      },
+      {
+        title: "Colaboradores",
+        to: "controlo/adicionar-formacao",
+      },
     ],
   },
   {
     title: "Fórum",
+    to: "forum",
     icon: <FiBook />,
     submenu: true,
     opened: false,
     submenuItems: [
-      { title: "Minhas publicações" },
-      { title: "Pesquisar" },
-      { title: "Adicionar publicação" },
+      {
+        title: "Minhas publicações",
+        to: "adicionar-formacao",
+      },
+      {
+        title: "Pesquisar",
+        to: "adicionar-formacao",
+      },
+      {
+        title: "Adicionar publicação",
+        to: "adicionar-formacao",
+      },
     ],
   },
 ];

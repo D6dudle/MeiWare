@@ -1,8 +1,5 @@
 @tailwind base;
 @tailwind components;
-<<<<<<< Updated upstream
-@tailwind utilities;
-=======
 @tailwind utilities;
 
 @layer components{
@@ -38,4 +35,3 @@
       @apply relative top-2 flex flex-col items-center justify-center py-[0.125rem] px-1 gap-2 border border-gray4 rounded-sm;
     }
   }
->>>>>>> Stashed changes

@@ -55,6 +55,9 @@ public class PedidoFormacao {
     @OneToMany(mappedBy = "id")
     private List<Anexo> listAnexos;
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    Utilizador quemFezPedido;
+
     public PedidoFormacao() {
 
     }
@@ -141,6 +144,14 @@ public class PedidoFormacao {
 
     public void setCancelada(boolean cancelada) {
         this.cancelada = cancelada;
+    }
+
+    public Utilizador getQuemFezPedido() {
+        return quemFezPedido;
+    }
+
+    public void setQuemFezPedido(Utilizador quemFezPedido) {
+        this.quemFezPedido = quemFezPedido;
     }
 
     public boolean isApagada() {
