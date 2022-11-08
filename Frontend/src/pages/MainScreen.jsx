@@ -20,11 +20,11 @@ function MenuInicial(){
 
 export default function MainScreen() {
   return (
-    <div className="relative flex bg-darkBlack w-full">
+    <div className="relative flex bg-darkBlack ">
       <Sidebar />
       <div className="flex-1 flex flex-col mt-4 ml-8 mr-8 bg-dar">
         <Breadcrum />
-        <div className="bg-black2 h-[calc(100vh-4.5rem)] mb-8 rounded-sm text-white">
+        <div className="bg-black2 h-[calc(100vh-4.5rem)] mb-8 rounded-sm text-white overflow-scroll">
           <Routes>
             {/* Definir todas as routes existentes */}
             <Route path="/" element={<MenuInicial />} />
