@@ -9,12 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class CourseManagementApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CourseManagementApplication.class, args);
-		//testJPA();
-	}
-
-	static void testJPA(){
-		JPAtest jpAtest = new JPAtest();
-		jpAtest.demo();
 	}
 
 }
