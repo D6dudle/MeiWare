@@ -6,4 +6,32 @@
     .inputText {
       @apply w-full p-2 bg-transparent text-white placeholder-gray3 border border-gray3 rounded-[2px] text-sm mb-4 mt-2 focus:border-primary focus:outline-0 focus:backdrop-blur-lg focus:shadow-btn transition transform duration-100 ease-out;
     }
+
+    .menuTitle {
+      @apply relative text-sm font-IBM font-medium flex-1 left-[2.375rem];
+    }
+
+    .divMenuItem {
+      @apply relative h-12 w-[12.5rem] left-3;
+    }
+
+    .menuItem {
+      @apply h-8 text-white text-sm flex items-center gap-x-4 cursor-pointer mt-9 hover:bg-primary hover:rounded-sm hover:text-darkBlack;
+    }
+
+    .menuIcon {
+      @apply w-4 h-4 absolute float-left left-[0.875rem];
+    }
+
+    .divSubmenu {
+      @apply relative h-12 w-[12.5rem] border-l-2 border-l-black2 left-8 pl-4 active:border-r-2 active:border-r-primary;
+    }
+
+    .submenuItem {
+      @apply w-44 h-8 text-white text-sm flex items-end gap-2 cursor-pointer hover:text-primary;
+    }
+
+    .userRoleDisplay {
+      @apply relative top-2 flex flex-col items-center justify-center py-[0.125rem] px-1 gap-2 border border-gray4 rounded-sm;
+    }
   }
