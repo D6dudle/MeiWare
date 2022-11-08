@@ -11,11 +11,11 @@ export const Menus = [
     submenuItems: [
       {
         title: "Adicionar formação",
-        to: "formacao/adicionar-formacao"
+        to: "formacao/adicionar-formacao",
       },
       {
         title: "Pesquisar formação",
-        to: "formacao/adicionar-formacao"
+        to: "formacao/pesquisar-formacao",
       },
     ],
   },
@@ -27,16 +27,12 @@ export const Menus = [
     opened: false,
     submenuItems: [
       {
-        title: "Dashboard",
-        to: "controlo/adicionar-formacao",
-      },
-      {
         title: "Gerir pedidos",
-        to: "controlo/adicionar-formacao",
+        to: "controlo/gerir-pedidos",
       },
       {
         title: "Colaboradores",
-        to: "controlo/adicionar-formacao",
+        to: "controlo/colaboradores",
       },
     ],
   },
@@ -49,15 +45,15 @@ export const Menus = [
     submenuItems: [
       {
         title: "Minhas publicações",
-        to: "adicionar-formacao",
+        to: "forum/minhas-publicacoes",
       },
       {
         title: "Pesquisar",
-        to: "adicionar-formacao",
+        to: "forum/pesquisar",
       },
       {
         title: "Adicionar publicação",
-        to: "adicionar-formacao",
+        to: "forum/adicionar-publicacao",
       },
     ],
   },
