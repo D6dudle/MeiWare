@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class UserDetailsService implements UserDetails {
+public class UtilizadorDetails implements UserDetails {
     private Long id;
 
     private String username;
@@ -23,8 +23,8 @@ public class UserDetailsService implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsService(Long id, String username, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+    public UtilizadorDetails(Long id, String username, String email, String password,
+                             Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -32,12 +32,12 @@ public class UserDetailsService implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserDetailsService build(Utilizador user) {
+    public static UtilizadorDetails build(Utilizador user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());
 
-        return new UserDetailsService(
+        return new UtilizadorDetails(
                 user.getId(),
                 user.getNome(),
                 user.getEmail(),
@@ -94,7 +94,7 @@ public class UserDetailsService implements UserDetails {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        UserDetailsService user = (UserDetailsService) o;
+        UtilizadorDetails user = (UtilizadorDetails) o;
         return Objects.equals(id, user.id);
     }
 }
