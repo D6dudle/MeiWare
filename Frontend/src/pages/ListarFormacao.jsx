@@ -48,8 +48,12 @@ export default function ListarFormacao () {
         Listar Formações
       </h1>
 
-      <Filter data={data} setFiltered={setFiltered} activeFilter={activeFilter} setActiveFilter={setActiveFilter}/>
-      <div className='formacoes'>
+      <Filter data={data} 
+              setFiltered={setFiltered} 
+              activeFilter={activeFilter}
+              setActiveFilter={setActiveFilter}
+      />
+      <div className='formacoes flex flex-col items-start p-0 gap-8'>
         {filtered.map((item, index) => {
           return <Formation formation={item}/>;
         })}
