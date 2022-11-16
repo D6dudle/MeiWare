@@ -34,4 +34,8 @@
     .userRoleDisplay {
       @apply relative top-2 flex flex-col items-center justify-center py-[0.125rem] px-1 gap-2 border border-gray4 rounded-sm;
     }
+
+    .inputTextErrors {
+      @apply relative bottom-3 text-xs text-error;
+    }
   }
