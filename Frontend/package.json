@@ -9,7 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@material-tailwind/react": "^1.2.4",
     "react": "^18.2.0",
+    "react-currency-input-field": "^3.6.9",
+    "react-date-range": "^1.4.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-feather": "^2.0.10",

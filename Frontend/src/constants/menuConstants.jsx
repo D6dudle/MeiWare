@@ -17,6 +17,10 @@ export const Menus = [
         title: "Pesquisar formação",
         to: "formacao/pesquisar-formacao",
       },
+      {
+        title: "Listar Formação",
+        to: "formacao/listar-formacao",
+      },
     ],
   },
   {
