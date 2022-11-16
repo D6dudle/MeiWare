@@ -56,6 +56,12 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
+    public List<PedidoFormacao> getPedidosFormacaoByUtilizador(Utilizador utilizador) {
+        // TODO
+        return null;
+    }
+
+    @Override
     public PedidoFormacao getPedidoFormacaoById(Long id) {
         PedidoFormacao pd = pedidoFormacaoRepository.findById(id).orElse(null);
 

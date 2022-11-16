@@ -11,6 +11,7 @@ public interface IPedidoFormacaoService {
     List<PedidoFormacao> getPedidosFormacao();
     List<FormacaoAprovada> getFormacoesAprovadas();
     List<FormacaoRejeitada> getFormacoesRejeitadas();
+    List<PedidoFormacao> getPedidosFormacaoByUtilizador(Utilizador utilizador);
     PedidoFormacao getPedidoFormacaoById(Long id);
     PedidoFormacao getPedidoFormacaoByNome(String nome);
     PedidoFormacao createPedidoFormacao(PedidoFormacao newPedidoFormacao);
