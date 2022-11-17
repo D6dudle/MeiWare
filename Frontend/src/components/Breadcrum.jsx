@@ -8,7 +8,7 @@ import { ChevronRight } from 'react-feather'
 export const Breadcrum = () => {
   const breadcrumbs = useBreadcrumbs();
   return (
-    <div className=" flex flex-row justify-start items-center  h-[40px] mb-4 rounded-sm text-gray3 ">
+    <div className=" flex flex-row justify-start items-center  h-[2.5rem] pb-4 rounded-sm text-gray3 ">
       {breadcrumbs.slice(1).map(({ match, breadcrumb }, index, row) => (
         <NavLink key={match.pathname} to={match.pathname} className={`flex mr-2 ${index + 1 === row.length ? 'text-white': ''}`}>
           {breadcrumb}

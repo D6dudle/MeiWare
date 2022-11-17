@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 @layer components{
     .inputText {
       @apply w-full p-2 bg-transparent text-white placeholder-gray3 border border-gray3 rounded-[2px] text-sm mb-4 mt-2 focus:border-primary focus:outline-0 focus:backdrop-blur-lg focus:shadow-btn transition transform duration-100 ease-out;
@@ -33,6 +42,38 @@
 
     .userRoleDisplay {
       @apply relative top-2 flex flex-col items-center justify-center py-[0.125rem] px-1 gap-2 border border-gray4 rounded-sm;
+    }
+    
+    .btnSearchFunc {
+      @apply flex flex-row justify-center items-center pt-[0.375rem] px-2 pb-[0.438rem] gap-1
+    }
+
+    .btnIcons {
+      @apply font-IBM font-semibold text-sm text-gray4
+    }
+
+    .actionButtons {
+      @apply flex flex-row justify-center items-center p-4 rounded-sm hover:brightness-50
+    }
+
+    .actionBtnInsideInfo {
+      @apply font-IBM font-semibold text-sm text-black
+    }
+
+    .usersList {
+      @apply box-border flex flex-row items-start py-4 px-6 gap-[0.625rem] border-[0.031rem] border-solid border-white hover:bg-gray2 hover:cursor-pointer active:bg-gray2
+    }
+
+    .trainingCircleDiv {
+      @apply flex flex-row items-start gap-1
+    }
+
+    .trainingCircleText {
+      @apply font-IBM font-normal text-[0.563rem] leading-[120%] self-center
+    }
+
+    .trainingInformation {
+      @apply font-IBM text-base leading-[120%] text-white
     }
 
     .inputTextErrors {

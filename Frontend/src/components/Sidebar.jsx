@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Menus } from "../constants/menuConstants";
-import { FiLogOut } from "react-icons/fi";
+import { LogOut } from "react-feather";
 import { NavLink } from "react-router-dom";
 import SidebarArrow from "../assets/sidebar/sidebarArrow.png";
 import LogoGrama from "../assets/sidebar/logoGrama.png";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
-  const [submenuOpen, setSubmenuOpen] = useState(false);
+  const [submenuOpen, setSubmenuOpen] = useState(null);
+  const [subMenuClicked, setSubmenuClicked] = useState(null);
 
   return (
     <>
@@ -35,11 +36,27 @@ const Sidebar = () => {
               <NavLink
                 key={index}
                 to={menu.to}
-                className={`menuItem ${open ? "w-44" : "w-12"}`}
+                className={`menuItem ${
+                  (open ? "w-44" : "w-12") ||
+                  (menu.opened && "bg-primary rounded-sm text-darkBlack")
+                }`}
                 onClick={() => {
                   if (menu.submenu) {
-                    menu.opened = !submenuOpen;
-                    setSubmenuOpen(!submenuOpen);
+                    setSubmenuOpen(
+                      Menus.map((a) => {
+                        if (a.title !== menu.title) {
+                          a.opened = false;
+                        } else {
+                          if (a.opened) {
+                            a.submenuItems.map((b) => (b.opened = false));
+                          } else {
+                            console.log(menu.opened);
+                            a.submenuItems.map((b) => (b.opened = false));
+                            a.opened = true;
+                          }
+                        }
+                      })
+                    );
                   }
                 }}
               >
@@ -53,12 +70,29 @@ const Sidebar = () => {
             {menu.submenu && menu.opened && open && (
               <ul>
                 {menu.submenuItems.map((submenuItem, index) => (
-                  <div key={index} className="divSubmenu">
+                  <div
+                    key={index}
+                    className={`divSubmenu ${
+                      submenuItem.opened && "border-r-2 border-r-primary "
+                    }`}
+                  >
                     <NavLink
                       key={index}
                       to={submenuItem.to}
-                      className="submenuItem"
-                      onClick={() => {}}
+                      className={`submenuItem ${
+                        submenuItem.opened ? "text-primary" : "text-white"
+                      }`}
+                      onClick={() => {
+                        setSubmenuClicked(
+                          menu.submenuItems.map((a) => {
+                            if (a.title !== submenuItem.title) {
+                              a.opened = false;
+                            } else {
+                              a.opened = true;
+                            }
+                          })
+                        );
+                      }}
                     >
                       {submenuItem.title}
                     </NavLink>
@@ -76,7 +110,7 @@ const Sidebar = () => {
               className={`menuItem ${open ? "w-44" : "w-12"}`}
               onClick={() => {}}
             >
-              <FiLogOut className="menuIcon" />
+              <LogOut className="menuIcon" />
               <span className={`menuTitle duration-400 ${!open && "hidden"}`}>
                 Logout
               </span>
@@ -89,7 +123,7 @@ const Sidebar = () => {
           <div className="relative left-[1.625rem] flex flex-row items-center gap-4 h-12 w-[12.5rem] py-[0.813rem]">
             {/* User photo */}
             <img
-              src="./src/assets/sidebar/logoGrama.png"
+              src={LogoGrama}
               className="w-8 h-8 flex flex-grow-0 rounded-3xl"
             />
             <div className={`flex flex-col items-start ${!open && "hidden"}`}>

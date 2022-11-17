@@ -1,0 +1,93 @@
+[
+    {
+      "name": "Utilizador 1",
+      "email": "utilizador1@grama.io",
+      "photo": "../assets/sidebar/logoGrama.png",
+      "info": {
+        "budgetDisponivel": "570.90€",
+        "budgetAprovacao": "70.90€",
+        "departamento": "H&R",
+        "realizadas": 5,
+        "rejeitadas": 2,
+        "decorrer": 1
+        }
+    },
+    {
+      "name": "José Miguel Silva Gomes",
+      "email": "josemiguel@gmail.com",
+      "photo": "../assets/sidebar/sidebarArrow.png",
+      "info": {
+        "budgetDisponivel": "570.90€",
+        "budgetAprovacao": "70.90€",
+        "departamento": "H&R",
+        "realizadas": 5,
+        "rejeitadas": 2,
+        "decorrer": 1
+        }
+    },
+    {
+      "name": "Utilizador 3",
+      "email": "utilizador3@grama.io",
+      "photo": "../assets/sidebar/sidebarArrow.png",
+      "info": {
+        "budgetDisponivel": "570.90€",
+        "budgetAprovacao": "70.90€",
+        "departamento": "H&R",
+        "realizadas": 5,
+        "rejeitadas": 2,
+        "decorrer": 1
+        }
+    },
+    {
+      "name": "Utilizador 4",
+      "email": "utilizador4@grama.io",
+      "photo": "../assets/sidebar/sidebarArrow.png",
+      "info": {
+        "budgetDisponivel": "570.90€",
+        "budgetAprovacao": "70.90€",
+        "departamento": "H&R",
+        "realizadas": 5,
+        "rejeitadas": 2,
+        "decorrer": 1
+        }
+    },
+    {
+      "name": "Utilizador 5",
+      "email": "utilizador5@grama.io",
+      "photo": "../assets/sidebar/sidebarArrow.png",
+      "info": {
+        "budgetDisponivel": "570.90€",
+        "budgetAprovacao": "70.90€",
+        "departamento": "H&R",
+        "realizadas": 3,
+        "rejeitadas": 6,
+        "decorrer": 1
+        }
+    },
+    {
+      "name": "Utilizador 6",
+      "email": "utilizador6@grama.io",
+      "photo": "../assets/sidebar/sidebarArrow.png",
+      "info": {
+        "budgetDisponivel": "0.0€",
+        "budgetAprovacao": "570.90€",
+        "departamento": "H&R",
+        "realizadas": 14,
+        "rejeitadas": 0,
+        "decorrer": 0
+        }
+    },
+    {
+      "name": "Utilizador 7",
+      "email": "utilizador7@grama.io",
+      "photo": "../assets/sidebar/sidebarArrow.png",
+      "info": {
+        "budgetDisponivel": "50.00€",
+        "budgetAprovacao": "50.99€",
+        "departamento": "H&R",
+        "realizadas": 2,
+        "rejeitadas": 5,
+        "decorrer": 2
+        }
+    }
+]
