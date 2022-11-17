@@ -1,4 +1,5 @@
 import { Briefcase, CreditCard, Book } from "react-feather";
+import { Image, File, Archive } from "react-feather";
 
 export const Menus = [
   {
@@ -17,6 +18,10 @@ export const Menus = [
         title: "Pesquisar formação",
         to: "formacao/pesquisar-formacao",
         opened: false,
+      },
+      {
+        title: "Listar Formação",
+        to: "formacao/listar-formacao",
       },
     ],
   },
@@ -68,4 +73,11 @@ export const Menus = [
       },
     ],
   },
+];
+
+export const iconImageUpload = [
+  { type: "image/png", icon: Image },
+  { type: "image/jpeg", icon: Image },
+  { type: "application/pdf", icon: File },
+  { type: "application/zip", icon: Archive },
 ];

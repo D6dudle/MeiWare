@@ -6,7 +6,7 @@ import MainScreen from "./pages/MainScreen";
 
 const App = () => {
   return (
-    <div className="font-IBM ">
+    <div className="font-IBM">
       <Routes>
         {/* Definir todas as routes existentes */}
         <Route path="/" element={<Login />} />
