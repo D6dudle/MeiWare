@@ -21,11 +21,11 @@ function MenuInicial(){
 
 export default function MainScreen() {
   return (
-    <div className="relative flex bg-darkBlack ">
+    <div className="relative flex bg-darkBlack" style={{height:'100vh'}}>
       <Sidebar />
-      <div className="flex-1 flex flex-col mt-4 ml-8 mr-8 bg-dar">
+      <div className="flex-1 flex flex-col pt-4 pl-8 pr-8 bg-dar">
         <Breadcrum />
-        <div className="bg-black2 h-[calc(100vh-4.5rem)] mb-8 rounded-sm text-white overflow-scroll">
+        <div className="bg-black2 h-[calc(100vh-4.5rem)] pb-8 rounded-sm text-white overflow-scroll scrollbar-hide">
           <Routes>
             {/* Definir todas as routes existentes */}
             <Route path="/" element={<MenuInicial />} />
@@ -34,10 +34,7 @@ export default function MainScreen() {
             <Route path="/formacao/listar-formacao" element={<ListarFormacao />} />
             <Route path="*" element= {<ErrorPage/>}/>            
           </Routes>
-
         </div>
-
-
       </div>
 
     </div>

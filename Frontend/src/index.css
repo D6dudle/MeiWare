@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 @layer components{
     .inputText {
       @apply w-full p-2 bg-transparent text-white placeholder-gray3 border border-gray3 rounded-[2px] text-sm mb-4 mt-2 focus:border-primary focus:outline-0 focus:backdrop-blur-lg focus:shadow-btn transition transform duration-100 ease-out;
@@ -38,4 +47,5 @@
     .inputTextErrors {
       @apply relative bottom-3 text-xs text-error;
     }
+
   }
