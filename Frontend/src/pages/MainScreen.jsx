@@ -1,21 +1,24 @@
-import React from 'react'
-import { Breadcrum } from '../components/Breadcrum'
-import Sidebar from '../components/Sidebar'
+import React from "react";
+import { Breadcrum } from "../components/Breadcrum";
+import Sidebar from "../components/Sidebar";
 import { Routes, Route } from "react-router-dom";
-import Formacao from './Formacao';
-import AdicionarFormacao from './AdicionarFormacao';
-import { ErrorPage }  from './ErrorPage'
-import Grama from '../assets/Grama.svg';
+import Formacao from "./Formacao";
+import AdicionarFormacao from "./AdicionarFormacao";
+import ControloBudget from "./ControloBudget";
+import GerirPedidos from "./GerirPedidos";
+import Colaboradores from "./Colaboradores";
+import { ErrorPage } from "./ErrorPage";
+import Grama from "../assets/Grama.svg";
 
-
-
-function MenuInicial(){
+function MenuInicial() {
   return (
     <div className="flex flex-col justify-start items-center pt-24">
-        <img src={Grama} alt="Logo Grama" />
-        <h1 className="text-white font-bold text-3xl mt-16">Bem vindo ao teu portal de formações 😄 Utilizador!!</h1>
+      <img src={Grama} alt="Logo Grama" />
+      <h1 className="text-white font-bold text-3xl mt-16">
+        Bem vindo ao teu portal de formações 😄 Utilizador!!
+      </h1>
     </div>
-  )
+  );
 }
 
 export default function MainScreen() {
@@ -28,16 +31,18 @@ export default function MainScreen() {
           <Routes>
             {/* Definir todas as routes existentes */}
             <Route path="/" element={<MenuInicial />} />
-            <Route path="/formacao" element={<Formacao />}/>
-            <Route path="/formacao/adicionar-formacao" element={<AdicionarFormacao />} />
-            <Route path="*" element= {<ErrorPage/>}/>            
+            <Route path="/formacao" element={<Formacao />} />
+            <Route
+              path="/formacao/adicionar-formacao"
+              element={<AdicionarFormacao />}
+            />
+            <Route path="/controlo" element={<ControloBudget />} />
+            <Route path="/controlo/gerir-pedidos" element={<GerirPedidos />} />
+            <Route path="/controlo/colaboradores" element={<Colaboradores />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
-
         </div>
-
-
       </div>
-
     </div>
-  )
+  );
 }
