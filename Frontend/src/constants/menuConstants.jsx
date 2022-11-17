@@ -1,4 +1,5 @@
 import { FiBriefcase, FiCreditCard, FiBook } from "react-icons/fi";
+import { Image, File, Archive} from 'react-feather'
 // https://react-icons.github.io/react-icons/icons?name=fi
 
 export const Menus = [
@@ -58,3 +59,10 @@ export const Menus = [
     ],
   },
 ];
+
+export const iconImageUpload = [
+  {type: "image/png", icon: Image },
+  {type: "image/jpeg", icon: Image },
+  {type: "application/pdf", icon: File },
+  {type: "application/zip", icon: Archive },
+]

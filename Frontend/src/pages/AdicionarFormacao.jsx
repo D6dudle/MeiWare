@@ -199,15 +199,11 @@ export default function AdicionarFormacao() {
                   />
                   <p className='relative top-1 text-xs text-error'>{formErrors.nomeColaborador}</p>
                 </div>
-
-
               </div>
-
               {/* DATA */}
               <div className='mb-4'>
                 <label htmlFor='data' className='text-gray5 text-[14px]'>data</label>
                 <div className='relative '>
-
                   <input
                     readOnly={true}
                     type='text'
