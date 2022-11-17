@@ -10,6 +10,8 @@ const Sidebar = () => {
   const [submenuOpen, setSubmenuOpen] = useState(null);
   const [subMenuClicked, setSubmenuClicked] = useState(null);
 
+  console.log(open);
+
   return (
     <>
       <div
@@ -22,7 +24,9 @@ const Sidebar = () => {
           className={`absolute cursor-pointer rounded-full -right-3 top-9 w-7 border-2 border-darkBlack ${
             !open && "rotate-180"
           }`}
-          onClick={() => setOpen(!open)}
+          onClick={() => {
+            setOpen(!open);
+          }}
         />
         <img
           src={LogoGrama}
@@ -37,10 +41,18 @@ const Sidebar = () => {
                 key={index}
                 to={menu.to}
                 className={`menuItem ${
-                  (open ? "w-44" : "w-12") ||
-                  (menu.opened && "bg-primary rounded-sm text-darkBlack")
+                  open
+                    ? "w-44" &&
+                      (menu.opened
+                        ? "bg-primary rounded-sm text-darkBlack"
+                        : "w-44")
+                    : "w-12" &&
+                      (menu.opened
+                        ? "w-12 bg-primary rounded-sm text-darkBlack"
+                        : "w-12")
                 }`}
                 onClick={() => {
+                  console.log(menu.opened);
                   if (menu.submenu) {
                     setSubmenuOpen(
                       Menus.map((a) => {
@@ -50,7 +62,6 @@ const Sidebar = () => {
                           if (a.opened) {
                             a.submenuItems.map((b) => (b.opened = false));
                           } else {
-                            console.log(menu.opened);
                             a.submenuItems.map((b) => (b.opened = false));
                             a.opened = true;
                           }
