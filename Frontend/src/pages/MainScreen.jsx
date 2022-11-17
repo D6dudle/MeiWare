@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar'
 import { Routes, Route } from "react-router-dom";
 import Formacao from './Formacao';
 import AdicionarFormacao from './AdicionarFormacao';
+import ListarFormacao from './ListarFormacao';
 import { ErrorPage }  from './ErrorPage'
 import Grama from '../assets/Grama.svg';
 
@@ -30,6 +31,7 @@ export default function MainScreen() {
             <Route path="/" element={<MenuInicial />} />
             <Route path="/formacao" element={<Formacao />}/>
             <Route path="/formacao/adicionar-formacao" element={<AdicionarFormacao />} />
+            <Route path="/formacao/listar-formacao" element={<ListarFormacao />} />
             <Route path="*" element= {<ErrorPage/>}/>            
           </Routes>
 
