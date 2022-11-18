@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { DollarSign, Search } from 'react-feather';
 import TextInput from '../components/TextInput';
 
-export default function AdicionarPublicacao() {
+export default function Exemplo() {
 
   const aquaticCreatures = [
     { label: 'Shark', value: 'Shark' },
@@ -38,13 +37,12 @@ export default function AdicionarPublicacao() {
     }
   );
 
-  /*
   const [newField, setNewField] = useState("");
 
-   const addField = () =>{
+  const addField = () =>{
     setPubFields([...pubFields,{name:newField, value:""}]);
     setNewField("");
-  } */
+  }
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -60,7 +58,7 @@ export default function AdicionarPublicacao() {
   return (
     <div className="ml-8 mr-8">
       <h1 className="text-white font-bold text-3xl mt-8">
-        Adicionar publicação
+        Ecrã exemplo
       </h1>
 
       <div className="mt-16 flex justify-evenly items-center">
@@ -78,11 +76,11 @@ export default function AdicionarPublicacao() {
                 ))}
             </ul>
           
-            {/* <h2>Campos extra</h2>
+            <h2>Campos extra</h2>
             <div className='inline'>
               <input type='text' placeholder="Campo" value={newField} className='mr-2 p-2 bg-transparent text-white placeholder-gray3 border border-gray3 rounded-[2px] text-sm mb-4 mt-2 focus:border-primary focus:outline-0 focus:backdrop-blur-lg focus:shadow-btn transition transform duration-100 ease-out' onChange={ e => setNewField(e.target.value) }/>
               <button type="button" className='px-4 py-2 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white' onClick={ addField }>Adicionar campo</button>
-            </div> */}
+            </div>
 
           </div>
 

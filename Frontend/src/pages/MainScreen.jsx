@@ -11,6 +11,7 @@ import Colaboradores from "./Colaboradores";
 import { ErrorPage } from "./ErrorPage";
 import Grama from "../assets/Grama.svg";
 import AdicionarPublicacao from './AdicionarPublicacao';
+import Exemplo from "./Exemplo";
 
 function MenuInicial() {
   return (
@@ -31,6 +32,8 @@ export default function MainScreen() {
         <Breadcrum />
         <div className="bg-black2 h-[calc(100vh-4.5rem)] pb-8 rounded-sm text-white overflow-scroll scrollbar-hide">
           <Routes>
+            {/* DEV */}
+            <Route path="/exemplo" element={<Exemplo />} />
             {/* Definir todas as routes existentes */}
             <Route path="/" element={<MenuInicial />} />
             <Route path="/formacao" element={<Formacao />} />
