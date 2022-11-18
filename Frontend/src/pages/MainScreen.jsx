@@ -7,6 +7,7 @@ import AdicionarFormacao from './AdicionarFormacao';
 import ListarFormacao from './ListarFormacao';
 import { ErrorPage }  from './ErrorPage'
 import Grama from '../assets/Grama.svg';
+import AdicionarPublicacao from './AdicionarPublicacao';
 
 
 
@@ -32,6 +33,7 @@ export default function MainScreen() {
             <Route path="/formacao" element={<Formacao />}/>
             <Route path="/formacao/adicionar-formacao" element={<AdicionarFormacao />} />
             <Route path="/formacao/listar-formacao" element={<ListarFormacao />} />
+            <Route path="/forum/adicionar-publicacao" element={<AdicionarPublicacao />} />
             <Route path="*" element= {<ErrorPage/>}/>            
           </Routes>
         </div>
