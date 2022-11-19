@@ -32,7 +32,7 @@ export default function MainScreen() {
       <Sidebar />
       <div className="flex-1 flex flex-col pt-4 pl-8 pr-8 bg-dar">
         <Breadcrum />
-        <div className="bg-black2 h-[calc(100vh-4.5rem)] pb-8 rounded-sm text-white overflow-scroll scrollbar-hide">
+        <div className="bg-black2 h-[calc(100vh-4.5rem)] rounded-sm text-white">
           <Routes>
             {/* DEV */}
             <Route path="/exemplo" element={<Exemplo />} />

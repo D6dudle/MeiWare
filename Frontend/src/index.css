@@ -11,6 +11,16 @@
   display: none;
 }
 
+.tabsHeader {
+  width: 100%;
+  height: 100%;
+}
+
+.tabsHeader > nav {
+  position: sticky;
+  top: 1rem; 
+}
+
 @layer components{
     .inputText {
       @apply w-full p-2 bg-transparent text-white placeholder-gray3 border border-gray3 rounded-[2px] text-sm mb-4 mt-2 focus:border-primary focus:outline-0 focus:backdrop-blur-lg focus:shadow-btn transition transform duration-100 ease-out;

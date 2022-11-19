@@ -14,11 +14,14 @@ export default function GerirPedidos() {
   const [filter, setFilter] = useState(null);
 
   return (
-    <div className="ml-8 mr-8">
-      <h1 className="text-white font-bold text-3xl mt-8">Gerir formações</h1>
-      <Tabs value="pendentes">
+    <div className="pl-8 pr-8 w-full h-full overflow-hidden">
+      <div className="pt-8">
+        <h1 className="sticky top-5 text-white font-bold text-3xl">Gerir formações</h1>
+      </div>
+      <Tabs value="pendentes" className="tabsHeader scrollbar-hide pr-5">
         {/* First value */}
-        <TabsHeader className="flex gap-8 px-[0.625rem] mt-8 items-start">
+        <TabsHeader className="mt-0">
+          <div className="flex items-start gap-8 px-[0.625rem]">
           {Formacoes.map(({ label, value, icon }) => (
             <Tab
               key={value}
@@ -36,18 +39,19 @@ export default function GerirPedidos() {
               </div>
             </Tab>
           ))}
+          </div>
         </TabsHeader>
 
         {/* Barra de pesquisa e filtros!!! */}
 
-        <TabsBody className="mt-32">
-          <div className="">
+        <TabsBody className="w-full h-full mt-5">
+          <div className="w-full h-full overflow-scroll scrollbar-hide">
             {activeFilter !== null ? (
               <h1 className="font-bold text-2xl order-none mb-3">
                 {activeFilter}
               </h1>
             ) : null}
-
+            <div className="flex flex-nowrap justify-between flex-col gap-3">
             {activeFilter !== null
               ? filter.map((card, index) => {
                   return (
@@ -64,6 +68,7 @@ export default function GerirPedidos() {
                   );
                 })
               : null}
+            </div>
           </div>
         </TabsBody>
       </Tabs>

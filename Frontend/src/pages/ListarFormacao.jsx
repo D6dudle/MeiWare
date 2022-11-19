@@ -77,7 +77,7 @@ export default function ListarFormacao () {
   
   console.log("Formation Camps: " + formationCamps);
   return (
-    <div className="ml-8">
+    <div className="pl-8 pr-8 w-full h-full overflow-scroll scrollbar-hide">
       <h1 className="text-white font-bold text-3xl mt-8">
         Listar Formações
       </h1>

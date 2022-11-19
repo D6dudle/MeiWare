@@ -60,7 +60,7 @@ export default function AdicionarPublicacao() {
 
 
   return (
-    <div className="pl-8 pr-8 w-full h-full">
+    <div className="pl-8 pr-8 w-full h-full overflow-scroll scrollbar-hide">
       <h1 className="mt-8 text-white font-bold text-3xl">
         Adicionar publicação
       </h1>
