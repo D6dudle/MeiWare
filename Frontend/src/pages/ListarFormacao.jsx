@@ -3,7 +3,6 @@ import Grama from '../assets/Grama.svg';
 import { useState } from 'react';
 import data from '../constants/dataApagar';
 import { FiSearch } from "react-icons/fi";
-import Formation from '../components/Formation';
 import Filter from '../components/Filter';
 import Select from 'react-select';
 import Formacao from '../components/Formacao';
@@ -76,6 +75,7 @@ export default function ListarFormacao () {
   };
 
   
+  console.log("Formation Camps: " + formationCamps);
   return (
     <div className="ml-8">
       <h1 className="text-white font-bold text-3xl mt-8">
@@ -101,7 +101,7 @@ export default function ListarFormacao () {
             placeholder='nome'
             value={formationCamps.nomeColaborador}
             onChange={opt => {
-              //console.log(opt);
+              console.log(opt);
               setFormationCamps({ ...formationCamps, nomeColaborador: opt });
             }
             }
@@ -119,7 +119,20 @@ export default function ListarFormacao () {
           />
       </div>
 
-
+      <>
+      <div className='flex mb-8 mt-20 font-bold text-2xl'>
+        {activeFilter == "CURSO" ? (
+          <h1> Formações a Decorrer</h1>
+        ): null}
+        {activeFilter == "TERMINADA" ? (
+          <h1> Formações Terminadas</h1>
+        ): null}
+        {activeFilter == "PENDENTE" ? (
+          <h1> Formações Pendentes</h1>
+        ): null}
+      </div>
+      </>
+      
       {filtered.filter(item=>item.courseName.toLowerCase().includes(query)
       ).map((item, index) => {
         return <Formacao
@@ -131,7 +144,6 @@ export default function ListarFormacao () {
         idCurso={item.id}
         tipoFormacao={item.type}
       />;
-      
       })}
 
     </div>

@@ -24,6 +24,14 @@ export const data = [
         date:"1/1/2023",
         user:"William Speed Carvalho",
         type:"TERMINADA"
+    },
+    {
+        id: 4,
+        courseName: "CSS",
+        text:"alalalalalala",
+        date:"1/1/2024",
+        user:"Jão Feliz",
+        type:"TERMINADA"
     }
 ]
 export default data;
