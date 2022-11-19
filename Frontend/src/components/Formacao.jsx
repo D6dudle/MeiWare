@@ -110,3 +110,4 @@ export const Formacao = ({
     </>
   );
 };
+export default Formacao;

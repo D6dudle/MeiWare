@@ -6,7 +6,7 @@ import { FiSearch } from "react-icons/fi";
 import Formation from '../components/Formation';
 import Filter from '../components/Filter';
 import Select from 'react-select';
-
+import Formacao from '../components/Formacao';
 
 
 import {
@@ -21,7 +21,7 @@ import {
 export default function ListarFormacao () {
 
   const [filtered, setFiltered] = useState([]);
-  const [activeFilter, setActiveFilter] = useState(0);
+  const [activeFilter, setActiveFilter] = useState("ALL");
   const [query, setQuery] = useState(""); 
 
   const [formationCamps, setFormationCamps] = useState({
@@ -119,21 +119,20 @@ export default function ListarFormacao () {
           />
       </div>
 
-      <>
-    {notifications.length > 0 &&
-        <p>
-          You have {notifications.length} notifications.
-        </p>
-      }
-    </>
 
-      <div className='formacoes flex flex-col items-start p-0 gap-8'>
-        {filtered.filter(item=>item.courseName.toLowerCase().includes(query)
-        ).map((item, index) => {
-          return <Formation key={item.id} formation={item}/>;
-        })}
-
-      </div>
+      {filtered.filter(item=>item.courseName.toLowerCase().includes(query)
+      ).map((item, index) => {
+        return <Formacao
+        key={index}
+        username={item.user}
+        nomeformacao={item.courseName}
+        dataFormacao={item.date}
+        justificacaoFormacao={item.text}
+        idCurso={item.id}
+        tipoFormacao={item.type}
+      />;
+      
+      })}
 
     </div>
 
