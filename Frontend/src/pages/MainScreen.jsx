@@ -10,8 +10,10 @@ import GerirPedidos from "./GerirPedidos";
 import Colaboradores from "./Colaboradores";
 import { ErrorPage } from "./ErrorPage";
 import Grama from "../assets/Grama.svg";
-import AdicionarPublicacao from './AdicionarPublicacao';
+import AdicionarPublicacao from "./AdicionarPublicacao";
+import AdicionarColaborador from "./AdicionarColaborador";
 import Exemplo from "./Exemplo";
+import { PesquisarFormacao } from "./PesquisarFormacao";
 
 function MenuInicial() {
   return (
@@ -45,10 +47,21 @@ export default function MainScreen() {
               path="/formacao/listar-formacao"
               element={<ListarFormacao />}
             />
-            <Route path="/forum/adicionar-publicacao" element={<AdicionarPublicacao />} />
+            <Route
+              path="/formacao/pesquisar-formacao"
+              element={<PesquisarFormacao />}
+            />
+            <Route
+              path="/forum/adicionar-publicacao"
+              element={<AdicionarPublicacao />}
+            />
             <Route path="/controlo" element={<ControloBudget />} />
             <Route path="/controlo/gerir-pedidos" element={<GerirPedidos />} />
             <Route path="/controlo/colaboradores" element={<Colaboradores />} />
+            <Route
+              path="/controlo/colaboradores/adicionar-colaborador"
+              element={<AdicionarColaborador />}
+            />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>

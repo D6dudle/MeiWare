@@ -57,7 +57,7 @@
     }
 
     .actionButtons {
-      @apply flex flex-row justify-center items-center p-4 rounded-sm hover:brightness-50
+      @apply h-[2.5rem] flex flex-row justify-center items-center p-4 rounded-sm hover:brightness-50
     }
 
     .actionBtnInsideInfo {

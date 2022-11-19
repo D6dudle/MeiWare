@@ -19,10 +19,13 @@ module.exports = {
         'secondary' : '#8EA4FF',
         'error' : '#FF9090',
         'success' : '#93D1AD',
+        'lightError': '#FF5555',
       },
       boxShadow: {
         'btn': '0 0 4px 0.5px rgba(236, 192, 57, 1)',
-      }
+        'inner': 'inset 0 0 16px rgba(0, 0, 0, 0.4)',
+      },
+      
     },
     fontFamily : {
       'IBM' : "'IBM Plex Sans', sans-serif",

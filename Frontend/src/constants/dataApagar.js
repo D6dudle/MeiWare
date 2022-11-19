@@ -7,7 +7,7 @@ export const data = [
         text:"alalalalalala",
         date:"1/1/2021",
         user:"Bruno Gandres",
-        type:1
+        type:"PENDENTE"
     },
     {
         id: 2,
@@ -15,7 +15,7 @@ export const data = [
         text:"alalalalalala",
         date:"1/1/2022",
         user:"Pai Cris",
-        type:1
+        type:"CURSO"
     },
     {
         id: 3,
@@ -23,7 +23,15 @@ export const data = [
         text:"alalalalalala",
         date:"1/1/2023",
         user:"William Speed Carvalho",
-        type:3
+        type:"TERMINADA"
+    },
+    {
+        id: 4,
+        courseName: "CSS",
+        text:"alalalalalala",
+        date:"1/1/2024",
+        user:"Jão Feliz",
+        type:"TERMINADA"
     }
 ]
 export default data;
