@@ -20,6 +20,7 @@ module.exports = {
         'error' : '#FF9090',
         'success' : '#93D1AD',
         'lightError': '#FF5555',
+        'pastel':'#FFEFA1',
       },
       boxShadow: {
         'btn': '0 0 4px 0.5px rgba(236, 192, 57, 1)',
