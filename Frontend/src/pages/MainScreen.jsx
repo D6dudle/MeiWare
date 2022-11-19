@@ -13,6 +13,7 @@ import Grama from "../assets/Grama.svg";
 import AdicionarPublicacao from "./AdicionarPublicacao";
 import AdicionarColaborador from "./AdicionarColaborador";
 import Exemplo from "./Exemplo";
+import { PesquisarFormacao } from "./PesquisarFormacao";
 
 function MenuInicial() {
   return (
@@ -45,6 +46,10 @@ export default function MainScreen() {
             <Route
               path="/formacao/listar-formacao"
               element={<ListarFormacao />}
+            />
+            <Route
+              path="/formacao/pesquisar-formacao"
+              element={<PesquisarFormacao />}
             />
             <Route
               path="/forum/adicionar-publicacao"
