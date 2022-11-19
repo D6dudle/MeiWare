@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -6,60 +6,67 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
-import { FiAlertCircle, FiZap, FiCheck } from "react-icons/fi";
+import { Formacao } from "../components/Formacao";
+import { Formacoes } from "../constants/formacoes";
 
 export default function GerirPedidos() {
-  const data = [
-    {
-      label: "Formações pendentes",
-      value: "pendentes",
-      icon: <FiAlertCircle />,
-      desc: `It really matters and then like it really doesn't matter.
-      What matters is the people who are sparked by it. And the people 
-      who are like offended by it, it doesn't matter.`,
-    },
-    {
-      label: "Formações a decorrer",
-      value: "decorrer",
-      icon: <FiZap />,
-      desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
-    },
-
-    {
-      label: "Formações terminadas",
-      value: "terminadas",
-      icon: <FiCheck />,
-      desc: `We're not always in the position that we want to be at.
-      We're constantly growing. We're constantly making mistakes. We're 
-      constantly trying to express ourselves and actualize our dreams.`,
-    },
-  ];
+  const [activeFilter, setActiveFilter] = useState(null);
+  const [filter, setFilter] = useState(null);
 
   return (
-    <Tabs value="pendentes">
-      {/* First value */}
-      <TabsHeader className="gap-8 px-[0.625rem] top-[5.625rem] left-8 items-start">
-        {data.map(({ label, value, icon }) => (
-          <Tab
-            key={value}
-            value={value}
-            className="w-fit border-b-[0.063rem] border-gray4 text-gray4 font-IBM lowercase hover:border-primary hover:text-primary"
-          >
-            <div className="gap-2 flex flex-row justify-between items-center">
-              {icon}
-              {label}
-            </div>
-          </Tab>
-        ))}
-      </TabsHeader>
-      <TabsBody className="">
-        {data.map(({ value, desc }) => (
-          <TabPanel key={value} value={value}>
-            {desc}
-          </TabPanel>
-        ))}
-      </TabsBody>
-    </Tabs>
+    <div className="ml-8 mr-8">
+      <h1 className="text-white font-bold text-3xl mt-8">Gerir formações</h1>
+      <Tabs value="pendentes">
+        {/* First value */}
+        <TabsHeader className="flex gap-8 px-[0.625rem] mt-8 items-start">
+          {Formacoes.map(({ label, value, icon }) => (
+            <Tab
+              key={value}
+              value={value}
+              className="w-fit border-b-[0.063rem] border-gray4 text-gray4 font-IBM lowercase hover:border-primary hover:text-primary"
+              onClick={() => {
+                setActiveFilter(label);
+                var list = Formacoes.filter((item) => item.label == label);
+                setFilter(list[0].formacoes);
+              }}
+            >
+              <div className="gap-2 flex flex-row justify-between items-center">
+                {icon}
+                {label}
+              </div>
+            </Tab>
+          ))}
+        </TabsHeader>
+
+        {/* Barra de pesquisa e filtros!!! */}
+
+        <TabsBody className="mt-32">
+          <div className="">
+            {activeFilter !== null ? (
+              <h1 className="font-bold text-2xl order-none mb-3">
+                {activeFilter}
+              </h1>
+            ) : null}
+
+            {activeFilter !== null
+              ? filter.map((card, index) => {
+                  return (
+                    <Formacao
+                      key={index}
+                      username={card.username}
+                      nomeformacao={card.nomeformacao}
+                      dataFormacao={card.dataFormacao}
+                      justificacaoFormacao={card.justificacaoFormacao}
+                      idCurso={card.idCurso}
+                      tipoFormacao={card.tipoFormacao}
+                      consultar={true}
+                    />
+                  );
+                })
+              : null}
+          </div>
+        </TabsBody>
+      </Tabs>
+    </div>
   );
 }
