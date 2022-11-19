@@ -10,8 +10,6 @@ const Sidebar = () => {
   const [submenuOpen, setSubmenuOpen] = useState(null);
   const [subMenuClicked, setSubmenuClicked] = useState(null);
 
-  console.log(open);
-
   return (
     <>
       <div
