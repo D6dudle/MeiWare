@@ -53,7 +53,7 @@
     }
 
     .actionButtons {
-      @apply h-[2.5rem] flex flex-row justify-center items-center p-4 rounded-sm hover:brightness-50
+      @apply md:h-[2.5rem] flex flex-row justify-center items-center p-4 rounded-sm hover:brightness-50
     }
 
     .actionBtnInsideInfo {
@@ -61,7 +61,7 @@
     }
 
     .usersList {
-      @apply box-border flex flex-row items-start py-4 px-6 gap-[0.625rem] border-[0.031rem] border-solid border-white hover:bg-gray2 hover:cursor-pointer active:bg-gray2
+      @apply box-border flex sm:flex-col md:flex-row items-start py-4 px-6 gap-[0.625rem] border-[0.031rem] border-solid border-white hover:bg-gray2 hover:cursor-pointer active:bg-gray2
     }
 
     .trainingCircleDiv {

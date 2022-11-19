@@ -13,11 +13,11 @@ export default function TrainingDescription() {
       </li>
       <li className="trainingCircleDiv">
         <span className="w-3 h-3 rounded-full text-success bg-success"></span>
-        <p className="trainingCircleText">Formação terminada</p>
+        <p className="trainingCircleText">Formação em curso</p>
       </li>
       <li className="trainingCircleDiv">
         <span className="w-3 h-3 rounded-full text-white bg-white"></span>
-        <p className="trainingCircleText">Formação terminada</p>
+        <p className="trainingCircleText">Formação pendente</p>
       </li>
     </ul>
   );

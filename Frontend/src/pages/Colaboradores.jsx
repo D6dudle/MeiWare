@@ -29,7 +29,7 @@ export default function Colaboradores() {
 
       <div className="mt-16 ml-8 mr-8">
         {/* TODO: Corrigir valores depois com a barra de pesquisa. ^ */}
-        <div className="flex flex-row justify-between items-center gap-8">
+        <div className="flex md:flex-row flex-col justify-evenly md:justify-between md:items-center items-start gap-8">
           <div className="flex gap-1">
             <button
               className="btnSearchFunc"
@@ -76,7 +76,7 @@ export default function Colaboradores() {
         </div>
       </div>
 
-      <div className="relative top-16 left-8 flex flex-row items-start gap-4">
+      <div className="relative top-16 left-8 flex sm:flex-col md:flex-col lg:flex-row items-start gap-4">
         <ul className={`overflow-y-auto w-max order-none ${!open && "hidden"}`}>
           {usersList.map((list, index) => (
             <li
