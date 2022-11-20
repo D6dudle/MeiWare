@@ -17,16 +17,21 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
 
     @Autowired
     private IPedidoFormacaoRepository pedidoFormacaoRepository;
-    // TODO: exception handling
 
     @Override
     public List<PedidoFormacao> getPedidosFormacao() {
         List<PedidoFormacao> pedidosFormacao = new ArrayList<>();
-        for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
-            if(!pd.isApagada()) {
-                pedidosFormacao.add(pd);
+
+        try {
+            for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
+                if(!pd.isApagada()) {
+                    pedidosFormacao.add(pd);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
 
         return pedidosFormacao;
     }
@@ -34,11 +39,17 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     @Override
     public List<FormacaoAprovada> getFormacoesAprovadas() {
         List<FormacaoAprovada> formacoesAprovadas = new ArrayList<>();
-        for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
-            if(!pd.isApagada() && (pd instanceof FormacaoAprovada)) {
-                formacoesAprovadas.add((FormacaoAprovada) pd);
+
+        try {
+            for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
+                if(!pd.isApagada() && (pd instanceof FormacaoAprovada)) {
+                    formacoesAprovadas.add((FormacaoAprovada) pd);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
 
         return formacoesAprovadas;
     }
@@ -46,11 +57,17 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     @Override
     public List<FormacaoRejeitada> getFormacoesRejeitadas() {
         List<FormacaoRejeitada> formacoesRejeitadas = new ArrayList<>();
-        for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
-            if(!pd.isApagada() && (pd instanceof FormacaoRejeitada)) {
-                formacoesRejeitadas.add((FormacaoRejeitada) pd);
+
+        try {
+            for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
+                if(!pd.isApagada() && (pd instanceof FormacaoRejeitada)) {
+                    formacoesRejeitadas.add((FormacaoRejeitada) pd);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
 
         return formacoesRejeitadas;
     }
@@ -63,10 +80,15 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
 
     @Override
     public PedidoFormacao getPedidoFormacaoById(Long id) {
-        PedidoFormacao pd = pedidoFormacaoRepository.findById(id).orElse(null);
 
-        if(pd != null && !pd.isApagada()) {
-            return pd;
+        try {
+            PedidoFormacao pd = pedidoFormacaoRepository.findById(id).orElse(null);
+
+            if(pd != null && !pd.isApagada()) {
+                return pd;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return null;
@@ -74,10 +96,15 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
 
     @Override
     public PedidoFormacao getPedidoFormacaoByNome(String nome) {
-        PedidoFormacao pd = pedidoFormacaoRepository.findByNome(nome);
 
-        if(!pd.isApagada()) {
-            return pd;
+        try {
+            PedidoFormacao pd = pedidoFormacaoRepository.findByNome(nome);
+
+            if(!pd.isApagada()) {
+                return pd;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return null;
@@ -85,18 +112,32 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
 
     @Override
     public PedidoFormacao createPedidoFormacao(PedidoFormacao newPedidoFormacao) {
-        return pedidoFormacaoRepository.save(newPedidoFormacao);
+        try {
+            return pedidoFormacaoRepository.save(newPedidoFormacao);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
     public void updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao) {
-        pedidoFormacaoRepository.save(updatedPedidoFormacao);
+        try {
+            pedidoFormacaoRepository.save(updatedPedidoFormacao);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void removePedidoFormacao(PedidoFormacao pedidoFormacao) {
-        pedidoFormacao.setApagada(true);
-        pedidoFormacao.setApagadaNaData(LocalDate.now());
-        this.updatePedidoFormacao(pedidoFormacao);
+        try {
+            pedidoFormacao.setApagada(true);
+            pedidoFormacao.setApagadaNaData(LocalDate.now());
+            this.updatePedidoFormacao(pedidoFormacao);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
