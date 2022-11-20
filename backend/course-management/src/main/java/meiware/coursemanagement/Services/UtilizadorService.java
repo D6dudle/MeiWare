@@ -17,8 +17,13 @@ public class UtilizadorService implements IUtilizadorService {
     @Override
     public List<Utilizador> getUtilizadores() {
         List<Utilizador> utilizadores = new ArrayList<>();
-        for (Utilizador u: utilizadorRepository.findAll()) {
-            utilizadores.add(u);
+        try {
+
+            for (Utilizador u: utilizadorRepository.findAll()) {
+                utilizadores.add(u);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
 
         return utilizadores;
@@ -27,10 +32,14 @@ public class UtilizadorService implements IUtilizadorService {
     @Override
     public List<Utilizador> getColaboradores() {
         List<Utilizador> colaboradores = new ArrayList<>();
-        for (Utilizador u: utilizadorRepository.findAll()) {
-            if(u.isColaborador() && !u.isGestor() && !u.isAdministrador()) {
-                colaboradores.add(u);
+        try {
+            for (Utilizador u: utilizadorRepository.findAll()) {
+                if(u.isColaborador() && !u.isGestor() && !u.isAdministrador()) {
+                    colaboradores.add(u);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return colaboradores;
@@ -39,11 +48,17 @@ public class UtilizadorService implements IUtilizadorService {
     @Override
     public List<Utilizador> getGestores() {
         List<Utilizador> gestores = new ArrayList<>();
-        for (Utilizador u: utilizadorRepository.findAll()) {
-            if(u.isGestor() && !u.isAdministrador()) {
-                gestores.add(u);
+
+        try {
+            for (Utilizador u: utilizadorRepository.findAll()) {
+                if(u.isGestor() && !u.isAdministrador()) {
+                    gestores.add(u);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
 
         return gestores;
     }
@@ -51,10 +66,15 @@ public class UtilizadorService implements IUtilizadorService {
     @Override
     public List<Utilizador> getAdministradores() {
         List<Utilizador> administradores = new ArrayList<>();
-        for (Utilizador u: utilizadorRepository.findAll()) {
-            if(u.isAdministrador()) {
-                administradores.add(u);
+
+        try {
+            for (Utilizador u: utilizadorRepository.findAll()) {
+                if(u.isAdministrador()) {
+                    administradores.add(u);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return administradores;
@@ -62,33 +82,72 @@ public class UtilizadorService implements IUtilizadorService {
 
     @Override
     public List<Utilizador> getManagedUtilizadores(Utilizador manager) {
-        // TODO: verificar que o manager existe
-        return utilizadorRepository.findAllByManager(manager);
+        List<Utilizador> utilizadores = new ArrayList<>();
+
+        try {
+            if(utilizadorRepository.findById(manager.getId()).isPresent()) {
+                utilizadores = utilizadorRepository.findAllByManager(manager);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return utilizadores;
     }
 
     @Override
     public Utilizador getUtilizadorById(Long id) {
-        return utilizadorRepository.findById(id).orElse(null);
+        Utilizador utilizador = null;
+
+        try {
+            utilizador = utilizadorRepository.findById(id).orElse(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return utilizador;
     }
 
     @Override
     public Utilizador getUtilizadorByEmail(String email) {
-        return utilizadorRepository.findByEmail(email);
+        Utilizador utilizador = null;
+
+        try {
+            utilizador = utilizadorRepository.findByEmail(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return utilizador;
     }
 
     @Override
     public Utilizador createUtilizador(Utilizador newUtilizador) {
-        utilizadorRepository.save(newUtilizador);
-        return newUtilizador;
+        try {
+            utilizadorRepository.save(newUtilizador);
+            return newUtilizador;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
     public void updateUtilizador(Utilizador updatedUtilizador) {
-        utilizadorRepository.save(updatedUtilizador);
+        try {
+            utilizadorRepository.save(updatedUtilizador);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void removeUtilizador(Utilizador utilizador) {
-        utilizadorRepository.delete(utilizador);
+        try {
+            utilizadorRepository.delete(utilizador);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

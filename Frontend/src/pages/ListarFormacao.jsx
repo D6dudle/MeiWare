@@ -6,26 +6,22 @@ import { FiSearch } from "react-icons/fi";
 import Filter from '../components/Filter';
 import Select from 'react-select';
 import Formacao from '../components/Formacao';
-
-
-import {
-    Tabs,
-    TabsHeader,
-    TabsBody,
-    Tab,
-    TabPanel,
-} from "@material-tailwind/react";
+import DropdownFilter from '../components/DropdownFilter';
+import { ChevronDown, ChevronUp} from "react-feather";
 
 
 export default function ListarFormacao () {
 
-  const [filtered, setFiltered] = useState([]);
-  const [activeFilter, setActiveFilter] = useState("ALL");
-  const [query, setQuery] = useState(""); 
-
+  const [filtered, setFiltered] = useState([]); //Filtered -> lista de objetos consoante o filtro clicado (Formações Pendentes, a decorrer, terminadas) -> é utilizado no Filter.jsx
+  const [activeFilter, setActiveFilter] = useState("ALL"); //Saber que filtro é que está ativo (Pendente, a decorrer, terminado), por default está ALL para mostrar todas as formações 
+  const [query, setQuery] = useState(""); //Para armazenar o conteudo da search bar
+  const [open, setOpen] = useState(false); // Is Por aprovar list open?
+  const [dateActiveFilter, setDateActiveFilter] = useState("NA"); // Is Por aprovar list open?
   const [formationCamps, setFormationCamps] = useState({
     nomeColaborador: []
   });
+
+
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
@@ -74,14 +70,31 @@ export default function ListarFormacao () {
     })
   };
 
-  
-  console.log("Formation Camps: " + formationCamps);
+  const dateOptions = [
+    {value: "des", label: "Data Decrescente"},
+    {value: "asc", label: "Data Crescente"}
+  ];
+
+
+  const handlePorAprovarFilter = (e) => {
+    if (open) {
+      setOpen(!open);
+    }
+    else{
+      setOpen(!open);
+    }
+    e.preventDefault();
+    alert("Click em Por aprovar");
+  };
+
+
   return (
     <div className="pl-8 pr-8 w-full h-full overflow-scroll scrollbar-hide">
       <h1 className="text-white font-bold text-3xl mt-8">
         Listar Formações
       </h1>
 
+    {/*3 filtro iniciais -> (Pendente, a decorrer, terminado) */}
     <div className='mt-10 mb-[1.688rem]'>
       <Filter data={data} 
               setFiltered={setFiltered} 
@@ -90,7 +103,7 @@ export default function ListarFormacao () {
       />
       </div>
 
-
+      {/*Filtro utilizadores */}
       <div className="mb-4">
         <div className='relative'>
           <Select
@@ -98,10 +111,9 @@ export default function ListarFormacao () {
             styles={customStyles}
             options={aquaticCreatures}
             isMulti
-            placeholder='nome'
+            placeholder='Colaborador'
             value={formationCamps.nomeColaborador}
             onChange={opt => {
-              console.log(opt);
               setFormationCamps({ ...formationCamps, nomeColaborador: opt });
             }
             }
@@ -109,30 +121,66 @@ export default function ListarFormacao () {
           <p className='relative top-1 text-xs text-error'>{formErrors.nomeColaborador}</p>
         </div>
       </div>
-
+          
+      {/*Search Bar*/}
       <div>
         <input 
           type="text"
-          placeholder='Search...'
+          placeholder='Pesquisa...'
           className='search flex w-full h-8 mb-4 pl-2 inputText'
+          
           onChange={(e) => setQuery(e.target.value)}
           />
+          <div className='absolute right-5 top-3.5'>
+            <FiSearch className="h-6 w-6" />
+          </div>
+          
       </div>
+      
+      {/*Butões Filtros Data e Aprovar*/}
+      <div className='flex'>
+        <div className="flex w-2/12 h-8 mt-4 font-semibold flex-row items-end">
+          <DropdownFilter 
+          placeHolder="Data"
+          options={dateOptions}
+          setFilter={setDateActiveFilter}
+          />
+        </div>
+        
 
+        
+        <button
+        className='flex ml-8 mt-4 h-8 flex-row items-end mb-8 font-semibold'
+          onClick={handlePorAprovarFilter}
+          >
+          <p className="btnIcons leading-[120%]">Por aprovar</p>
+          {open ? (
+            <ChevronDown className="w-4 h-4 btnIcons" />
+          ) : (
+            <ChevronUp className="w-4 h-4 btnIcons" />
+          )}
+        </button>
+    </div>
+      
+      {/*Mostra os titulos de acordo com o filtro clicado*/}
       <>
-      <div className='flex mb-8 mt-20 font-bold text-2xl'>
+      <div className='flex mb-8 mt-8 font-bold text-2xl'>
         {activeFilter == "CURSO" ? (
           <h1> Formações a Decorrer</h1>
-        ): null}
+        ):  null}
         {activeFilter == "TERMINADA" ? (
           <h1> Formações Terminadas</h1>
         ): null}
         {activeFilter == "PENDENTE" ? (
           <h1> Formações Pendentes</h1>
         ): null}
+        {activeFilter != "PENDENTE" &&  activeFilter != "TERMINADA" && activeFilter != "CURSO" ? (
+          <h1> Todas as Formações</h1>
+        ): null}
       </div>
       </>
       
+      {/*Mostrar a lista das formações, À variavel filtered aplica um filter com o que recebe da search bar*/}
       {filtered.filter(item=>item.courseName.toLowerCase().includes(query)
       ).map((item, index) => {
         return <Formacao

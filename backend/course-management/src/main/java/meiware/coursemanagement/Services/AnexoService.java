@@ -13,13 +13,17 @@ public class AnexoService implements IAnexoService{
 
     @Autowired
     private IAnexoRepository anexoRepository;
-    // TODO: exception handling
 
     @Override
     public List<Anexo> getAnexos() {
         List<Anexo> anexos = new ArrayList<>();
-        for (Anexo a: anexoRepository.findAll()) {
-            anexos.add(a);
+
+        try {
+            for (Anexo a: anexoRepository.findAll()) {
+                anexos.add(a);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return anexos;
@@ -27,21 +31,42 @@ public class AnexoService implements IAnexoService{
 
     @Override
     public Anexo getAnexoById(Long id) {
-        return anexoRepository.findById(id).orElse(null);
+        Anexo anexo = null;
+
+        try {
+            return anexoRepository.findById(id).orElse(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
     public Anexo createAnexo(Anexo newAnexo) {
-        return anexoRepository.save(newAnexo);
+        try {
+            return anexoRepository.save(newAnexo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public void updateAnexo(Anexo updatedAnexo) {
-        anexoRepository.save(updatedAnexo);
+        try {
+            anexoRepository.save(updatedAnexo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void removeAnexo(Anexo anexo) {
-        anexoRepository.delete(anexo);
+        try {
+            anexoRepository.delete(anexo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
