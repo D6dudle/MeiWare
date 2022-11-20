@@ -46,7 +46,7 @@ export const Formacao = ({
     <>
       {tipoFormacao !== "REJEITADA" ? (
         <div
-          className={`flex flex-col h-fit border border-${corFormacaoBorder?.cor} pl-4 pb-4`}
+          className={`flex flex-col h-fit border border-${corFormacaoBorder?.cor} pl-4 pb-4 mb-8`}
         >
           <div className="flex flex-col md:flex-row justify-between items-start mt-4 ">
             <div className="flex flex-row justify-start items-start">
