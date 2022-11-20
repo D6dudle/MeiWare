@@ -10,7 +10,8 @@ import GerirPedidos from "./GerirPedidos";
 import Colaboradores from "./Colaboradores";
 import { ErrorPage } from "./ErrorPage";
 import Grama from "../assets/Grama.svg";
-import AdicionarPublicacao from './AdicionarPublicacao';
+import AdicionarPublicacao from "./AdicionarPublicacao";
+import AdicionarColaborador from "./AdicionarColaborador";
 import Exemplo from "./Exemplo";
 import { PesquisarFormacao } from "./PesquisarFormacao";
 
@@ -31,7 +32,7 @@ export default function MainScreen() {
       <Sidebar />
       <div className="flex-1 flex flex-col pt-4 pl-8 pr-8 bg-dar">
         <Breadcrum />
-        <div className="bg-black2 h-[calc(100vh-4.5rem)] pb-8 rounded-sm text-white overflow-scroll scrollbar-hide">
+        <div className="bg-black2 h-[calc(100vh-4.5rem)] rounded-sm text-white">
           <Routes>
             {/* DEV */}
             <Route path="/exemplo" element={<Exemplo />} />
@@ -50,10 +51,17 @@ export default function MainScreen() {
               path="/formacao/pesquisar-formacao"
               element={<PesquisarFormacao />}
             />
-            <Route path="/forum/adicionar-publicacao" element={<AdicionarPublicacao />} />
+            <Route
+              path="/forum/adicionar-publicacao"
+              element={<AdicionarPublicacao />}
+            />
             <Route path="/controlo" element={<ControloBudget />} />
             <Route path="/controlo/gerir-pedidos" element={<GerirPedidos />} />
             <Route path="/controlo/colaboradores" element={<Colaboradores />} />
+            <Route
+              path="/controlo/colaboradores/adicionar-colaborador"
+              element={<AdicionarColaborador />}
+            />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>

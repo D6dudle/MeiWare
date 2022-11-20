@@ -125,12 +125,13 @@ export default function AdicionarFormacao() {
   }
 
   return (
-    <div className="ml-8 mr-8">
-      <h1 className="text-white font-bold text-3xl mt-8">
+    <div className="ml-8 mr-8 w-full h-full overflow-hidden ">
+      <h1 className="sticky top-5 text-white font-bold text-3xl mt-8">
         Adicionar formação
       </h1>
 
-      <div className="mt-16 flex justify-evenly items-center">
+    <div className='w-full h-full overflow-scroll scrollbar-hide'>
+      <div className="flex justify-evenly items-center">
         <form onSubmit={handleFormSubmit} className="" noValidate>
           <div className='flex flex-wrap justify-between sm:justify-start'>
 
@@ -268,12 +269,13 @@ export default function AdicionarFormacao() {
           <DropzoneFiles />
 
 
-          <div className='flex justify-center lg:justify-end items-center mt-6 mb-10'>
-            <button className="flex items-center px-4 py-2 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white" >
+          <div className='absolute right-20 bottom-10'>
+            <button className="sticky bottom-0 px-4 py-2 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white" >
               Submeter
             </button>
           </div>
         </form>
+      </div>
       </div>
     </div>
   )

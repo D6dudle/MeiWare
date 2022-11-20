@@ -16,8 +16,9 @@ export default function AdicionarPublicacao() {
   const config = (handleType, handleDropdown) => {
     const fields = [];
     fields.push({name:"Titulo", required:true, callback:handleType});
+    fields.push({name:"Tags", callback:handleType});
+    fields.push({name:"Associar formação", type:"dropdown", list:aquaticCreatures, callback:handleDropdown});
     fields.push({name:"Descrição", required:true, type:"textarea", callback:handleType});
-    fields.push({name:"Drop", type:"dropdown", list:aquaticCreatures, multi:true, callback:handleDropdown});
     return fields;
   }
 
@@ -50,6 +51,7 @@ export default function AdicionarPublicacao() {
     e.preventDefault();
 
     console.log("Button Submeter pressed!");
+
     for(let i=0; i<pubFields.length; i++){
       console.log("Field -> ",pubFields[i]["value"]);
     }
@@ -58,21 +60,18 @@ export default function AdicionarPublicacao() {
 
 
   return (
-    <div className="ml-8 mr-8">
-      <h1 className="text-white font-bold text-3xl mt-8">
+    <div className="pl-8 pr-8 w-full h-full overflow-scroll scrollbar-hide">
+      <h1 className="mt-8 text-white font-bold text-3xl">
         Adicionar publicação
       </h1>
 
-      <div className="mt-16 flex justify-evenly items-center">
-        <form onSubmit={handleFormSubmit} className="" noValidate>
-        <div className='flex flex-wrap justify-between sm:justify-start'>
-
-          <div className="mr-20">
-            <ul>
-                {pubFields.map((field, index) =>(                
+      <div className="pt-10">
+        <form onSubmit={handleFormSubmit} noValidate>
+            <ul className='w-80 justify-start'>
+                {pubFields.map((field, index) =>(    
                   <li key={index}> 
                       <div className='mb-4'>
-                        <TextInput index={index} name={field.name} callback={field.callback} value={field.value} required={field.required} type={field.type} list={field.list} multi={field.multi} />
+                        <TextInput index={index} name={field.name} callback={field.callback} value={field.value} required={field.required} type={field.type} list={field.list} multi={field.multi} style={field.style} />
                       </div>
                   </li>
                 ))}
@@ -84,12 +83,8 @@ export default function AdicionarPublicacao() {
               <button type="button" className='px-4 py-2 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white' onClick={ addField }>Adicionar campo</button>
             </div> */}
 
-          </div>
-
-        </div>
-
-        <div className='flex justify-end items-center mt-6 '>
-          <button className="flex items-center px-4 py-2 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white" >
+        <div className='absolute right-20 bottom-10'>
+          <button className="sticky bottom-0 px-4 py-2 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white" >
             Submeter
           </button>
         </div>

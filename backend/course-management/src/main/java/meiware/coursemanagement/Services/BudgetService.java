@@ -13,13 +13,17 @@ public class BudgetService implements IBudgetService{
 
     @Autowired
     private IBudgetRepository budgetRepository;
-    // TODO: exception handling
 
     @Override
     public List<Budget> getBudgets() {
         List<Budget> budgets = new ArrayList<>();
-        for (Budget b: budgetRepository.findAll()) {
-            budgets.add(b);
+
+        try {
+            for (Budget b: budgetRepository.findAll()) {
+                budgets.add(b);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return budgets;
@@ -27,21 +31,42 @@ public class BudgetService implements IBudgetService{
 
     @Override
     public Budget getBudgetById(Long id) {
-        return budgetRepository.findById(id).orElse(null);
+        Budget budget = null;
+
+        try {
+            budget = budgetRepository.findById(id).orElse(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return budget;
     }
 
     @Override
     public Budget createBudget(Budget newBudget) {
-        return budgetRepository.save(newBudget);
+        try {
+            return budgetRepository.save(newBudget);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public void updateBudget(Budget updatedBudget) {
-        budgetRepository.save(updatedBudget);
+        try {
+            budgetRepository.save(updatedBudget);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void removeBudget(Budget budget) {
-        budgetRepository.delete(budget);
+        try {
+            budgetRepository.delete(budget);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
