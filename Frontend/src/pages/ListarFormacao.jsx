@@ -6,15 +6,7 @@ import { FiSearch } from "react-icons/fi";
 import Filter from '../components/Filter';
 import Select from 'react-select';
 import Formacao from '../components/Formacao';
-
-
-import {
-    Tabs,
-    TabsHeader,
-    TabsBody,
-    Tab,
-    TabPanel,
-} from "@material-tailwind/react";
+import DropdownFilter from '../components/DropdownFilter';
 
 
 export default function ListarFormacao () {
@@ -74,8 +66,10 @@ export default function ListarFormacao () {
     })
   };
 
-  
-  console.log("Formation Camps: " + formationCamps);
+  const options = [
+    {value: "dataDecrescente", label: "Data Decrescente"},
+    {value: "dataCrescente", label: "Data Crescente"}
+  ];
   return (
     <div className="ml-8">
       <h1 className="text-white font-bold text-3xl mt-8">
@@ -101,7 +95,6 @@ export default function ListarFormacao () {
             placeholder='nome'
             value={formationCamps.nomeColaborador}
             onChange={opt => {
-              console.log(opt);
               setFormationCamps({ ...formationCamps, nomeColaborador: opt });
             }
             }
@@ -119,8 +112,14 @@ export default function ListarFormacao () {
           />
       </div>
 
+      <div className="flex w-2/12 h-8 mt-4 font-semibold">
+        <DropdownFilter 
+        placeHolder="Select..."
+        options={options}/>
+      </div>
+
       <>
-      <div className='flex mb-8 mt-20 font-bold text-2xl'>
+      <div className='flex mb-8 mt-8 font-bold text-2xl'>
         {activeFilter == "CURSO" ? (
           <h1> Formações a Decorrer</h1>
         ): null}
