@@ -111,7 +111,7 @@ export default function ListarFormacao () {
             styles={customStyles}
             options={aquaticCreatures}
             isMulti
-            placeholder='nome'
+            placeholder='Colaborador'
             value={formationCamps.nomeColaborador}
             onChange={opt => {
               setFormationCamps({ ...formationCamps, nomeColaborador: opt });
@@ -126,15 +126,20 @@ export default function ListarFormacao () {
       <div>
         <input 
           type="text"
-          placeholder='Search...'
+          placeholder='Pesquisa...'
           className='search flex w-full h-8 mb-4 pl-2 inputText'
+          
           onChange={(e) => setQuery(e.target.value)}
           />
+          <div className='absolute right-5 top-3.5'>
+            <FiSearch className="h-6 w-6" />
+          </div>
+          
       </div>
       
       {/*Butões Filtros Data e Aprovar*/}
       <div className='flex'>
-        <div className="flex w-4/12 h-8 mt-4 font-semibold flex-row items-end">
+        <div className="flex w-2/12 h-8 mt-4 font-semibold flex-row items-end">
           <DropdownFilter 
           placeHolder="Data"
           options={dateOptions}
@@ -145,7 +150,7 @@ export default function ListarFormacao () {
 
         
         <button
-        className='flex ml-8 mt-4 h-8 flex-row items-end mb-8'
+        className='flex ml-8 mt-4 h-8 flex-row items-end mb-8 font-semibold'
           onClick={handlePorAprovarFilter}
           >
           <p className="btnIcons leading-[120%]">Por aprovar</p>
@@ -162,12 +167,15 @@ export default function ListarFormacao () {
       <div className='flex mb-8 mt-8 font-bold text-2xl'>
         {activeFilter == "CURSO" ? (
           <h1> Formações a Decorrer</h1>
-        ): null}
+        ):  null}
         {activeFilter == "TERMINADA" ? (
           <h1> Formações Terminadas</h1>
         ): null}
         {activeFilter == "PENDENTE" ? (
           <h1> Formações Pendentes</h1>
+        ): null}
+        {activeFilter != "PENDENTE" &&  activeFilter != "TERMINADA" && activeFilter != "CURSO" ? (
+          <h1> Todas as Formações</h1>
         ): null}
       </div>
       </>
