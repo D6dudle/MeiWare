@@ -1,6 +1,6 @@
 package meiware.coursemanagement.Services;
 
-import meiware.coursemanagement.JPA.Anexo;
+import meiware.coursemanagement.Entities.JPA.Anexo;
 
 import java.util.List;
 

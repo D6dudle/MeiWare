@@ -1,4 +1,4 @@
-package meiware.coursemanagement.JPA;
+package meiware.coursemanagement.Entities.JPA;
 
 public enum Role {
     COLABORADOR,

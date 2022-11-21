@@ -1,6 +1,6 @@
 package meiware.coursemanagement.Services;
 
-import meiware.coursemanagement.JPA.Utilizador;
+import meiware.coursemanagement.Entities.JPA.Utilizador;
 
 import java.util.List;
 

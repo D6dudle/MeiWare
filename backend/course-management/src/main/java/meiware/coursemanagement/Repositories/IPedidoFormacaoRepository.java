@@ -1,6 +1,6 @@
 package meiware.coursemanagement.Repositories;
 
-import meiware.coursemanagement.JPA.PedidoFormacao;
+import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package meiware.coursemanagement.Services;
 
-import meiware.coursemanagement.JPA.Budget;
+import meiware.coursemanagement.Entities.JPA.Budget;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package meiware.coursemanagement.Services;
 
-import meiware.coursemanagement.JPA.Anexo;
+import meiware.coursemanagement.Entities.JPA.Anexo;
 import meiware.coursemanagement.Repositories.IAnexoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

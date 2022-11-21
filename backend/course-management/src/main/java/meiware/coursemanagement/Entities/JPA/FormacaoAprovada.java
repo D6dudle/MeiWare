@@ -1,4 +1,4 @@
-package meiware.coursemanagement.JPA;
+package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
 
@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @DiscriminatorValue("APROVADA")

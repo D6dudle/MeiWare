@@ -1,9 +1,8 @@
-package meiware.coursemanagement.JPA;
+package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Anexo {

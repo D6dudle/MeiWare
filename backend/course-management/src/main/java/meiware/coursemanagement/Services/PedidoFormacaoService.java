@@ -1,9 +1,9 @@
 package meiware.coursemanagement.Services;
 
-import meiware.coursemanagement.JPA.FormacaoAprovada;
-import meiware.coursemanagement.JPA.FormacaoRejeitada;
-import meiware.coursemanagement.JPA.PedidoFormacao;
-import meiware.coursemanagement.JPA.Utilizador;
+import meiware.coursemanagement.Entities.JPA.FormacaoAprovada;
+import meiware.coursemanagement.Entities.JPA.FormacaoRejeitada;
+import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
+import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Repositories.IPedidoFormacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
