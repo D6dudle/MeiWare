@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@SpringBootApplication
+//@SpringBootApplication
 @EnableMongoAuditing
 public class JPAtest {
     private static final Logger log = LoggerFactory.getLogger(JPAtest.class);
@@ -42,7 +42,7 @@ public class JPAtest {
             try{
                 Utilizador nelso = iUtilizadorRepository.findByEmail("nelso@email.com");
                 Utilizador chad = iUtilizadorRepository.findByEmail("chad@email.com");
-
+                log.info(nelso.toString());
                 if(nelso != null)
                     log.info(nelso.toString());
                 else
