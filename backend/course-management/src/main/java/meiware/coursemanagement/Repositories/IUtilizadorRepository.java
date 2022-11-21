@@ -1,6 +1,6 @@
 package meiware.coursemanagement.Repositories;
 
-import meiware.coursemanagement.JPA.Utilizador;
+import meiware.coursemanagement.Entities.JPA.Utilizador;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

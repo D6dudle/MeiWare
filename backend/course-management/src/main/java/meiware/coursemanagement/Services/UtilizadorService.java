@@ -1,6 +1,6 @@
 package meiware.coursemanagement.Services;
 
-import meiware.coursemanagement.JPA.Utilizador;
+import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Repositories.IUtilizadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

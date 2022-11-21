@@ -1,8 +1,7 @@
 package meiware.coursemanagement;
 
-import jdk.jshell.execution.Util;
-import meiware.coursemanagement.JPA.Role;
-import meiware.coursemanagement.JPA.Utilizador;
+import meiware.coursemanagement.Entities.JPA.Role;
+import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Repositories.IUtilizadorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

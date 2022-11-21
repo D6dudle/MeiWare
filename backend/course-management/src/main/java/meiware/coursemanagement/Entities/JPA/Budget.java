@@ -1,4 +1,4 @@
-package meiware.coursemanagement.JPA;
+package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
 
