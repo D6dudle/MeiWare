@@ -26,7 +26,7 @@ export default function GerirPedidos() {
             <Tab
               key={value}
               value={value}
-              className="w-fit border-b-[0.063rem] border-gray4 text-gray4 font-IBM lowercase hover:border-primary hover:text-primary"
+              className="w-fit pb-2 border-b-[0.063rem] border-gray4 text-gray4 font-IBM lowercase hover:border-primary hover:text-primary"
               onClick={() => {
                 setActiveFilter(label);
                 var list = Formacoes.filter((item) => item.label == label);
