@@ -12,25 +12,66 @@ export default function Exemplo() {
     { label: 'Lobster', value: 'Lobster' },
   ];
 
-  
+  const filterCreature = (inputValue) => {
+    return aquaticCreatures.filter((i) =>
+      i.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
+
+
   //Para o pai chamar funções do filho
   //precisamos de uma referência para cada
   const references = [];
 
-  for(let i=0; i<3; i++){
+  for(let i=0; i<5; i++){
     references.push(useRef(null))
   }
 
   const config = (handleType, handleDropdown) => {
     const fields = [];
     fields.push({name:"Search", type:"searchbar", callback:handleType });
-    fields.push({name:"Search2", type:"searchbar", callback:handleType });
-    fields.push({name:"Search3", type:"searchbar", callback:handleType });
-    fields.push({name:"Titulo", required:true, callback:handleType, trigger:references[0]});
-    fields.push({name:"Text 2", required:true, callback:handleType, style:"min-h-[100px]", trigger:references[1]});
-    fields.push({name:"Descrição", type:"textarea", callback:handleType});
-    fields.push({name:"Data", required:true, type:"datepicker", callback:handleDropdown, trigger:references[2]});
-    fields.push({name:"Drop", type:"dropdown", list:aquaticCreatures, multi:true, callback:handleDropdown});
+
+    fields.push({
+      name:"Dropdown Search",
+      type:"dropsearch",
+      list:aquaticCreatures,
+      callback:handleDropdown,
+      searchCall:filterCreature
+    });
+
+    //Para podermos verificar o campo quando carregamos no Submit
+    //temos que passar para uma referência
+    fields.push({
+      name:"Dropdown Search Required", 
+      type:"dropsearch",
+      list:aquaticCreatures, 
+      callback:handleDropdown, 
+      searchCall:filterCreature,
+      trigger:references[0]
+    });
+
+    fields.push({
+      name:"Dropdown Search Multi",
+      type:"dropsearch", 
+      multi:true, 
+      list:aquaticCreatures, 
+      callback:handleDropdown, 
+      searchCall:filterCreature 
+    });
+
+    fields.push({
+      name:"Dropdown",
+      type:"dropdown",
+      list:aquaticCreatures,
+      multi:true,
+      callback:handleDropdown
+    });
+
+    fields.push({name:"Dropdown Required", type:"dropdown", list:aquaticCreatures, callback:handleDropdown, trigger:references[1]});
+    fields.push({name:"Text", callback:handleType, trigger:references[2]});
+    fields.push({name:"Text with styles", callback:handleType, style:"min-h-[100px]", trigger:references[3]});
+    fields.push({name:"Textarea", type:"textarea", callback:handleType});
+    fields.push({name:"Data", type:"datepicker", callback:handleDropdown, trigger:references[4]});
     return fields;
   }
 
@@ -80,7 +121,7 @@ export default function Exemplo() {
 
 
   return (
-    <div className="pl-8 pr-8 w-full h-full overflow-hidden">
+    <div className="flex flex-col pl-8 pr-8 w-full h-full overflow-hidden">
       <h1 className="sticky top-5 text-white font-bold text-3xl">
         Adicionar publicação
       </h1>
@@ -91,7 +132,7 @@ export default function Exemplo() {
                 {pubFields.map((field, index) =>(    
                   <li key={index}> 
                       <div className='mb-4'>
-                        <TextInput index={index} name={field.name} callback={field.callback} value={field.value} required={field.required} type={field.type} list={field.list} multi={field.multi} style={field.style} />
+                        <TextInput index={index} name={field.name} callback={field.callback} value={field.value} required={field.required} type={field.type} list={field.list} multi={field.multi} style={field.style} error={field.error} trigger={field.trigger} searchCall={field.searchCall}/>
                       </div>
                   </li>
                 ))}
