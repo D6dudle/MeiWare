@@ -14,11 +14,11 @@ export default function GerirPedidos() {
   const [filter, setFilter] = useState(null);
 
   return (
-    <div className="pl-8 pr-8 w-full h-full overflow-hidden">
+    <div className="pl-8 pr-8 flex flex-col w-full h-full overflow-y-hidden">
       <div className="pt-8">
         <h1 className="sticky top-5 text-white font-bold text-3xl">Gerir formações</h1>
       </div>
-      <Tabs value="pendentes" className="tabsHeader scrollbar-hide pr-5">
+      <Tabs value="pendentes" className="flex flex-col tabsHeader scrollbar-hide pr-5">
         {/* First value */}
         <TabsHeader className="mt-0">
           <div className="flex items-start gap-8 px-[0.625rem]">
@@ -44,14 +44,14 @@ export default function GerirPedidos() {
 
         {/* Barra de pesquisa e filtros!!! */}
 
-        <TabsBody className="w-full h-full mt-5">
-          <div className="w-full h-full overflow-scroll scrollbar-hide">
+        <TabsBody className="w-full h-full overflow-y-scroll scrollbar-hide">
+          <div className="overflow-y-visible">
             {activeFilter !== null ? (
               <h1 className="font-bold text-2xl order-none mb-3">
                 {activeFilter}
               </h1>
             ) : null}
-            <div className="flex flex-nowrap justify-between flex-col gap-3">
+            <div className="overflowy-y-visible flex flex-nowrap justify-between flex-col gap-3">
             {activeFilter !== null
               ? filter.map((card, index) => {
                   return (
