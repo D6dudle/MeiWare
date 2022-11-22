@@ -1,20 +1,28 @@
 package meiware.coursemanagement;
 
-import meiware.coursemanagement.Entities.JPA.Role;
-import meiware.coursemanagement.Entities.JPA.Utilizador;
-import meiware.coursemanagement.Repositories.IUtilizadorRepository;
+import meiware.coursemanagement.Entities.MongoDB.Publicacao;
+import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
+import meiware.coursemanagement.Services.PublicacaoService;
+
+
+import org.apache.commons.fileupload.FileItem;
+
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 @SpringBootApplication
 @EnableMongoAuditing
@@ -23,11 +31,14 @@ public class JPAtest {
     @Autowired
     private IUtilizadorRepository iUtilizadorRepository;
 
+    @Autowired
+    private PublicacaoService publicacaoService;
+
     @Bean
     public CommandLineRunner demo() {
         return (args) -> {
 
-            // fetch customers by last name
+            /*// fetch customers by last name
             log.info("----- POSTGRES -----");
             log.info("Customer found with findByEmail('nelso@email.com'):");
 
@@ -67,7 +78,7 @@ public class JPAtest {
             Optional<Utilizador> customer = iUtilizadorRepository.findById(4L);
             log.info("Customer found with findById(4L):");
             log.info(customer.toString());
-            log.info("--------------------------------------------");
+            log.info("--------------------------------------------");*/
 
 
 
@@ -75,8 +86,8 @@ public class JPAtest {
             //  log.info(bauer.toString());
             // }
             log.info("------- MONGO ------");
-            /*
-            try{
+
+            /*try{
                 log.info("");
                 log.info("Posts found with findBeforeDate():");
                 LocalDateTime data = LocalDateTime.now().plusDays(1);
@@ -96,10 +107,28 @@ public class JPAtest {
             log.info("-------------------------------");
             for (Post post : mongo.findAll()) {
                 log.info(post.toString());
-            }
-            log.info("");
-            */
+            }*/
+            //MongoDb files
+            /*File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_pm_t_L5_v1.1.pdf");
+            FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
+            try {
+                InputStream input = new FileInputStream(file);
+                OutputStream os = fileItem.getOutputStream();
+                IOUtils.copy(input, os);
+                // Or faster..
+                // IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
+            } catch (IOException ex) {
+                // do something.
+            }
+
+            MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+            String id = publicacaoService.addPublicacao(multipartFile);
+            Publicacao publicacao = publicacaoService.getPublicacao(id);
+
+            File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files");
+            Files.copy(publicacao.getStream(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);*/
+            log.info("");
         };
     }
 

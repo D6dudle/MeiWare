@@ -12,14 +12,18 @@ public class Anexo {
     @Column(name = "id", nullable = false)
     private Long id;
     @NotNull
-    private String path;
+    private String path; // Representa o id na base de dados MongoDB
+
+    @NotNull
+    private String tipo;
 
     public Anexo() {
 
     }
 
-    public Anexo(String path) {
+    public Anexo(String path, String tipo) {
         this.path = path;
+        this.tipo = tipo;
     }
 
     public Long getId() {
@@ -32,6 +36,14 @@ public class Anexo {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     @Override

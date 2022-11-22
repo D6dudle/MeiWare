@@ -1,7 +1,7 @@
 package meiware.coursemanagement.Services;
 
 import meiware.coursemanagement.Entities.JPA.Budget;
-import meiware.coursemanagement.Repositories.IBudgetRepository;
+import meiware.coursemanagement.Repositories.JPA.IBudgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

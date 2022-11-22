@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class CourseManagementApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CourseManagementApplication.class, args);
-		//testJPA();
+		testJPA();
 	}
 
 	static void testJPA(){
