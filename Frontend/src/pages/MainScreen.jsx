@@ -15,6 +15,7 @@ import AdicionarPublicacao from "./AdicionarPublicacao";
 import AdicionarColaborador from "./AdicionarColaborador";
 import Exemplo from "./Exemplo";
 import PesquisarForum from "./PesquisarForum";
+import ListarPedidos from "./ListarPedidos";
 
 function MenuInicial() {
   return (
