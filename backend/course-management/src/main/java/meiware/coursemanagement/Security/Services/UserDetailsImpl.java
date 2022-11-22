@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import meiware.coursemanagement.Entities.JPA.*;
+import net.minidev.json.JSONObject;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +29,7 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(Long id, String username, String email, String password,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.username = username;
+        this.username = email;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
@@ -41,7 +42,7 @@ public class UserDetailsImpl implements UserDetails {
 
         return new UserDetailsImpl(
                 user.getId(),
-                user.getNome(),
+                user.getEmail(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities);
@@ -98,5 +99,15 @@ public class UserDetailsImpl implements UserDetails {
             return false;
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
+    }
+
+    public String toString(){
+        JSONObject obj = new JSONObject();
+        obj.put("id", id);
+        obj.put("username", username);
+        obj.put("email", email);
+        obj.put("password", password);
+        obj.put("authorities", authorities);
+        return obj.toString();
     }
 }

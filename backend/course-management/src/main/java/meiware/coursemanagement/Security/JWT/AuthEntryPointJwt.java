@@ -37,11 +37,13 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
                 body.put("message", "User not existent");
             case "Bad credentials" ->
                 body.put("message", "Wrong password");
+            case "Full authentication is required to access this resource" ->
+                body.put("message", "You're not logged in. Please log in");
+            default ->
+                body.put("message", authException.getMessage());
         }
 
         final ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), body);
-
-        // response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
     }
 }
