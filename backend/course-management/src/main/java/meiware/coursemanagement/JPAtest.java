@@ -1,48 +1,60 @@
 package meiware.coursemanagement;
 
-import meiware.coursemanagement.Entities.JPA.Role;
-import meiware.coursemanagement.Entities.JPA.Utilizador;
-import meiware.coursemanagement.Repositories.IUtilizadorRepository;
+import meiware.coursemanagement.Entities.MongoDB.Anexo;
+import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
+import meiware.coursemanagement.Services.MongoDB.IAnexoService;
+import meiware.coursemanagement.Services.MongoDB.PublicacaoService;
+
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 
-@SpringBootApplication
+//@SpringBootApplication
 @EnableMongoAuditing
 public class JPAtest {
     private static final Logger log = LoggerFactory.getLogger(JPAtest.class);
     @Autowired
     private IUtilizadorRepository iUtilizadorRepository;
 
+    @Autowired
+    private IAnexoService anexoService;
+
     @Bean
     public CommandLineRunner demo() {
         return (args) -> {
 
-            // fetch customers by last name
+            /*// fetch customers by last name
             log.info("----- POSTGRES -----");
             log.info("Customer found with findByEmail('nelso@email.com'):");
 
             // Sample lists
-            List<Role> nelsoRoleList = new ArrayList<>();
+            Set<Role> nelsoRoleList = new HashSet<>();
             nelsoRoleList.add(Role.GESTOR);
             nelsoRoleList.add(Role.ADMINISTRADOR);
 
-            List<Role> chadRoleList = new ArrayList<>();
+            Set<Role> chadRoleList = new HashSet<>();
             chadRoleList.add(Role.COLABORADOR);
 
             try{
                 Utilizador nelso = iUtilizadorRepository.findByEmail("nelso@email.com");
                 Utilizador chad = iUtilizadorRepository.findByEmail("chad@email.com");
-
+                log.info(nelso.toString());
                 if(nelso != null)
                     log.info(nelso.toString());
                 else
@@ -67,7 +79,7 @@ public class JPAtest {
             Optional<Utilizador> customer = iUtilizadorRepository.findById(4L);
             log.info("Customer found with findById(4L):");
             log.info(customer.toString());
-            log.info("--------------------------------------------");
+            log.info("--------------------------------------------");*/
 
 
 
@@ -75,8 +87,8 @@ public class JPAtest {
             //  log.info(bauer.toString());
             // }
             log.info("------- MONGO ------");
-            /*
-            try{
+
+            /*try{
                 log.info("");
                 log.info("Posts found with findBeforeDate():");
                 LocalDateTime data = LocalDateTime.now().plusDays(1);
@@ -96,10 +108,31 @@ public class JPAtest {
             log.info("-------------------------------");
             for (Post post : mongo.findAll()) {
                 log.info(post.toString());
-            }
-            log.info("");
-            */
+            }*/
+            //MongoDb files
+            File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
+            FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
+            try {
+                InputStream input = new FileInputStream(file);
+                OutputStream os = fileItem.getOutputStream();
+                IOUtils.copy(input, os);
+                // Or faster..
+                // IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
+            } catch (IOException ex) {
+                // do something.
+            }
+
+            MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+            String id = anexoService.createAnexo(multipartFile);
+            Anexo anexo = anexoService.getAnexoById(id);
+
+            File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + anexo.getNome());
+
+            FileUtils.writeByteArrayToFile(newFile, anexo.getConteudo().getData());
+
+
+            log.info("");
         };
     }
 

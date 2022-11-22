@@ -1,23 +1,25 @@
-import { useState } from 'react';
-import { Search } from 'react-feather';
+import { useState } from "react";
+import { Search } from "react-feather";
 import { createElement } from "react";
-import React from 'react';
-import Select from 'react-select';
-import AsyncSelect from 'react-select/async';
-import { Calendar } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main css file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-import './calendar.css';
-import { renderToStaticMarkup } from 'react-dom/server';
+import React from "react";
+import Select from "react-select";
+import AsyncSelect from "react-select/async";
+import { Calendar } from "react-date-range";
+import "react-date-range/dist/styles.css"; // main css file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import "./calendar.css";
+import { renderToStaticMarkup } from "react-dom/server";
 
-const svgString = encodeURIComponent(renderToStaticMarkup(createElement(Search,{color:"white"})));
+const svgString = encodeURIComponent(
+  renderToStaticMarkup(createElement(Search, { color: "white" }))
+);
 
 const lupa = () => ({
-  alignItems: 'center',
-  display: 'flex',
-  ':before': {
+  alignItems: "center",
+  display: "flex",
+  ":before": {
     content: `url("data:image/svg+xml,${svgString}")`,
-    display: 'block',
+    display: "block",
     marginRight: 8,
     height: "fit-content",
     width: "1.8rem",
@@ -25,58 +27,54 @@ const lupa = () => ({
 });
 
 const nada = () => ({
-  alignItems: 'center',
-  display: 'flex',
-  ':before': {
+  alignItems: "center",
+  display: "flex",
+  ":before": {
     content: '""',
-    display: 'block',
+    display: "block",
     marginRight: 8,
     width: "1.8rem",
   },
 });
 
 const customStyles = (valid, iconName, empty) => {
-  
   const icon = (ico) => {
-    switch(ico){
+    switch (ico) {
       case "lupa":
-        return(lupa())
+        return lupa();
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   const space = (ico, emp) => {
-    if(emp){
-      return null
+    if (emp) {
+      return null;
     }
-    switch(ico){
+    switch (ico) {
       case "lupa":
-        return(nada())
+        return nada();
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return {
     option: (styles, { isDisabled, isFocused, isSelected }) => {
       return {
         ...styles,
-        backgroundColor: isDisabled ? "#3e3e3e"
+        backgroundColor: isDisabled
+          ? "#3e3e3e"
           : isSelected
-          ? 'white'
+          ? "white"
           : isFocused
           ? "#ECC039"
           : "#3e3e3e",
-        color: isDisabled
-          ? '#ccc'
-          : isSelected
-          ? 'black'
-          : 'white',
-        cursor: isDisabled ? 'not-allowed' : 'default',
+        color: isDisabled ? "#ccc" : isSelected ? "black" : "white",
+        cursor: isDisabled ? "not-allowed" : "default",
 
-        ':active': {
-          ...styles[':active'],
+        ":active": {
+          ...styles[":active"],
           backgroundColor: !isDisabled
             ? isSelected
               ? "white"
@@ -85,37 +83,44 @@ const customStyles = (valid, iconName, empty) => {
         },
       };
     },
-    noOptionsMessage : (base) => ({
+    noOptionsMessage: (base) => ({
       ...base,
       background: "#282828",
     }),
-    loadingMessage : (base) => ({
+    loadingMessage: (base) => ({
       ...base,
       background: "#282828",
     }),
-    control: (base, {isFocused}) => (
-      {
+    control: (base, { isFocused }) => ({
       ...base,
       background: "#282828",
       color: "#F2F2F2",
       backgroundColor: isFocused ? "#ECC039" : "#3e3e3e",
 
-      borderColor: valid ?  '#6D6D6D' : '#FF9090',
+      borderColor: valid ? "#6D6D6D" : "#FF9090",
 
       // Removes weird border around container
-      boxShadow: isFocused ? '#ECC039' : '#ECC039',
+      boxShadow: isFocused ? "#ECC039" : "#ECC039",
       "&:hover": {
         // Overwrittes the different states of border
-        borderColor: isFocused ? '#ECC039' : '#ECC039',
-      }
+        borderColor: isFocused ? "#ECC039" : "#ECC039",
+      },
     }),
-    input: (styles ) => ({ ...styles, ...space(iconName, empty), color : "#ccc" }),
-    singleValue: (styles) => ({ ...styles, ...icon(iconName), color : "#F2F2F2" }),
+    input: (styles) => ({
+      ...styles,
+      ...space(iconName, empty),
+      color: "#ccc",
+    }),
+    singleValue: (styles) => ({
+      ...styles,
+      ...icon(iconName),
+      color: "#F2F2F2",
+    }),
     placeholder: (styles) => ({ ...styles, ...icon(iconName) }),
-    menuList: base => ({
+    menuList: (base) => ({
       ...base,
       // kill the white space on first and last option
-      padding: 0
+      padding: 0,
     }),
     multiValue: (styles) => {
       return {
@@ -125,172 +130,285 @@ const customStyles = (valid, iconName, empty) => {
     },
     multiValueRemove: (styles) => ({
       ...styles,
-      color: '#FF9090',
-      ':hover': {
-        backgroundColor: 'white',
-        color: 'red',
+      color: "#FF9090",
+      ":hover": {
+        backgroundColor: "white",
+        color: "red",
       },
     }),
-    }
   };
+};
 
-function TextInput({index, name, callback, type, value="", error, list=[], multi=false, style=null, trigger, searchCall}) {
-
+function TextInput({
+  index,
+  name,
+  callback,
+  type,
+  value = "",
+  error,
+  list = [],
+  multi = false,
+  style = null,
+  trigger,
+  searchCall,
+  showTitle = true,
+  titleStyle = null,
+}) {
   const [isSubmitted, setSubmitted] = useState(false);
   const [isValid, setValid] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(()=>{
-    if(error == null){
-      switch(type){
+  const [errorMsg, setErrorMsg] = useState(() => {
+    if (error == null) {
+      switch (type) {
         case "datepicker":
-          return("Selecione uma data!")
+          return "Selecione uma data!";
         case "dropdown":
-          if(multi){
-            return("Selecione pelo menos um valor!")
-          }else{
-            return("Selecione um valor!")
+          if (multi) {
+            return "Selecione pelo menos um valor!";
+          } else {
+            return "Selecione um valor!";
           }
         case "textarea":
-          return("Preencha este campo!")
+          return "Preencha este campo!";
         default:
-          return("Preencha este campo!")
+          return "Preencha este campo!";
       }
-    }else{
-      return(error);
+    } else {
+      return error;
     }
   });
 
-  const validate = () =>{
+  const validate = () => {
     setSubmitted(true);
-  }
+  };
 
-  if(trigger){
+  if (trigger) {
     React.useEffect(() => {
-      trigger.current = validate
-    }, [trigger])
+      trigger.current = validate;
+    }, [trigger]);
   }
 
-  const loadOptions = (inputValue,fetch) => {
+  const loadOptions = (inputValue, fetch) => {
     setTimeout(() => {
       fetch(searchCall(inputValue));
     }, 1000);
   };
 
-    
-  switch(type){
+  switch (type) {
     case "dropsearch":
-      return(
+      return (
         <div>
-          <label htmlFor={name} className='text-gray5 text-[14px]'>{name}</label>
-          <AsyncSelect 
-            noOptionsMessage={() => 'Não encontrado'}
-            loadingMessage={() => 'a procurar...'}
+          <label
+            style={{ display: showTitle ? "block" : "none" }}
+            htmlFor={name}
+            className={`text-gray5 text-[14px] ${titleStyle}`}
+          >
+            {name}
+          </label>
+          <AsyncSelect
+            noOptionsMessage={() => "Não encontrado"}
+            loadingMessage={() => "a procurar..."}
             placeholder="pesquisar..."
-            className={` ${style}`} 
-            styles={ multi ? ( value.length == 0 ? customStyles(true,"lupa",false) : customStyles(true,"lupa",true) ) : customStyles(true,"lupa",false) }
+            className={` ${style}`}
+            styles={
+              multi
+                ? value.length == 0
+                  ? customStyles(true, "lupa", false)
+                  : customStyles(true, "lupa", true)
+                : customStyles(true, "lupa", false)
+            }
             isMulti={multi}
             cacheOptions
-            loadOptions={loadOptions} 
+            loadOptions={loadOptions}
             defaultOptions
             value={value}
-            onChange={(e) => { callback(index, e); value == null  ? setValid(false) : setValid(true); }}
-            />
-          <p style={{display : (isSubmitted && !isValid) ? 'block' : 'none'}} className='inputTextErrors bottom-0'>{errorMsg}</p>
+            onChange={(e) => {
+              callback(index, e);
+              value == null ? setValid(false) : setValid(true);
+            }}
+          />
+          <p
+            style={{ display: isSubmitted && !isValid ? "block" : "none" }}
+            className="inputTextErrors bottom-0"
+          >
+            {errorMsg}
+          </p>
         </div>
-      )
+      );
     case "searchbar":
-      return(
+      return (
         <div>
-          <label htmlFor={name} className='text-gray5 text-[14px]'>{name}</label>
-          <div className='relative flex items-center'>
-              <Search className="absolute mb-2 ml-1" />
-              <input
-                type='search'
-                className='inputFilter pl-[35px]'
-                id={name}
-                placeholder='pesquisa...'
-                onChange={(e) => { callback(index, e); }}
-                value={value}
-              />
-            </div>
+          <label
+            style={{ display: showTitle ? "block" : "none" }}
+            htmlFor={name}
+            className={`text-gray5 text-[14px] ${titleStyle}`}
+          >
+            {name}
+          </label>
+          <div className="relative flex items-center">
+            <Search className="absolute mb-2 ml-1" />
+            <input
+              type="search"
+              className={`inputFilter pl-[35px] ${style}`}
+              id={name}
+              placeholder="pesquisa..."
+              onChange={(e) => {
+                callback(index, e);
+              }}
+              value={value}
+            />
+          </div>
         </div>
-      )
+      );
     case "datepicker":
       const [datePick, setDatePick] = useState(false);
       const [date, setDate] = useState(new Date());
-      return(
+      return (
         <div>
-              <label htmlFor={name} className='text-gray5 text-[14px]'>{name}</label>
-              <div className='relative'>
-                <input
-                  readOnly={true}
-                  type='text'
-                  className={`inputText ${style} ${isSubmitted ? (isValid ? null : 'border-error') : null}`}
-                  id={name}
-                  placeholder={name}
-                  value={date.toLocaleDateString()}
-                  onClick={(e) => { setDatePick(!datePick) }}
-                />
-                <p className='inputTextErrors'>{error}</p>
-                <div style={{display : datePick ? 'block' : 'none'}}>
-                  <Calendar
-                    className='relative'
-                    color=''
-                    onChange={ (e) => { setDate(e); setDatePick(!datePick); setValid(true); callback(index, e); }}
-                    date={date} />
-                </div>
-              </div>
-              <p style={{display : (isSubmitted && !isValid) ? 'block' : 'none'}} className='inputTextErrors'>{errorMsg}</p>
-            </div>
-      )
-    case "dropdown":
-        return(
-            <div className="mb-4">
-                <label htmlFor={name} className='text-gray5 text-[14px] '>{name}</label>
-                <div className='relative'>
-                    <Select
-                    className={` ${style} ${isSubmitted ? (value ? null : 'border-error') : null }`}
-                    styles={ (value.length == 0 && isSubmitted === true) ? customStyles(false) : customStyles(true) }
-                    options={list}
-                    isMulti={multi}
-                    placeholder={name}
-                    value={value}
-                    onChange={(e) => { callback(index, e); value == null  ? setValid(false) : setValid(true); }}
-                    />
-                    <p style={{display : (isSubmitted && !isValid) ? 'block' : 'none'}} className='relative top-1 text-xs text-error'>{errorMsg}</p>
-                </div>
-            </div>
-        )
-    case "textarea":
-        return(
-            <div className="mb-4">
-            <label htmlFor={name} className='text-gray5 text-[14px] '>{name}</label>
-            <textarea
-              className={`inputText min-h-[130px] ${style} ${isSubmitted ? (value ? null : 'border-error') : null }`}
+          <label
+            style={{ display: showTitle ? "block" : "none" }}
+            htmlFor={name}
+            className={`text-gray5 text-[14px] ${titleStyle}`}
+          >
+            {name}
+          </label>
+          <div className="relative">
+            <input
+              readOnly={true}
+              type="text"
+              className={`inputText ${style} ${
+                isSubmitted ? (isValid ? null : "border-error") : null
+              }`}
               id={name}
               placeholder={name}
-              onChange={(e) => { callback(index, e); value == null ? setValid(false) : setValid(true); } }
+              value={date.toLocaleDateString()}
+              onClick={(e) => {
+                setDatePick(!datePick);
+              }}
+            />
+            <p className="inputTextErrors">{error}</p>
+            <div style={{ display: datePick ? "block" : "none" }}>
+              <Calendar
+                className="relative"
+                color=""
+                onChange={(e) => {
+                  setDate(e);
+                  setDatePick(!datePick);
+                  setValid(true);
+                  callback(index, e);
+                }}
+                date={date}
+              />
+            </div>
+          </div>
+          <p
+            style={{ display: isSubmitted && !isValid ? "block" : "none" }}
+            className="inputTextErrors"
+          >
+            {errorMsg}
+          </p>
+        </div>
+      );
+    case "dropdown":
+      return (
+        <div className="mb-4">
+          <label
+            style={{ display: showTitle ? "block" : "none" }}
+            htmlFor={name}
+            className={`text-gray5 text-[14px] ${titleStyle}`}
+          >
+            {name}
+          </label>
+          <div className="relative">
+            <Select
+              className={` ${style} ${
+                isSubmitted ? (value ? null : "border-error") : null
+              }`}
+              styles={
+                value.length == 0 && isSubmitted === true
+                  ? customStyles(false)
+                  : customStyles(true)
+              }
+              options={list}
+              isMulti={multi}
+              placeholder={name}
+              value={value}
+              onChange={(e) => {
+                callback(index, e);
+                value == null ? setValid(false) : setValid(true);
+              }}
+            />
+            <p
+              style={{ display: isSubmitted && !isValid ? "block" : "none" }}
+              className="relative top-1 text-xs text-error"
+            >
+              {errorMsg}
+            </p>
+          </div>
+        </div>
+      );
+    case "textarea":
+      return (
+        <div className="mb-4">
+          <label
+            style={{ display: showTitle ? "block" : "none" }}
+            htmlFor={name}
+            className={`text-gray5 text-[14px] ${titleStyle}`}
+          >
+            {name}
+          </label>
+          <textarea
+            className={`inputText min-h-[130px] ${style} ${
+              isSubmitted ? (value ? null : "border-error") : null
+            }`}
+            id={name}
+            placeholder={name}
+            onChange={(e) => {
+              callback(index, e);
+              value == null ? setValid(false) : setValid(true);
+            }}
+            value={value}
+          />
+          <p
+            style={{ display: isSubmitted && !isValid ? "block" : "none" }}
+            className="inputTextErrors"
+          >
+            {errorMsg}
+          </p>
+        </div>
+      );
+    default:
+      return (
+        <div>
+          <label
+            style={{ display: showTitle ? "block" : "none" }}
+            htmlFor={name}
+            className={`text-gray5 text-[14px] ${titleStyle}`}
+          >
+            {name}
+          </label>
+          <div className="relative">
+            <input
+              type="text"
+              className={`inputText ${style} ${
+                isSubmitted ? (value ? null : "border-error") : null
+              }`}
+              id={name}
+              placeholder={name}
+              onChange={(e) => {
+                callback(index, e);
+                value == null ? setValid(false) : setValid(true);
+              }}
               value={value}
             />
-            <p style={{display : (isSubmitted && !isValid) ? 'block' : 'none'}} className='inputTextErrors'>{errorMsg}</p>
           </div>
-        )
-    default:
-        return(
-            <div>
-                <label htmlFor={name} className='text-gray5 text-[14px] '>{name}</label>
-                <div className='relative'>
-                    <input
-                    type='text'
-                    className={`inputText ${style} ${isSubmitted ? (value ? null : 'border-error') : null}`}
-                    id={name}
-                    placeholder={name}
-                    onChange={(e) => { callback(index, e); value == null ? setValid(false) : setValid(true); }}
-                    value={value}
-                    />
-                </div>
-                <p style={{display : (isSubmitted && !isValid) ? 'block' : 'none'}} className='inputTextErrors'>{errorMsg}</p>
-            </div>
-        )
+          <p
+            style={{ display: isSubmitted && !isValid ? "block" : "none" }}
+            className="inputTextErrors"
+          >
+            {errorMsg}
+          </p>
+        </div>
+      );
   }
 }
 

@@ -53,7 +53,7 @@ public class PedidoFormacao {
     private LocalDate dataUltimoUpdate;
 
     @OneToMany(mappedBy = "id")
-    private List<Anexo> listAnexos;
+    private List<AnexoRef> listAnexos;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     Utilizador quemFezPedido;
@@ -186,11 +186,11 @@ public class PedidoFormacao {
         this.dataUltimoUpdate = dataUltimoUpdate;
     }
 
-    public List<Anexo> getListAnexos() {
+    public List<AnexoRef> getListAnexos() {
         return listAnexos;
     }
 
-    public void setListAnexos(List<Anexo> listAnexos) {
+    public void setListAnexos(List<AnexoRef> listAnexos) {
         this.listAnexos = listAnexos;
     }
 

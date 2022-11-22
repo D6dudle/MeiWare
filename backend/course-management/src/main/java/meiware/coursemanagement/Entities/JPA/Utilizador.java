@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Utilizador {
@@ -25,7 +26,7 @@ public class Utilizador {
     @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "Role")
     @JoinColumn(name = "Utilizador_id")
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Utilizador manager;
@@ -38,14 +39,14 @@ public class Utilizador {
 
     public Utilizador(){    }
 
-    public Utilizador(String nome, String email, String password, List<Role> roles){
+    public Utilizador(String nome, String email, String password, Set<Role> roles){
         this.nome = nome;
         this.email = email;
         this.password = password;
         this.roles = roles;
     }
 
-    public Utilizador(String nome, String email, String password, List<Role> roles, Utilizador manager){
+    public Utilizador(String nome, String email, String password, Set<Role> roles, Utilizador manager){
         this.nome = nome;
         this.email = email;
         this.password = password;
@@ -81,11 +82,11 @@ public class Utilizador {
         this.password = password;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 

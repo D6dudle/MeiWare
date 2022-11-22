@@ -1,6 +1,6 @@
 package meiware.coursemanagement.Controllers;
 
-import meiware.coursemanagement.Entities.JPA.Anexo;
+import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

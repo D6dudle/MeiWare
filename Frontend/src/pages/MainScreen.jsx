@@ -8,7 +8,7 @@ import ListarFormacao from "./ListarFormacao";
 import ControloBudget from "./ControloBudget";
 import GerirPedidos from "./GerirPedidos";
 import Colaboradores from "./Colaboradores";
-import PesquisarFormacao from './PesquisarFormacao';
+import PesquisarFormacao from "./PesquisarFormacao";
 import { ErrorPage } from "./ErrorPage";
 import Grama from "../assets/Grama.svg";
 import AdicionarPublicacao from "./AdicionarPublicacao";
@@ -45,8 +45,10 @@ export default function MainScreen() {
               path="/formacao/adicionar-formacao"
               element={<AdicionarFormacao />}
             />
-            <Route path="/formacao/pesquisar-formacao" 
-              element={<PesquisarFormacao />} />
+            <Route
+              path="/formacao/pesquisar-formacao"
+              element={<PesquisarFormacao />}
+            />
             <Route
               path="/formacao/listar-formacao"
               element={<ListarFormacao />}
@@ -69,6 +71,10 @@ export default function MainScreen() {
             <Route
               path="/controlo/colaboradores/adicionar-colaborador"
               element={<AdicionarColaborador />}
+            />
+            <Route
+              path="/controlo/listar-pedidos"
+              element={<ListarPedidos />}
             />
             <Route path="*" element={<ErrorPage />} />
           </Routes>

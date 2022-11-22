@@ -10,6 +10,9 @@ sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
+	flatDir {
+		dirs 'build/libs'
+	}
 }
 
 dependencies {
@@ -17,7 +20,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	runtimeOnly 'org.postgresql:postgresql'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.5'
+	implementation 'commons-fileupload:commons-fileupload:1.4'
+	runtimeOnly 'org.postgresql:postgresql:42.5.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }

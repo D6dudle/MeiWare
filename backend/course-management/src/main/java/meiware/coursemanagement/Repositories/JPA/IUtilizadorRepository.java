@@ -1,4 +1,4 @@
-package meiware.coursemanagement.Repositories;
+package meiware.coursemanagement.Repositories.JPA;
 
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import org.springframework.data.repository.CrudRepository;
@@ -10,4 +10,5 @@ import java.util.List;
 public interface IUtilizadorRepository extends CrudRepository<Utilizador, Long> {
     Utilizador findByEmail(String email);
     List<Utilizador> findAllByManager(Utilizador manager);
+    Boolean existsByEmail(String email);
 }

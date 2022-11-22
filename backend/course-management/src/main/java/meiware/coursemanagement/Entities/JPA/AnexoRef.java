@@ -5,24 +5,28 @@ import com.sun.istack.NotNull;
 import javax.persistence.*;
 
 @Entity
-public class Anexo {
+public class AnexoRef {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
     @NotNull
-    private String path;
+    private String path; // Representa o id na base de dados MongoDB
 
-    public Anexo() {
+    @NotNull
+    private String tipo;
+
+    public AnexoRef() {
 
     }
 
-    public Anexo(String path) {
+    public AnexoRef(String path, String tipo) {
         this.path = path;
+        this.tipo = tipo;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -34,9 +38,17 @@ public class Anexo {
         this.path = path;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
     @Override
     public String toString() {
-        return "Anexo{" +
+        return "AnexoRef{" +
                 "id=" + id +
                 ", path='" + path + '\'' +
                 '}';
