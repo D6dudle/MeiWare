@@ -14,6 +14,7 @@ import Grama from "../assets/Grama.svg";
 import AdicionarPublicacao from "./AdicionarPublicacao";
 import AdicionarColaborador from "./AdicionarColaborador";
 import Exemplo from "./Exemplo";
+import PesquisarForum from "./PesquisarForum";
 
 function MenuInicial() {
   return (
@@ -56,6 +57,10 @@ export default function MainScreen() {
             <Route
               path="/forum/adicionar-publicacao"
               element={<AdicionarPublicacao />}
+            />
+            <Route
+              path="forum/pesquisar"
+              element={<PesquisarForum />}
             />
             <Route path="/controlo" element={<ControloBudget />} />
             <Route path="/controlo/gerir-pedidos" element={<GerirPedidos />} />

@@ -123,17 +123,18 @@ export default function ListarFormacao () {
       </div>
           
       {/*Search Bar*/}
-      <div>
+      <div className="relative">
+        <div className='absolute left-2 top-2'>
+          <FiSearch className="h-4" />
+        </div>
         <input 
           type="text"
           placeholder='Pesquisa...'
-          className='search flex w-full h-8 mb-4 pl-2 inputText'
+          className='search flex w-full h-8 mb-4 pl-[35px] inputText'
           
           onChange={(e) => setQuery(e.target.value)}
           />
-          <div className='absolute right-5 top-3.5'>
-            <FiSearch className="h-6 w-6" />
-          </div>
+          
           
       </div>
       
