@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
-public class UtilizadorDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     IUtilizadorRepository userRepository;
 
@@ -21,7 +21,7 @@ public class UtilizadorDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
             Utilizador user = userRepository.findByEmail(email);
-            return UtilizadorDetails.build(user);
+            return UserDetailsImpl.build(user);
         }catch (EmptyResultDataAccessException notFound){
             throw new UsernameNotFoundException("User Not Found with email: " + email);
         }

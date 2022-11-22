@@ -14,7 +14,7 @@ import meiware.coursemanagement.Payload.Request.LoginRequest;
 import meiware.coursemanagement.Payload.Request.SignupRequest;
 import meiware.coursemanagement.Payload.Response.JwtResponse;
 import meiware.coursemanagement.Payload.Response.MessageResponse;
-import meiware.coursemanagement.Repositories.IUtilizadorRepository;
+import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
 import meiware.coursemanagement.Security.JWT.JwtUtils;
 import meiware.coursemanagement.Security.Services.UserDetailsImpl;
 import org.slf4j.Logger;

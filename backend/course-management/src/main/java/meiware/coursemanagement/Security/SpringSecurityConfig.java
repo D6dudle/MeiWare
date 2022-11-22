@@ -2,7 +2,7 @@ package meiware.coursemanagement.Security;
 
 import meiware.coursemanagement.Security.JWT.AuthEntryPointJwt;
 import meiware.coursemanagement.Security.JWT.AuthTokenFilter;
-import meiware.coursemanagement.Security.Services.UserDetailsService;
+import meiware.coursemanagement.Security.Services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SpringSecurityConfig {
     @Autowired
-    UserDetailsService userDetailsService;
+    UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
