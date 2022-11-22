@@ -134,7 +134,7 @@ const customStyles = (valid, iconName, empty) => {
     }
   };
 
-function TextInput({index, name, callback, type, value="", error, list=[], multi=false, style=null, trigger, searchCall}) {
+function TextInput({index, name, callback, type, value="", error, list=[], multi=false, style=null, trigger, searchCall, showTitle=true, titleStyle=null}) {
 
   const [isSubmitted, setSubmitted] = useState(false);
   const [isValid, setValid] = useState(false);
@@ -180,7 +180,7 @@ function TextInput({index, name, callback, type, value="", error, list=[], multi
     case "dropsearch":
       return(
         <div>
-          <label htmlFor={name} className='text-gray5 text-[14px]'>{name}</label>
+          <label style={{display : showTitle ? 'block' : 'none'}} htmlFor={name} className={`text-gray5 text-[14px] ${titleStyle}`}>{name}</label>
           <AsyncSelect 
             noOptionsMessage={() => 'Não encontrado'}
             loadingMessage={() => 'a procurar...'}
@@ -200,7 +200,7 @@ function TextInput({index, name, callback, type, value="", error, list=[], multi
     case "searchbar":
       return(
         <div>
-          <label htmlFor={name} className='text-gray5 text-[14px]'>{name}</label>
+          <label style={{display : showTitle ? 'block' : 'none'}} htmlFor={name} className={`text-gray5 text-[14px] ${titleStyle}`}>{name}</label>
           <div className='relative flex items-center'>
               <Search className="absolute mb-2 ml-1" />
               <input
@@ -219,7 +219,7 @@ function TextInput({index, name, callback, type, value="", error, list=[], multi
       const [date, setDate] = useState(new Date());
       return(
         <div>
-              <label htmlFor={name} className='text-gray5 text-[14px]'>{name}</label>
+              <label style={{display : showTitle ? 'block' : 'none'}} htmlFor={name} className={`text-gray5 text-[14px] ${titleStyle}`}>{name}</label>
               <div className='relative'>
                 <input
                   readOnly={true}
@@ -245,7 +245,7 @@ function TextInput({index, name, callback, type, value="", error, list=[], multi
     case "dropdown":
         return(
             <div className="mb-4">
-                <label htmlFor={name} className='text-gray5 text-[14px] '>{name}</label>
+                <label style={{display : showTitle ? 'block' : 'none'}} htmlFor={name} className={`text-gray5 text-[14px] ${titleStyle}`}>{name}</label>
                 <div className='relative'>
                     <Select
                     className={` ${style} ${isSubmitted ? (value ? null : 'border-error') : null }`}
@@ -263,7 +263,7 @@ function TextInput({index, name, callback, type, value="", error, list=[], multi
     case "textarea":
         return(
             <div className="mb-4">
-            <label htmlFor={name} className='text-gray5 text-[14px] '>{name}</label>
+            <label style={{display : showTitle ? 'block' : 'none'}} htmlFor={name} className={`text-gray5 text-[14px] ${titleStyle}`}>{name}</label>
             <textarea
               className={`inputText min-h-[130px] ${style} ${isSubmitted ? (value ? null : 'border-error') : null }`}
               id={name}
@@ -277,7 +277,7 @@ function TextInput({index, name, callback, type, value="", error, list=[], multi
     default:
         return(
             <div>
-                <label htmlFor={name} className='text-gray5 text-[14px] '>{name}</label>
+                <label style={{display : showTitle ? 'block' : 'none'}} htmlFor={name} className={`text-gray5 text-[14px] ${titleStyle}`}>{name}</label>
                 <div className='relative'>
                     <input
                     type='text'
