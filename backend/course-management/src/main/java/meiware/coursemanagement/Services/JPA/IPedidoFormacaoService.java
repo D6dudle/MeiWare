@@ -1,4 +1,4 @@
-package meiware.coursemanagement.Services;
+package meiware.coursemanagement.Services.JPA;
 
 import meiware.coursemanagement.Entities.JPA.FormacaoAprovada;
 import meiware.coursemanagement.Entities.JPA.FormacaoRejeitada;

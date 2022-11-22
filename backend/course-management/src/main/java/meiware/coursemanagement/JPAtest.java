@@ -1,14 +1,15 @@
 package meiware.coursemanagement;
 
-import meiware.coursemanagement.Entities.MongoDB.Publicacao;
+import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
-import meiware.coursemanagement.Services.PublicacaoService;
+import meiware.coursemanagement.Services.MongoDB.IAnexoService;
+import meiware.coursemanagement.Services.MongoDB.PublicacaoService;
 
 
 import org.apache.commons.fileupload.FileItem;
-
 import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
-
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -32,7 +32,7 @@ public class JPAtest {
     private IUtilizadorRepository iUtilizadorRepository;
 
     @Autowired
-    private PublicacaoService publicacaoService;
+    private IAnexoService anexoService;
 
     @Bean
     public CommandLineRunner demo() {
@@ -109,8 +109,8 @@ public class JPAtest {
                 log.info(post.toString());
             }*/
             //MongoDb files
-            /*File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_pm_t_L5_v1.1.pdf");
-            FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+            File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
+            FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
             try {
                 InputStream input = new FileInputStream(file);
@@ -123,11 +123,14 @@ public class JPAtest {
             }
 
             MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
-            String id = publicacaoService.addPublicacao(multipartFile);
-            Publicacao publicacao = publicacaoService.getPublicacao(id);
+            String id = anexoService.createAnexo(multipartFile);
+            Anexo anexo = anexoService.getAnexoById(id);
 
-            File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files");
-            Files.copy(publicacao.getStream(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);*/
+            File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + anexo.getNome());
+
+            FileUtils.writeByteArrayToFile(newFile, anexo.getConteudo().getData());
+
+
             log.info("");
         };
     }

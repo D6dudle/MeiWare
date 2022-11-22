@@ -1,9 +1,9 @@
 package meiware.coursemanagement.Repositories.MongoDB;
 
-import meiware.coursemanagement.Entities.MongoDB.Publicacao;
+import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IPublicacaoRepository extends MongoRepository<Publicacao, String> {
+public interface IAnexoRepository extends MongoRepository<Anexo, String> {
 }

@@ -1,5 +1,6 @@
 package meiware.coursemanagement.Entities.MongoDB;
 
+import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,31 +10,38 @@ import java.io.InputStream;
 public class Anexo {
     @Id
     private String id;
-    private String tipo;
-    private InputStream inputStream;
+    private String nome;
+    private Binary conteudo;
 
     public Anexo() {
 
+    }
+
+    public Anexo(String nome) {
+        this.nome = nome;
     }
 
     public String getId() {
         return id;
     }
 
-
-    public String getTipo() {
-        return tipo;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public String getNome() {
+        return nome;
     }
 
-    public InputStream getInputStream() {
-        return inputStream;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public void setInputStream(InputStream inputStream) {
-        this.inputStream = inputStream;
+    public Binary getConteudo() {
+        return conteudo;
+    }
+
+    public void setConteudo(Binary conteudo) {
+        this.conteudo = conteudo;
     }
 }
