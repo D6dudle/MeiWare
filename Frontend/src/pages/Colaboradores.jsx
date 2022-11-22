@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronDown, ChevronUp, Filter, Minus, Plus } from "react-feather";
 import TrainingUserInfo from "../components/TrainingUserInfo";
+import TextInput from "../components/TextInput";
 import users from "../constants/usersAux"; // Remove later
 
 export default function Colaboradores() {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false); // Is username list open?
-  const [actualUser, setUser] = useState(null);
+  const [order, setOrder] = useState(true); // true = asc && false = desc
   const [usersList, setUsers] = useState(users);
+  const [actualUser, setUser] = useState(usersList[0]);
+  const [search, setSearch] = useState();
 
   const handleExcluir = (u) => {
     setUsers(users.filter((user) => u.email !== user.email));
@@ -19,31 +21,35 @@ export default function Colaboradores() {
     navigate("/home/controlo/colaboradores/adicionar-colaborador");
   };
 
+  const handleType = (index, event) => {
+    setSearch(event.target.value);
+  };
+
+  const handleName = () => {
+    setOrder(!order);
+  };
+
   return (
     <div className="ml-8 mr-8">
       <h1 className="text-white font-bold text-3xl mt-8">
         Gestão de Colaboradores
       </h1>
 
-      {/* TODO: Falta a barra de pesquisa */}
-
       <div className="mt-16 ml-8 mr-8">
-        {/* TODO: Corrigir valores depois com a barra de pesquisa. ^ */}
-        <div className="flex md:flex-row flex-col justify-evenly md:justify-between md:items-center items-start gap-8">
+        <TextInput
+          index={1}
+          name={"pesquisa..."}
+          type={"searchbar"}
+          style={"w-[100%]"}
+          showTitle={false}
+          callback={handleType}
+        />
+
+        <div className="flex md:flex-row flex-col justify-evenly md:justify-between md:items-center items-start gap-8 mt-2">
           <div className="flex gap-1">
-            <button
-              className="btnSearchFunc"
-              onClick={() => {
-                if (open) {
-                  setUser(null);
-                } else {
-                  setUser(usersList[0]);
-                }
-                setOpen(!open);
-              }}
-            >
+            <button className="btnSearchFunc" onClick={handleName}>
               <p className="btnIcons leading-[120%]">Nome colaborador</p>
-              {open ? (
+              {order ? (
                 <ChevronDown className="w-4 h-4 btnIcons" />
               ) : (
                 <ChevronUp className="w-4 h-4 btnIcons" />
@@ -56,15 +62,14 @@ export default function Colaboradores() {
           </div>
 
           <div className="flex gap-2">
-            {open && (
-              <button
-                className="actionButtons bg-error"
-                onClick={() => handleExcluir(actualUser)}
-              >
-                <Minus className="w-4 h-4 text-black" />
-                <p className="actionBtnInsideInfo">Excluir colaborador</p>
-              </button>
-            )}
+            <button
+              className="actionButtons bg-error"
+              onClick={() => handleExcluir(actualUser)}
+            >
+              <Minus className="w-4 h-4 text-black" />
+              <p className="actionBtnInsideInfo">Excluir colaborador</p>
+            </button>
+
             <button
               className="actionButtons bg-primary"
               onClick={() => handleAdicionar()}
@@ -77,7 +82,7 @@ export default function Colaboradores() {
       </div>
 
       <div className="relative top-16 left-8 flex sm:flex-col md:flex-col lg:flex-row items-start gap-4">
-        <ul className={`overflow-y-auto w-max order-none ${!open && "hidden"}`}>
+        <ul className="overflow-y-auto w-max order-none">
           {usersList.map((list, index) => (
             <li
               key={index}
@@ -100,8 +105,6 @@ export default function Colaboradores() {
         </ul>
 
         {actualUser && <TrainingUserInfo user={actualUser} />}
-
-        {/* TODO: Outra seach bar aqui */}
       </div>
     </div>
   );

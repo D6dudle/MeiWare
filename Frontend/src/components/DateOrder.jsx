@@ -5,7 +5,7 @@ export default function DateOrder() {
   const [isDataDecrescente, setDataDecrescente] = useState(false); // Is DataDecrescente open?
   return (
     <button
-      className="btnSearchFunc"
+      className="btnSearchFunc h-fit"
       onClick={() => {
         /* Logica ordenar lista */
         setDataDecrescente(!isDataDecrescente);

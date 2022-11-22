@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TrainingDescription from "../components/TrainingDescription";
 import DisplayUserTrainingInfo from "../components/DisplayUserTrainingInfo";
+import { StatsLargeCard } from "../components/StatsCard";
 
 export default function TrainingUserInfo(props) {
   var user = props.user;
@@ -18,6 +19,12 @@ export default function TrainingUserInfo(props) {
         </div>
         <DisplayUserTrainingInfo info={user.info} />
       </div>
+      <StatsLargeCard
+        titulo="Orçamento Restante"
+        montante="€ 5420,65"
+        descricao="Valor calculado através da soma de todos os colaboradores da empresa"
+        percentagem={55}
+      />
     </div>
   );
 }

@@ -4,15 +4,29 @@ import TextInput from "../components/TextInput";
 import { Formacao } from "../components/Formacao";
 import { Formacoes } from "../constants/formacoes";
 import DateOrder from "./DateOrder";
+import users from "../constants/usersAux.json";
 
 export default function TrainingTabs() {
   const [activeFilter, setActiveFilter] = useState(null);
   const [filter, setFilter] = useState(null);
 
   const [search, setSearch] = useState();
+  const [values, setValues] = useState([]);
+
+  const filterTags = (inputValue) => {
+    return users.filter((i) =>
+      i.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
 
   const handleType = (index, event) => {
     setSearch(event.target.value);
+  };
+
+  const handleDropdown = (index, opt) => {
+    let data = [...values];
+    data[index] = opt;
+    setValues(data);
   };
 
   return (
@@ -46,18 +60,38 @@ export default function TrainingTabs() {
       </TabsHeader>
 
       <div className="flex flex-row gap-4">
-        <div className="w-80 justify-start mb-4">
+        <div className="flex flex-row h-fit justify-between items-center gap-8">
           <TextInput
             index={1}
             name={"pesquisa..."}
             type={"searchbar"}
+            style={"w-[30rem]"}
+            showTitle={false}
             callback={handleType}
           />
+          <div>
+            <TextInput
+              index={1}
+              name={"colaborador"}
+              type="dropsearch"
+              titleStyle={"font-bold mb-1 text-2xl"}
+              style={"w-[30rem]"}
+              list={users}
+              multi={true}
+              showTitle={false}
+              error={"Por favor selecione ou adicione um nome"}
+              value={values[1]}
+              callback={handleDropdown}
+              searchCall={filterTags}
+            />
+          </div>
+          <div className="flex justify-center items-center">
+            <DateOrder />
+          </div>
         </div>
-        <DateOrder />
       </div>
 
-      <TabsBody className="w-full h-full overflow-y-scroll scrollbar-hide">
+      <TabsBody className="w-full h-full overflow-y-scroll scrollbar-hide mt-2">
         <div className="overflow-y-visible">
           {activeFilter !== null ? (
             <h1 className="font-bold text-2xl order-none mb-3">

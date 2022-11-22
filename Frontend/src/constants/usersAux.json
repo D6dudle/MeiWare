@@ -1,6 +1,8 @@
 [
     {
       "name": "Utilizador 1",
+      "label": "Utilizador 1",
+      "value": "Teste 1",
       "email": "utilizador1@grama.io",
       "photo": "../assets/sidebar/logoGrama.png",
       "info": {
@@ -14,6 +16,8 @@
     },
     {
       "name": "José Miguel Silva Gomes",
+      "label": "José Miguel Silva Gomes",
+      "value": "Teste 2",
       "email": "josemiguel@gmail.com",
       "photo": "../assets/sidebar/sidebarArrow.png",
       "info": {
@@ -27,6 +31,8 @@
     },
     {
       "name": "Utilizador 3",
+      "label": "Utilizador 3",
+      "value": "Teste 3",
       "email": "utilizador3@grama.io",
       "photo": "../assets/sidebar/sidebarArrow.png",
       "info": {
@@ -40,6 +46,8 @@
     },
     {
       "name": "Utilizador 4",
+      "label": "Utilizador 4",
+      "value": "Teste 4",
       "email": "utilizador4@grama.io",
       "photo": "../assets/sidebar/sidebarArrow.png",
       "info": {
@@ -53,6 +61,8 @@
     },
     {
       "name": "Utilizador 5",
+      "label": "Utilizador 5",
+      "value": "Teste 5",
       "email": "utilizador5@grama.io",
       "photo": "../assets/sidebar/sidebarArrow.png",
       "info": {
@@ -66,6 +76,8 @@
     },
     {
       "name": "Utilizador 6",
+      "label": "Utilizador 6",
+      "value": "Teste 6",
       "email": "utilizador6@grama.io",
       "photo": "../assets/sidebar/sidebarArrow.png",
       "info": {
@@ -79,6 +91,8 @@
     },
     {
       "name": "Utilizador 7",
+      "label": "Utilizador 7",
+      "value": "Teste 7",
       "email": "utilizador7@grama.io",
       "photo": "../assets/sidebar/sidebarArrow.png",
       "info": {
