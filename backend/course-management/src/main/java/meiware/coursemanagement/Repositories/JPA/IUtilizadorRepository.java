@@ -10,4 +10,5 @@ import java.util.List;
 public interface IUtilizadorRepository extends CrudRepository<Utilizador, Long> {
     Utilizador findByEmail(String email);
     List<Utilizador> findAllByManager(Utilizador manager);
+    Boolean existsByEmail(String email);
 }

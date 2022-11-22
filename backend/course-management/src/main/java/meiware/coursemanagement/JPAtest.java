@@ -23,8 +23,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.*;
 
-@SpringBootApplication
+//@SpringBootApplication
 @EnableMongoAuditing
 public class JPAtest {
     private static final Logger log = LoggerFactory.getLogger(JPAtest.class);
@@ -43,17 +44,17 @@ public class JPAtest {
             log.info("Customer found with findByEmail('nelso@email.com'):");
 
             // Sample lists
-            List<Role> nelsoRoleList = new ArrayList<>();
+            Set<Role> nelsoRoleList = new HashSet<>();
             nelsoRoleList.add(Role.GESTOR);
             nelsoRoleList.add(Role.ADMINISTRADOR);
 
-            List<Role> chadRoleList = new ArrayList<>();
+            Set<Role> chadRoleList = new HashSet<>();
             chadRoleList.add(Role.COLABORADOR);
 
             try{
                 Utilizador nelso = iUtilizadorRepository.findByEmail("nelso@email.com");
                 Utilizador chad = iUtilizadorRepository.findByEmail("chad@email.com");
-
+                log.info(nelso.toString());
                 if(nelso != null)
                     log.info(nelso.toString());
                 else
