@@ -7,6 +7,7 @@ import { Image, Edit } from "react-feather";
 import { Button } from "../components/Button";
 import { Formacao } from "../components/Formacao";
 import { ChevronDown, ChevronUp, Filter, Minus, Plus } from "react-feather";
+import DateOrder from "../components/DateOrder";
 
 export const PesquisarFormacao = ({}) => {
   const [formationCamps, setFormationCamps] = useState({
@@ -15,8 +16,7 @@ export const PesquisarFormacao = ({}) => {
   });
 
   const [isRejeitadas, setAprovadas] = useState(false); // Is Aprovadas open?
-  const [isDataDecrescente, setDataDecrescente] = useState(false); // Is DataDecrescente open?
-  const [query, setQuery] = useState(""); 
+  const [query, setQuery] = useState("");
 
   const corFormacao = [
     { tipo: "TERMINADA", cor: "primary" },
@@ -99,115 +99,110 @@ export const PesquisarFormacao = ({}) => {
       </h1>
 
       <div className="mt-8  justify-evenly w-full">
-          <div className="flex flex-wrap justify-between sm:justify-start">
-            <div className="mr-20 w-8/12">
-              {/* PESQUISA... */}
-              <div className="relative">
-                <div className="absolute left-2 top-5">
-                  <Search className="h-4" />
-                </div>
-
-                <input
-                  type="text"
-                  placeholder="pesquisa..."
-                  className="inputText search pl-[35px]"
-                  id="nomeSearchFormacao"
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-                
+        <div className="flex flex-wrap justify-between sm:justify-start">
+          <div className="mr-20 w-8/12">
+            {/* PESQUISA... */}
+            <div className="relative">
+              <div className="absolute left-2 top-5">
+                <Search className="h-4" />
               </div>
 
-              {/* COLABORADOR */}
-              <div className="mb-4">
-                <div className="relative">
-                  <div className="absolute left-5 top-4">
-                    <Search className="h-5" />
-                  </div>
-
-                  <Select
-                    //className={` ${formationCamps.nomeColaborador || isSubmit === false ? null : 'border-error'}`}
-                    styles={colaboradorStyles}
-                    options={colaboradores}
-                    isMulti
-                    placeholder="colaborador"
-                    value={formationCamps.nomeColaborador}
-                    onChange={(opt) => {
-                      console.log(opt);
-                      setFormationCamps({
-                        ...formationCamps,
-                        nomeColaborador: opt,
-                      });
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-1 mb-4">
-                <button
-                  className="btnSearchFunc"
-                  onClick={() => {
-                    /* Logica ordenar lista */
-                    setAprovadas(!isRejeitadas);
-                  }}
-                >
-                  {isRejeitadas ? (
-                    <><p className="btnIcons leading-[120%]">Rejeitadas</p><ChevronDown className="w-4 h-4 btnIcons" /></>
-                    ) : (
-                      <><p className="btnIcons leading-[120%]">Aprovadas</p><ChevronUp className="w-4 h-4 btnIcons" /></>
-                  )}
-                </button>
-
-                <button
-                  className="btnSearchFunc"
-                  onClick={() => {
-                    /* Logica ordenar lista */
-                    setDataDecrescente(!isDataDecrescente);
-                  }}
-                >
-                  
-                  {isDataDecrescente ? (
-                    <><p className="btnIcons leading-[120%]">Data Decrescente</p><ChevronDown className="w-4 h-4 btnIcons" /></>
-                  ) : (
-                    <><p className="btnIcons leading-[120%]">Data Crescente</p><ChevronUp className="w-4 h-4 btnIcons" /></>
-                  )}
-                </button>
-              </div>
-            </div>
-            <div className="flex mb-4 mr-auto">
-              <Calendar
-                color=""
-                onChange={(item) => {
-                  setFormationCamps({ ...formationCamps, data: item });
-                }}
-                date={formationCamps.data}
+              <input
+                type="text"
+                placeholder="pesquisa..."
+                className="inputText search pl-[35px]"
+                id="nomeSearchFormacao"
+                onChange={(e) => setQuery(e.target.value)}
               />
             </div>
+
+            {/* COLABORADOR */}
+            <div className="mb-4">
+              <div className="relative">
+                <div className="absolute left-5 top-4">
+                  <Search className="h-5" />
+                </div>
+
+                <Select
+                  //className={` ${formationCamps.nomeColaborador || isSubmit === false ? null : 'border-error'}`}
+                  styles={colaboradorStyles}
+                  options={colaboradores}
+                  isMulti
+                  placeholder="colaborador"
+                  value={formationCamps.nomeColaborador}
+                  onChange={(opt) => {
+                    console.log(opt);
+                    setFormationCamps({
+                      ...formationCamps,
+                      nomeColaborador: opt,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-1 mb-4">
+              <button
+                className="btnSearchFunc"
+                onClick={() => {
+                  /* Logica ordenar lista */
+                  setAprovadas(!isRejeitadas);
+                }}
+              >
+                {isRejeitadas ? (
+                  <>
+                    <p className="btnIcons leading-[120%]">Rejeitadas</p>
+                    <ChevronDown className="w-4 h-4 btnIcons" />
+                  </>
+                ) : (
+                  <>
+                    <p className="btnIcons leading-[120%]">Aprovadas</p>
+                    <ChevronUp className="w-4 h-4 btnIcons" />
+                  </>
+                )}
+              </button>
+
+              <DateOrder />
+            </div>
           </div>
+          <div className="flex mb-4 mr-auto">
+            <Calendar
+              color=""
+              onChange={(item) => {
+                setFormationCamps({ ...formationCamps, data: item });
+              }}
+              date={formationCamps.data}
+            />
+          </div>
+        </div>
       </div>
 
       <div className="mt-8">
-        {dataCard?.filter(item=>item.nomeformacao.toLowerCase().includes(query) && containsList(formationCamps.nomeColaborador, item.username)
-      ).map((card, index) => (
-          <Formacao
-            key={index}
-            username={card.username}
-            nomeformacao={card.nomeformacao}
-            dataFormacao={card.dataFormacao}
-            justificacaoFormacao={card.justificacaoFormacao}
-            idCurso={card.idCurso}
-            tipoFormacao={card.tipoFormacao}
-          />
-        ))}
+        {dataCard
+          ?.filter(
+            (item) =>
+              item.nomeformacao.toLowerCase().includes(query) &&
+              containsList(formationCamps.nomeColaborador, item.username)
+          )
+          .map((card, index) => (
+            <Formacao
+              key={index}
+              username={card.username}
+              nomeformacao={card.nomeformacao}
+              dataFormacao={card.dataFormacao}
+              justificacaoFormacao={card.justificacaoFormacao}
+              idCurso={card.idCurso}
+              tipoFormacao={card.tipoFormacao}
+            />
+          ))}
       </div>
     </div>
   );
 
-  function containsList(listToSearch, item){
-    if(listToSearch.length === 0)
-      return true;
-    return listToSearch.find(i => i.label === item);
+  function containsList(listToSearch, item) {
+    if (listToSearch.length === 0) return true;
+    return listToSearch.find((i) => i.label === item);
   }
-
 };
 
 export default PesquisarFormacao;
