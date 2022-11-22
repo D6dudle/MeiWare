@@ -84,11 +84,11 @@ public class AuthController {
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
-                    case "colaborador" ->
+                    case "COLABORADOR" ->
                         roles.add(Role.COLABORADOR);
-                    case "gestor" ->
+                    case "GESTOR" ->
                         roles.add(Role.GESTOR);
-                    case "administrador" ->
+                    case "ADMINISTRADOR" ->
                             roles.add(Role.ADMINISTRADOR);
                     default ->
                         throw new RuntimeException("Error: Role is not found.");
