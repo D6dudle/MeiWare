@@ -12,9 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 //@SpringBootApplication
 @EnableMongoAuditing
@@ -32,11 +30,11 @@ public class JPAtest {
             log.info("Customer found with findByEmail('nelso@email.com'):");
 
             // Sample lists
-            List<Role> nelsoRoleList = new ArrayList<>();
+            Set<Role> nelsoRoleList = new HashSet<>();
             nelsoRoleList.add(Role.GESTOR);
             nelsoRoleList.add(Role.ADMINISTRADOR);
 
-            List<Role> chadRoleList = new ArrayList<>();
+            Set<Role> chadRoleList = new HashSet<>();
             chadRoleList.add(Role.COLABORADOR);
 
             try{

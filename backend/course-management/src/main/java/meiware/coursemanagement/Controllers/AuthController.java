@@ -1,7 +1,9 @@
 package meiware.coursemanagement.Controllers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -77,7 +79,7 @@ public class AuthController {
         }
 
         List<String> strRoles = signUpRequest.getRole();
-        List<Role> roles = new ArrayList<>();
+        Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
             roles.add(Role.COLABORADOR);

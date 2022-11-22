@@ -1,9 +1,6 @@
 package meiware.coursemanagement.Security.Services;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import meiware.coursemanagement.Entities.JPA.*;
@@ -12,12 +9,15 @@ import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsImpl.class);
 
     private Long id;
 
@@ -28,33 +28,41 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    private static List<GrantedAuthority> ROLE_USER;
 
-    public UserDetailsImpl(Long id, String username, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(Long id, String username, String email, String password,List<GrantedAuthority> roles) {
         this.id = id;
         this.username = email;
         this.email = email;
         this.password = password;
-        this.authorities = authorities;
+        this.ROLE_USER = roles;
     }
 
     public static UserDetailsImpl build(Utilizador user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
-                .collect(Collectors.toList());
+
+        List<String> roleList = new ArrayList<String>();
+
+        for(Role role : user.getRoles()){
+            roleList.add("ROLE_"+role);
+        }
+
+        String[] stringArray = roleList.toArray(new String[0]);
+
+        logger.debug(Arrays.toString(stringArray));
+
+        List<GrantedAuthority> roles = Collections.unmodifiableList(AuthorityUtils.createAuthorityList(stringArray));
 
         return new UserDetailsImpl(
                 user.getId(),
                 user.getEmail(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities);
+                roles);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return ROLE_USER;
     }
 
     public Long getId() {
@@ -111,7 +119,7 @@ public class UserDetailsImpl implements UserDetails {
         obj.put("username", username);
         obj.put("email", email);
         obj.put("password", password);
-        obj.put("authorities", authorities);
+        obj.put("authorities", ROLE_USER);
         return obj.toString();
     }
 }
