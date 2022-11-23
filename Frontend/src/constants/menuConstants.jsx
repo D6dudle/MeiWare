@@ -51,7 +51,7 @@ export const Menus = [
   },
   {
     title: "Fórum",
-    to: "forum",
+    to: "forum/pesquisar",
     icon: <Book className="w-4 h-4" />,
     submenu: true,
     opened: false,

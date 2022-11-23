@@ -61,7 +61,7 @@ export default function MainScreen() {
               path="/forum/adicionar-publicacao"
               element={<AdicionarPublicacao />}
             />
-            <Route path="forum/pesquisar" element={<PesquisarForum />} />
+            <Route path="/forum/pesquisar" element={<PesquisarForum />} />
             <Route path="/controlo" element={<ControloBudget />} />
             <Route path="/controlo/gerir-pedidos" element={<GerirPedidos />} />
             <Route path="/controlo/colaboradores" element={<Colaboradores />} />

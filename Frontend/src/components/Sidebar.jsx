@@ -10,6 +10,51 @@ const Sidebar = () => {
   const [submenuOpen, setSubmenuOpen] = useState(null);
   const [subMenuClicked, setSubmenuClicked] = useState(null);
 
+  const handleMenuClick = (menu) => {
+    if (menu.submenu) {
+      setSubmenuOpen(
+        Menus.map((a) => {
+          if (a.title !== menu.title) {
+            a.opened = false;
+          } else {
+            if (a.opened) {
+              if (a.submenuItems[0].title === "Pesquisar") {
+                a.submenuItems.map((b) => (b.opened = false));
+                a.submenuItems[0].opened = true;
+              } else {
+                a.submenuItems.map((b) => (b.opened = false));
+              }
+            } else {
+              if (a.submenuItems[0].title === "Pesquisar") {
+                a.submenuItems.map((b) => (b.opened = false));
+                a.submenuItems[0].opened = true;
+              } else {
+                a.submenuItems.map((b) => (b.opened = false));
+              }
+              a.opened = true;
+            }
+          }
+        })
+      );
+    }
+  };
+
+  const handleSubMenuClick = (menu, submenuItem) => {
+    setSubmenuClicked(
+      menu.submenuItems.map((a) => {
+        if (a.title !== submenuItem.title) {
+          a.opened = false;
+        } else {
+          a.opened = true;
+        }
+      })
+    );
+  };
+
+  const handleLogout = () => {
+    alert("Logout");
+  };
+
   return (
     <>
       <div
@@ -50,23 +95,7 @@ const Sidebar = () => {
                         : "w-12")
                 }`}
                 onClick={() => {
-                  console.log(menu.opened);
-                  if (menu.submenu) {
-                    setSubmenuOpen(
-                      Menus.map((a) => {
-                        if (a.title !== menu.title) {
-                          a.opened = false;
-                        } else {
-                          if (a.opened) {
-                            a.submenuItems.map((b) => (b.opened = false));
-                          } else {
-                            a.submenuItems.map((b) => (b.opened = false));
-                            a.opened = true;
-                          }
-                        }
-                      })
-                    );
-                  }
+                  handleMenuClick(menu);
                 }}
               >
                 <span className="menuIcon">{menu.icon}</span>
@@ -92,15 +121,7 @@ const Sidebar = () => {
                         submenuItem.opened ? "text-primary" : "text-white"
                       }`}
                       onClick={() => {
-                        setSubmenuClicked(
-                          menu.submenuItems.map((a) => {
-                            if (a.title !== submenuItem.title) {
-                              a.opened = false;
-                            } else {
-                              a.opened = true;
-                            }
-                          })
-                        );
+                        handleSubMenuClick(menu, submenuItem);
                       }}
                     >
                       {submenuItem.title}
@@ -117,7 +138,7 @@ const Sidebar = () => {
           <div className="divMenuItem">
             <li
               className={`menuItem ${open ? "w-44" : "w-12"}`}
-              onClick={() => {}}
+              onClick={handleLogout}
             >
               <LogOut className="menuIcon" />
               <span className={`menuTitle duration-400 ${!open && "hidden"}`}>
