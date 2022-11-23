@@ -57,11 +57,6 @@ export const Menus = [
     opened: false,
     submenuItems: [
       {
-        title: "Minhas publicações",
-        to: "forum/minhas-publicacoes",
-        opened: false,
-      },
-      {
         title: "Pesquisar",
         to: "forum/pesquisar",
         opened: false,
