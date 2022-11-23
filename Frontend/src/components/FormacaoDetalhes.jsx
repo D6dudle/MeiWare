@@ -3,20 +3,25 @@ import { Image, Edit } from "react-feather";
 import { Button } from "./Button";
 import Tag from "./Tag";
 import { iconImageUpload } from "../constants/menuConstants";
+import GoBackButton from "../components/GoBackButton";
 
-export const ForumTopic = ({username, 
-    dataFormacao, 
-    titulo, 
-    nomeformacao, 
-    descricao, 
+export const FormacaoDetalhes = ({ 
+    fornecedor,
+    username,
+    dataFormacao,
+    nomeformacao,
+    descricao,
+    justificacaoFormacao,
     cursoId,
+    preco,
+    tags
     }) => {
 
     const files = [
-        {type: "application/pdf", path: "AncoraPraia.pdf", size: "2,59MB"},
-        {type: "image/png", path: "Ancorense.png", size: "2,59MB"},
-        {type: "image/jpeg", path: "Porto.jpeg", size: "2,59MB"},
-        {type: "application/zip", path: "Benfica.zip", size: "2,59MB"},
+        {type: "application/pdf", path: "Montemor-o-Velho.pdf", size: "2,59MB"},
+        {type: "image/png", path: "Portugal.png", size: "5,58MB"},
+        {type: "image/jpeg", path: "Sporting.jpeg", size: "6,66MB"},
+        {type: "application/zip", path: "Benfica.zip", size: "11,21MB"},
         
     ];
 
@@ -40,72 +45,66 @@ export const ForumTopic = ({username,
         );
     };
 
-    const arquivarPublicacaoHandler = (e) => {
-        e.preventDefault();
-        alert("Click em Finalizar formação");
-    };
-
-    const verPublicacaoHandler = (e) => {
-        e.preventDefault();
-        alert("Click em Ver Publicação Completa");
-      };
-
     return(
-        <div className="flex-none order-none grow-0 border border-primary rounded">
+        <div className="flex-none order-none grow-0 ">
+            {/*Btn voltar*/}
+            
             <div className="flex order-none justify-between">
+                {/*Titulo*/}
                 <div className="flex flex-row justify-start pt-4 pl-4 items-center">
-                    <Image className="w-6 h-6 mr-4" />
-                    <p className="text-sm text-white font-semibold">
-                        {username} <span className="text-gray3">publicou um conteúdo </span>
+                    <GoBackButton url={"/home/formacao/pesquisar-formacao"}/>
+                    <p className="text-white font-semibold pt-3 text-xl pl-4 pb-4">
+                    <span className="text-gray3 text-xl ">Titulo: </span>
+                    {nomeformacao}
                     </p>
                 </div>
-                <div className="flex-col items-center pr-4 pt-4">
+                {/*pedida em*/}
+                <div className="flex-row-reverse items-center pr-4 pt-4">
                     <p className="text-xs text-gray4 font-medium">Pedida em</p>
                     <p className="text-base font-normal text-white">{dataFormacao}</p>
                 </div>
             </div>
 
-            {/*Tags e Botão Arquivar Publicação */}
-            <div className="flex flex-row order-1 justify-between items-center pl-4 pt-4 pr-4">
-                <div className="flex order-1 justify-between w-full">
-                    <div className="flex gap-4">
-                        <Tag tagName={"React"}/>
-                        <Tag tagName={"teste"}/>
-                        <Tag tagName={"Java"}/>
-                    </div>
-                    <div className="" onClick={arquivarPublicacaoHandler}>
-                        <Button 
-                            iconName={"ARQUIVAR"}
-                            textButton={"Arquivar Publicação"}
-                            
-                        />
-                    </div>
-                    
+
+            {/*Pessoa publicou uma formacao*/}
+            <div className="flex order-none justify-between">
+                <div className="flex flex-row justify-start pt-4 pl-4 items-center">
+                    <Image className="w-6 h-6 mr-4" />
+                    <p className="text-sm text-white font-semibold">
+                        {username} <span className="text-gray3">publicou uma formação </span>
+                    </p>
                 </div>
             </div>
 
-            {/*Titulo*/}
-            <div className="flex-none order-2 grow-0">
-                <p className="text-white font-semibold pt-3 text-xl pl-4 pb-4">
-                <span className="text-gray3 text-xl ">Titulo: </span>
-                {titulo}
-                </p>
+            <div className="flex flex-row order-1 justify-between items-center pl-4 pt-4 pr-4">
+                <div className="flex order-1 justify-between w-full">
+                    <div className="flex gap-4">
+                        {tags.map((tag, index) => (
+                            <Tag tagName={tag}/>
+                        ))}
+                    </div>
+                </div>
             </div>
 
-            {/*Retangulo Curso Associado*/}
-            <div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] mb-4">
+            {/*Retangulo Fornecedor*/}
+            <div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mt-4 mr-[20px] mb-4 justify-between">
                 
-                <div className="flex flex-col items-start order-none w-4/5">
+                <div className="flex flex-col items-start order-none ">
                     <p className="order-none text-gray3 font-bold pt-3 text-xl pl-4 ">
-                    Curso Associado
+                    Fornecedor
                     </p>
 
                     <div className="flex-none order-1 self-stretch pl-4 flex-row pb-[18px] font-semibold text-sm">
                         <p className="text-sm text-white font-semibold pt-3">
-                            <span className="text-gray3">Nome da formação: </span>
-                            {nomeformacao}
+                            <span className="text-gray3">Nome: </span>
+                            {fornecedor}
                         </p>
                     </div>
+                </div>
+                {/* Preço*/}
+                <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
+                    <p className="text-xs text-gray4 font-medium">preço</p>
+                    <p className="text-base font-normal text-white">{preco}</p>
                 </div>
                 {/* Course ID*/}
                 <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
@@ -115,7 +114,7 @@ export const ForumTopic = ({username,
             </div>
 
             {/*Retangulo Descrição*/}
-            <div className="flex-none order-4 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] pb-4">
+            <div className="flex-none order-4 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] pb-4 mb-4">
                 
                 {/*Titulo*/}
                 <p className="text-gray3 font-bold pt-3 text-xl pl-4 order-none">
@@ -130,8 +129,31 @@ export const ForumTopic = ({username,
                 </div>
 
             </div>
+
+            {/*Retangulo Justificação da Formação*/}
+            <div className="flex-none order-4 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] pb-4">
+                
+                {/*Titulo*/}
+                <p className="text-gray3 font-bold pt-3 text-xl pl-4 order-none">
+                Justificação da formação
+                </p>
+
+                {/*Texto Descricao*/}
+                <div className="order-1 pr-4 pt-4 mb-4">
+                    <p className="pl-4 order-1 font-medium text-xs text-justify ">
+                    {justificacaoFormacao}
+                    </p>
+                </div>
+
+            </div>
+
             {/*Retangulo Ficheiros Adicionados*/}
-            <div className="flex flex-none order-5 pt-4">  
+            <div className="mt-2">
+                <p className="text-gray3 font-bold pt-3 text-xl pl-4 order-none">
+                    Anexos
+                </p>
+            </div>
+            <div className="flex flex-none order-5 pt-4">
                 {files.length > 0 && (
                     <div className="w-full pl-4">
                         {files?.map((file) => (
@@ -147,16 +169,7 @@ export const ForumTopic = ({username,
 
             </div>
 
-            <div className="flex flex-none order-6 pr-[20px] pl-4 pb-3">
-                <div className="flex flex-row justify-between items-center w-4/5" onClick={verPublicacaoHandler}>
-                    <Button 
-                    iconName={"CONSULTAR"}
-                    textButton={"Ver Publicação Completa"}
-                    />
-                </div>
-            </div>
-
         </div>
     )
 };
-export default ForumTopic;
+export default FormacaoDetalhes;

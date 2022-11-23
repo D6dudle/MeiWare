@@ -2,10 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "react-feather";
 
-export default function GoBackButton() {
+export default function GoBackButton({url}) {
   const navigate = useNavigate();
   const goBack = () => {
-    navigate("/home/controlo/colaboradores");
+    //navigate("/home/controlo/colaboradores");
+    navigate(url);
   };
 
   return (

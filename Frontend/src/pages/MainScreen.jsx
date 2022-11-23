@@ -9,6 +9,7 @@ import ControloBudget from "./ControloBudget";
 import GerirPedidos from "./GerirPedidos";
 import Colaboradores from "./Colaboradores";
 import PesquisarFormacao from "./PesquisarFormacao";
+import PesquisarDetalhes from "./PesquisarDetalhes";
 import { ErrorPage } from "./ErrorPage";
 import Grama from "../assets/Grama.svg";
 import AdicionarPublicacao from "./AdicionarPublicacao";
@@ -66,6 +67,10 @@ export default function MainScreen() {
             <Route
               path="/formacao/pesquisar-formacao"
               element={<PesquisarFormacao />}
+            />
+            <Route
+              path="/formacao/pesquisar-detalhes"
+              element={<PesquisarDetalhes />}
             />
             <Route
               path="/forum/adicionar-publicacao"
