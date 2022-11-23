@@ -206,8 +206,8 @@ function TextInput({
           </label>
           <AsyncSelect
             noOptionsMessage={() => "Não encontrado"}
-            loadingMessage={() => "a procurar..."}
-            placeholder="pesquisar..."
+            loadingMessage={() => "a pesquisar..."}
+            placeholder="pesquisa..."
             className={` ${style}`}
             styles={
               multi

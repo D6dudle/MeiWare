@@ -66,6 +66,11 @@ export const Menus = [
         to: "forum/adicionar-publicacao",
         opened: false,
       },
+      {
+        title: "Aprovar publicações",
+        to: "forum/aprovar-publicacao",
+        opened: false,
+      }
     ],
   },
 ];

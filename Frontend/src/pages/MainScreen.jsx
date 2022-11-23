@@ -13,6 +13,7 @@ import { ErrorPage } from "./ErrorPage";
 import Grama from "../assets/Grama.svg";
 import AdicionarPublicacao from "./AdicionarPublicacao";
 import AdicionarColaborador from "./AdicionarColaborador";
+import AprovarPublicacao from "./AprovarPublicacao";
 import Exemplo from "./Exemplo";
 import PesquisarForum from "./PesquisarForum";
 import ListarPedidos from "./ListarPedidos";
@@ -60,6 +61,10 @@ export default function MainScreen() {
             <Route
               path="/forum/adicionar-publicacao"
               element={<AdicionarPublicacao />}
+            />
+            <Route
+              path="/forum/aprovar-publicacao"
+              element={<AprovarPublicacao />}
             />
             <Route path="/forum/pesquisar" element={<PesquisarForum />} />
             <Route path="/controlo" element={<ControloBudget />} />
