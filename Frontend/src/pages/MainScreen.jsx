@@ -17,6 +17,7 @@ import AprovarPublicacao from "./AprovarPublicacao";
 import Exemplo from "./Exemplo";
 import PesquisarForum from "./PesquisarForum";
 import ListarPedidos from "./ListarPedidos";
+import { useState, useRef } from "react";
 
 function MenuInicial() {
   return (
@@ -30,11 +31,19 @@ function MenuInicial() {
 }
 
 export default function MainScreen() {
+
+  const sidebar = useRef(null);
+
+  const handleChange = (tab) => {
+      sidebar.current(tab)
+  }
+
+
   return (
     <div className="relative flex bg-darkBlack" style={{ height: "100vh" }}>
-      <Sidebar />
+      <Sidebar trigger={sidebar} />
       <div className="flex-1 flex flex-col pt-4 pl-8 pr-8 bg-dar">
-        <Breadcrum />
+        <Breadcrum callback={handleChange} />
         <div className="bg-black2 h-[calc(100vh-4.5rem)] rounded-sm text-white">
           <Routes>
             {/* DEV */}

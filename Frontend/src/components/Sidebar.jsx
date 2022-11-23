@@ -5,10 +5,23 @@ import { NavLink } from "react-router-dom";
 import SidebarArrow from "../assets/sidebar/sidebarArrow.png";
 import LogoGrama from "../assets/sidebar/logoGrama.png";
 
-const Sidebar = () => {
+const Sidebar = ({trigger}) => {
+
   const [open, setOpen] = useState(true);
   const [submenuOpen, setSubmenuOpen] = useState(null);
   const [subMenuClicked, setSubmenuClicked] = useState(null);
+
+  const navigate = (tab) => {
+    console.log("SIDEBAR - Cliquei no ",tab)
+    let data = [...menus];
+    data[0].submenuItems[0].opened = true;
+    Menus[0].submenuItems[0].opened = true;
+    setMenu(data)
+  };
+
+  React.useEffect(() => {
+    trigger.current = navigate;
+  }, [trigger]);
 
   const handleMenuClick = (menu) => {
     if (menu.submenu) {
