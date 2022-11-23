@@ -4,6 +4,8 @@ import { Search } from "react-feather";
 import Select from "react-select";
 import { ChevronDown, ChevronUp, Filter, Minus, Plus } from "react-feather";
 
+import ForumTopic from "../components/ForumTopic";
+
 export const PesquisarForum = ({}) => {
 
     const [query, setQuery] = useState("");
@@ -50,12 +52,12 @@ export const PesquisarForum = ({}) => {
       ];
 
     return(
-        <div className="pl-8 pr-8 w-full h-full overflow-scroll scrollbar-hide">
+        <div className="pl-8 pr-8 h-full overflow-scroll scrollbar-hide">
             <h1 className="sticky text-white font-bold mt-[30px] text-2xl">
                 Pesquisar no Fórum
             </h1>
 
-            <div className="mt-8  justify-evenly w-full">
+            <div className="mt-8  justify-evenly">
                 <div className="flex flex-wrap justify-between sm:justify-start">
                     <div className="mr-20 w-8/12">
                         {/* PESQUISA... */}
@@ -115,6 +117,18 @@ export const PesquisarForum = ({}) => {
                             </button>
                         </div>
                     </div>
+                </div>
+                {/*Forum componente*/}                                        
+                <div>
+                    <ForumTopic
+                    username={"Bruno Gandres"}
+                    dataFormacao={"21/11/2000"}
+                    titulo={"Materiais React JS"}
+                    nomeformacao={"Introdução"}
+                    descricao={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget lobortis lectus, non sodales purus. Duis eget ex congue, mattis nulla vel, suscipit velit. Cras sollicitudin lectus ut nibh sollicitudin, eu sodales ligula bibendum. Integer elementum congue ultrices. Curabitur justo nulla, scelerisque id pellentesque nec, placerat vel urna. Duis condimentum lacinia auctor. Morbi sed nisl non magna congue convallis vitae sed enim."}
+                    
+                    />
+
                 </div>
             </div>
             <div>

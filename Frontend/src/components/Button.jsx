@@ -1,5 +1,5 @@
 import React from "react";
-import { Eye, Edit, XCircle, CheckCircle } from "react-feather";
+import { Eye, Edit, XCircle, CheckCircle, Archive} from "react-feather";
 
 /** @component Este componente é repossável por adicionar os botões ao retângulo de cada formação*/
 
@@ -36,6 +36,15 @@ export const Button = ({ iconName, textButton }) => {
       borderColor: "primary",
       textColor: "darkBlack",
       focus: "shadow-btn",
+    },
+    {
+      name: "ARQUIVAR",
+      icon: Archive,
+      background: "transparent border-[1.5px]",
+      background: "primary",
+      borderColor: "primary",
+      textColor: "darkBlack",
+      focus: "shadow-btn"
     },
   ];
   const icon = getIcon.find(({ name }) => name === iconName) || {};

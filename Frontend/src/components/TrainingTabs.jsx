@@ -4,6 +4,7 @@ import TextInput from "../components/TextInput";
 import { Formacao } from "../components/Formacao";
 import { Formacoes } from "../constants/formacoes";
 import DateOrder from "./DateOrder";
+import AproveOrder from "./AproveOrder";
 import users from "../constants/usersAux.json";
 
 export default function TrainingTabs() {
@@ -68,6 +69,7 @@ export default function TrainingTabs() {
             style={"w-[30rem]"}
             showTitle={false}
             callback={handleType}
+            value={search}
           />
           <div>
             <TextInput
@@ -87,6 +89,7 @@ export default function TrainingTabs() {
           </div>
           <div className="flex justify-center items-center">
             <DateOrder />
+            {activeFilter === "Formações pendentes" && <AproveOrder />}
           </div>
         </div>
       </div>
