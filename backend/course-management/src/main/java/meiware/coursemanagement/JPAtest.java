@@ -1,10 +1,15 @@
 package meiware.coursemanagement;
 
+import jdk.jshell.execution.Util;
+import meiware.coursemanagement.Entities.JPA.AnexoRef;
+import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import meiware.coursemanagement.Entities.JPA.Role;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import meiware.coursemanagement.Entities.MongoDB.Publicacao;
 import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
+import meiware.coursemanagement.Repositories.MongoDB.IAnexoRepository;
+import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
 import meiware.coursemanagement.Services.MongoDB.IPublicacaoService;
 import meiware.coursemanagement.Services.MongoDB.PublicacaoService;
@@ -31,6 +36,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.*;
 
 //@SpringBootApplication
@@ -47,6 +53,12 @@ public class JPAtest {
     @Autowired
     private IPublicacaoService publicacaoService;
 
+    @Autowired
+    private IPedidoFormacaoService pedidoFormacaoService;
+
+    @Autowired
+    private IAnexoRepository anexoRepository;
+
     @EventListener
     public void onApplicationEvent(ApplicationReadyEvent event) throws Exception {
         log.info("All Beans have been initizalized. Application is ready to service requests");
@@ -56,7 +68,7 @@ public class JPAtest {
 
     public void run(String... args) throws Exception {
 
-        /*// fetch customers by last name
+        // fetch customers by last name
         log.info("----- POSTGRES -----");
         log.info("Customer found with findByEmail('nelso@email.com'):");
 
@@ -71,7 +83,7 @@ public class JPAtest {
         try{
             Utilizador nelso = iUtilizadorRepository.findByEmail("nelso@email.com");
             Utilizador chad = iUtilizadorRepository.findByEmail("chad@email.com");
-            log.info(nelso.toString());
+            //log.info(nelso.toString());
             if(nelso != null)
                 log.info(nelso.toString());
             else
@@ -96,13 +108,54 @@ public class JPAtest {
         Optional<Utilizador> customer = iUtilizadorRepository.findById(4L);
         log.info("Customer found with findById(4L):");
         log.info(customer.toString());
-        log.info("--------------------------------------------");*/
+        log.info("--------------------------------------------");
 
 
 
         // for (Customer bauer : repository.findByLastName("Bauer")) {
         //  log.info(bauer.toString());
         // }
+
+        File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
+        FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+
+        File file2 = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_pm_t_L5_v1.1.pdf");
+        FileItem fileItem2 = new DiskFileItem("file2", Files.probeContentType(file2.toPath()), false, file2.getName(), (int) file2.length(), file2.getParentFile());
+
+
+        try {
+            InputStream input = new FileInputStream(file);
+            OutputStream os = fileItem.getOutputStream();
+            IOUtils.copy(input, os);
+
+            InputStream input2 = new FileInputStream(file2);
+            OutputStream os2 = fileItem2.getOutputStream();
+            IOUtils.copy(input2, os2);
+            // Or faster..
+            // IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
+        } catch (IOException ex) {
+            // do something.
+        }
+
+        MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+        MultipartFile multipartFile2 = new CommonsMultipartFile(fileItem2);
+
+        List<MultipartFile> files = new ArrayList<>();
+        files.add(multipartFile);
+        //files.add(multipartFile2);
+
+        PedidoFormacao pedidoFormacao = new PedidoFormacao("Pedido de Formacao", "Isto e um pedido de formacao...", "Formador", LocalDate.now(), 100);
+        pedidoFormacao.setQuemFezPedido(iUtilizadorRepository.findById(Long.valueOf(1)).get());
+        PedidoFormacao newPedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files).getId());
+
+        System.out.println(iUtilizadorRepository.findById(Long.valueOf(1)).get().getListFormacoes());
+        System.out.println(pedidoFormacaoService.getPedidoFormacaoById(newPedidoFormacao.getId()).getListAnexoRefs());
+
+        pedidoFormacaoService.removeAnexoFromPedidoFormacao(newPedidoFormacao, (AnexoRef) newPedidoFormacao.getListAnexoRefs().toArray()[0]);
+        System.out.println(iUtilizadorRepository.findById(Long.valueOf(1)).get().getListFormacoes());
+        System.out.println(pedidoFormacaoService.getPedidoFormacaoById(newPedidoFormacao.getId()).getListAnexoRefs());
+        anexoRepository.deleteAll();
+
         log.info("------- MONGO ------");
 
             /*try{
@@ -127,7 +180,7 @@ public class JPAtest {
                 log.info(post.toString());
             }*/
         //MongoDb files
-        File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
+        /*File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
         FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
         File file2 = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_pm_t_L5_v1.1.pdf");
@@ -161,7 +214,7 @@ public class JPAtest {
         Publicacao pub = publicacaoService.getPublicacaoById(id);
         pub.setTitulo("Titulo atualizado");
         pub.getAnexos().remove(0);
-        publicacaoService.updatePublicacao(pub);
+        publicacaoService.updatePublicacao(pub);*/
         //publicacaoService.removePublicacao(pub);
         //String id = anexoService.createAnexo(multipartFile);
         //Anexo anexo = anexoService.getAnexoById(id);

@@ -28,14 +28,14 @@ public class Utilizador {
     @JoinColumn(name = "Utilizador_id")
     private Set<Role> roles;
 
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Utilizador manager;
 
     @OneToMany(mappedBy = "id")
     private List<Budget> listBudget;
 
-    @OneToMany(mappedBy = "id")
-    private List<PedidoFormacao> listFormacoes;
+    @OneToMany(mappedBy = "quemFezPedido", fetch = FetchType.EAGER)
+    private Set<PedidoFormacao> listFormacoes;
 
     public Utilizador(){    }
 
@@ -104,6 +104,14 @@ public class Utilizador {
 
     public void setListBudget(List<Budget> listBudget) {
         this.listBudget = listBudget;
+    }
+
+    public Set<PedidoFormacao> getListFormacoes() {
+        return listFormacoes;
+    }
+
+    public void setListFormacoes(Set<PedidoFormacao> listFormacoes) {
+        this.listFormacoes = listFormacoes;
     }
 
     public boolean isAdministrador() {
