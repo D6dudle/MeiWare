@@ -11,7 +11,8 @@ export const ForumTopic = ({username,
     nomeformacao, 
     descricao, 
     cursoId,
-    aprovar=false
+    aprovar=false,
+    urlBack
     }) => {
 
     const navigate = useNavigate();
@@ -159,7 +160,8 @@ export const ForumTopic = ({username,
                             titulo, 
                             nomeformacao, 
                             descricao, 
-                            cursoId, 
+                            cursoId,
+                            urlBack 
                         })}>
                     <Button 
                     iconName={"CONSULTAR"}

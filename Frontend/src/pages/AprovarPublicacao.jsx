@@ -141,6 +141,7 @@ export default function AprovarPublicacao() {
                         arquivar={true}
                         publicacaoCompleta={true}
                         aprovar={true}
+                        urlBack={"/home/forum/aprovar-publicacao"}
                       />
                   </div>
                 </div>

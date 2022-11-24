@@ -20,6 +20,7 @@ export const PesquisarForumConsulta = ({}) => {
                     cursoId={location.state.cursoId}
                     preco={"79€"}
                     tags={["ReactJS", "Frontend"]}
+                    urlBack={location.state.urlBack}
                     />
 
                 </div>

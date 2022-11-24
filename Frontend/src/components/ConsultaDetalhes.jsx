@@ -7,13 +7,13 @@ import GoBackButton from "../components/GoBackButton";
 
 export const ConsultaDetalhes = ({
     titulo, 
-    fornecedor,
     username,
     dataFormacao,
     nomeformacao,
     descricao,
     cursoId,
-    tags
+    tags,
+    urlBack
     }) => {
 
     const files = [
@@ -56,7 +56,7 @@ export const ConsultaDetalhes = ({
             <div className="flex order-none justify-between">
                 {/*Titulo*/}
                 <div className="flex flex-row justify-start pt-4 pl-4 items-center">
-                    <GoBackButton url={"/home/forum/pesquisar"}/>
+                    <GoBackButton url={urlBack}/>
                     <p className="text-white font-semibold pt-3 text-xl pl-4 pb-4">
                     <span className="text-gray3 text-xl ">Titulo: </span>
                     {titulo}

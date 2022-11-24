@@ -129,6 +129,7 @@ export const PesquisarForum = ({}) => {
                     cursoId={"G-C-765"}
                     arquivar={true}
                     publicacaoCompleta={true}
+                    urlBack={"/home/forum/pesquisar"}
                     />
 
                 </div>
