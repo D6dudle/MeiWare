@@ -10,6 +10,7 @@ export const ForumTopic = ({username,
     nomeformacao, 
     descricao, 
     cursoId,
+    aprovar=false
     }) => {
 
     const files = [
@@ -153,6 +154,20 @@ export const ForumTopic = ({username,
                     iconName={"CONSULTAR"}
                     textButton={"Ver Publicação Completa"}
                     />
+                </div>
+                <div className="flex flex-row justify-between gap-2" 
+                style={{ display: aprovar ? "flex" : "none" }}
+                onClick={arquivarPublicacaoHandler}>
+                        <Button 
+                            iconName={"CANCELAR"}
+                            textButton={"Rejeitar"}
+                            
+                        />
+                        <Button 
+                            iconName={"FINALIZAR"}
+                            textButton={"Aprovar"}
+                            
+                        />
                 </div>
             </div>
 
