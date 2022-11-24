@@ -159,15 +159,18 @@ public class JPAtest {
 
         String id = publicacaoService.createPublicacao(publicacao, files);
         Publicacao pub = publicacaoService.getPublicacaoById(id);
-
+        pub.setTitulo("Titulo atualizado");
+        pub.getAnexos().remove(0);
+        publicacaoService.updatePublicacao(pub);
+        //publicacaoService.removePublicacao(pub);
         //String id = anexoService.createAnexo(multipartFile);
         //Anexo anexo = anexoService.getAnexoById(id);
 
-        File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(0).getNome());
+        /*File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(0).getNome());
         File newFile2 = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(1).getNome());
 
         FileUtils.writeByteArrayToFile(newFile, pub.getAnexos().get(0).getConteudo().getData());
-        FileUtils.writeByteArrayToFile(newFile2, pub.getAnexos().get(1).getConteudo().getData());
+        FileUtils.writeByteArrayToFile(newFile2, pub.getAnexos().get(1).getConteudo().getData());*/
 
 
         log.info("");

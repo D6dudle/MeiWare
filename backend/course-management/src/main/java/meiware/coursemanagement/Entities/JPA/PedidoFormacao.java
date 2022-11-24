@@ -53,7 +53,7 @@ public class PedidoFormacao {
     private LocalDate dataUltimoUpdate;
 
     @OneToMany(mappedBy = "id")
-    private List<AnexoRef> listAnexos;
+    private List<AnexoRef> listAnexoRefs;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     Utilizador quemFezPedido;
@@ -186,12 +186,12 @@ public class PedidoFormacao {
         this.dataUltimoUpdate = dataUltimoUpdate;
     }
 
-    public List<AnexoRef> getListAnexos() {
-        return listAnexos;
+    public List<AnexoRef> getListAnexoRefs() {
+        return listAnexoRefs;
     }
 
-    public void setListAnexos(List<AnexoRef> listAnexos) {
-        this.listAnexos = listAnexos;
+    public void setListAnexoRefs(List<AnexoRef> listAnexoRefs) {
+        this.listAnexoRefs = listAnexoRefs;
     }
 
     @Override
@@ -211,7 +211,7 @@ public class PedidoFormacao {
                 ", apagadaNaData=" + apagadaNaData +
                 ", dataCriacao=" + dataCriacao +
                 ", dataUltimoUpdate=" + dataUltimoUpdate +
-                ", listAnexos=" + listAnexos +
+                ", listAnexoRef=" + listAnexoRefs +
                 '}';
     }
 }

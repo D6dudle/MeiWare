@@ -15,15 +15,15 @@ public class AnexoRef {
     private String path; // Representa o id na base de dados MongoDB
 
     @NotNull
-    private String tipo;
+    private String nome;
 
     public AnexoRef() {
 
     }
 
-    public AnexoRef(String path, String tipo) {
+    public AnexoRef(String path, String nome) {
         this.path = path;
-        this.tipo = tipo;
+        this.nome = nome;
     }
 
     public String getId() {
@@ -38,12 +38,12 @@ public class AnexoRef {
         this.path = path;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getNome() {
+        return nome;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     @Override

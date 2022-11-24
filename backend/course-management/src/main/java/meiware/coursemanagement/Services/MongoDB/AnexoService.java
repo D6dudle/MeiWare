@@ -28,13 +28,13 @@ public class AnexoService implements IAnexoService {
     }
 
     @Override
-    public String createAnexo(MultipartFile file) throws IOException {
+    public Anexo createAnexo(MultipartFile file) throws IOException {
         Anexo anexo = new Anexo(file.getOriginalFilename());
 
         anexo.setConteudo(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
         anexo = anexoRepository.insert(anexo);
 
-        return anexo.getId();
+        return anexo;
     }
 
     @Override
