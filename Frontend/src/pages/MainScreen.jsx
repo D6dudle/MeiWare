@@ -18,6 +18,7 @@ import AprovarPublicacao from "./AprovarPublicacao";
 import Exemplo from "./Exemplo";
 import PesquisarForum from "./PesquisarForum";
 import ListarPedidos from "./ListarPedidos";
+import PesquisarForumConsulta from "./PesquisarForumConsulta";
 import { useState, useRef } from "react";
 
 function MenuInicial() {
@@ -80,10 +81,26 @@ export default function MainScreen() {
               path="/forum/aprovar-publicacao"
               element={<AprovarPublicacao />}
             />
-            <Route path="/forum/pesquisar" element={<PesquisarForum />} />
-            <Route path="/controlo" element={<ControloBudget />} />
-            <Route path="/controlo/gerir-pedidos" element={<GerirPedidos />} />
-            <Route path="/controlo/colaboradores" element={<Colaboradores />} />
+            <Route 
+              path="/forum/pesquisar" 
+              element={<PesquisarForum />} 
+            />
+            <Route 
+              path="/forum/ver-publicacao-completa" 
+              element={<PesquisarForumConsulta />} 
+            />
+            <Route 
+              path="/controlo" 
+              element={<ControloBudget />} 
+            />
+            <Route 
+              path="/controlo/gerir-pedidos" 
+              element={<GerirPedidos />} 
+            />
+            <Route 
+              path="/controlo/colaboradores" 
+              element={<Colaboradores />} 
+            />
             <Route
               path="/controlo/colaboradores/adicionar-colaborador"
               element={<AdicionarColaborador />}
