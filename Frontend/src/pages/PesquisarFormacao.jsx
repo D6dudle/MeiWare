@@ -27,12 +27,22 @@ export const PesquisarFormacao = ({}) => {
 
   const dataCard = [
     {
+      username: "Pedro",
+      nomeformacao: "Introdução a Angular",
+      dataFormacao: "16/11/2022 14:00",
+      justificacaoFormacao:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      idCurso: "P-T-331",
+      tipoFormacao: "TERMINADA",
+      consultar: true,
+    },
+    {
       username: "Henrique",
       nomeformacao: "Introdução a Java",
       dataFormacao: "18/11/2022 14:00",
       justificacaoFormacao:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      idCurso: "G-C-765",
+      idCurso: "H-T-666",
       tipoFormacao: "CURSO",
     },
     {
@@ -41,17 +51,8 @@ export const PesquisarFormacao = ({}) => {
       dataFormacao: "17/11/2022 14:00",
       justificacaoFormacao:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      idCurso: "G-C-765",
+      idCurso: "J-F-111",
       tipoFormacao: "PENDENTE",
-    },
-    {
-      username: "Pedro",
-      nomeformacao: "Introdução a Angular",
-      dataFormacao: "16/11/2022 14:00",
-      justificacaoFormacao:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      idCurso: "G-C-765",
-      tipoFormacao: "TERMINADA",
     },
   ];
 
@@ -193,6 +194,7 @@ export const PesquisarFormacao = ({}) => {
               justificacaoFormacao={card.justificacaoFormacao}
               idCurso={card.idCurso}
               tipoFormacao={card.tipoFormacao}
+              consultar={card.consultar}
             />
           ))}
       </div>

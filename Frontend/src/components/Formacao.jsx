@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "../components/Button";
 import { Image, Edit } from "react-feather";
+import { useNavigate } from 'react-router-dom';
 
 export const Formacao = ({
   username,
@@ -22,9 +23,11 @@ export const Formacao = ({
     ({ tipo }) => tipo == tipoFormacao
   );
 
-  const handleConsultarFormacaoClick = (e) => {
+  const navigate = useNavigate();
+
+  const handleConsultarFormacaoClick = (e, formacao) => {
     e.preventDefault();
-    alert("Click em Consultar formação");
+    navigate(`/home/formacao/pesquisar-detalhes`, {state:formacao});
   };
 
   const handleEditarFormacaoClick = (e) => {
@@ -59,7 +62,15 @@ export const Formacao = ({
 
             <div className="flex flex-row gap-4 mr-4 pt-4 md:pt-0">
               {consultar ? (
-                <div className="" onClick={handleConsultarFormacaoClick}>
+                <div className="" onClick={e => handleConsultarFormacaoClick(e, {
+                  username,
+                  nomeformacao,
+                  dataFormacao,
+                  justificacaoFormacao,
+                  idCurso,
+                  tipoFormacao,
+                  consultar,
+                })}>
                   <Button className="h-10" iconName="CONSULTAR" textButton="" />
                 </div>
               ) : null}

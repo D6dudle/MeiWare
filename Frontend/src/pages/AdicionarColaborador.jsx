@@ -60,7 +60,7 @@ export default function AdicionarColaborador() {
   return (
     <div className="w-full h-full overflow-y-hidden ml-8 mr-8">
       <div className="sticky mt-16 ml-8 flex flex-row items-center gap-5">
-        <GoBackButton />
+        <GoBackButton url={"/home/controlo/colaboradores"}/>
         <h1 className="text-white font-bold text-3xl">Adicionar Colaborador</h1>
       </div>
 

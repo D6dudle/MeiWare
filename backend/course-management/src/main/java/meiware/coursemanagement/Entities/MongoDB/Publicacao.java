@@ -17,6 +17,10 @@ public class Publicacao {
     public Publicacao() {
     }
 
+    public Publicacao(String titulo, String conteudo) {
+        this.titulo = titulo;
+        this.conteudo = conteudo;
+    }
     public String getId() {
         return id;
     }
