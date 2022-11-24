@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menus } from "../constants/menuConstants";
 import { LogOut } from "react-feather";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import SidebarArrow from "../assets/sidebar/sidebarArrow.png";
 import LogoGrama from "../assets/sidebar/logoGrama.png";
 
@@ -11,58 +11,74 @@ const Sidebar = ({trigger}) => {
   const [submenuOpen, setSubmenuOpen] = useState(null);
   const [subMenuClicked, setSubmenuClicked] = useState(null);
 
-  const navigate = (tab) => {
-    console.log("SIDEBAR - Cliquei no ",tab)
-    let data = [...menus];
-    data[0].submenuItems[0].opened = true;
-    Menus[0].submenuItems[0].opened = true;
-    setMenu(data)
+  const location = useLocation();
+  
+  const [path, setPath] = useState("");
+  const [menus, setMenu] = useState(Menus);
+
+  const nav = useNavigate();
+
+  function possiblePaths(path){
+
+    let pathElem = path.split('/');
+    let home = pathElem.indexOf("home");
+
+    pathElem = pathElem.slice(home+1,pathElem.length)
+
+    let posPaths = []
+
+    for(let i=1; i<=pathElem.length; i++){
+      posPaths.push(pathElem.slice(0,i).join("/"))
+    }
+
+    return posPaths
+
+  }
+
+  function updateMenu(newPath, oldPath) {
+
+    let newPossiblePaths = possiblePaths(newPath);
+    let oldPossiblePaths = [];
+
+    if(oldPath != null){
+      oldPossiblePaths = possiblePaths(oldPath);
+    }
+
+    //console.log("OLD ",oldPossiblePaths)
+    //console.log("NEW ",newPossiblePaths)
+    
+
+    let final = JSON.stringify(menus, (_, nestedValue) => {
+
+      if (nestedValue && newPossiblePaths.includes(nestedValue["to"])){
+        nestedValue["opened"] = true;
+      }else if(nestedValue && oldPossiblePaths.includes(nestedValue["to"])){
+        nestedValue["opened"] = false;
+      }
+
+      return nestedValue;
+    });
+
+    final = JSON.parse(final);
+
+    setPath(newPath)
+
+  }
+
+  useEffect(() => {
+    
+    updateMenu(location.pathname)
+
+  }, []); 
+
+  const navigate = (tab, old) => {
+    //console.log("SIDEBAR - Cliquei no ",tab," OLD ",old)
+    updateMenu(tab, old)
   };
 
   React.useEffect(() => {
     trigger.current = navigate;
   }, [trigger]);
-
-  const handleMenuClick = (menu) => {
-    if (menu.submenu) {
-      setSubmenuOpen(
-        Menus.map((a) => {
-          if (a.title !== menu.title) {
-            a.opened = false;
-          } else {
-            if (a.opened) {
-              if (a.submenuItems[0].title === "Pesquisar") {
-                a.submenuItems.map((b) => (b.opened = false));
-                a.submenuItems[0].opened = true;
-              } else {
-                a.submenuItems.map((b) => (b.opened = false));
-              }
-            } else {
-              if (a.submenuItems[0].title === "Pesquisar") {
-                a.submenuItems.map((b) => (b.opened = false));
-                a.submenuItems[0].opened = true;
-              } else {
-                a.submenuItems.map((b) => (b.opened = false));
-              }
-              a.opened = true;
-            }
-          }
-        })
-      );
-    }
-  };
-
-  const handleSubMenuClick = (menu, submenuItem) => {
-    setSubmenuClicked(
-      menu.submenuItems.map((a) => {
-        if (a.title !== submenuItem.title) {
-          a.opened = false;
-        } else {
-          a.opened = true;
-        }
-      })
-    );
-  };
 
   const handleLogout = () => {
     alert("Logout");
@@ -90,61 +106,60 @@ const Sidebar = ({trigger}) => {
         />
 
         {/* Menu */}
-        {Menus.map((menu, index) => (
-          <div key={index} className="relative top-24">
-            <div className="divMenuItem">
-              <NavLink
-                key={index}
-                to={menu.to}
-                className={`menuItem ${
-                  open
-                    ? "w-44" &&
-                      (menu.opened
-                        ? "bg-primary rounded-sm text-darkBlack"
-                        : "w-44")
-                    : "w-12" &&
-                      (menu.opened
-                        ? "w-12 bg-primary rounded-sm text-darkBlack"
-                        : "w-12")
-                }`}
-                onClick={() => {
-                  handleMenuClick(menu);
-                }}
-              >
-                <span className="menuIcon">{menu.icon}</span>
-                <span className={`menuTitle duration-400 ${!open && "hidden"}`}>
-                  {menu.title}
-                </span>
-              </NavLink>
-            </div>
+        {menus.map((menu, index) => {
+          return(
+            <div key={index} className="relative top-24">
+              <div className="divMenuItem">
+                <NavLink
+                  key={index}
+                  to={menu.path ? menu.path : menu.to}
+                  className={`menuItem ${
+                    open
+                      ? "w-44" &&
+                        (menu.opened
+                          ? "bg-primary rounded-sm text-darkBlack"
+                          : "w-44")
+                      : "w-12" &&
+                        (menu.opened
+                          ? "w-12 bg-primary rounded-sm text-darkBlack"
+                          : "w-12")
+                  }`}
+                  onClick={ event => updateMenu(menu.to, path) }
+                >
+                  <span className="menuIcon">{menu.icon}</span>
+                  <span className={`menuTitle duration-400 ${!open && "hidden"}`}>
+                    {menu.title}
+                  </span>
+                </NavLink>
+              </div>
 
-            {menu.submenu && menu.opened && open && (
-              <ul>
-                {menu.submenuItems.map((submenuItem, index) => (
-                  <div
-                    key={index}
-                    className={`divSubmenu ${
-                      submenuItem.opened && "border-r-2 border-r-primary "
-                    }`}
-                  >
-                    <NavLink
+              {menu.submenu && menu.opened && open && (
+                <ul>
+                  {menu.submenuItems.map((submenuItem, index) => (
+                    <div
                       key={index}
-                      to={submenuItem.to}
-                      className={`submenuItem ${
-                        submenuItem.opened ? "text-primary" : "text-white"
+                      className={`divSubmenu ${
+                        submenuItem.opened && "border-r-2 border-r-primary "
                       }`}
-                      onClick={() => {
-                        handleSubMenuClick(menu, submenuItem);
-                      }}
                     >
-                      {submenuItem.title}
-                    </NavLink>
-                  </div>
-                ))}
-              </ul>
-            )}
-          </div>
-        ))}
+                      <NavLink
+                        key={index}
+                        to={submenuItem.to}
+                        className={`submenuItem ${
+                          submenuItem.opened ? "text-primary" : "text-white"
+                        }`}
+                        onClick={event => updateMenu(submenuItem.to, path)}
+                      >
+                        {submenuItem.title}
+                      </NavLink>
+                    </div>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )
+        }
+        )}
 
         {/* Logout */}
         <ul className="absolute bottom-20">

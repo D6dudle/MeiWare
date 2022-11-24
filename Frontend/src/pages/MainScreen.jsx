@@ -34,8 +34,8 @@ export default function MainScreen() {
 
   const sidebar = useRef(null);
 
-  const handleChange = (tab) => {
-      sidebar.current(tab)
+  const handleChange = (tab, old) => {
+      sidebar.current(tab, old)
   }
 
 

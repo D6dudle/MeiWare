@@ -22,6 +22,7 @@ export const Menus = [
       {
         title: "Listar Formação",
         to: "formacao/listar-formacao",
+        opened: false,
       },
     ],
   },
@@ -51,7 +52,8 @@ export const Menus = [
   },
   {
     title: "Fórum",
-    to: "forum/pesquisar",
+    to: "forum",
+    path : "forum/pesquisar",
     icon: <Book className="w-4 h-4" />,
     submenu: true,
     opened: false,
