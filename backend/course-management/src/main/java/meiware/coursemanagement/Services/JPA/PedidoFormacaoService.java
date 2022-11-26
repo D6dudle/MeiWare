@@ -86,7 +86,6 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
 
     @Override
     public PedidoFormacao getPedidoFormacaoById(Long id) {
-
         try {
             PedidoFormacao pd = pedidoFormacaoRepository.findById(id).orElse(null);
 

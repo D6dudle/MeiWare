@@ -11,5 +11,6 @@ public interface IPublicacaoService {
     Publicacao getPublicacaoById(String id);
     String createPublicacao(Publicacao newPublicacao, List<MultipartFile> files) throws IOException;
     void updatePublicacao(Publicacao updatedPublicacao);
+    void arquivarPublicacao(Publicacao publicacao);
     void removePublicacao(Publicacao publicacao);
 }

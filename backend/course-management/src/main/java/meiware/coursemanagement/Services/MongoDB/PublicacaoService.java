@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,25 +20,33 @@ public class PublicacaoService implements IPublicacaoService {
 
     @Override
     public List<Publicacao> getPublicacoes() {
+        List<Publicacao> publicacoes = new ArrayList<>();
         try {
-            return publicacaoRepository.findAll();
+            for (Publicacao p: publicacaoRepository.findAll()) {
+                if(!p.isArquivada()) {
+                    publicacoes.add(p);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return publicacoes;
+    }
+
+    @Override
+    public Publicacao getPublicacaoById(String id) {
+        try {
+            Publicacao publicacao = publicacaoRepository.findById(id).orElse(null);
+
+            if(publicacao != null && !publicacao.isArquivada()) {
+                return publicacao;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
-    }
-
-    @Override
-    public Publicacao getPublicacaoById(String id) {
-        Publicacao publicacao = null;
-        try {
-            publicacao = publicacaoRepository.findById(id).orElse(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return publicacao;
     }
 
     @Override
@@ -66,7 +73,19 @@ public class PublicacaoService implements IPublicacaoService {
         try {
             publicacaoRepository.save(updatedPublicacao);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    @Override
+    public void arquivarPublicacao(Publicacao publicacao) {
+        try {
+            if(this.getPublicacaoById(publicacao.getId()) != null) {
+                publicacao.setArquivada();
+                publicacaoRepository.save(publicacao);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -79,7 +98,7 @@ public class PublicacaoService implements IPublicacaoService {
 
             publicacaoRepository.delete(publicacao);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 }
