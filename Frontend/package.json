@@ -8,6 +8,8 @@
     "build": "vite build",
     "preview": "vite preview"
   },
+  
+
   "dependencies": {
     "@material-tailwind/react": "^1.2.4",
     "chart.js": "^4.0.1",

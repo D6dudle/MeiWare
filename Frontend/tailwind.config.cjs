@@ -21,6 +21,9 @@ module.exports = {
         'success' : '#93D1AD',
         'lightError': '#FF5555',
         'pastel':'#FFEFA1',
+        'green1': '#94EBCD',
+        'violet1': '#AA96DA'
+
       },
       boxShadow: {
         'btn': '0 0 4px 0.5px rgba(236, 192, 57, 1)',
