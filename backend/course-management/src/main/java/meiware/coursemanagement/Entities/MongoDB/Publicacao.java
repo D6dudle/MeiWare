@@ -13,6 +13,7 @@ public class Publicacao {
     private String titulo;
     private String conteudo;
 
+    private boolean arquivada;
     private List<Anexo> anexos;
     public Publicacao() {
     }
@@ -20,6 +21,7 @@ public class Publicacao {
     public Publicacao(String titulo, String conteudo) {
         this.titulo = titulo;
         this.conteudo = conteudo;
+        this.arquivada = false;
     }
     public String getId() {
         return id;
@@ -44,6 +46,18 @@ public class Publicacao {
 
     public List<Anexo> getAnexos() {
         return anexos;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public boolean isArquivada() {
+        return arquivada;
+    }
+
+    public void setArquivada() {
+        this.arquivada = true;
     }
 
     public void setAnexos(List<Anexo> anexos) {

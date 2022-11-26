@@ -69,7 +69,7 @@ public class JPAtest {
     public void run(String... args) throws Exception {
 
         // fetch customers by last name
-        log.info("----- POSTGRES -----");
+        /*log.info("----- POSTGRES -----");
         log.info("Customer found with findByEmail('nelso@email.com'):");
 
         // Sample lists
@@ -108,7 +108,7 @@ public class JPAtest {
         Optional<Utilizador> customer = iUtilizadorRepository.findById(4L);
         log.info("Customer found with findById(4L):");
         log.info(customer.toString());
-        log.info("--------------------------------------------");
+        log.info("--------------------------------------------");*/
 
 
 
@@ -116,7 +116,7 @@ public class JPAtest {
         //  log.info(bauer.toString());
         // }
 
-        File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
+        /*File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
         FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
         File file2 = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_pm_t_L5_v1.1.pdf");
@@ -141,10 +141,10 @@ public class JPAtest {
         MultipartFile multipartFile2 = new CommonsMultipartFile(fileItem2);
 
         List<MultipartFile> files = new ArrayList<>();
-        files.add(multipartFile);
+        files.add(multipartFile);*/
         //files.add(multipartFile2);
 
-        PedidoFormacao pedidoFormacao = new PedidoFormacao("Pedido de Formacao", "Isto e um pedido de formacao...", "Formador", LocalDate.now(), 100);
+        /*PedidoFormacao pedidoFormacao = new PedidoFormacao("Pedido de Formacao", "Isto e um pedido de formacao...", "Formador", LocalDate.now(), 100);
         pedidoFormacao.setQuemFezPedido(iUtilizadorRepository.findById(Long.valueOf(1)).get());
         PedidoFormacao newPedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files).getId());
 
@@ -154,7 +154,7 @@ public class JPAtest {
         pedidoFormacaoService.removeAnexoFromPedidoFormacao(newPedidoFormacao, (AnexoRef) newPedidoFormacao.getListAnexoRefs().toArray()[0]);
         System.out.println(iUtilizadorRepository.findById(Long.valueOf(1)).get().getListFormacoes());
         System.out.println(pedidoFormacaoService.getPedidoFormacaoById(newPedidoFormacao.getId()).getListAnexoRefs());
-        anexoRepository.deleteAll();
+        anexoRepository.deleteAll();*/
 
         log.info("------- MONGO ------");
 
@@ -180,7 +180,7 @@ public class JPAtest {
                 log.info(post.toString());
             }*/
         //MongoDb files
-        /*File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
+        File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
         FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
         File file2 = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_pm_t_L5_v1.1.pdf");
@@ -212,13 +212,11 @@ public class JPAtest {
 
         String id = publicacaoService.createPublicacao(publicacao, files);
         Publicacao pub = publicacaoService.getPublicacaoById(id);
-        pub.setTitulo("Titulo atualizado");
-        pub.getAnexos().remove(0);
-        publicacaoService.updatePublicacao(pub);*/
+        publicacaoService.arquivarPublicacao(pub);
         //publicacaoService.removePublicacao(pub);
         //String id = anexoService.createAnexo(multipartFile);
         //Anexo anexo = anexoService.getAnexoById(id);
-
+        System.out.println(publicacaoService.getPublicacoes());
         /*File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(0).getNome());
         File newFile2 = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(1).getNome());
 
