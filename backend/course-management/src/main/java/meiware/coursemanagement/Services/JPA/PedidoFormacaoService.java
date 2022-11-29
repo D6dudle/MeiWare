@@ -43,13 +43,13 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
-    public List<FormacaoAprovada> getFormacoesAprovadas() {
-        List<FormacaoAprovada> formacoesAprovadas = new ArrayList<>();
+    public List<PedidoAprovado> getFormacoesAprovadas() {
+        List<PedidoAprovado> formacoesAprovadas = new ArrayList<>();
 
         try {
             for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
-                if(!pd.isApagada() && (pd instanceof FormacaoAprovada)) {
-                    formacoesAprovadas.add((FormacaoAprovada) pd);
+                if(!pd.isApagada() && (pd instanceof PedidoAprovado)) {
+                    formacoesAprovadas.add((PedidoAprovado) pd);
                 }
             }
         } catch (Exception e) {
@@ -61,13 +61,13 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
-    public List<FormacaoRejeitada> getFormacoesRejeitadas() {
-        List<FormacaoRejeitada> formacoesRejeitadas = new ArrayList<>();
+    public List<PedidoRejeitado> getFormacoesRejeitadas() {
+        List<PedidoRejeitado> formacoesRejeitadas = new ArrayList<>();
 
         try {
             for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
-                if(!pd.isApagada() && (pd instanceof FormacaoRejeitada)) {
-                    formacoesRejeitadas.add((FormacaoRejeitada) pd);
+                if(!pd.isApagada() && (pd instanceof PedidoRejeitado)) {
+                    formacoesRejeitadas.add((PedidoRejeitado) pd);
                 }
             }
         } catch (Exception e) {
