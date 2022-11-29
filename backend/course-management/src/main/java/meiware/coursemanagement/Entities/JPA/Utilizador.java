@@ -3,7 +3,6 @@ package meiware.coursemanagement.Entities.JPA;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,7 +36,7 @@ public class Utilizador {
     @OneToMany(mappedBy = "quemFezPedido", fetch = FetchType.EAGER)
     private Set<PedidoFormacao> listPedidos;
 
-    @ManyToMany(mappedBy = "formandoList")
+    @ManyToMany(mappedBy = "formandos")
     private Set<PedidoAprovado> listFormacoes;
 
     public Utilizador(){    }

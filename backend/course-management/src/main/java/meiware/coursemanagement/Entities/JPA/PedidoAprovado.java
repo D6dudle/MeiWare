@@ -20,7 +20,7 @@ public class PedidoAprovado extends PedidoFormacao{
     private Utilizador quemAprovou;
 
     @ManyToMany(mappedBy = "listFormacoes")
-    private Set<Utilizador> formandoList;
+    private Set<Utilizador> formandos;
 
     public PedidoAprovado(){
 
@@ -63,11 +63,11 @@ public class PedidoAprovado extends PedidoFormacao{
         this.quemAprovou = quemAprovou;
     }
 
-    public Set<Utilizador> getFormandoList() {
-        return formandoList;
+    public Set<Utilizador> getFormandos() {
+        return formandos;
     }
 
-    public void setFormandoList(Set<Utilizador> formandoList) {
-        this.formandoList = formandoList;
+    public void setFormandos(Set<Utilizador> formandos) {
+        this.formandos = formandos;
     }
 }
