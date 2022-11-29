@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +83,7 @@ public class PublicacaoService implements IPublicacaoService {
         try {
             if(this.getPublicacaoById(publicacao.getId()) != null) {
                 publicacao.setArquivada();
+                publicacao.setArquivadaEm(LocalDate.now());
                 publicacaoRepository.save(publicacao);
             }
         } catch (Exception e) {

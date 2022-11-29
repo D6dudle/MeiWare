@@ -208,7 +208,7 @@ public class JPAtest {
         files.add(multipartFile);
         files.add(multipartFile2);
 
-        Publicacao publicacao = new Publicacao("Publicacao Teste", "Isto e uma publicacao teste...");
+        Publicacao publicacao = new Publicacao("Publicacao Teste", "Isto e uma publicacao teste...", new HashSet<>(), "Formacao 1");
 
         String id = publicacaoService.createPublicacao(publicacao, files);
         Publicacao pub = publicacaoService.getPublicacaoById(id);
