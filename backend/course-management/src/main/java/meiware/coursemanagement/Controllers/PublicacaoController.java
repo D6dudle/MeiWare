@@ -1,4 +1,4 @@
 package meiware.coursemanagement.Controllers;
 
-public class FormacaoAprovadaController {
+public class PublicacaoController {
 }

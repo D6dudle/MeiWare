@@ -2,15 +2,13 @@ package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @DiscriminatorValue("APROVADA")
-public class FormacaoAprovada extends PedidoFormacao{
+public class PedidoAprovado extends PedidoFormacao{
     @NotNull
     @Column(columnDefinition = "DATE")
     private LocalDate dataAprovacao;
@@ -21,11 +19,14 @@ public class FormacaoAprovada extends PedidoFormacao{
     @ManyToOne
     private Utilizador quemAprovou;
 
-    public FormacaoAprovada(){
+    @ManyToMany(mappedBy = "listFormacoes")
+    private Set<Utilizador> formandoList;
+
+    public PedidoAprovado(){
 
     }
 
-    public FormacaoAprovada(String nome, String descricao, String formador, LocalDate dataInicio, float preco, LocalDate dataAprovacao){
+    public PedidoAprovado(String nome, String descricao, String formador, LocalDate dataInicio, float preco, LocalDate dataAprovacao){
         super(nome, descricao, formador, dataInicio, preco);
         this.dataAprovacao = dataAprovacao;
     }
@@ -60,5 +61,13 @@ public class FormacaoAprovada extends PedidoFormacao{
 
     public void setQuemAprovou(Utilizador quemAprovou) {
         this.quemAprovou = quemAprovou;
+    }
+
+    public Set<Utilizador> getFormandoList() {
+        return formandoList;
+    }
+
+    public void setFormandoList(Set<Utilizador> formandoList) {
+        this.formandoList = formandoList;
     }
 }
