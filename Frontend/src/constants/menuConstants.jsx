@@ -51,28 +51,28 @@ export const Menus = [
     ],
   },
   {
-    title: "Fórum",
-    to: "forum",
-    path : "forum/pesquisar",
+    title: "Knowledge base",
+    to: "knowledge",
+    path: "knowledge/pesquisar",
     icon: <Book className="w-4 h-4" />,
     submenu: true,
     opened: false,
     submenuItems: [
       {
         title: "Pesquisar",
-        to: "forum/pesquisar",
+        to: "knowledge/pesquisar",
         opened: false,
       },
       {
         title: "Adicionar publicação",
-        to: "forum/adicionar-publicacao",
+        to: "knowledge/adicionar-publicacao",
         opened: false,
       },
       {
         title: "Aprovar publicações",
-        to: "forum/aprovar-publicacao",
+        to: "knowledge/aprovar-publicacao",
         opened: false,
-      }
+      },
     ],
   },
 ];
