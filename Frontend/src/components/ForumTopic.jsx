@@ -153,7 +153,7 @@ export const ForumTopic = ({username,
             </div>
 
             <div className="flex flex-none order-6 pr-[20px] pl-4 pb-3">
-                <div className="flex flex-row justify-between items-center w-4/5" onClick={e => verPublicacaoHandler(e,
+                <div className="flex flex-row justify-end items-center w-full" onClick={e => verPublicacaoHandler(e,
                         {
                             username,
                             dataPublicacao, 

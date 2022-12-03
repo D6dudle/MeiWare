@@ -51,11 +51,10 @@ export const PublicacaoDetalhes = ({
 
     return(
         <div className="flex-none order-none grow-0 ">
-            {/*Btn voltar*/}
-            
             <div className="flex order-none justify-between">
                 {/*Titulo*/}
                 <div className="flex flex-row justify-start pt-4 pl-4 items-center">
+                    {/*Btn voltar*/}
                     <GoBackButton url={urlBack}/>
                     <p className="text-white font-semibold pt-3 text-xl pl-4 pb-4">
                     <span className="text-gray3 text-xl ">Titulo: </span>
