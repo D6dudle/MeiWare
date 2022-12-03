@@ -122,11 +122,11 @@ export const PesquisarForum = ({}) => {
                 <div>
                     <ForumTopic
                     username={"Bruno Gandres"}
-                    dataFormacao={"21/11/2000"}
+                    dataPublicacao={"21/11/2000"}
                     titulo={"Materiais React JS"}
-                    nomeformacao={"Introdução a ReactJS 2023"}
+                    nomeFormacao={"Introdução a ReactJS 2023"}
                     descricao={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget lobortis lectus, non sodales purus. Duis eget ex congue, mattis nulla vel, suscipit velit. Cras sollicitudin lectus ut nibh sollicitudin, eu sodales ligula bibendum. Integer elementum congue ultrices. Curabitur justo nulla, scelerisque id pellentesque nec, placerat vel urna. Duis condimentum lacinia auctor. Morbi sed nisl non magna congue convallis vitae sed enim."}
-                    cursoId={"G-C-765"}
+                    formacaoId={"G-C-765"}
                     arquivar={true}
                     publicacaoCompleta={true}
                     urlBack={"/home/forum/pesquisar"}
@@ -135,10 +135,6 @@ export const PesquisarForum = ({}) => {
                 </div>
             </div>
             <div>
-
-
-
-                
             </div>
         </div>
 

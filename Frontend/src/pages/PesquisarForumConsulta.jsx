@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import {useLocation} from 'react-router-dom';
-import ConsultaDetalhes from "../components/ConsultaDetalhes";
+import { PublicacaoDetalhes } from "../components/PublicacaoDetalhes";
 
 export const PesquisarForumConsulta = ({}) => {
     const location = useLocation(); // location.state --> formacao
@@ -10,14 +10,14 @@ export const PesquisarForumConsulta = ({}) => {
         <div className="pl-8 pr-8 h-full overflow-scroll scrollbar-hide">
             {/*Forum componente*/}                                        
             <div className="mt-4">
-                    <ConsultaDetalhes
+                    <PublicacaoDetalhes
                     titulo={location.state.titulo}
                     username={location.state.username}
-                    dataFormacao={location.state.dataFormacao}
-                    nomeformacao={location.state.nomeformacao}
+                    dataPublicacao={location.state.dataPublicacao}
+                    nomeFormacao={location.state.nomeFormacao}
                     descricao={location.state.descricao}
                     justificacaoFormacao={location.state.justificacaoFormacao}
-                    cursoId={location.state.cursoId}
+                    formacaoId={location.state.formacaoId}
                     preco={"79€"}
                     tags={["ReactJS", "Frontend"]}
                     urlBack={location.state.urlBack}

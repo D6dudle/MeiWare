@@ -3,15 +3,15 @@ import { Image, Edit } from "react-feather";
 import { Button } from "./Button";
 import Tag from "./Tag";
 import { iconImageUpload } from "../constants/menuConstants";
-import GoBackButton from "../components/GoBackButton";
+import GoBackButton from "./GoBackButton";
 
-export const ConsultaDetalhes = ({
+export const PublicacaoDetalhes = ({
     titulo, 
     username,
-    dataFormacao,
-    nomeformacao,
+    dataPublicacao,
+    nomeFormacao,
     descricao,
-    cursoId,
+    formacaoId,
     tags,
     urlBack
     }) => {
@@ -62,20 +62,20 @@ export const ConsultaDetalhes = ({
                     {titulo}
                     </p>
                 </div>
-                {/*pedida em*/}
+                {/*Publicada em*/}
                 <div className="flex-row-reverse items-center pr-4 pt-4">
-                    <p className="text-xs text-gray4 font-medium">Pedida em</p>
-                    <p className="text-base font-normal text-white">{dataFormacao}</p>
+                    <p className="text-xs text-gray4 font-medium">Publicada em</p>
+                    <p className="text-base font-normal text-white">{dataPublicacao}</p>
                 </div>
             </div>
 
 
-            {/*Pessoa publicou uma formacao*/}
+            {/*Pessoa publicou uma publicacao*/}
             <div className="flex order-none justify-between">
                 <div className="flex flex-row justify-start pt-4 pl-4 items-center">
                     <Image className="w-6 h-6 mr-4" />
                     <p className="text-sm text-white font-semibold">
-                        {username} <span className="text-gray3">publicou uma formação </span>
+                        {username} <span className="text-gray3">fez uma publicacao </span>
                     </p>
                 </div>
             </div>
@@ -96,25 +96,25 @@ export const ConsultaDetalhes = ({
                 </div>
             </div>
 
-            {/*Retangulo Curso Associado*/}
+            {/*Retangulo Formacao Associado*/}
             <div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mt-4 mr-[20px] mb-4 justify-between">
                 
                 <div className="flex flex-col items-start order-none ">
                     <p className="order-none text-gray3 font-bold pt-3 text-xl pl-4 ">
-                    Curso Associado
+                    Formação Associada
                     </p>
 
                     <div className="flex-none order-1 self-stretch pl-4 flex-row pb-[18px] font-semibold text-sm">
                         <p className="text-sm text-white font-semibold pt-3">
                             <span className="text-gray3">Nome: </span>
-                            {nomeformacao}
+                            {nomeFormacao}
                         </p>
                     </div>
                 </div>
-                {/* Course ID*/}
+                {/* ID da Formação*/}
                 <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
-                    <p className="text-xs text-gray4 font-medium">Course ID</p>
-                    <p className="text-base font-normal text-white">{cursoId}</p>
+                    <p className="text-xs text-gray4 font-medium">ID da Formação</p>
+                    <p className="text-base font-normal text-white">{formacaoId}</p>
                 </div>
             </div>
 
@@ -160,4 +160,4 @@ export const ConsultaDetalhes = ({
         </div>
     )
 };
-export default ConsultaDetalhes;
+export default PublicacaoDetalhes;

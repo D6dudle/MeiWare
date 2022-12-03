@@ -6,11 +6,11 @@ import { iconImageUpload } from "../constants/menuConstants";
 import { useNavigate } from 'react-router-dom';
 
 export const ForumTopic = ({username, 
-    dataFormacao, 
+    dataPublicacao, 
     titulo, 
-    nomeformacao, 
+    nomeFormacao, 
     descricao, 
-    cursoId,
+    formacaoId,
     aprovar=false,
     urlBack
     }) => {
@@ -52,7 +52,7 @@ export const ForumTopic = ({username,
 
     const verPublicacaoHandler = (e, formacao) => {
         e.preventDefault();
-        navigate(`/home/forum/ver-publicacao-completa`, {state:formacao});
+        navigate(`/home/knowledge/ver-publicacao-completa`, {state:formacao});
       };
 
     return(
@@ -61,12 +61,12 @@ export const ForumTopic = ({username,
                 <div className="flex flex-row justify-start pt-4 pl-4 items-center">
                     <Image className="w-6 h-6 mr-4" />
                     <p className="text-sm text-white font-semibold">
-                        {username} <span className="text-gray3">publicou um conteúdo </span>
+                        {username} <span className="text-gray3">fez uma publicacao </span>
                     </p>
                 </div>
                 <div className="flex-col items-center pr-4 pt-4">
-                    <p className="text-xs text-gray4 font-medium">Pedida em</p>
-                    <p className="text-base font-normal text-white">{dataFormacao}</p>
+                    <p className="text-xs text-gray4 font-medium">Publicada em</p>
+                    <p className="text-base font-normal text-white">{dataPublicacao}</p>
                 </div>
             </div>
 
@@ -102,20 +102,20 @@ export const ForumTopic = ({username,
                 
                 <div className="flex flex-col items-start order-none w-4/5">
                     <p className="order-none text-gray3 font-bold pt-3 text-xl pl-4 ">
-                    Curso Associado
+                    Formação Associada
                     </p>
 
                     <div className="flex-none order-1 self-stretch pl-4 flex-row pb-[18px] font-semibold text-sm">
                         <p className="text-sm text-white font-semibold pt-3">
                             <span className="text-gray3">Nome da formação: </span>
-                            {nomeformacao}
+                            {nomeFormacao}
                         </p>
                     </div>
                 </div>
-                {/* Course ID*/}
+                {/* Form ID*/}
                 <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
-                    <p className="text-xs text-gray4 font-medium">Course ID</p>
-                    <p className="text-base font-normal text-white">{cursoId}</p>
+                    <p className="text-xs text-gray4 font-medium">ID da Formação</p>
+                    <p className="text-base font-normal text-white">{formacaoId}</p>
                 </div>
             </div>
 
@@ -156,11 +156,11 @@ export const ForumTopic = ({username,
                 <div className="flex flex-row justify-between items-center w-4/5" onClick={e => verPublicacaoHandler(e,
                         {
                             username,
-                            dataFormacao, 
+                            dataPublicacao, 
                             titulo, 
-                            nomeformacao, 
+                            nomeFormacao, 
                             descricao, 
-                            cursoId,
+                            formacaoId,
                             urlBack 
                         })}>
                     <Button 
