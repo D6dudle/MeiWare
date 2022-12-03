@@ -19,6 +19,7 @@ import Exemplo from "./Exemplo";
 import PesquisarForum from "./PesquisarForum";
 import ListarPedidos from "./ListarPedidos";
 import PesquisarForumConsulta from "./PesquisarForumConsulta";
+import EditarColaborador from "./EditarColaborador";
 import { useState, useRef } from "react";
 
 function MenuInicial() {
@@ -90,6 +91,10 @@ export default function MainScreen() {
             <Route
               path="/controlo/colaboradores/adicionar-colaborador"
               element={<AdicionarColaborador />}
+            />
+            <Route
+              path="/controlo/colaboradores/editar-colaborador/"
+              element={<EditarColaborador />}
             />
             <Route
               path="/controlo/listar-pedidos"
