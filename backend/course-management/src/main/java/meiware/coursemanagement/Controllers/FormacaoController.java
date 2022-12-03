@@ -6,10 +6,7 @@ import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 //FormacaoAprovadaController
 //FormacaoRejeitadaController
@@ -24,7 +21,7 @@ public class FormacaoController {
     //TODO: perguntar ao Jordão como é que ele vai tratar da aceitação/recusa das formações
     //TODO: corrigir returns
 
-    @GetMapping(value = "/getPedidosFormacao")
+    @GetMapping(value = "/pedidosFormacao")
     public ResponseEntity<?> getPedidosFormacao() {
 
         try{
@@ -35,7 +32,7 @@ public class FormacaoController {
         return null;
     }
 
-    @GetMapping(value = "/getFormacoesAprovadas")
+    @GetMapping(value = "/formacoesAprovadas")
     public ResponseEntity<?> getFormacoesAprovadas() {
 
         try{
@@ -46,7 +43,7 @@ public class FormacaoController {
         return null;
     }
 
-    @GetMapping(value = "/getFormacoesRejeitadas")
+    @GetMapping(value = "/formacoesRejeitadas")
     public ResponseEntity<?> getFormacoesRejeitadas() {
 
         try{
@@ -57,7 +54,7 @@ public class FormacaoController {
         return null;
     }
 
-    @GetMapping(value = "/getPedidosFormacaoByUtilizador")
+    @GetMapping(value = "/fedidosFormacaoByUtilizador")
     public ResponseEntity<?> getPedidosFormacaoByUtilizador(@RequestBody Utilizador utilizador) {
 
         try{
@@ -69,7 +66,7 @@ public class FormacaoController {
         return null;
     }
 
-    @GetMapping(value = "/getPedidoFormacaoById")
+    @GetMapping(value = "/pedidoFormacaoById")
     public ResponseEntity<?> getPedidoFormacaoById(@RequestBody Long id) {
 
         try{
@@ -80,7 +77,7 @@ public class FormacaoController {
         return null;
     }
 
-    @GetMapping(value = "/getPedidoFormacaoByNome")
+    @GetMapping(value = "/pedidoFormacaoByNome")
     public ResponseEntity<?> getPedidoFormacaoByNome(@RequestBody String nome) {
 
         try{
@@ -91,18 +88,18 @@ public class FormacaoController {
         return null;
     }
 
-    @GetMapping(value = "/createPedidoFormacao")
+    @PostMapping (value = "/createPedidoFormacao")
     public ResponseEntity<?> createPedidoFormacao(@RequestBody PedidoFormacao pedidoFormacao) {
 
         try{
-            pedidoFormacaoService.createPedidoFormacao(pedidoFormacao);
+            //pedidoFormacaoService.createPedidoFormacao(pedidoFormacao);
         }catch(Exception e){
 
         }
         return null;
     }
 
-    @GetMapping(value = "/updatePedidoFormacao")
+    @PutMapping (value = "/updatePedidoFormacao")
     public ResponseEntity<?> updatePedidoFormacao(@RequestBody PedidoFormacao pedidoFormacao) {
 
         try{
@@ -113,7 +110,7 @@ public class FormacaoController {
         return null;
     }
 
-    @GetMapping(value = "/removePedidoFormacao")
+    @DeleteMapping(value = "/removePedidoFormacao")
     public ResponseEntity<?> removePedidoFormacao(@RequestBody PedidoFormacao pedidoFormacao) {
 
         try{

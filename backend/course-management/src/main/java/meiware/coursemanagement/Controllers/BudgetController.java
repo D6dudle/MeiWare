@@ -19,7 +19,7 @@ public class BudgetController {
     @Autowired
     IBudgetService budgetService;
 
-    @GetMapping(value = "/getBudgets")
+    @GetMapping(value = "/budgets")
     public ResponseEntity<?> getBudgets() {
 
         try{
@@ -33,7 +33,7 @@ public class BudgetController {
 
 
     //https://docs.spring.io/spring-framework/docs/3.0.0.M3/reference/html/ch18s02.html
-    @GetMapping(value = "/getBudgetById")
+    @GetMapping(value = "/budgetById")
     public ResponseEntity<?> getBudgetById(@RequestBody Long budgetId) {
 
         try{
@@ -58,7 +58,7 @@ public class BudgetController {
         return true;
     }
 
-    @PostMapping(value = "/updateBudget")
+    @PutMapping(value = "/updateBudget")
     public boolean updateAnexo(@Valid @RequestBody Budget budget) {
 
         try{
@@ -71,7 +71,7 @@ public class BudgetController {
     }
 
     //TODO: Perguntar ao Jordão se não faz mais sentido ser por id
-    @PostMapping(value = "/removeBudget")
+    @DeleteMapping(value = "/removeBudget")
     public boolean removeBudget(@Valid @RequestBody Budget budget) {
 
         try{

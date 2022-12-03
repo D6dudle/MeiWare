@@ -5,10 +5,7 @@ import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 //TODO: corrigir returns
 
@@ -19,7 +16,7 @@ public class UtlizadorController {
     @Autowired
     IUtilizadorService utilizadorService;
 
-    @GetMapping(value = "/getUtilizadores")
+    @GetMapping(value = "/utilizadores")
     public ResponseEntity<?> getUtilizadores() {
 
         try{
@@ -31,7 +28,7 @@ public class UtlizadorController {
         return null;
     }
 
-    @GetMapping(value = "/getColaboradores")
+    @GetMapping(value = "/colaboradores")
     public ResponseEntity<?> getColaboradores() {
 
         try{
@@ -43,7 +40,7 @@ public class UtlizadorController {
         return null;
     }
 
-    @GetMapping(value = "/getGestores")
+    @GetMapping(value = "/gestores")
     public ResponseEntity<?> getGestores() {
 
         try{
@@ -55,7 +52,7 @@ public class UtlizadorController {
         return null;
     }
 
-    @GetMapping(value = "/getAdministradores")
+    @GetMapping(value = "/administradores")
     public ResponseEntity<?> getAdministradores() {
 
         try{
@@ -67,7 +64,7 @@ public class UtlizadorController {
         return null;
     }
 
-    @GetMapping(value = "/getManagedUtilizadores")
+    @GetMapping(value = "/managedUtilizadores")
     public ResponseEntity<?> getManagedUtilizadores(@RequestBody Utilizador manager) {
 
         try{
@@ -80,7 +77,7 @@ public class UtlizadorController {
         return null;
     }
 
-    @GetMapping(value = "/getUtilizadorById")
+    @GetMapping(value = "/utilizadorById")
     public ResponseEntity<?> getUtilizadorById(@RequestBody Long id) {
 
         try{
@@ -92,7 +89,7 @@ public class UtlizadorController {
         return null;
     }
 
-    @GetMapping(value = "/getUtilizadorByEmail")
+    @GetMapping(value = "/utilizadorByEmail")
     public ResponseEntity<?> getUtilizadorByEmail(@RequestBody String email) {
 
         try{
@@ -104,7 +101,7 @@ public class UtlizadorController {
         return null;
     }
 
-    @GetMapping(value = "/createUtilizador")
+    @PostMapping(value = "/createUtilizador")
     public ResponseEntity<?> createUtilizador(@RequestBody Utilizador newUtilizador) {
 
         try{
@@ -116,7 +113,7 @@ public class UtlizadorController {
         return null;
     }
 
-    @GetMapping(value = "/updateUtilizador")
+    @PutMapping(value = "/updateUtilizador")
     public ResponseEntity<?> updateUtilizador(@RequestBody Utilizador updatedUtilizador) {
 
         try{
@@ -128,7 +125,7 @@ public class UtlizadorController {
         return null;
     }
 
-    @GetMapping(value = "/removeUtilizador")
+    @DeleteMapping(value = "/removeUtilizador")
     public ResponseEntity<?> removeUtilizador(@RequestBody Utilizador utilizador) {
 
         try{
