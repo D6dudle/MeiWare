@@ -1,5 +1,6 @@
 package meiware.coursemanagement.Services.MongoDB;
 
+import meiware.coursemanagement.Entities.JPA.AnexoRef;
 import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import meiware.coursemanagement.Repositories.MongoDB.IAnexoRepository;
 import org.bson.BsonBinarySubType;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,31 +21,76 @@ public class AnexoService implements IAnexoService {
 
     @Override
     public List<Anexo> getAnexos() {
-        return anexoRepository.findAll();
+        try {
+            return anexoRepository.findAll();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Anexo> getPedidoFormacaoAnexos(List<AnexoRef> anexoRefs) {
+        try {
+            List<String> paths = new ArrayList<>();
+            for (AnexoRef anexoRef: anexoRefs) {
+                paths.add(anexoRef.getPath());
+            }
+
+            List<Anexo> anexos = new ArrayList<>();
+            for (Anexo anexo: anexoRepository.findAllById(paths)) {
+                anexos.add(anexo);
+            }
+
+            return anexos;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public Anexo getAnexoById(String id) {
-        return anexoRepository.findById(id).get();
-    }
+        Anexo anexo = null;
 
-    @Override
-    public Anexo createAnexo(MultipartFile file) throws IOException {
-        Anexo anexo = new Anexo(file.getOriginalFilename());
-
-        anexo.setConteudo(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
-        anexo = anexoRepository.insert(anexo);
+        try {
+           anexo = anexoRepository.findById(id).orElse(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return anexo;
     }
 
     @Override
+    public Anexo createAnexo(MultipartFile file) {
+        try {
+            Anexo anexo = new Anexo(file.getOriginalFilename());
+            anexo.setConteudo(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
+            return anexoRepository.insert(anexo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
     public void updateAnexo(Anexo updatedAnexo) {
-        anexoRepository.save(updatedAnexo);
+        try {
+            anexoRepository.save(updatedAnexo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void removeAnexo(Anexo anexo) {
-        anexoRepository.delete(anexo);
+        try {
+            anexoRepository.delete(anexo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

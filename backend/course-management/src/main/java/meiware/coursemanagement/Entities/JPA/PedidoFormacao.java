@@ -5,6 +5,7 @@ import com.sun.istack.NotNull;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -52,11 +53,11 @@ public class PedidoFormacao {
     @Column(columnDefinition = "DATE")
     private LocalDate dataUltimoUpdate;
 
-    @OneToMany(mappedBy = "id")
-    private List<AnexoRef> listAnexoRefs;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<AnexoRef> listAnexoRefs;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    Utilizador quemFezPedido;
+    @ManyToOne(optional = false)
+    private Utilizador quemFezPedido;
 
     public PedidoFormacao() {
 
@@ -186,11 +187,11 @@ public class PedidoFormacao {
         this.dataUltimoUpdate = dataUltimoUpdate;
     }
 
-    public List<AnexoRef> getListAnexoRefs() {
+    public Set<AnexoRef> getListAnexoRefs() {
         return listAnexoRefs;
     }
 
-    public void setListAnexoRefs(List<AnexoRef> listAnexoRefs) {
+    public void setListAnexoRefs(Set<AnexoRef> listAnexoRefs) {
         this.listAnexoRefs = listAnexoRefs;
     }
 

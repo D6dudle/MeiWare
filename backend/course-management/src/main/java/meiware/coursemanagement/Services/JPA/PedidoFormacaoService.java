@@ -1,22 +1,29 @@
 package meiware.coursemanagement.Services.JPA;
 
-import meiware.coursemanagement.Entities.JPA.FormacaoAprovada;
-import meiware.coursemanagement.Entities.JPA.FormacaoRejeitada;
-import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
-import meiware.coursemanagement.Entities.JPA.Utilizador;
+import meiware.coursemanagement.Entities.JPA.*;
+import meiware.coursemanagement.Entities.MongoDB.Anexo;
+import meiware.coursemanagement.Repositories.JPA.IAnexoRefRepository;
 import meiware.coursemanagement.Repositories.JPA.IPedidoFormacaoRepository;
+import meiware.coursemanagement.Services.MongoDB.IAnexoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PedidoFormacaoService implements IPedidoFormacaoService{
 
     @Autowired
     private IPedidoFormacaoRepository pedidoFormacaoRepository;
+    @Autowired
+    private IAnexoRefRepository anexoRefRepository;
+    @Autowired
+    private IAnexoService anexoService;
 
     @Override
     public List<PedidoFormacao> getPedidosFormacao() {
@@ -32,18 +39,17 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
             e.printStackTrace();
         }
 
-
         return pedidosFormacao;
     }
 
     @Override
-    public List<FormacaoAprovada> getFormacoesAprovadas() {
-        List<FormacaoAprovada> formacoesAprovadas = new ArrayList<>();
+    public List<PedidoAprovado> getFormacoesAprovadas() {
+        List<PedidoAprovado> formacoesAprovadas = new ArrayList<>();
 
         try {
             for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
-                if(!pd.isApagada() && (pd instanceof FormacaoAprovada)) {
-                    formacoesAprovadas.add((FormacaoAprovada) pd);
+                if(!pd.isApagada() && (pd instanceof PedidoAprovado)) {
+                    formacoesAprovadas.add((PedidoAprovado) pd);
                 }
             }
         } catch (Exception e) {
@@ -55,13 +61,13 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
-    public List<FormacaoRejeitada> getFormacoesRejeitadas() {
-        List<FormacaoRejeitada> formacoesRejeitadas = new ArrayList<>();
+    public List<PedidoRejeitado> getFormacoesRejeitadas() {
+        List<PedidoRejeitado> formacoesRejeitadas = new ArrayList<>();
 
         try {
             for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
-                if(!pd.isApagada() && (pd instanceof FormacaoRejeitada)) {
-                    formacoesRejeitadas.add((FormacaoRejeitada) pd);
+                if(!pd.isApagada() && (pd instanceof PedidoRejeitado)) {
+                    formacoesRejeitadas.add((PedidoRejeitado) pd);
                 }
             }
         } catch (Exception e) {
@@ -80,7 +86,6 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
 
     @Override
     public PedidoFormacao getPedidoFormacaoById(Long id) {
-
         try {
             PedidoFormacao pd = pedidoFormacaoRepository.findById(id).orElse(null);
 
@@ -111,8 +116,17 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
-    public PedidoFormacao createPedidoFormacao(PedidoFormacao newPedidoFormacao) {
+    public PedidoFormacao createPedidoFormacao(PedidoFormacao newPedidoFormacao, List<MultipartFile> files) {
         try {
+            if (files.size() > 0) {
+                Set<AnexoRef> anexoRefs = new HashSet<>();
+                for (MultipartFile file: files) {
+                    Anexo anexo = anexoService.createAnexo(file);
+                    anexoRefs.add(new AnexoRef(anexo.getId(), anexo.getNome()));
+                }
+                anexoRefRepository.saveAll(anexoRefs);
+                newPedidoFormacao.setListAnexoRefs(anexoRefs);
+            }
             return pedidoFormacaoRepository.save(newPedidoFormacao);
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,6 +139,31 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     public void updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao) {
         try {
             pedidoFormacaoRepository.save(updatedPedidoFormacao);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file) {
+        try {
+            Anexo anexo = anexoService.createAnexo(file);
+            AnexoRef anexoRef = new AnexoRef(anexo.getId(), anexo.getNome());
+            anexoRefRepository.save(anexoRef);
+            pedidoFormacao.getListAnexoRefs().add(anexoRef);
+
+            pedidoFormacaoRepository.save(pedidoFormacao);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeAnexoFromPedidoFormacao(PedidoFormacao pedidoFormacao, AnexoRef anexoRef) {
+        try {
+            pedidoFormacao.getListAnexoRefs().remove(anexoRef);
+            pedidoFormacaoRepository.save(pedidoFormacao);
+            anexoRefRepository.delete(anexoRef);
         } catch (Exception e) {
             e.printStackTrace();
         }

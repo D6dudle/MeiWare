@@ -3,15 +3,27 @@ import { DollarSign, Search } from 'react-feather';
 import TextInput from '../components/TextInput';
 import DropzoneFiles from "../components/Dropzone";
 
+import ForumTopic from "../components/ForumTopic";
+
 export default function AprovarPublicacao() {
 
   const pubList = [
-    { label: 'Shark', user: 'Shark'},
-    { label: 'Dolphin', user: 'Dolphin' },
-    { label: 'Whale', user: 'Whale' },
-    { label: 'Octopus', user: 'Octopus' },
-    { label: 'Crab', user: 'Crab' },
-    { label: 'Lobster', user: 'Lobster' },
+    { 
+      username: "Bruno Gandres",
+      dataFormacao:"21/11/2000",
+      titulo:"Materiais React JS",
+      nomeformacao:"Introdução",
+      descricao:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget lobortis lectus, non sodales purus. Duis eget ex congue, mattis nulla vel, suscipit velit. Cras sollicitudin lectus ut nibh sollicitudin, eu sodales ligula bibendum. Integer elementum congue ultrices. Curabitur justo nulla, scelerisque id pellentesque nec, placerat vel urna. Duis condimentum lacinia auctor. Morbi sed nisl non magna congue convallis vitae sed enim.",
+      cursoId:"G-C-765"
+    },
+    { 
+      username: "Nelso Gervásio",
+      dataFormacao:"25/12/1969",
+      titulo:"Materiais MongoDB",
+      nomeformacao:"Introdução",
+      descricao:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget lobortis lectus, non sodales purus. Duis eget ex congue, mattis nulla vel, suscipit velit. Cras sollicitudin lectus ut nibh sollicitudin, eu sodales ligula bibendum. Integer elementum congue ultrices. Curabitur justo nulla, scelerisque id pellentesque nec, placerat vel urna. Duis condimentum lacinia auctor. Morbi sed nisl non magna congue convallis vitae sed enim.",
+      cursoId:"G-C-777"
+    },
   ];
 
   const [publicacoes, setPublicacoes] = useState(pubList);
@@ -114,11 +126,24 @@ export default function AprovarPublicacao() {
       </div>
 
       <div className="w-full h-full mt-8 overflow-scroll scrollbar-hide">
-        <ul className='w-80 justify-start'>
+        <ul className='justify-start'>
           {publicacoes.map((pub, index) =>(    
             <li key={index}> 
                 <div className='mb-4'>
-                  {pub.label}
+                  <div>
+                      <ForumTopic
+                        username={pub.username}
+                        dataFormacao={pub.dataFormacao}
+                        titulo={pub.titulo}
+                        nomeformacao={pub.nomeformacao}
+                        descricao={pub.descricao}
+                        cursoId={pub.cursoId}
+                        arquivar={true}
+                        publicacaoCompleta={true}
+                        aprovar={true}
+                        urlBack={"/home/forum/aprovar-publicacao"}
+                      />
+                  </div>
                 </div>
             </li>
           ))}

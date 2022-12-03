@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @DiscriminatorValue("REJEITADA")
-public class FormacaoRejeitada extends PedidoFormacao{
+public class PedidoRejeitado extends PedidoFormacao{
     @NotNull
     @Column(columnDefinition = "DATE")
     private LocalDate dataRejeicao;
@@ -20,11 +20,11 @@ public class FormacaoRejeitada extends PedidoFormacao{
     @ManyToOne
     private Utilizador quemRejeitou;
 
-    public FormacaoRejeitada(){
+    public PedidoRejeitado(){
 
     }
 
-    public FormacaoRejeitada(String nome, String descricao, String formador, LocalDate dataInicio, float preco, LocalDate dataRejeicao){
+    public PedidoRejeitado(String nome, String descricao, String formador, LocalDate dataInicio, float preco, LocalDate dataRejeicao){
         super(nome, descricao, formador, dataInicio, preco);
         this.dataRejeicao = dataRejeicao;
     }

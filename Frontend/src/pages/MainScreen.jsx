@@ -18,6 +18,7 @@ import AprovarPublicacao from "./AprovarPublicacao";
 import Exemplo from "./Exemplo";
 import PesquisarForum from "./PesquisarForum";
 import ListarPedidos from "./ListarPedidos";
+import PesquisarForumConsulta from "./PesquisarForumConsulta";
 import { useState, useRef } from "react";
 
 function MenuInicial() {
@@ -32,13 +33,11 @@ function MenuInicial() {
 }
 
 export default function MainScreen() {
-
   const sidebar = useRef(null);
 
   const handleChange = (tab, old) => {
-      sidebar.current(tab, old)
-  }
-
+    sidebar.current(tab, old);
+  };
 
   return (
     <div className="relative flex bg-darkBlack" style={{ height: "100vh" }}>
@@ -73,14 +72,18 @@ export default function MainScreen() {
               element={<PesquisarDetalhes />}
             />
             <Route
-              path="/forum/adicionar-publicacao"
+              path="/knowledge/adicionar-publicacao"
               element={<AdicionarPublicacao />}
             />
             <Route
-              path="/forum/aprovar-publicacao"
+              path="/knowledge/aprovar-publicacao"
               element={<AprovarPublicacao />}
             />
-            <Route path="/forum/pesquisar" element={<PesquisarForum />} />
+            <Route path="/knowledge/pesquisar" element={<PesquisarForum />} />
+            <Route
+              path="/knowledge/ver-publicacao-completa"
+              element={<PesquisarForumConsulta />}
+            />
             <Route path="/controlo" element={<ControloBudget />} />
             <Route path="/controlo/gerir-pedidos" element={<GerirPedidos />} />
             <Route path="/controlo/colaboradores" element={<Colaboradores />} />

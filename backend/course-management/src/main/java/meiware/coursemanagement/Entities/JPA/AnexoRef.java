@@ -10,7 +10,7 @@ public class AnexoRef {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private String id;
+    private Long id;
     @NotNull
     private String path; // Representa o id na base de dados MongoDB
 
@@ -26,7 +26,7 @@ public class AnexoRef {
         this.nome = nome;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -45,6 +45,7 @@ public class AnexoRef {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
 
     @Override
     public String toString() {

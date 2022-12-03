@@ -3,7 +3,6 @@ package meiware.coursemanagement.Entities.JPA;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,14 +27,17 @@ public class Utilizador {
     @JoinColumn(name = "Utilizador_id")
     private Set<Role> roles;
 
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Utilizador manager;
 
     @OneToMany(mappedBy = "id")
-    private List<Budget> listBudget;
+    private Set<Budget> listBudget;
 
-    @OneToMany(mappedBy = "id")
-    private List<PedidoFormacao> listFormacoes;
+    @OneToMany(mappedBy = "quemFezPedido", fetch = FetchType.EAGER)
+    private Set<PedidoFormacao> listPedidos;
+
+    @ManyToMany(mappedBy = "formandos")
+    private Set<PedidoAprovado> listFormacoes;
 
     public Utilizador(){    }
 
@@ -98,12 +100,28 @@ public class Utilizador {
         this.manager = manager;
     }
 
-    public List<Budget> getListBudget() {
+    public Set<Budget> getListBudget() {
         return listBudget;
     }
 
-    public void setListBudget(List<Budget> listBudget) {
+    public void setListBudget(Set<Budget> listBudget) {
         this.listBudget = listBudget;
+    }
+
+    public Set<PedidoFormacao> getListPedidos() {
+        return listPedidos;
+    }
+
+    public void setListPedidos(Set<PedidoFormacao> listPedidos) {
+        this.listPedidos = listPedidos;
+    }
+
+    public Set<PedidoAprovado> getListFormacoes() {
+        return listFormacoes;
+    }
+
+    public void setListFormacoes(Set<PedidoAprovado> listFormacoes) {
+        this.listFormacoes = listFormacoes;
     }
 
     public boolean isAdministrador() {

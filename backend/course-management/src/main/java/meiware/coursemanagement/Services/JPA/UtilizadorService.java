@@ -12,13 +12,11 @@ import java.util.List;
 public class UtilizadorService implements IUtilizadorService {
     @Autowired
     private IUtilizadorRepository utilizadorRepository;
-    // TODO: exception handling
 
     @Override
     public List<Utilizador> getUtilizadores() {
         List<Utilizador> utilizadores = new ArrayList<>();
         try {
-
             for (Utilizador u: utilizadorRepository.findAll()) {
                 utilizadores.add(u);
             }
