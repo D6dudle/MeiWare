@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Search } from "react-feather";
-import { createElement } from "react";
 import React from "react";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
@@ -8,21 +7,20 @@ import { Calendar } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import "./calendar.css";
-import { renderToStaticMarkup } from "react-dom/server";
 
-const svgString = encodeURIComponent(
-  renderToStaticMarkup(createElement(Search, { color: "white" }))
-);
+import Lupa from "../assets/search.svg"
 
 const lupa = () => ({
   alignItems: "center",
   display: "flex",
   ":before": {
-    content: `url("data:image/svg+xml,${svgString}")`,
-    display: "block",
+    display: "inline-block",
+    paddingTop: "5px",
+    content: `url(${Lupa})`,
+    zoom:"100%",
     marginRight: 8,
     height: "fit-content",
-    width: "1.8rem",
+    width: "fit-content",
   },
 });
 
@@ -246,7 +244,7 @@ function TextInput({
             {name}
           </label>
           <div className="relative flex items-center">
-            <Search className="absolute mb-2 ml-1" />
+            <Search className="absolute ml-2" />
             <input
               type="search"
               className={`inputFilter pl-[35px] ${style}`}
