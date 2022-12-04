@@ -87,7 +87,7 @@ export const PesquisarForum = ({}) => {
                                     styles={colaboradorStyles}
                                     options={colaboradores}
                                     isMulti
-                                    placeholder="colaborador"
+                                    placeholder="colaborador..."
                                     value={formationCamps.nomeColaborador}
                                     onChange={(opt) => {
                                     console.log(opt);
@@ -129,7 +129,7 @@ export const PesquisarForum = ({}) => {
                     formacaoId={"G-C-765"}
                     arquivar={true}
                     publicacaoCompleta={true}
-                    urlBack={"/home/knowledge/pesquisar"}
+                    urlBack={"/home/knowledge"}
                     />
 
                 </div>

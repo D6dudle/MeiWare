@@ -98,6 +98,7 @@ export default function AdicionarPublicacao() {
               list={tagList} 
               multi={true}
               error={"Por favor selecione ou adicione uma tag"} 
+              placeholder="tags..."
               value={values[1]}
               trigger={references[1]}
               callback={handleDropdown} 
@@ -111,6 +112,7 @@ export default function AdicionarPublicacao() {
             callback={handleDropdown} 
             type="dropsearch"
             list={formation}
+            placeholder="formação..."
             error={"Por favor selecione a formação associada"} 
             value={values[2]}
             trigger={references[2]}

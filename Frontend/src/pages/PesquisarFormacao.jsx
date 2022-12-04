@@ -129,7 +129,7 @@ export const PesquisarFormacao = ({}) => {
                   styles={colaboradorStyles}
                   options={colaboradores}
                   isMulti
-                  placeholder="colaborador"
+                  placeholder="colaborador..."
                   value={formationCamps.nomeColaborador}
                   onChange={(opt) => {
                     console.log(opt);

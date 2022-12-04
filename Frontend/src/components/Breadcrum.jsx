@@ -17,16 +17,10 @@ export const Breadcrum = ({ callback }) => {
       {breadcrumbs.slice(1).map(({ match, breadcrumb }, index, row) => (
         <NavLink
           key={match.pathname}
-          to={
-            match.pathname == "/home/knowledge"
-              ? "/home/knowledge/pesquisar"
-              : match.pathname
-          }
+          to={match.pathname}
           onClick={(event) =>
             handleLinkClick(
-              match.pathname == "/home/knowledge"
-                ? "/home/knowledge/pesquisar"
-                : match.pathname
+              match.pathname
             )
           }
           className={`flex mr-2 ${

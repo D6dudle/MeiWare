@@ -53,16 +53,10 @@ export const Menus = [
   {
     title: "Knowledge base",
     to: "knowledge",
-    path: "knowledge/pesquisar",
     icon: <Book className="w-4 h-4" />,
     submenu: true,
     opened: false,
     submenuItems: [
-      {
-        title: "Pesquisar",
-        to: "knowledge/pesquisar",
-        opened: false,
-      },
       {
         title: "Adicionar publicação",
         to: "knowledge/adicionar-publicacao",

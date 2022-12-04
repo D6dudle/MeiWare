@@ -78,6 +78,7 @@ export default function TrainingTabs() {
               type="dropsearch"
               titleStyle={"font-bold mb-1 text-2xl"}
               style={"w-[30rem]"}
+              placeholder="colaborador..."
               list={users}
               multi={true}
               showTitle={false}

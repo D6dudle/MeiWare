@@ -41,8 +41,10 @@ export default function Colaboradores() {
             index={1}
             name={"pesquisa..."}
             type={"searchbar"}
+            placeholder="colaborador..."
             style={"md:w-[100%] w-[15rem]"}
             showTitle={false}
+            value={search}
             callback={handleType}
           />
 

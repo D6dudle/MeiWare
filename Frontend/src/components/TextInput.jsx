@@ -153,6 +153,7 @@ function TextInput({
   searchCall,
   showTitle = true,
   titleStyle = null,
+  placeholder
 }) {
   const [isSubmitted, setSubmitted] = useState(false);
   const [isValid, setValid] = useState(false);
@@ -207,7 +208,7 @@ function TextInput({
           <AsyncSelect
             noOptionsMessage={() => "Não encontrado"}
             loadingMessage={() => "a pesquisar..."}
-            placeholder="pesquisa..."
+            placeholder={ placeholder ? placeholder : "pesquisa..."}
             className={` ${style}`}
             styles={
               multi
@@ -250,7 +251,7 @@ function TextInput({
               type="search"
               className={`inputFilter pl-[35px] ${style}`}
               id={name}
-              placeholder="pesquisa..."
+              placeholder={ placeholder ? placeholder : "pesquisa..."}
               onChange={(e) => {
                 callback(index, e);
               }}
@@ -279,7 +280,7 @@ function TextInput({
                 isSubmitted ? (isValid ? null : "border-error") : null
               }`}
               id={name}
-              placeholder={name}
+              placeholder={ placeholder ? placeholder : name}
               value={date.toLocaleDateString()}
               onClick={(e) => {
                 setDatePick(!datePick);
@@ -330,7 +331,7 @@ function TextInput({
               }
               options={list}
               isMulti={multi}
-              placeholder={name}
+              placeholder={ placeholder ? placeholder : name}
               value={value}
               onChange={(e) => {
                 callback(index, e);
@@ -361,7 +362,7 @@ function TextInput({
               isSubmitted ? (value ? null : "border-error") : null
             }`}
             id={name}
-            placeholder={name}
+            placeholder={ placeholder ? placeholder : name}
             onChange={(e) => {
               callback(index, e);
               value == null ? setValid(false) : setValid(true);
@@ -393,7 +394,7 @@ function TextInput({
                 isSubmitted ? (value ? null : "border-error") : null
               }`}
               id={name}
-              placeholder={name}
+              placeholder={ placeholder ? placeholder : name}
               onChange={(e) => {
                 callback(index, e);
                 value == null ? setValid(false) : setValid(true);

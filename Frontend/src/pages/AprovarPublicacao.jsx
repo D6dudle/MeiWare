@@ -108,6 +108,7 @@ export default function AprovarPublicacao() {
               list={tagList} 
               multi={true}
               value={values[1]}
+              placeholder="tags..."
               callback={handleDropdown} 
               searchCall={filterTags}/>
           </div>
@@ -119,6 +120,7 @@ export default function AprovarPublicacao() {
               list={users} 
               multi={true}
               value={values[2]}
+              placeholder="colaborador..."
               callback={handleDropdown} 
               searchCall={filterColaborador}/>
           </div>

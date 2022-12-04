@@ -34,6 +34,7 @@ export default function Exemplo() {
     fields.push({
       name:"Dropdown Search",
       type:"dropsearch",
+      placeholder:"colaborador...",
       list:aquaticCreatures,
       callback:handleDropdown,
       searchCall:filterCreature
@@ -132,7 +133,7 @@ export default function Exemplo() {
                 {pubFields.map((field, index) =>(    
                   <li key={index}> 
                       <div className='mb-4'>
-                        <TextInput index={index} name={field.name} callback={field.callback} value={field.value} required={field.required} type={field.type} list={field.list} multi={field.multi} style={field.style} error={field.error} trigger={field.trigger} searchCall={field.searchCall}/>
+                        <TextInput index={index} name={field.name} callback={field.callback} value={field.value} required={field.required} type={field.type} list={field.list} multi={field.multi} style={field.style} error={field.error} trigger={field.trigger} searchCall={field.searchCall} placeholder={field.placeholder}/>
                       </div>
                   </li>
                 ))}

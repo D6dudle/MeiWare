@@ -79,7 +79,7 @@ export default function MainScreen() {
               path="/knowledge/aprovar-publicacao"
               element={<AprovarPublicacao />}
             />
-            <Route path="/knowledge/pesquisar" element={<PesquisarForum />} />
+            <Route path="/knowledge" element={<PesquisarForum />} />
             <Route
               path="/knowledge/ver-publicacao-completa"
               element={<PesquisarForumConsulta />}
