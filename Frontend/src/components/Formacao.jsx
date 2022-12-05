@@ -11,6 +11,7 @@ export const Formacao = ({
   idCurso,
   tipoFormacao,
   consultar,
+  urlBack
 }) => {
   const corFormacao = [
     { tipo: "TERMINADA", cor: "primary" },
@@ -70,6 +71,7 @@ export const Formacao = ({
                   idCurso,
                   tipoFormacao,
                   consultar,
+                  urlBack
                 })}>
                   <Button className="h-10" iconName="CONSULTAR" textButton="" />
                 </div>

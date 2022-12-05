@@ -21,6 +21,7 @@ export const PesquisarDetalhes = ({}) => {
                     cursoId={location.state.idCurso}
                     preco={"79€"}
                     tags={["React", "TypeScript"]}
+                    urlBack={location.state.urlBack}
                     />
 
                 </div>

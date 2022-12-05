@@ -14,7 +14,8 @@ export const FormacaoDetalhes = ({
     justificacaoFormacao,
     cursoId,
     preco,
-    tags
+    tags,
+    urlBack
     }) => {
 
     const files = [
@@ -52,7 +53,7 @@ export const FormacaoDetalhes = ({
             <div className="flex order-none justify-between">
                 {/*Titulo*/}
                 <div className="flex flex-row justify-start pt-4 pl-4 items-center">
-                    <GoBackButton url={"/home/formacao/pesquisar-formacao"}/>
+                    <GoBackButton url={urlBack}/>
                     <p className="text-white font-semibold pt-3 text-xl pl-4 pb-4">
                     <span className="text-gray3 text-xl ">Titulo: </span>
                     {nomeformacao}

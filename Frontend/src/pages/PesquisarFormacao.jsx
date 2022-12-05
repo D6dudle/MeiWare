@@ -195,6 +195,7 @@ export const PesquisarFormacao = ({}) => {
               idCurso={card.idCurso}
               tipoFormacao={card.tipoFormacao}
               consultar={card.consultar}
+              urlBack={"/home/formacao/pesquisar-formacao"}
             />
           ))}
       </div>

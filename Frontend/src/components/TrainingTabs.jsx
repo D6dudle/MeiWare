@@ -115,6 +115,7 @@ export default function TrainingTabs() {
                       idCurso={card.idCurso}
                       tipoFormacao={card.tipoFormacao}
                       consultar={true}
+                      urlBack={"/home/formacao/listar-formacao"}
                     />
                   );
                 })
