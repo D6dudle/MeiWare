@@ -20,6 +20,7 @@ import PesquisarForum from "./PesquisarForum";
 import ListarPedidos from "./ListarPedidos";
 import PesquisarForumConsulta from "./PesquisarForumConsulta";
 import EditarColaborador from "./EditarColaborador";
+import EditarFormacao from "./EditarFormacao";
 import { useState, useRef } from "react";
 
 function MenuInicial() {
@@ -96,6 +97,12 @@ export default function MainScreen() {
               path="/controlo/colaboradores/editar-colaborador/"
               element={<EditarColaborador />}
             />
+            <Route
+              path="/formacao/pesquisar-formacao/editar-formacao"
+              element={<EditarFormacao />}
+            />
+
+
             <Route
               path="/controlo/listar-pedidos"
               element={<ListarPedidos />}
