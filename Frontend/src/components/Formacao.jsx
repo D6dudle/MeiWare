@@ -1,7 +1,9 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../components/Button";
 import { Image, Edit } from "react-feather";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import Modal from "./Modal";
 
 export const Formacao = ({
   username,
@@ -11,8 +13,16 @@ export const Formacao = ({
   idCurso,
   tipoFormacao,
   consultar,
-  urlBack
+  urlBack,
 }) => {
+  const [modal, setModal] = useState({ show: false, data: null });
+
+  const handleCloseModal = () => {
+    console.log("Entrei");
+    setModal({ show: false, data: null });
+    console.log("Alterei para: " + modal.show);
+  };
+
   const corFormacao = [
     { tipo: "TERMINADA", cor: "primary" },
     { tipo: "REJEITADA", cor: "error" },
@@ -28,7 +38,7 @@ export const Formacao = ({
 
   const handleConsultarFormacaoClick = (e, formacao) => {
     e.preventDefault();
-    navigate(`/home/formacao/pesquisar-detalhes`, {state:formacao});
+    navigate(`/home/formacao/pesquisar-detalhes`, { state: formacao });
   };
 
   const handleEditarFormacaoClick = (e) => {
@@ -38,7 +48,13 @@ export const Formacao = ({
 
   const handleCancelarFormacaoClick = (e) => {
     e.preventDefault();
-    alert("Click em Cancelar formação");
+    setModal({
+      show: true,
+      data: {
+        header: "Tem a certeza que quer cancelar a formação?",
+        color: "red",
+      },
+    });
   };
 
   const handleFinalizarFormacaoClick = (e) => {
@@ -63,16 +79,21 @@ export const Formacao = ({
 
             <div className="flex flex-row gap-4 mr-4 pt-4 md:pt-0">
               {consultar ? (
-                <div className="" onClick={e => handleConsultarFormacaoClick(e, {
-                  username,
-                  nomeformacao,
-                  dataFormacao,
-                  justificacaoFormacao,
-                  idCurso,
-                  tipoFormacao,
-                  consultar,
-                  urlBack
-                })}>
+                <div
+                  className=""
+                  onClick={(e) =>
+                    handleConsultarFormacaoClick(e, {
+                      username,
+                      nomeformacao,
+                      dataFormacao,
+                      justificacaoFormacao,
+                      idCurso,
+                      tipoFormacao,
+                      consultar,
+                      urlBack,
+                    })
+                  }
+                >
                   <Button className="h-10" iconName="CONSULTAR" textButton="" />
                 </div>
               ) : null}
@@ -84,14 +105,18 @@ export const Formacao = ({
                 />
               </div>
               <div
-                className={`${tipoFormacao !== "TERMINADA" ? null : "hidden"}`}
-                onClick={handleCancelarFormacaoClick}
+                className={`${tipoFormacao !== "TERMINADA" ? "" : "hidden"}`}
+                //onClick={() => handleCancelarFormacaoClick}
               >
                 <Button
                   className=""
                   iconName="CANCELAR"
                   textButton="cancelar"
+                  handleClick={handleCancelarFormacaoClick}
                 />
+                {modal.show && (
+                  <Modal closeModal={handleCloseModal} data={modal.data} />
+                )}
               </div>
               <div
                 className={`${tipoFormacao === "CURSO" ? null : "hidden"}`}

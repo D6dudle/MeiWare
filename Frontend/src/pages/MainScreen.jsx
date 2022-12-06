@@ -20,6 +20,7 @@ import PesquisarForum from "./PesquisarForum";
 import ListarPedidos from "./ListarPedidos";
 import PesquisarForumConsulta from "./PesquisarForumConsulta";
 import { useState, useRef } from "react";
+import Modal from "../components/Modal";
 
 function MenuInicial() {
   return (
@@ -48,6 +49,7 @@ export default function MainScreen() {
           <Routes>
             {/* DEV */}
             <Route path="/exemplo" element={<Exemplo />} />
+            <Route path="/modal" element={<Modal />} />
             {/* Definir todas as routes existentes */}
             <Route path="/" element={<MenuInicial />} />
             <Route path="/formacao" element={<Formacao />} />
