@@ -179,6 +179,8 @@ public class JPAtest {
             for (Post post : mongo.findAll()) {
                 log.info(post.toString());
             }*/
+
+        /*
         //MongoDb files
         File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
         FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
@@ -217,13 +219,13 @@ public class JPAtest {
         //String id = anexoService.createAnexo(multipartFile);
         //Anexo anexo = anexoService.getAnexoById(id);
         System.out.println(publicacaoService.getPublicacoes());
-        /*File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(0).getNome());
+        *//*File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(0).getNome());
         File newFile2 = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(1).getNome());
 
         FileUtils.writeByteArrayToFile(newFile, pub.getAnexos().get(0).getConteudo().getData());
-        FileUtils.writeByteArrayToFile(newFile2, pub.getAnexos().get(1).getConteudo().getData());*/
+        FileUtils.writeByteArrayToFile(newFile2, pub.getAnexos().get(1).getConteudo().getData());*//*
 
 
-        log.info("");
+        log.info("");*/
     }
 }

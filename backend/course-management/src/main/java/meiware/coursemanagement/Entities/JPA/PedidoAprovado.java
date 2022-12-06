@@ -19,7 +19,7 @@ public class PedidoAprovado extends PedidoFormacao{
     @ManyToOne
     private Utilizador quemAprovou;
 
-    @ManyToMany(mappedBy = "listFormacoes")
+    @ManyToMany
     private Set<Utilizador> formandos;
 
     public PedidoAprovado(){
