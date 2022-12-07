@@ -17,7 +17,6 @@ import AdicionarColaborador from "./AdicionarColaborador";
 import AprovarPublicacao from "./AprovarPublicacao";
 import Exemplo from "./Exemplo";
 import PesquisarForum from "./PesquisarForum";
-import ListarPedidos from "./ListarPedidos";
 import PesquisarForumConsulta from "./PesquisarForumConsulta";
 import { useState, useRef } from "react";
 import Modal from "../components/Modal";
@@ -92,10 +91,6 @@ export default function MainScreen() {
             <Route
               path="/controlo/colaboradores/adicionar-colaborador"
               element={<AdicionarColaborador />}
-            />
-            <Route
-              path="/controlo/listar-pedidos"
-              element={<ListarPedidos />}
             />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
