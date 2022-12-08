@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { PlusCircle } from "react-feather";
 import TextInput from "../components/TextInput";
@@ -7,6 +7,7 @@ import GoBackButton from "../components/GoBackButton";
 import { useLocation } from "react-router-dom";
 import { getDataUsers } from "../constants/tabelaUtilizadores";
 import DropdownFilter from "../components/DropdownFilter";
+import { input } from "@material-tailwind/react";
 
 export default function EditarColaborador() {
   const personId = useLocation().search.slice(4);
@@ -49,6 +50,14 @@ export default function EditarColaborador() {
     raw: initialData.imgUrl,
   });
 
+  const filterManager = (inputValue) => {
+    return fakeManagerList.filter((i) =>
+      i.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
+
+  const references = [useRef(null), useRef(null), useRef(null), useRef(null)];
+
   const config = (handleType, handleDropdown) => {
     const fields = [];
     fields.push({
@@ -56,27 +65,30 @@ export default function EditarColaborador() {
       required: true,
       callback: handleType,
       value: initialData.name,
+      trigger: references[0],
     });
     fields.push({
       name: "email",
       required: true,
       callback: handleType,
       value: initialData.email,
+      trigger: references[1],
     });
     fields.push({
       name: "cargo",
       required: true,
       callback: handleType,
       value: initialData.role,
+      trigger: references[2],
     });
     fields.push({
       name: "gestor responsável",
-      required: true,
-      callback: handleDropdown,
       type: "dropsearch",
-      multi: false,
-      value: fakeManagerList[1],
       list: fakeManagerList,
+      callback: handleDropdown,
+      value: fakeManagerList[1], //Preencher com manager
+      searchCall: filterManager,
+      trigger: references[3],
     });
     return fields;
   };
@@ -109,7 +121,7 @@ export default function EditarColaborador() {
 
     const handleDropdown = (index, opt) => {
       let data = [...pubFields];
-      data[index] = opt;
+      data[index]["value"] = opt;
       setPubFields(data);
     };
 
@@ -120,9 +132,21 @@ export default function EditarColaborador() {
     e.preventDefault();
 
     console.log("Button Submeter pressed!");
+
     for (let i = 0; i < pubFields.length; i++) {
-      console.log("Field -> ", pubFields[i]["value"]);
+      if (pubFields[i]["trigger"]) {
+        pubFields[i]["trigger"].current();
+      }
     }
+
+    //TODO: UPLOAD DA FOTO PARA A BASE DE DADOS
+    // ver: https://www.bezkoder.com/react-file-upload-spring-boot/
+    initialData.name = pubFields[0]["value"];
+    initialData.email = pubFields[1]["value"];
+    initialData.role = pubFields[2]["value"];
+    initialData.manager.name = pubFields[3]["value"]["value"];
+
+    console.log(initialData);
   };
 
   return (
@@ -151,7 +175,7 @@ export default function EditarColaborador() {
                 <ul className="grid grid-cols-2">
                   {pubFields.map((field, index) => (
                     <li key={index}>
-                      <div className="mb-4 mx-10">
+                      <div className="mb-4 mx-10 w-[295px]">
                         <TextInput
                           index={index}
                           name={field.name}
@@ -161,6 +185,10 @@ export default function EditarColaborador() {
                           type={field.type}
                           list={field.list}
                           multi={field.multi}
+                          style={field.style}
+                          error={field.error}
+                          trigger={field.trigger}
+                          searchCall={field.searchCall}
                         />
                       </div>
                     </li>

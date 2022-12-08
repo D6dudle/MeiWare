@@ -389,7 +389,7 @@ function TextInput({
           <div className="relative">
             <input
               type="text"
-              className={`inputText w-[295px] ${style} ${
+              className={`inputText ${style} ${
                 isSubmitted ? (value ? null : "border-error") : null
               }`}
               id={name}
