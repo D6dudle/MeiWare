@@ -30,6 +30,12 @@ export default function TrainingTabs() {
     setValues(data);
   };
 
+  const handleCancelarFormacao = (card) => {
+    setDataCardList(
+      dataCardList.filter((data) => data.idCurso !== card.idCurso)
+    );
+  };
+
   return (
     <Tabs
       value="pendentes"
@@ -116,6 +122,7 @@ export default function TrainingTabs() {
                       tipoFormacao={card.tipoFormacao}
                       consultar={true}
                       urlBack={"/home/formacao/listar-formacao"}
+                      onItemDelete={() => handleCancelarFormacao(card)}
                     />
                   );
                 })

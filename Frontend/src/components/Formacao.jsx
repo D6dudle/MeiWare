@@ -14,13 +14,18 @@ export const Formacao = ({
   tipoFormacao,
   consultar,
   urlBack,
+  onItemDelete,
 }) => {
   const [modal, setModal] = useState({ show: false, data: null });
 
   const handleCloseModal = () => {
-    console.log("Entrei");
     setModal({ show: false, data: null });
-    console.log("Alterei para: " + modal.show);
+  };
+
+  const confirmeActionModal = () => {
+    console.log("Vou cancelar a formação");
+    onItemDelete();
+    setModal({ show: false, data: null });
   };
 
   const corFormacao = [
@@ -50,10 +55,7 @@ export const Formacao = ({
     e.preventDefault();
     setModal({
       show: true,
-      data: {
-        header: "Tem a certeza que quer cancelar a formação?",
-        color: "red",
-      },
+      data: "CANCELAR",
     });
   };
 
@@ -115,7 +117,11 @@ export const Formacao = ({
                   handleClick={handleCancelarFormacaoClick}
                 />
                 {modal.show && (
-                  <Modal closeModal={handleCloseModal} data={modal.data} />
+                  <Modal
+                    closeModal={handleCloseModal}
+                    confirmeActionModal={confirmeActionModal}
+                    data={modal.data}
+                  />
                 )}
               </div>
               <div

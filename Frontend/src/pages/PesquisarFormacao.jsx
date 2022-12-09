@@ -8,6 +8,8 @@ import { Button } from "../components/Button";
 import { Formacao } from "../components/Formacao";
 import { ChevronDown, ChevronUp, Filter, Minus, Plus } from "react-feather";
 import DateOrder from "../components/DateOrder";
+import { dataCard } from "../constants/menuConstants";
+import { useEffect } from "react";
 
 export const PesquisarFormacao = ({}) => {
   const [formationCamps, setFormationCamps] = useState({
@@ -15,6 +17,7 @@ export const PesquisarFormacao = ({}) => {
     data: new Date(),
   });
 
+  const [dataCardList, setDataCardList] = useState(dataCard);
   const [isRejeitadas, setAprovadas] = useState(false); // Is Aprovadas open?
   const [query, setQuery] = useState("");
 
@@ -23,37 +26,6 @@ export const PesquisarFormacao = ({}) => {
     { tipo: "REJEITADA", cor: "error" },
     { tipo: "CURSO", cor: "success" },
     { tipo: "PENDENTE", cor: "white" },
-  ];
-
-  const dataCard = [
-    {
-      username: "Pedro",
-      nomeformacao: "Introdução a Angular",
-      dataFormacao: "16/11/2022 14:00",
-      justificacaoFormacao:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      idCurso: "P-T-331",
-      tipoFormacao: "TERMINADA",
-      consultar: true,
-    },
-    {
-      username: "Henrique",
-      nomeformacao: "Introdução a Java",
-      dataFormacao: "18/11/2022 14:00",
-      justificacaoFormacao:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      idCurso: "H-T-666",
-      tipoFormacao: "CURSO",
-    },
-    {
-      username: "José",
-      nomeformacao: "Introdução a React",
-      dataFormacao: "17/11/2022 14:00",
-      justificacaoFormacao:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      idCurso: "J-F-111",
-      tipoFormacao: "PENDENTE",
-    },
   ];
 
   const colaboradorStyles = {
@@ -92,6 +64,17 @@ export const PesquisarFormacao = ({}) => {
     { label: "Nuno", value: "Nuno" },
     { label: "Pedro", value: "Pedro" },
   ];
+
+  const handleCancelarFormacao = (card) => {
+    setDataCardList(
+      dataCardList.filter((data) => data.idCurso !== card.idCurso)
+    );
+  };
+
+  useEffect(() => {
+    console.log("Alteração na lista:");
+    console.log(dataCardList);
+  }, [dataCardList]);
 
   return (
     <div className="pl-8 pr-8 w-full h-full overflow-scroll scrollbar-hide">
@@ -179,8 +162,8 @@ export const PesquisarFormacao = ({}) => {
       </div>
 
       <div className="mt-8">
-        {dataCard
-          ?.filter(
+        {dataCardList
+          .filter(
             (item) =>
               item.nomeformacao.toLowerCase().includes(query) &&
               containsList(formationCamps.nomeColaborador, item.username)
@@ -196,6 +179,7 @@ export const PesquisarFormacao = ({}) => {
               tipoFormacao={card.tipoFormacao}
               consultar={card.consultar}
               urlBack={"/home/formacao/pesquisar-formacao"}
+              onItemDelete={() => handleCancelarFormacao(card)}
             />
           ))}
       </div>
