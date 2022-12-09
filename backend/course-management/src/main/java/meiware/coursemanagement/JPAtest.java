@@ -10,6 +10,7 @@ import meiware.coursemanagement.Entities.MongoDB.Publicacao;
 import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
 import meiware.coursemanagement.Repositories.MongoDB.IAnexoRepository;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
+import meiware.coursemanagement.Services.JPA.IUtilizadorService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
 import meiware.coursemanagement.Services.MongoDB.IPublicacaoService;
 import meiware.coursemanagement.Services.MongoDB.PublicacaoService;
@@ -59,6 +60,9 @@ public class JPAtest {
     @Autowired
     private IAnexoRepository anexoRepository;
 
+    @Autowired
+    private IUtilizadorService utilizadorService;
+
     @EventListener
     public void onApplicationEvent(ApplicationReadyEvent event) throws Exception {
         log.info("All Beans have been initizalized. Application is ready to service requests");
@@ -68,8 +72,8 @@ public class JPAtest {
 
     public void run(String... args) throws Exception {
 
-        // fetch customers by last name
-        /*log.info("----- POSTGRES -----");
+        /*// fetch customers by last name
+        log.info("----- POSTGRES -----");
         log.info("Customer found with findByEmail('nelso@email.com'):");
 
         // Sample lists
@@ -109,6 +113,20 @@ public class JPAtest {
         log.info("Customer found with findById(4L):");
         log.info(customer.toString());
         log.info("--------------------------------------------");*/
+        /*Utilizador utilizador1 = utilizadorService.getUtilizadorById(Long.valueOf(1));
+        Utilizador utilizador2 = utilizadorService.getUtilizadorById(Long.valueOf(2));
+
+        PedidoFormacao pedidoFormacao1 = new PedidoFormacao("pedido 1", "descricao 1", "formador", LocalDate.of(2022, 12, 15), Float.valueOf(1), utilizador1);
+        PedidoFormacao pedidoFormacao2 = new PedidoFormacao("pedido 2", "descricao 2", "formador", LocalDate.of(2022, 12, 16), Float.valueOf(2), utilizador2);
+        PedidoFormacao pedidoFormacao3 = new PedidoFormacao("pedido 3", "descricao 3", "formador", LocalDate.of(2022, 12, 17), Float.valueOf(3), utilizador2);
+
+        pedidoFormacao2.setDataCriacao(LocalDate.of(2022, 12, 10));
+        pedidoFormacao3.setDataCriacao(LocalDate.of(2022, 12, 11));
+
+
+        pedidoFormacaoService.createPedidoFormacao(pedidoFormacao1, new ArrayList<>());
+        pedidoFormacaoService.createPedidoFormacao(pedidoFormacao2, new ArrayList<>());
+        pedidoFormacaoService.createPedidoFormacao(pedidoFormacao3, new ArrayList<>());*/
 
 
 
@@ -227,5 +245,17 @@ public class JPAtest {
 
 
         log.info("");*/
+
+        /*Publicacao publicacao1 = new Publicacao("Publicacao 1", "Isto e uma publicacao 1...", new HashSet<>(), "Formacao 1");
+        Publicacao publicacao2 = new Publicacao("Publicacao 2", "Isto e uma publicacao 2...", new HashSet<>(), "Formacao 2");
+        Publicacao publicacao3 = new Publicacao("Publicacao 3", "Isto e uma publicacao 3...", new HashSet<>(), "Formacao 3");
+
+        publicacao2.setDataCriacao(LocalDate.of(2022,12,10));
+        publicacao3.setDataCriacao(LocalDate.of(2022,12,11));
+
+        publicacaoService.createPublicacao(publicacao1, new ArrayList<>());
+        publicacaoService.createPublicacao(publicacao2, new ArrayList<>());
+        publicacaoService.createPublicacao(publicacao3, new ArrayList<>());*/
+
     }
 }

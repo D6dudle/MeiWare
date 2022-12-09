@@ -23,7 +23,7 @@ public class PublicacaoService implements IPublicacaoService {
     public List<Publicacao> getPublicacoes() {
         List<Publicacao> publicacoes = new ArrayList<>();
         try {
-            for (Publicacao p: publicacaoRepository.findAll()) {
+            for (Publicacao p: publicacaoRepository.findAllByOrderByDataCriacaoDesc()) {
                 if(!p.isArquivada()) {
                     publicacoes.add(p);
                 }

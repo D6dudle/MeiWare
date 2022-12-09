@@ -30,7 +30,7 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
         List<PedidoFormacao> pedidosFormacao = new ArrayList<>();
 
         try {
-            for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
+            for (PedidoFormacao pd: pedidoFormacaoRepository.findAllByOrderByDataCriacaoDesc()) {
                 if(!pd.isApagada()) {
                     pedidosFormacao.add(pd);
                 }
@@ -47,7 +47,7 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
         List<PedidoAprovado> formacoesAprovadas = new ArrayList<>();
 
         try {
-            for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
+            for (PedidoFormacao pd: pedidoFormacaoRepository.findAllByOrderByDataCriacaoDesc()) {
                 if(!pd.isApagada() && (pd instanceof PedidoAprovado)) {
                     formacoesAprovadas.add((PedidoAprovado) pd);
                 }
@@ -65,7 +65,7 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
         List<PedidoRejeitado> formacoesRejeitadas = new ArrayList<>();
 
         try {
-            for (PedidoFormacao pd: pedidoFormacaoRepository.findAll()) {
+            for (PedidoFormacao pd: pedidoFormacaoRepository.findAllByOrderByDataCriacaoDesc()) {
                 if(!pd.isApagada() && (pd instanceof PedidoRejeitado)) {
                     formacoesRejeitadas.add((PedidoRejeitado) pd);
                 }
