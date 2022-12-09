@@ -43,11 +43,6 @@ export const Menus = [
         to: "controlo/colaboradores",
         opened: false,
       },
-      {
-        title: "Listar pedidos",
-        to: "controlo/listar-pedidos",
-        opened: false,
-      },
     ],
   },
   {

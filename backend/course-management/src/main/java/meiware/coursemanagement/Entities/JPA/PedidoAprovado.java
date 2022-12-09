@@ -26,8 +26,8 @@ public class PedidoAprovado extends PedidoFormacao{
 
     }
 
-    public PedidoAprovado(String nome, String descricao, String formador, LocalDate dataInicio, float preco, LocalDate dataAprovacao){
-        super(nome, descricao, formador, dataInicio, preco);
+    public PedidoAprovado(String nome, String descricao, String formador, LocalDate dataInicio, Utilizador quemFezPedido, float preco, LocalDate dataAprovacao){
+        super(nome, descricao, formador, dataInicio, preco, quemFezPedido);
         this.dataAprovacao = dataAprovacao;
     }
 

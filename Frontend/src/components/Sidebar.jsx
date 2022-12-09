@@ -5,54 +5,48 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import SidebarArrow from "../assets/sidebar/sidebarArrow.png";
 import LogoGrama from "../assets/sidebar/logoGrama.png";
 
-const Sidebar = ({trigger}) => {
-
+const Sidebar = ({ trigger }) => {
   const [open, setOpen] = useState(true);
   const [submenuOpen, setSubmenuOpen] = useState(null);
   const [subMenuClicked, setSubmenuClicked] = useState(null);
 
   const location = useLocation();
-  
+
   const [path, setPath] = useState("");
   const [menus, setMenu] = useState(Menus);
 
   const nav = useNavigate();
 
-  function possiblePaths(path){
-
-    let pathElem = path.split('/');
+  function possiblePaths(path) {
+    let pathElem = path.split("/");
     let home = pathElem.indexOf("home");
 
-    pathElem = pathElem.slice(home+1,pathElem.length)
+    pathElem = pathElem.slice(home + 1, pathElem.length);
 
-    let posPaths = []
+    let posPaths = [];
 
-    for(let i=1; i<=pathElem.length; i++){
-      posPaths.push(pathElem.slice(0,i).join("/"))
+    for (let i = 1; i <= pathElem.length; i++) {
+      posPaths.push(pathElem.slice(0, i).join("/"));
     }
 
-    return posPaths
-
+    return posPaths;
   }
 
   function updateMenu(newPath, oldPath) {
-
     let newPossiblePaths = possiblePaths(newPath);
     let oldPossiblePaths = [];
 
-    if(oldPath != null){
+    if (oldPath != null) {
       oldPossiblePaths = possiblePaths(oldPath);
     }
 
     //console.log("OLD ",oldPossiblePaths)
     //console.log("NEW ",newPossiblePaths)
-    
 
     let final = JSON.stringify(menus, (_, nestedValue) => {
-
-      if (nestedValue && newPossiblePaths.includes(nestedValue["to"])){
+      if (nestedValue && newPossiblePaths.includes(nestedValue["to"])) {
         nestedValue["opened"] = true;
-      }else if(nestedValue && oldPossiblePaths.includes(nestedValue["to"])){
+      } else if (nestedValue && oldPossiblePaths.includes(nestedValue["to"])) {
         nestedValue["opened"] = false;
       }
 
@@ -61,19 +55,16 @@ const Sidebar = ({trigger}) => {
 
     final = JSON.parse(final);
 
-    setPath(newPath)
-
+    setPath(newPath);
   }
 
   useEffect(() => {
-    
-    updateMenu(location.pathname)
-
-  }, []); 
+    updateMenu(location.pathname);
+  }, []);
 
   const navigate = (tab, old) => {
     //console.log("SIDEBAR - Cliquei no ",tab," OLD ",old)
-    updateMenu(tab, old)
+    updateMenu(tab, old);
   };
 
   React.useEffect(() => {
@@ -107,7 +98,7 @@ const Sidebar = ({trigger}) => {
 
         {/* Menu */}
         {menus.map((menu, index) => {
-          return(
+          return (
             <div key={index} className="relative top-24">
               <div className="divMenuItem">
                 <NavLink
@@ -124,10 +115,12 @@ const Sidebar = ({trigger}) => {
                           ? "w-12 bg-primary rounded-sm text-darkBlack"
                           : "w-12")
                   }`}
-                  onClick={ event => updateMenu(menu.to, path) }
+                  onClick={(event) => updateMenu(menu.to, path)}
                 >
                   <span className="menuIcon">{menu.icon}</span>
-                  <span className={`menuTitle duration-400 ${!open && "hidden"}`}>
+                  <span
+                    className={`menuTitle duration-400 ${!open && "hidden"}`}
+                  >
                     {menu.title}
                   </span>
                 </NavLink>
@@ -148,7 +141,7 @@ const Sidebar = ({trigger}) => {
                         className={`submenuItem ${
                           submenuItem.opened ? "text-primary" : "text-white"
                         }`}
-                        onClick={event => updateMenu(submenuItem.to, path)}
+                        onClick={(event) => updateMenu(submenuItem.to, path)}
                       >
                         {submenuItem.title}
                       </NavLink>
@@ -157,9 +150,8 @@ const Sidebar = ({trigger}) => {
                 </ul>
               )}
             </div>
-          )
-        }
-        )}
+          );
+        })}
 
         {/* Logout */}
         <ul className="absolute bottom-20">
@@ -180,10 +172,9 @@ const Sidebar = ({trigger}) => {
         <div className="absolute bottom-5">
           <div className="relative left-[1.625rem] flex flex-row items-center gap-4 h-12 w-[12.5rem] py-[0.813rem]">
             {/* User photo */}
-            <img
-              src={LogoGrama}
-              className="w-8 h-8 flex flex-grow-0 rounded-3xl"
-            />
+            <div className="w-8 h-8 flex flex-grow-0 ">
+              <img src={LogoGrama} className="rounded-full" />
+            </div>
             <div className={`flex flex-col items-start ${!open && "hidden"}`}>
               <span className="font-IBM font-normal text-sm text-white ">
                 Utilizador Teste

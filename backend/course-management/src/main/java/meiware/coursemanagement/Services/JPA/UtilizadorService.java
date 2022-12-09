@@ -17,7 +17,7 @@ public class UtilizadorService implements IUtilizadorService {
     public List<Utilizador> getUtilizadores() {
         List<Utilizador> utilizadores = new ArrayList<>();
         try {
-            for (Utilizador u: utilizadorRepository.findAll()) {
+            for (Utilizador u: utilizadorRepository.findAllByOrderByNomeAsc()) {
                 utilizadores.add(u);
             }
         }catch (Exception e) {
@@ -31,7 +31,7 @@ public class UtilizadorService implements IUtilizadorService {
     public List<Utilizador> getColaboradores() {
         List<Utilizador> colaboradores = new ArrayList<>();
         try {
-            for (Utilizador u: utilizadorRepository.findAll()) {
+            for (Utilizador u: utilizadorRepository.findAllByOrderByNomeAsc()) {
                 if(u.isColaborador() && !u.isGestor() && !u.isAdministrador()) {
                     colaboradores.add(u);
                 }
@@ -48,7 +48,7 @@ public class UtilizadorService implements IUtilizadorService {
         List<Utilizador> gestores = new ArrayList<>();
 
         try {
-            for (Utilizador u: utilizadorRepository.findAll()) {
+            for (Utilizador u: utilizadorRepository.findAllByOrderByNomeAsc()) {
                 if(u.isGestor() && !u.isAdministrador()) {
                     gestores.add(u);
                 }
@@ -66,7 +66,7 @@ public class UtilizadorService implements IUtilizadorService {
         List<Utilizador> administradores = new ArrayList<>();
 
         try {
-            for (Utilizador u: utilizadorRepository.findAll()) {
+            for (Utilizador u: utilizadorRepository.findAllByOrderByNomeAsc()) {
                 if(u.isAdministrador()) {
                     administradores.add(u);
                 }

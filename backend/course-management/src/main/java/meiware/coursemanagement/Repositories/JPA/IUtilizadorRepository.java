@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface IUtilizadorRepository extends CrudRepository<Utilizador, Long> {
+    List<Utilizador> findAllByOrderByNomeAsc();
     Utilizador findByEmail(String email);
     List<Utilizador> findAllByManager(Utilizador manager);
     Boolean existsByEmail(String email);

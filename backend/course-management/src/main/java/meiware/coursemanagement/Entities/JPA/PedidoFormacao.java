@@ -63,12 +63,14 @@ public class PedidoFormacao {
 
     }
 
-    public PedidoFormacao(String nome, String descricao, String formador, LocalDate dataInicio, float preco) {
+    public PedidoFormacao(String nome, String descricao, String formador, LocalDate dataInicio, float preco, Utilizador quemFezPedido) {
         this.nome = nome;
         this.descricao = descricao;
         this.formador = formador;
         this.dataInicio = dataInicio;
         this.preco = preco;
+        this.dataCriacao = LocalDate.now();
+        this.quemFezPedido = quemFezPedido;
     }
 
     public Long getId() {
