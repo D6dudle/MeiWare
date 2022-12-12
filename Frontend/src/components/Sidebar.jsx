@@ -4,18 +4,37 @@ import { LogOut } from "react-feather";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import SidebarArrow from "../assets/sidebar/sidebarArrow.png";
 import LogoGrama from "../assets/sidebar/logoGrama.png";
+import UserService from "../services/user.service";
+import AuthService from "../services/auth.service";
 
 const Sidebar = ({ trigger }) => {
   const [open, setOpen] = useState(true);
   const [submenuOpen, setSubmenuOpen] = useState(null);
   const [subMenuClicked, setSubmenuClicked] = useState(null);
+  const nav = useNavigate();
+
+  const [userDetails, setUserDetails] = useState({
+    name: "",
+    email: "",
+    role: "",
+  });
+
+  useEffect(() => {
+    const user = UserService.getCurrentUser();
+    var highestRole = "COLABORADOR";
+    if (user.isGestor) highestRole = "GESTOR";
+    if (user.isAdministrador) highestRole = "ADMIN";
+    setUserDetails({
+      name: user.nome,
+      email: user.email,
+      role: highestRole,
+    });
+  }, []);
 
   const location = useLocation();
 
   const [path, setPath] = useState("");
   const [menus, setMenu] = useState(Menus);
-
-  const nav = useNavigate();
 
   function possiblePaths(path) {
     let pathElem = path.split("/");
@@ -72,7 +91,8 @@ const Sidebar = ({ trigger }) => {
   }, [trigger]);
 
   const handleLogout = () => {
-    alert("Logout");
+    AuthService.logout();
+    nav("/");
   };
 
   return (
@@ -177,15 +197,15 @@ const Sidebar = ({ trigger }) => {
             </div>
             <div className={`flex flex-col items-start ${!open && "hidden"}`}>
               <span className="font-IBM font-normal text-sm text-white ">
-                Utilizador Teste
+                {userDetails.name}
               </span>
               <span className="font-IBM font-normal text-xs text-gray4">
-                teste@gmail.com
+                {userDetails.email}
               </span>
 
               <div className="userRoleDisplay">
                 <span className="font-IBM font-normal text-xs text-white ">
-                  Manager
+                  {userDetails.role}
                 </span>
               </div>
             </div>
