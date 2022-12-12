@@ -3,6 +3,7 @@ package meiware.coursemanagement.Controllers;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -62,15 +63,14 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
+        Utilizador user = utilizadorRepository.findByEmail(userDetails.getEmail());
         return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getEmail(),
-                roles));
+                user.toJSON()));
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-
+        boolean isUnknownRole = false;
         if (utilizadorRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
@@ -80,22 +80,25 @@ public class AuthController {
         List<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
-        if (strRoles == null) {
-            roles.add(Role.COLABORADOR);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "COLABORADOR" ->
+        for (String role: strRoles) {
+            switch (role) {
+                case "COLABORADOR" ->
                         roles.add(Role.COLABORADOR);
-                    case "GESTOR" ->
+                case "GESTOR" ->
                         roles.add(Role.GESTOR);
-                    case "ADMINISTRADOR" ->
-                            roles.add(Role.ADMINISTRADOR);
-                    default ->
-                        throw new RuntimeException("Error: Role is not found.");
-                }
-            });
+                case "ADMINISTRADOR" ->
+                        roles.add(Role.ADMINISTRADOR);
+                default ->
+                        isUnknownRole = true;
+            }
         }
+
+        if (isUnknownRole){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Role is invalid!"));
+        }
+
 
         // Create new user's account
         Utilizador user = new Utilizador(signUpRequest.getName(),
