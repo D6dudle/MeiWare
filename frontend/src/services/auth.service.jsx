@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/auth/";
-var loggedIn = false;
 
 const login = (email, password) => {
   return axios
@@ -11,7 +10,6 @@ const login = (email, password) => {
     })
     .then((response) => {
       if (response.data.accessToken) {
-        loggedIn = true;
         localStorage.setItem("user", JSON.stringify(response.data.user));
       }
 
@@ -21,7 +19,6 @@ const login = (email, password) => {
 
 const logout = () => {
   localStorage.removeItem("user");
-  loggedIn = false;
 };
 
 const register = (name, email, password, roleList) => {
