@@ -33,9 +33,8 @@ export default function ControloBudget() {
         </div>
       </div>
       <div className="pt-4 mx-auto">
-      <Table columns={columns} data={data} />
+        <Table columns={columns} data={data} />
       </div>
-
     </div>
   );
 }

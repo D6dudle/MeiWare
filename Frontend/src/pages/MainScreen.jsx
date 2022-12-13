@@ -18,6 +18,8 @@ import AprovarPublicacao from "./AprovarPublicacao";
 import Exemplo from "./Exemplo";
 import PesquisarForum from "./PesquisarForum";
 import PesquisarForumConsulta from "./PesquisarForumConsulta";
+import EditarColaborador from "./EditarColaborador";
+import EditarFormacao from "./EditarFormacao";
 import { useState, useRef } from "react";
 import Modal from "../components/Modal";
 
@@ -91,6 +93,20 @@ export default function MainScreen() {
             <Route
               path="/controlo/colaboradores/adicionar-colaborador"
               element={<AdicionarColaborador />}
+            />
+            <Route
+              path="/controlo/colaboradores/editar-colaborador/"
+              element={<EditarColaborador />}
+            />
+            <Route
+              path="/formacao/pesquisar-formacao/editar-formacao"
+              element={<EditarFormacao />}
+            />
+
+
+            <Route
+              path="/controlo/listar-pedidos"
+              element={<ListarPedidos />}
             />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
