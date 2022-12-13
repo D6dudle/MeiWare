@@ -12,7 +12,7 @@ export const Formacoes = [
         dataFormacao: "18/11/2022 14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        idCurso: "G-C-765",
+        idCurso: "P-C-765",
         tipoFormacao: "PENDENTE",
       },
       {
@@ -21,7 +21,7 @@ export const Formacoes = [
         dataFormacao: "18/11/2022 14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        idCurso: "G-C-765",
+        idCurso: "P-C-766",
         tipoFormacao: "PENDENTE",
       },
       {
@@ -30,7 +30,7 @@ export const Formacoes = [
         dataFormacao: "18/11/2022 14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        idCurso: "G-C-765",
+        idCurso: "P-C-767",
         tipoFormacao: "PENDENTE",
       },
       {
@@ -39,7 +39,7 @@ export const Formacoes = [
         dataFormacao: "18/11/2022 14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        idCurso: "G-C-765",
+        idCurso: "P-C-768",
         tipoFormacao: "PENDENTE",
       },
     ],
@@ -55,7 +55,7 @@ export const Formacoes = [
         dataFormacao: "18/11/2022 14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        idCurso: "G-C-765",
+        idCurso: "C-C-765",
         tipoFormacao: "CURSO",
       },
       {
@@ -64,7 +64,7 @@ export const Formacoes = [
         dataFormacao: "18/11/2022 14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        idCurso: "G-C-765",
+        idCurso: "C-C-766",
         tipoFormacao: "CURSO",
       },
     ],
@@ -81,7 +81,7 @@ export const Formacoes = [
         dataFormacao: "18/11/2022 14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        idCurso: "G-C-765",
+        idCurso: "T-C-765",
         tipoFormacao: "TERMINADA",
       },
       {
@@ -90,7 +90,7 @@ export const Formacoes = [
         dataFormacao: "18/11/2022 14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        idCurso: "G-C-765",
+        idCurso: "T-C-766",
         tipoFormacao: "TERMINADA",
       },
       {
@@ -99,7 +99,7 @@ export const Formacoes = [
         dataFormacao: "18/11/2022 14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        idCurso: "G-C-765",
+        idCurso: "T-C-767",
         tipoFormacao: "TERMINADA",
       },
       {
@@ -108,7 +108,7 @@ export const Formacoes = [
         dataFormacao: "18/11/2022 14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        idCurso: "G-C-765",
+        idCurso: "T-C-768",
         tipoFormacao: "TERMINADA",
       },
     ],

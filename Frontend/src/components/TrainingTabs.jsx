@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, TabsHeader, TabsBody, Tab } from "@material-tailwind/react";
 import TextInput from "../components/TextInput";
 import { Formacao } from "../components/Formacao";
@@ -13,6 +13,30 @@ export default function TrainingTabs() {
 
   const [search, setSearch] = useState();
   const [values, setValues] = useState([]);
+  const [dataCardList, setDataCardList] = useState(Formacoes);
+
+  const handleCancelarFormacao = (card) => {
+    //Gets the index of object to remove the formation
+    const indexList = dataCardList.findIndex((element) => {
+      return element.label === activeFilter;
+    });
+
+    const updatedList = dataCardList[indexList].formacoes.filter(
+      (formacao) => formacao.idCurso !== card.idCurso
+    );
+    setDataCardList(
+      ...dataCardList,
+      (dataCardList[indexList].formacoes = updatedList)
+    );
+    setFilter(updatedList);
+    console.log("LISTA StaTE:");
+    console.log(dataCardList);
+  };
+
+  useEffect(() => {
+    console.log("Update");
+    console.log(dataCardList);
+  }, [dataCardList]);
 
   const filterTags = (inputValue) => {
     return users.filter((i) =>
@@ -32,7 +56,7 @@ export default function TrainingTabs() {
 
   const handleSelectedTab = (label) => {
     setActiveFilter(label);
-    var list = Formacoes.filter((item) => item.label == label);
+    var list = dataCardList.filter((item) => item.label == label);
     setFilter(list[0].formacoes);
   };
 
@@ -46,7 +70,7 @@ export default function TrainingTabs() {
       {/* First value */}
       <TabsHeader className="mt-0">
         <div className="flex items-start gap-8 px-[0.625rem]">
-          {Formacoes.map(({ label, value, icon }) => (
+          {dataCardList.map(({ label, value, icon }) => (
             <Tab
               key={value}
               value={value}

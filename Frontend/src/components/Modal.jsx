@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./Button";
 
 export default function Modal({ closeModal, confirmeActionModal, data }) {
@@ -7,13 +7,33 @@ export default function Modal({ closeModal, confirmeActionModal, data }) {
       tipo: "CANCELAR",
       header: "Tem a certeza que quer cancelar a formação?",
       body: "todas as alterações e documentos serão ",
-      boldWord: "apagadas ",
+      boldWord: "apagados ",
       body2: "e não vai ser possível consultar mais esta formação",
     },
-    { tipo: "REJEITADA", cor: "error" },
-    { tipo: "CURSO", cor: "success" },
-    { tipo: "PENDENTE", cor: "white" },
+    {
+      tipo: "EXCLUIR",
+      header: "Tem a certeza que quer excluir o colaborador?",
+      body: "toda a informação acerca deste colaborador será",
+      boldWord: "apagada ",
+      body2: "e não vai ser possível consultar mais esta formação",
+    },
   ];
+
+  const prepareConfirmeActionModal = () => {
+    if (!justificacaoFormacao.data) {
+      //If its empty
+      setJustificacaoFormacao({ ...justificacaoFormacao, error: true });
+      setIsSubmit(true);
+    } else {
+      confirmeActionModal();
+    }
+  };
+
+  const [justificacaoFormacao, setJustificacaoFormacao] = useState({
+    data: "",
+    error: false,
+  });
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const dataModal = constDataModal.find(({ tipo }) => tipo == data);
 
@@ -38,11 +58,38 @@ export default function Modal({ closeModal, confirmeActionModal, data }) {
           </div>
           {/*body*/}
           <div className="relative p-6 flex-auto">
-            <p className="text-center my-4 text-white text-base font-normal leading-relaxed">
+            <p className="text-center py-4 text-white text-base font-normal leading-relaxed">
               {dataModal.body}
               <span className="text-primary"> {dataModal?.boldWord} </span>{" "}
               {dataModal?.body2}
             </p>
+            <div className="pl-6">
+              <h3 className="flex font-bold pb-4 text-primary">
+                Qual o motivo do cancelamento?
+              </h3>
+              <input
+                type="text"
+                className={`inputText ${
+                  justificacaoFormacao.data || isSubmit === false
+                    ? null
+                    : "border-error"
+                }`}
+                id="nomeFormacao"
+                placeholder="descrição da justificação"
+                onChange={(e) => {
+                  setJustificacaoFormacao({
+                    ...justificacaoFormacao,
+                    data: e.target.value,
+                  });
+                }}
+                value={justificacaoFormacao.data}
+              />
+              {justificacaoFormacao.error && (
+                <p className="inputTextErrors pt-2">
+                  Justifique a razão do cancelamento
+                </p>
+              )}
+            </div>
           </div>
           {/*footer*/}
           <div className="flex items-center justify-end gap-4 p-6  rounded-b">
@@ -56,7 +103,7 @@ export default function Modal({ closeModal, confirmeActionModal, data }) {
               className="pl-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               iconName="NONE_PRIMARY"
               textButton="sim, tenho"
-              handleClick={() => confirmeActionModal()}
+              handleClick={() => prepareConfirmeActionModal()}
             />
           </div>
         </div>

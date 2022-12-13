@@ -4,6 +4,7 @@ import { ChevronDown, ChevronUp, Filter, Minus, Plus } from "react-feather";
 import TrainingUserInfo from "../components/TrainingUserInfo";
 import TextInput from "../components/TextInput";
 import users from "../constants/usersAux"; // Remove later
+import Modal from "../components/Modal";
 
 export default function Colaboradores() {
   const navigate = useNavigate();
@@ -11,10 +12,24 @@ export default function Colaboradores() {
   const [usersList, setUsers] = useState(users);
   const [actualUser, setUser] = useState(usersList[0]);
   const [search, setSearch] = useState();
+  const [modal, setModal] = useState({ show: false, data: null });
 
-  const handleExcluir = (u) => {
+  const handleCloseModal = () => {
+    setModal({ show: false, data: null });
+  };
+
+  const confirmeActionModal = (u) => {
+    console.log("Vou excluir o colaborador");
     setUsers(users.filter((user) => u.email !== user.email));
     setUser(users[0]);
+    setModal({ show: false, data: null });
+  };
+
+  const handleExcluir = (u) => {
+    setModal({
+      show: true,
+      data: "EXCLUIR",
+    });
   };
 
   const handleAdicionar = () => {
@@ -72,6 +87,13 @@ export default function Colaboradores() {
                 <Minus className="w-4 h-4 text-black" />
                 <p className="actionBtnInsideInfo">Excluir colaborador</p>
               </button>
+              {modal.show && (
+                <Modal
+                  closeModal={handleCloseModal}
+                  confirmeActionModal={() => confirmeActionModal(actualUser)}
+                  data={modal.data}
+                />
+              )}
 
               <button
                 className="actionButtons bg-primary"

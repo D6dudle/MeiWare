@@ -73,7 +73,7 @@
     }
 
     .actionBtnInsideInfo {
-      @apply font-IBM font-semibold text-sm text-black
+      @apply font-IBM font-semibold text-sm text-black pl-2
     }
 
     .usersList {
