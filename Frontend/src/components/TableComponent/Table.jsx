@@ -13,6 +13,7 @@ import { Button, PageButton } from "./Button";
 import { classNames } from "./Utils";
 import { SortIcon, SortUpIcon, SortDownIcon } from "./Icons";
 //import { PencilAltIcon } from '@heroicons/react/solid'
+import { useNavigate, useLocation, createSearchParams } from "react-router-dom";
 
 import {
   HiChevronDoubleLeft,
@@ -128,6 +129,8 @@ export function AvatarCell({ value, column, row }) {
 }
 
 const tableHooks = (hooks) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   hooks.visibleColumns.push((columns) => [
     ...columns,
     {
@@ -136,7 +139,23 @@ const tableHooks = (hooks) => {
       Cell: ({ row }) => (
         <HiPencilAlt
           className="text-white"
-          onClick={() => alert("Editing: " + row.values.title)}
+          onClick={() => {
+            const params = {
+              id: row.original.age,
+            };
+
+            navigate(
+              {
+                pathname: "/home/controlo/colaboradores/editar-colaborador",
+                search: createSearchParams(params).toString(),
+              },
+              {
+                state: {
+                  prevUrl: location.pathname,
+                },
+              }
+            );
+          }}
         />
       ),
     },

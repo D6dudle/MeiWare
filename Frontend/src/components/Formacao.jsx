@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Button } from "../components/Button";
 import { Image, Edit } from "react-feather";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, createSearchParams, useLocation } from "react-router-dom";
 import Modal from "./Modal";
 
 export const Formacao = ({
@@ -44,11 +44,6 @@ export const Formacao = ({
   const handleConsultarFormacaoClick = (e, formacao) => {
     e.preventDefault();
     navigate(`/home/formacao/pesquisar-detalhes`, { state: formacao });
-  };
-
-  const handleEditarFormacaoClick = (e) => {
-    e.preventDefault();
-    alert("Click em Editar formação");
   };
 
   const handleCancelarFormacaoClick = (e) => {
@@ -99,7 +94,24 @@ export const Formacao = ({
                   <Button className="h-10" iconName="CONSULTAR" textButton="" />
                 </div>
               ) : null}
-              <div className="" onClick={handleEditarFormacaoClick}>
+              <div className="" onClick={() => {
+                                  const params = {
+                                    id: idCurso,
+                                  };
+
+                                  navigate(
+                                    {
+                                      pathname: "/home/formacao/pesquisar-formacao/editar-formacao",
+                                      search: createSearchParams(params).toString(),
+                                    },
+                                    {
+                                      state: {
+                                        prevUrl: location.pathname,
+                                        
+                                      },
+                                    }
+                                  );
+                                }}>
                 <Button
                   className="h-10"
                   iconName="EDITAR"

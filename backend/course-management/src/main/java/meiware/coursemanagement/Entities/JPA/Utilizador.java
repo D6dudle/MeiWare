@@ -1,6 +1,7 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
+import net.minidev.json.JSONObject;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -136,6 +137,20 @@ public class Utilizador {
         return roles.contains(Role.COLABORADOR);
     }
 
+    public JSONObject toJSON(){
+        JSONObject obj = new JSONObject();
+        obj.put("id", id);
+        obj.put("nome", nome);
+        obj.put("email", email);
+        obj.put("isColaborador", isColaborador());
+        obj.put("isGestor", isGestor());
+        obj.put("isAdministrador", isAdministrador());
+        if (manager == null)
+            obj.put("managerId", -1);
+        else
+            obj.put("managerId", manager.getId());
+        return obj;
+    }
     @Override
     public String toString() {
         return "Utilizador{" +

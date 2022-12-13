@@ -5,6 +5,7 @@ import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 //TODO: corrigir returns
@@ -18,7 +19,7 @@ public class UtlizadorController {
 
     @GetMapping(value = "/utilizadores")
     public ResponseEntity<?> getUtilizadores() {
-
+        System.out.println("/utilizadores");
         try{
             utilizadorService.getUtilizadores();
         }catch(Exception e){
@@ -29,12 +30,14 @@ public class UtlizadorController {
     }
 
     @GetMapping(value = "/colaboradores")
+    @PreAuthorize("hasRole('GESTOR')")
     public ResponseEntity<?> getColaboradores() {
+        System.out.println("/colaboradores");
 
         try{
             utilizadorService.getColaboradores();
         }catch(Exception e){
-
+            return null;
         }
 
         return null;
