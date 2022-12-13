@@ -14,7 +14,7 @@ const App = () => {
         {/* Definir todas as routes existentes */}
         <Route path="/" element={<Login />} />
         <Route path="home/*" element={<PrivateRoute />}>
-          <Route path="" element={<MainScreen />} />
+          <Route path="*" element={<MainScreen />} />
         </Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>
