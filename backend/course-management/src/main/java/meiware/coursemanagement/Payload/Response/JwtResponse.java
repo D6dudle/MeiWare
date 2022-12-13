@@ -1,19 +1,17 @@
 package meiware.coursemanagement.Payload.Response;
 
+import net.minidev.json.JSONObject;
+
 import java.util.List;
 
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
-    private Long id;
-    private String email;
-    private List<String> roles;
+    private JSONObject user;
 
-    public JwtResponse(String accessToken, Long id, String email, List<String> roles) {
+    public JwtResponse(String accessToken, JSONObject user) {
         this.token = accessToken;
-        this.id = id;
-        this.email = email;
-        this.roles = roles;
+        this.user = user;
     }
 
     public String getAccessToken() {
@@ -32,23 +30,11 @@ public class JwtResponse {
         this.type = tokenType;
     }
 
-    public Long getId() {
-        return id;
+    public JSONObject getUser() {
+        return user;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<String> getRoles() {
-        return roles;
+    public void setUser(JSONObject user) {
+        this.user = user;
     }
 }

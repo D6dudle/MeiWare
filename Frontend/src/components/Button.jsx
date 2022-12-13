@@ -3,7 +3,7 @@ import { Eye, Edit, XCircle, CheckCircle, Archive } from "react-feather";
 
 /** @component Este componente é repossável por adicionar os botões ao retângulo de cada formação*/
 
-export const Button = ({ iconName, textButton }) => {
+export const Button = ({ iconName, textButton, handleClick }) => {
   const getIcon = [
     {
       name: "CONSULTAR",
@@ -45,14 +45,31 @@ export const Button = ({ iconName, textButton }) => {
       textColor: "darkBlack",
       focus: "shadow-btn",
     },
+    {
+      name: "NONE",
+      background: "transparent border-[1.5px]",
+      borderColor: "gray3",
+      textColor: "white",
+      focus: "primary",
+    },
+    {
+      name: "NONE_PRIMARY",
+      background: "primary",
+      borderColor: "primary",
+      textColor: "darkBlack",
+      focus: "shadow-btn",
+    },
   ];
   const icon = getIcon.find(({ name }) => name === iconName) || {};
 
   return (
     <button
-      className={`flex items-center px-4 py-2  bg-${icon.background} text-${icon.textColor} border-${icon.borderColor} font-semibold text-sm rounded-sm  hover:bg-${icon.borderColor}  active:bg-${icon.background} active:shadow-inner focus:border-${icon.focus}`}
+      className={`flex items-center px-4 py-2  bg-${icon?.background} text-${icon?.textColor} border-${icon?.borderColor} font-semibold text-sm rounded-sm  hover:bg-${icon?.borderColor}  active:bg-${icon?.background} active:shadow-inner focus:border-${icon?.focus}`}
+      onClick={handleClick}
     >
-      <icon.icon className={`w-5 h-5 ${icon.icon !== Eye && "mr-2"}`} />
+      {icon?.icon && (
+        <icon.icon className={`w-5 h-5 ${icon?.icon !== Eye && "mr-2"}`} />
+      )}
       {textButton}
     </button>
   );

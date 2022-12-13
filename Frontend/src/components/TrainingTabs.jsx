@@ -30,6 +30,14 @@ export default function TrainingTabs() {
     setValues(data);
   };
 
+  const handleSelectedTab = (label) => {
+    setActiveFilter(label);
+    var list = Formacoes.filter((item) => item.label == label);
+    setFilter(list[0].formacoes);
+  };
+
+  if (activeFilter == null) handleSelectedTab("Formações pendentes"); // Default tab
+
   return (
     <Tabs
       value="pendentes"
@@ -45,11 +53,7 @@ export default function TrainingTabs() {
               className={`w-fit pb-2 border-b-[0.063rem] border-gray4 text-gray4 font-IBM lowercase hover:border-primary hover:text-primary ${
                 label == activeFilter && "text-primary border-primary"
               }`}
-              onClick={() => {
-                setActiveFilter(label);
-                var list = Formacoes.filter((item) => item.label == label);
-                setFilter(list[0].formacoes);
-              }}
+              onClick={() => handleSelectedTab(label)}
             >
               <div className="gap-2 flex flex-row justify-between items-center">
                 {icon}
@@ -78,6 +82,7 @@ export default function TrainingTabs() {
               type="dropsearch"
               titleStyle={"font-bold mb-1 text-2xl"}
               style={"w-[30rem]"}
+              placeholder="colaborador..."
               list={users}
               multi={true}
               showTitle={false}
@@ -114,6 +119,8 @@ export default function TrainingTabs() {
                       idCurso={card.idCurso}
                       tipoFormacao={card.tipoFormacao}
                       consultar={true}
+                      urlBack={"/home/formacao/listar-formacao"}
+                      onItemDelete={() => handleCancelarFormacao(card)}
                     />
                   );
                 })

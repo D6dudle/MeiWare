@@ -17,11 +17,11 @@ import AdicionarColaborador from "./AdicionarColaborador";
 import AprovarPublicacao from "./AprovarPublicacao";
 import Exemplo from "./Exemplo";
 import PesquisarForum from "./PesquisarForum";
-import ListarPedidos from "./ListarPedidos";
 import PesquisarForumConsulta from "./PesquisarForumConsulta";
 import EditarColaborador from "./EditarColaborador";
 import EditarFormacao from "./EditarFormacao";
 import { useState, useRef } from "react";
+import Modal from "../components/Modal";
 
 function MenuInicial() {
   return (
@@ -50,6 +50,7 @@ export default function MainScreen() {
           <Routes>
             {/* DEV */}
             <Route path="/exemplo" element={<Exemplo />} />
+            <Route path="/modal" element={<Modal />} />
             {/* Definir todas as routes existentes */}
             <Route path="/" element={<MenuInicial />} />
             <Route path="/formacao" element={<Formacao />} />
@@ -81,7 +82,7 @@ export default function MainScreen() {
               path="/knowledge/aprovar-publicacao"
               element={<AprovarPublicacao />}
             />
-            <Route path="/knowledge/pesquisar" element={<PesquisarForum />} />
+            <Route path="/knowledge" element={<PesquisarForum />} />
             <Route
               path="/knowledge/ver-publicacao-completa"
               element={<PesquisarForumConsulta />}

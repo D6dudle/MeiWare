@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Search } from "react-feather";
-import { createElement } from "react";
 import React from "react";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
@@ -8,21 +7,20 @@ import { Calendar } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import "./calendar.css";
-import { renderToStaticMarkup } from "react-dom/server";
 
-const svgString = encodeURIComponent(
-  renderToStaticMarkup(createElement(Search, { color: "white" }))
-);
+import Lupa from "../assets/search.svg"
 
 const lupa = () => ({
   alignItems: "center",
   display: "flex",
   ":before": {
-    content: `url("data:image/svg+xml,${svgString}")`,
-    display: "block",
+    display: "inline-block",
+    paddingTop: "5px",
+    content: `url(${Lupa})`,
+    zoom:"100%",
     marginRight: 8,
     height: "fit-content",
-    width: "1.8rem",
+    width: "fit-content",
   },
 });
 
@@ -153,6 +151,7 @@ function TextInput({
   searchCall,
   showTitle = true,
   titleStyle = null,
+  placeholder
 }) {
   const [isSubmitted, setSubmitted] = useState(false);
   const [isValid, setValid] = useState(false);
@@ -207,7 +206,7 @@ function TextInput({
           <AsyncSelect
             noOptionsMessage={() => "Não encontrado"}
             loadingMessage={() => "a pesquisar..."}
-            placeholder="pesquisa..."
+            placeholder={ placeholder ? placeholder : "pesquisa..."}
             className={` ${style}`}
             styles={
               multi
@@ -245,12 +244,12 @@ function TextInput({
             {name}
           </label>
           <div className="relative flex items-center">
-            <Search className="absolute mb-2 ml-1" />
+            <Search className="absolute ml-2" />
             <input
               type="search"
               className={`inputFilter pl-[35px] ${style}`}
               id={name}
-              placeholder="pesquisa..."
+              placeholder={ placeholder ? placeholder : "pesquisa..."}
               onChange={(e) => {
                 callback(index, e);
               }}
@@ -279,7 +278,7 @@ function TextInput({
                 isSubmitted ? (isValid ? null : "border-error") : null
               }`}
               id={name}
-              placeholder={name}
+              placeholder={ placeholder ? placeholder : name}
               value={date.toLocaleDateString()}
               onClick={(e) => {
                 setDatePick(!datePick);
@@ -330,7 +329,7 @@ function TextInput({
               }
               options={list}
               isMulti={multi}
-              placeholder={name}
+              placeholder={ placeholder ? placeholder : name}
               value={value}
               onChange={(e) => {
                 callback(index, e);
@@ -361,7 +360,7 @@ function TextInput({
               isSubmitted ? (value ? null : "border-error") : null
             }`}
             id={name}
-            placeholder={name}
+            placeholder={ placeholder ? placeholder : name}
             onChange={(e) => {
               callback(index, e);
               value == null ? setValid(false) : setValid(true);
@@ -393,7 +392,7 @@ function TextInput({
                 isSubmitted ? (value ? null : "border-error") : null
               }`}
               id={name}
-              placeholder={name}
+              placeholder={ placeholder ? placeholder : name}
               onChange={(e) => {
                 callback(index, e);
                 value == null ? setValid(false) : setValid(true);

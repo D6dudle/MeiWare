@@ -30,11 +30,12 @@ export default function Exemplo() {
     fields.push({ name: "Search", type: "searchbar", callback: handleType });
 
     fields.push({
-      name: "Dropdown Search",
-      type: "dropsearch",
-      list: aquaticCreatures,
-      callback: handleDropdown,
-      searchCall: filterCreature,
+      name:"Dropdown Search",
+      type:"dropsearch",
+      placeholder:"colaborador...",
+      list:aquaticCreatures,
+      callback:handleDropdown,
+      searchCall:filterCreature
     });
 
     //Para podermos verificar o campo quando carregamos no Submit
@@ -140,30 +141,17 @@ export default function Exemplo() {
 
       <div className="w-full h-full mt-10 overflow-scroll scrollbar-hide">
         <form onSubmit={handleFormSubmit} noValidate>
-          <ul className="w-80 justify-start">
-            {pubFields.map((field, index) => (
-              <li key={index}>
-                <div className="mb-4">
-                  <TextInput
-                    index={index}
-                    name={field.name}
-                    callback={field.callback}
-                    value={field.value}
-                    required={field.required}
-                    type={field.type}
-                    list={field.list}
-                    multi={field.multi}
-                    style={field.style}
-                    error={field.error}
-                    trigger={field.trigger}
-                    searchCall={field.searchCall}
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
-
-          {/* <h2>Campos extra</h2>
+            <ul className='w-80 justify-start'>
+                {pubFields.map((field, index) =>(    
+                  <li key={index}> 
+                      <div className='mb-4'>
+                        <TextInput index={index} name={field.name} callback={field.callback} value={field.value} required={field.required} type={field.type} list={field.list} multi={field.multi} style={field.style} error={field.error} trigger={field.trigger} searchCall={field.searchCall} placeholder={field.placeholder}/>
+                      </div>
+                  </li>
+                ))}
+            </ul>
+          
+            {/* <h2>Campos extra</h2>
             <div className='inline'>
               <input type='text' placeholder="Campo" value={newField} className='mr-2 p-2 bg-transparent text-white placeholder-gray3 border border-gray3 rounded-[2px] text-sm mb-4 mt-2 focus:border-primary focus:outline-0 focus:backdrop-blur-lg focus:shadow-btn transition transform duration-100 ease-out' onChange={ e => setNewField(e.target.value) }/>
               <button type="button" className='px-4 py-2 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white' onClick={ addField }>Adicionar campo</button>

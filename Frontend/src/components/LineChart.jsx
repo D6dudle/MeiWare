@@ -30,10 +30,10 @@ export const LineChart = () => {
         }, 
         scales: {
           x: {
-             display: false,
+             display: true,
           },
           y: {
-             display: false,
+             display: true,
           }
        },
       }} />

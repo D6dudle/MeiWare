@@ -108,6 +108,7 @@ export default function AprovarPublicacao() {
               list={tagList} 
               multi={true}
               value={values[1]}
+              placeholder="tags..."
               callback={handleDropdown} 
               searchCall={filterTags}/>
           </div>
@@ -119,6 +120,7 @@ export default function AprovarPublicacao() {
               list={users} 
               multi={true}
               value={values[2]}
+              placeholder="colaborador..."
               callback={handleDropdown} 
               searchCall={filterColaborador}/>
           </div>
@@ -141,7 +143,7 @@ export default function AprovarPublicacao() {
                         arquivar={true}
                         publicacaoCompleta={true}
                         aprovar={true}
-                        urlBack={"/home/forum/aprovar-publicacao"}
+                        urlBack={"/home/knowledge/aprovar-publicacao"}
                       />
                   </div>
                 </div>

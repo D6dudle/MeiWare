@@ -24,8 +24,8 @@ public class PedidoRejeitado extends PedidoFormacao{
 
     }
 
-    public PedidoRejeitado(String nome, String descricao, String formador, LocalDate dataInicio, float preco, LocalDate dataRejeicao){
-        super(nome, descricao, formador, dataInicio, preco);
+    public PedidoRejeitado(String nome, String descricao, String formador, LocalDate dataInicio, float preco, Utilizador quemFezPedido, LocalDate dataRejeicao){
+        super(nome, descricao, formador, dataInicio, preco, quemFezPedido);
         this.dataRejeicao = dataRejeicao;
     }
 

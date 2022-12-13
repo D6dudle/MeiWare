@@ -14,10 +14,10 @@ public class Publicacao {
     private String id;
     private String titulo;
     private String descricao;
+    private LocalDate dataCriacao;
     private Set<String> tags;
     private String tituloFormacao;
     private boolean arquivada;
-
     private LocalDate arquivadaEm;
     private List<Anexo> anexos;
     public Publicacao() {
@@ -26,6 +26,7 @@ public class Publicacao {
     public Publicacao(String titulo, String descricao, Set<String> tags, String tituloFormacao) {
         this.titulo = titulo;
         this.descricao = descricao;
+        this.dataCriacao = LocalDate.now();
         this.tags = tags;
         this.tituloFormacao = tituloFormacao;
         this.arquivada = false;
@@ -53,6 +54,14 @@ public class Publicacao {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 
     public Set<String> getTags() {
@@ -105,9 +114,11 @@ public class Publicacao {
                 "id='" + id + '\'' +
                 ", titulo='" + titulo + '\'' +
                 ", descricao='" + descricao + '\'' +
+                ", dataCriacao=" + dataCriacao +
                 ", tags=" + tags +
                 ", tituloFormacao='" + tituloFormacao + '\'' +
                 ", arquivada=" + arquivada +
+                ", arquivadaEm=" + arquivadaEm +
                 ", anexos=" + anexos +
                 '}';
     }

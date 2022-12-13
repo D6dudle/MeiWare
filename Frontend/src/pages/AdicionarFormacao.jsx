@@ -190,7 +190,7 @@ export default function AdicionarFormacao() {
                     styles={customStyles}
                     options={aquaticCreatures}
                     isMulti
-                    placeholder='nome'
+                    placeholder='colaborador...'
                     value={formationCamps.nomeColaborador}
                     onChange={opt => {
                       console.log(opt);

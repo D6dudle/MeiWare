@@ -19,15 +19,15 @@ public class PedidoAprovado extends PedidoFormacao{
     @ManyToOne
     private Utilizador quemAprovou;
 
-    @ManyToMany(mappedBy = "listFormacoes")
+    @ManyToMany
     private Set<Utilizador> formandos;
 
     public PedidoAprovado(){
 
     }
 
-    public PedidoAprovado(String nome, String descricao, String formador, LocalDate dataInicio, float preco, LocalDate dataAprovacao){
-        super(nome, descricao, formador, dataInicio, preco);
+    public PedidoAprovado(String nome, String descricao, String formador, LocalDate dataInicio, Utilizador quemFezPedido, float preco, LocalDate dataAprovacao){
+        super(nome, descricao, formador, dataInicio, preco, quemFezPedido);
         this.dataAprovacao = dataAprovacao;
     }
 
