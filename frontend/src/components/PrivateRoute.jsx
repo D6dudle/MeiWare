@@ -4,7 +4,6 @@ import AuthService from "../services/auth.service";
 
 const PrivateRoute = () => {
   const isLoggedIn = AuthService.isLoggedIn();
-  console.log(isLoggedIn);
   return isLoggedIn ? <Outlet /> : <Navigate to="/" />;
 };
 
