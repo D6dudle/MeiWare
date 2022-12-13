@@ -15,6 +15,8 @@ export default function TrainingTabs() {
   const [values, setValues] = useState([]);
   const [dataCardList, setDataCardList] = useState(Formacoes);
 
+  const [test, setTest] = useState(null);
+
   const handleCancelarFormacao = (card) => {
     //Gets the index of object to remove the formation
     const indexList = dataCardList.findIndex((element) => {
@@ -24,13 +26,12 @@ export default function TrainingTabs() {
     const updatedList = dataCardList[indexList].formacoes.filter(
       (formacao) => formacao.idCurso !== card.idCurso
     );
-    setDataCardList(
-      ...dataCardList,
-      (dataCardList[indexList].formacoes = updatedList)
-    );
+
+    var tempData = [...dataCardList];
+    tempData[indexList].formacoes = updatedList;
+    setDataCardList(tempData);
+
     setFilter(updatedList);
-    console.log("LISTA StaTE:");
-    console.log(dataCardList);
   };
 
   useEffect(() => {

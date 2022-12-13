@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ChevronDown, ChevronUp, Filter, Minus, Plus } from "react-feather";
 import TrainingUserInfo from "../components/TrainingUserInfo";
@@ -21,46 +21,41 @@ export default function Colaboradores() {
 
   const confirmeActionModal = (u) => {
     console.log("Vou excluir o colaborador");
-
-
-  /*ZONA dE TESTES*/ 
-  
-
-  const getColaboradores = () => {
-    axios.get('http://localhost:8080/api/utilizador/colaboradores')
-      .then(function (response) {
-
-        console.log(response);
-      })
-      .catch(function (error) {
-    
-        console.log(error);
-      })
-      .finally(function () {
-   
-      });
-
-      return([]);
-  };
-
-  const [data, setData] = useState(() => getColaboradores(), []);
-
-  const teste = (() => {
-    console.log("data --> ", data);
-  }, [data]);
-
-  const teste2 = (() => {
-    console.log("<-- print --> ");
-  }, []);
-  /*ZONA dE TESTES*/ 
-
-
-
-  const handleExcluir = (u) => {
     setUsers(users.filter((user) => u.email !== user.email));
     setUser(users[0]);
     setModal({ show: false, data: null });
   };
+
+  /*ZONA dE TESTES*/
+
+  const getColaboradores = () => {
+    axios
+      .get("http://localhost:8080/api/utilizador/colaboradores")
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {});
+
+    return [];
+  };
+
+  const [data, setData] = useState(() => getColaboradores(), []);
+
+  const teste =
+    (() => {
+      console.log("data --> ", data);
+    },
+    [data]);
+
+  const teste2 =
+    (() => {
+      console.log("<-- print --> ");
+    },
+    []);
+  /*ZONA dE TESTES*/
 
   const handleExcluir = (u) => {
     setModal({
