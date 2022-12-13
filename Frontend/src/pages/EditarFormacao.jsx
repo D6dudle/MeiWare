@@ -73,7 +73,7 @@ export default function EditarFormacao() {
     //SIMULAR O JSON DEVOLVIDO PELO BACKEND -> APAGAR
     //Este useEffect só corre uma vez quando se dá load à página
     useEffect(() => {
-        console.log("Entrou no use effect");
+      
         for(var i = 0; i < dataCard.length; i++){
             if(dataCard[i].idCurso == formationId){
                 for(var j = 0; j < colaboradores.length; j++){
@@ -188,7 +188,7 @@ export default function EditarFormacao() {
     
     
     
-      const [formErrors, setFormErrors] = useState({});
+    const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
 
     const handleFormSubmit = (e) => {
@@ -201,13 +201,25 @@ export default function EditarFormacao() {
 
 
     //console.log("ID DO SELECIONADO: " + formationId);
-    console.log(formationCamps.nomeColaborador);
     
     return (
         <div className="ml-8 mr-8 w-full h-full overflow-hidden ">
             <div className="sticky mt-16 ml-8 flex flex-row items-center gap-5">
                 <GoBackButton url={prevUrl} />
                 <h1 className="text-white font-bold text-3xl">Editar Formacao</h1>
+            </div>
+
+            <div className='pt-4'>
+              <p className="text-sm text-white font-semibold pt-3">
+                <span className="text-white">Id da Formação: </span>
+                {formationId}
+              </p>
+            </div>
+            <div className='pt-8 pb-8'>
+              <p className="text-sm text-white font-semibold pt-3">
+                <span className="text-white">Colaborador Requisitante: </span>
+                {formationCamps.nomeColaborador.label}
+              </p>
             </div>
 
         <div className='w-full h-full overflow-scroll scrollbar-hide'>

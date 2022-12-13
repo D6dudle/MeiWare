@@ -46,11 +46,6 @@ export const Formacao = ({
     navigate(`/home/formacao/pesquisar-detalhes`, { state: formacao });
   };
 
-  const handleEditarFormacaoClick = (e) => {
-    e.preventDefault();
-    alert("Click em Editar formação");
-  };
-
   const handleCancelarFormacaoClick = (e) => {
     e.preventDefault();
     setModal({

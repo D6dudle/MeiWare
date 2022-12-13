@@ -102,12 +102,6 @@ export default function MainScreen() {
               path="/formacao/pesquisar-formacao/editar-formacao"
               element={<EditarFormacao />}
             />
-
-
-            <Route
-              path="/controlo/listar-pedidos"
-              element={<ListarPedidos />}
-            />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
