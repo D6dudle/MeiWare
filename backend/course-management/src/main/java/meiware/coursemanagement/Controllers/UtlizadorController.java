@@ -4,9 +4,12 @@ import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //TODO: corrigir returns
 
@@ -30,17 +33,23 @@ public class UtlizadorController {
     }
 
     @GetMapping(value = "/colaboradores")
-    @PreAuthorize("hasRole('GESTOR')")
+    @PreAuthorize("hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getColaboradores() {
-        System.out.println("/colaboradores");
+        List<Utilizador> listaUtilizadores;
 
         try{
-            utilizadorService.getColaboradores();
+            listaUtilizadores = utilizadorService.getColaboradores();
+            return new ResponseEntity<>(
+                    listaUtilizadores,
+                    HttpStatus.OK);
+            //System.out.println("First user: " + listaUtilizadores.get(0).toJSON());
         }catch(Exception e){
-            return null;
+            System.out.println("Exception: " + e.getMessage());
+            return new ResponseEntity<>(
+                    "Erro ao aceder aos colaboradores.",
+                    HttpStatus.OK);
         }
 
-        return null;
     }
 
     @GetMapping(value = "/gestores")

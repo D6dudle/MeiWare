@@ -68,7 +68,7 @@ public class AuthController {
                 user.toJSON()));
     }
 
-    @PostMapping("/signup")
+        @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         boolean isUnknownRole = false;
         if (utilizadorRepository.existsByEmail(signUpRequest.getEmail())) {
