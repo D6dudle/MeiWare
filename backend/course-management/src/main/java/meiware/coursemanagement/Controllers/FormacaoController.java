@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,7 +26,6 @@ public class FormacaoController {
     IPedidoFormacaoService pedidoFormacaoService;
 
     //TODO: perguntar ao Jordão como é que ele vai tratar da aceitação/recusa das formações
-    //TODO: corrigir returns
 
     @GetMapping(value = "/pedidosFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
@@ -76,21 +76,21 @@ public class FormacaoController {
         }
     }
 
-    //TODO: fiquei aqui
-
     @GetMapping(value = "/fedidosFormacaoByUtilizador")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getPedidosFormacaoByUtilizador(@RequestBody Utilizador utilizador) {
 
         try{
             //TODO: PErguntar ao Jordão porque se não faz mais sentido por userId?
-            pedidoFormacaoService.getPedidosFormacaoByUtilizador(utilizador);
+            List<PedidoFormacao> pedidosFormacao = pedidoFormacaoService.getPedidosFormacaoByUtilizador(utilizador);
+            return new ResponseEntity<>(
+                    pedidosFormacao,
+                    HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
                     "Erro ao aceder aos pedidos de formações.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
     }
 
     @GetMapping(value = "/pedidoFormacaoById")
@@ -98,13 +98,15 @@ public class FormacaoController {
     public ResponseEntity<?> getPedidoFormacaoById(@RequestBody Long id) {
 
         try{
-            pedidoFormacaoService.getPedidoFormacaoById(id);
+            PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(id);
+            return new ResponseEntity<>(
+                    pedidoFormacao,
+                    HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
-                    "Erro ao aceder aos pedidos de formações.",
+                    "Erro ao aceder ao pedido de formação.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
     }
 
     @GetMapping(value = "/pedidoFormacaoByNome")
@@ -112,27 +114,33 @@ public class FormacaoController {
     public ResponseEntity<?> getPedidoFormacaoByNome(@RequestBody String nome) {
 
         try{
-            pedidoFormacaoService.getPedidoFormacaoByNome(nome);
+            //TODO: verificar se não podem haver formações como o mesmo nome
+            PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoByNome(nome);
+            return new ResponseEntity<>(
+                    pedidoFormacao,
+                    HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
-                    "Erro ao aceder aos pedidos de formações.",
+                    "Erro ao aceder ao pedido de formação.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
     }
 
     @PostMapping (value = "/createPedidoFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> createPedidoFormacao(@RequestBody PedidoFormacao pedidoFormacao) {
+    public ResponseEntity<?> createPedidoFormacao(@RequestBody PedidoFormacao pedidoFormacao,
+                                                  @RequestBody List<MultipartFile> files) {
 
         try{
-            //pedidoFormacaoService.createPedidoFormacao(pedidoFormacao);
+            pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files);
+            return new ResponseEntity<>(
+                    "Pedido de formação criado com sucesso.",
+                    HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
-                    "Erro ao aceder aos pedidos de formações.",
+                    "Erro ao criar o pedido de formação.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
     }
 
     @PutMapping (value = "/updatePedidoFormacao")
@@ -141,12 +149,14 @@ public class FormacaoController {
 
         try{
             pedidoFormacaoService.updatePedidoFormacao(pedidoFormacao);
+            return new ResponseEntity<>(
+                    "Pedido de formação: " + pedidoFormacao.getNome() + "atualizado com sucesso.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }catch(Exception e){
             return new ResponseEntity<>(
-                    "Erro ao aceder aos pedidos de formações.",
+                    "Erro ao atualizar o pedido de formação: " + pedidoFormacao.getNome() + ".",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
     }
 
     @DeleteMapping(value = "/removePedidoFormacao")
@@ -155,12 +165,14 @@ public class FormacaoController {
 
         try{
             pedidoFormacaoService.removePedidoFormacao(pedidoFormacao);
+            return new ResponseEntity<>(
+                    "Pedido de formação: " + pedidoFormacao.getNome() + "eliminado com sucesso.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }catch(Exception e){
             return new ResponseEntity<>(
-                    "Erro ao aceder aos pedidos de formações.",
+                    "Erro ao eliminar o pedido de formação: " + pedidoFormacao.getNome() + ".",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
     }
 }
 
