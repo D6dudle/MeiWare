@@ -10,6 +10,7 @@ import { ChevronDown, ChevronUp, Filter, Minus, Plus } from "react-feather";
 import DateOrder from "../components/DateOrder";
 import { dataCard } from "../constants/menuConstants";
 import { useEffect } from "react";
+import { EmptyState } from "../components/EmptyState";
 
 export const PesquisarFormacao = ({}) => {
   const [formationCamps, setFormationCamps] = useState({
@@ -20,6 +21,7 @@ export const PesquisarFormacao = ({}) => {
   const [dataCardList, setDataCardList] = useState(dataCard);
   const [isRejeitadas, setAprovadas] = useState(false); // Is Aprovadas open?
   const [query, setQuery] = useState("");
+  const [filteredArray, setFilteredArray] = useState(null);
 
   const corFormacao = [
     { tipo: "TERMINADA", cor: "primary" },
@@ -162,26 +164,34 @@ export const PesquisarFormacao = ({}) => {
       </div>
 
       <div className="mt-8">
-        {dataCardList
-          .filter(
-            (item) =>
-              item.nomeformacao.toLowerCase().includes(query) &&
-              containsList(formationCamps.nomeColaborador, item.username)
-          )
-          .map((card, index) => (
-            <Formacao
-              key={index}
-              username={card.username}
-              nomeformacao={card.nomeformacao}
-              dataFormacao={card.dataFormacao}
-              justificacaoFormacao={card.justificacaoFormacao}
-              idCurso={card.idCurso}
-              tipoFormacao={card.tipoFormacao}
-              consultar={card.consultar}
-              urlBack={"/home/formacao/pesquisar-formacao"}
-              onItemDelete={() => handleCancelarFormacao(card)}
-            />
-          ))}
+        {dataCardList.filter(
+          (item) =>
+            item.nomeformacao.toLowerCase().includes(query) &&
+            containsList(formationCamps.nomeColaborador, item.username)
+        ).length > 0 ? (
+          dataCardList
+            .filter(
+              (item) =>
+                item.nomeformacao.toLowerCase().includes(query) &&
+                containsList(formationCamps.nomeColaborador, item.username)
+            )
+            .map((card, index) => (
+              <Formacao
+                key={index}
+                username={card.username}
+                nomeformacao={card.nomeformacao}
+                dataFormacao={card.dataFormacao}
+                justificacaoFormacao={card.justificacaoFormacao}
+                idCurso={card.idCurso}
+                tipoFormacao={card.tipoFormacao}
+                consultar={card.consultar}
+                urlBack={"/home/formacao/pesquisar-formacao"}
+                onItemDelete={() => handleCancelarFormacao(card)}
+              />
+            ))
+        ) : (
+          <EmptyState />
+        )}
       </div>
     </div>
   );

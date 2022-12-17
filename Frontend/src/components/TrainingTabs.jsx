@@ -6,6 +6,7 @@ import { Formacoes } from "../constants/formacoes";
 import DateOrder from "./DateOrder";
 import AproveOrder from "./AproveOrder";
 import users from "../constants/usersAux.json";
+import { EmptyState } from "./EmptyState";
 
 export default function TrainingTabs() {
   const [activeFilter, setActiveFilter] = useState(null);
@@ -132,24 +133,28 @@ export default function TrainingTabs() {
             </h1>
           ) : null}
           <div className="overflowy-y-visible flex flex-nowrap justify-between flex-col gap-3">
-            {activeFilter !== null
-              ? filter.map((card, index) => {
-                  return (
-                    <Formacao
-                      key={index}
-                      username={card.username}
-                      nomeformacao={card.nomeformacao}
-                      dataFormacao={card.dataFormacao}
-                      justificacaoFormacao={card.justificacaoFormacao}
-                      idCurso={card.idCurso}
-                      tipoFormacao={card.tipoFormacao}
-                      consultar={true}
-                      urlBack={"/home/formacao/listar-formacao"}
-                      onItemDelete={() => handleCancelarFormacao(card)}
-                    />
-                  );
-                })
-              : null}
+            {activeFilter !== null &&
+            Object.keys(filter).length > 0 &&
+            filter !== null ? (
+              filter.map((card, index) => {
+                return (
+                  <Formacao
+                    key={index}
+                    username={card.username}
+                    nomeformacao={card.nomeformacao}
+                    dataFormacao={card.dataFormacao}
+                    justificacaoFormacao={card.justificacaoFormacao}
+                    idCurso={card.idCurso}
+                    tipoFormacao={card.tipoFormacao}
+                    consultar={true}
+                    urlBack={"/home/formacao/listar-formacao"}
+                    onItemDelete={() => handleCancelarFormacao(card)}
+                  />
+                );
+              })
+            ) : (
+              <EmptyState />
+            )}
           </div>
         </div>
       </TabsBody>
