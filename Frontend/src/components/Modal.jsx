@@ -9,6 +9,7 @@ export default function Modal({ closeModal, confirmeActionModal, data }) {
       body: "todas as alterações e documentos serão ",
       boldWord: "apagados ",
       body2: "e não vai ser possível consultar mais esta formação",
+      showInput: true,
     },
     {
       tipo: "EXCLUIR",
@@ -16,11 +17,12 @@ export default function Modal({ closeModal, confirmeActionModal, data }) {
       body: "toda a informação acerca deste colaborador será",
       boldWord: "apagada ",
       body2: "e não vai ser possível consultar mais esta formação",
+      showInput: false,
     },
   ];
 
   const prepareConfirmeActionModal = () => {
-    if (!justificacaoFormacao.data) {
+    if (!justificacaoFormacao.data && dataModal.showInput == true) {
       //If its empty
       setJustificacaoFormacao({ ...justificacaoFormacao, error: true });
       setIsSubmit(true);
@@ -63,33 +65,35 @@ export default function Modal({ closeModal, confirmeActionModal, data }) {
               <span className="text-primary"> {dataModal?.boldWord} </span>{" "}
               {dataModal?.body2}
             </p>
-            <div className="pl-6">
-              <h3 className="flex font-bold pb-4 text-primary">
-                Qual o motivo do cancelamento?
-              </h3>
-              <input
-                type="text"
-                className={`inputText ${
-                  justificacaoFormacao.data || isSubmit === false
-                    ? null
-                    : "border-error"
-                }`}
-                id="nomeFormacao"
-                placeholder="descrição da justificação"
-                onChange={(e) => {
-                  setJustificacaoFormacao({
-                    ...justificacaoFormacao,
-                    data: e.target.value,
-                  });
-                }}
-                value={justificacaoFormacao.data}
-              />
-              {justificacaoFormacao.error && (
-                <p className="inputTextErrors pt-2">
-                  Justifique a razão do cancelamento
-                </p>
-              )}
-            </div>
+            {dataModal.showInput ? (
+              <div className="pl-6">
+                <h3 className="flex font-bold pb-4 text-primary">
+                  Qual o motivo do cancelamento?
+                </h3>
+                <input
+                  type="text"
+                  className={`inputText ${
+                    justificacaoFormacao.data || isSubmit === false
+                      ? null
+                      : "border-error"
+                  }`}
+                  id="nomeFormacao"
+                  placeholder="descrição da justificação"
+                  onChange={(e) => {
+                    setJustificacaoFormacao({
+                      ...justificacaoFormacao,
+                      data: e.target.value,
+                    });
+                  }}
+                  value={justificacaoFormacao.data}
+                />
+                {justificacaoFormacao.error && (
+                  <p className="inputTextErrors pt-2">
+                    Justifique a razão do cancelamento
+                  </p>
+                )}
+              </div>
+            ) : null}
           </div>
           {/*footer*/}
           <div className="flex items-center justify-end gap-4 p-6  rounded-b">

@@ -21,7 +21,7 @@ export default function Colaboradores() {
 
   const confirmeActionModal = (u) => {
     console.log("Vou excluir o colaborador");
-    setUsers(users.filter((user) => u.email !== user.email));
+    setUsers(usersList.filter((user) => u.email !== user.email));
     setUser(users[0]);
     setModal({ show: false, data: null });
   };
