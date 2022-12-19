@@ -20,7 +20,7 @@ export const Menus = [
         opened: false,
       },
       {
-        title: "Listar Formação",
+        title: "Listar formação",
         to: "formacao/listar-formacao",
         opened: false,
       },
