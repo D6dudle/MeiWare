@@ -20,6 +20,12 @@ public class Budget {
 
     }
 
+    public Budget(Long id, int budget, int ano){
+        this.id = id;
+        this.budget = budget;
+        this.ano = ano;
+    }
+
     public Long getId() {
         return id;
     }

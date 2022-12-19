@@ -27,8 +27,11 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql:42.5.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	testImplementation 'org.mockito:mockito-inline:4.8.0'
+	testImplementation 'org.mockito:mockito-junit-jupiter:4.8.0'
 }
 
-tasks.named('test') {
+test {
 	useJUnitPlatform()
 }
