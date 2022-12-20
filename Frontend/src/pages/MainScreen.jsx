@@ -20,17 +20,26 @@ import PesquisarForum from "./PesquisarForum";
 import PesquisarForumConsulta from "./PesquisarForumConsulta";
 import EditarColaborador from "./EditarColaborador";
 import EditarFormacao from "./EditarFormacao";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Modal from "../components/Modal";
 import PrivateRoutes from "../components/PrivateRoutes";
+import UserService from "../services/user.service";
 
 
 function MenuInicial() {
+
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const userTemp = UserService.getCurrentUser();
+    setUser(userTemp);
+  }, []);
+
   return (
     <div className="flex flex-col justify-start items-center pt-24">
       <img src={Grama} alt="Logo Grama" />
       <h1 className="text-white font-bold text-3xl mt-16">
-        Bem vindo ao teu portal de formações 😄 Utilizador!!
+        Bem-vindo(a) ao teu portal de formações {user.nome} 😄!!
       </h1>
     </div>
   );
