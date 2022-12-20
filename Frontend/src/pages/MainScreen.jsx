@@ -78,7 +78,7 @@ export default function MainScreen() {
             />
             <Route
               path="/knowledge/adicionar-publicacao"
-              element={<AdicionarPublicacao />}
+              element={<AdicionarPublicacao updateSidebar={handleChange}/>}
             />
             <Route
               path="/knowledge/aprovar-publicacao"
