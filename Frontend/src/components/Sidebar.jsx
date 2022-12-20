@@ -82,7 +82,7 @@ const Sidebar = ({ trigger }) => {
   }, []);
 
   const navigate = (tab, old) => {
-    //console.log("SIDEBAR - Cliquei no ",tab," OLD ",old)
+    console.log("SIDEBAR - Cliquei no ",tab," OLD ",old)
     updateMenu(tab, old);
   };
 

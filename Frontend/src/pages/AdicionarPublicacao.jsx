@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { DollarSign, Search } from 'react-feather';
 import TextInput from '../components/TextInput';
 import DropzoneFiles from "../components/Dropzone";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
-export default function AdicionarPublicacao(props) {
+export default function AdicionarPublicacao({updateSidebar=null}) {
 
   const navigate = useNavigate();
 
@@ -77,11 +77,13 @@ export default function AdicionarPublicacao(props) {
 
   
   const goBack = () => {
-    //navigate("/home/controlo/colaboradores");
-    navigate("/home/knowledge");
-    if(props.location && props.location.updateSidebar){
-      props.location.updateSidebar("/home/knowledge", "/home/knowledge/adicionar-publicacao");
+    
+    if(updateSidebar){
+      updateSidebar( "/home/knowledge","/home/knowledge/adicionar-publicacao")
     }
+    
+    navigate("/home/knowledge");
+    
   };
 
 
