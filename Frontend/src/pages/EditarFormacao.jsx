@@ -191,32 +191,35 @@ export default function EditarFormacao() {
   //console.log("ID DO SELECIONADO: " + formationId);
 
   return (
-    <div className="ml-8 mr-8 w-full h-full overflow-hidden ">
-      <div className="sticky mt-16 ml-8 flex flex-row items-center gap-5">
-        <GoBackButton url={prevUrl} />
-        <h1 className="text-white font-bold text-3xl">Editar Formacao</h1>
+    <div className="flex flex-col pl-8 pr-8 w-full h-full overflow-hidden">
+      <div className="sticky top-0 mt-8">
+        <div className="flex flex-row items-center gap-5">
+          <GoBackButton url={prevUrl} />
+          <h1 className="text-white font-bold text-3xl">Editar Formacao</h1>
+        </div>
       </div>
-
-      <div className="pt-4 pl-8">
-        <p className="text-sm text-white font-semibold pt-3">
-          ID da formação:
-          <span className="text-white font-light"> {formationId}</span>
-        </p>
-      </div>
-      <div className="pt-8 pb-8 pl-8">
-        <p className="text-sm text-white font-semibold pt-3">
-          Colaborador Requisitante:
-          <span className="text-white font-light">
-            {formationCamps.nomeColaborador.label}
-          </span>
-        </p>
+      <div className="sticky top-16 pb-8">
+        <div className="mt-4">
+          <p className="text-sm text-white font-semibold pt-3">
+            ID da formação:
+            <span className="text-white font-light"> {formationId}</span>
+          </p>
+        </div>
+        <div className="mt-8">
+          <p className="text-sm text-white font-semibold pt-3">
+            Colaborador Requisitante:
+            <span className="text-white font-light">
+              {formationCamps.nomeColaborador.label}
+            </span>
+          </p>
+        </div>
       </div>
 
       <div className="w-full h-full overflow-scroll scrollbar-hide">
-        <div className="flex justify-evenly items-center">
           <form onSubmit={handleFormSubmit} className="" noValidate>
-            <div className="flex flex-wrap justify-between sm:justify-start">
-              <div className="mr-20 w-[332px]">
+          <div className="flex flex-col justify-evenly w-full">
+            <div className="max-w-6xl w-full flex flex-wrap justify-between">
+              <div className="w-[332px]">
                 {/* NOME */}
                 <div className="mb-4">
                   <label
@@ -305,7 +308,7 @@ export default function EditarFormacao() {
                 </div>
               </div>
 
-              <div className="mr-20 w-[332px]">
+              <div className="w-[332px]">
                 {/* NOME COLABORADOR*/}
                 <div className="mb-4">
                   <label
@@ -320,7 +323,7 @@ export default function EditarFormacao() {
                         formationCamps.nomeColaborador || isSubmit === false
                           ? null
                           : "border-error"
-                      }`}
+                      } mt-2 mb-8`}
                       styles={customStyles}
                       options={colaboradores}
                       defaultValue={formationCamps.nomeColaborador}
@@ -419,7 +422,7 @@ export default function EditarFormacao() {
                 </div>
               </div>
 
-              <div className="mr-20 w-[332px]">
+              <div className="w-[332px]">
                 {/* DESCRICAO DA FORMACAO */}
                 <div className="mb-4">
                   <label
@@ -451,15 +454,17 @@ export default function EditarFormacao() {
               </div>
             </div>
 
-            <DropzoneFiles />
+            <div className="max-w-6xl w-full items-center">
+              <DropzoneFiles />
+            </div>
 
             <div className="absolute right-20 bottom-10">
               <button className="sticky bottom-0 px-4 py-2 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white">
                 Submeter
               </button>
             </div>
+            </div>
           </form>
-        </div>
       </div>
     </div>
   );
