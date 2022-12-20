@@ -53,12 +53,13 @@ public class BudgetService implements IBudgetService{
     }
 
     @Override
-    public void updateBudget(Budget updatedBudget) {
+    public Budget updateBudget(Budget updatedBudget) {
         try {
-            budgetRepository.save(updatedBudget);
+            return budgetRepository.save(updatedBudget);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
