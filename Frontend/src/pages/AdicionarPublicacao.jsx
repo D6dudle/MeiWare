@@ -2,8 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import { DollarSign, Search } from 'react-feather';
 import TextInput from '../components/TextInput';
 import DropzoneFiles from "../components/Dropzone";
+import { useNavigate } from "react-router-dom";
 
-export default function AdicionarPublicacao() {
+export default function AdicionarPublicacao(props) {
+
+  const navigate = useNavigate();
 
   const formation = [
     { label: 'Shark', value: 'Shark' },
@@ -72,6 +75,15 @@ export default function AdicionarPublicacao() {
     //navigate(`/home`); 
   };
 
+  
+  const goBack = () => {
+    //navigate("/home/controlo/colaboradores");
+    navigate("/home/knowledge");
+    if(props.location && props.location.updateSidebar){
+      props.location.updateSidebar("/home/knowledge", "/home/knowledge/adicionar-publicacao");
+    }
+  };
+
 
   return (
     <div className="flex flex-col pl-8 pr-8 w-full h-full overflow-hidden">
@@ -136,9 +148,14 @@ export default function AdicionarPublicacao() {
 
 
           <div className='absolute right-20 bottom-10'>
+            <button className="sticky bottom-0 mr-2 px-4 py-2 bg-darkBlack text-gray4 font-semibold text-sm rounded-sm hover:shadow-btn border-[1px] border-gray4  focus:border-white" onClick={goBack} >
+              Cancelar
+            </button>
+
             <button className="sticky bottom-0 px-4 py-2 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white" >
               Submeter
             </button>
+            
           </div>
         </form>
 
