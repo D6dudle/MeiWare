@@ -216,83 +216,6 @@ function Table({ columns, data }) {
           )
         )}
       </div>
-      {/* table */}
-      <div className="mt-4 flex flex-col">
-        <div className="-my-2 overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
-          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-              <table
-                {...getTableProps()}
-                className="min-w-full divide-y divide-gray4"
-              >
-                <thead className="bg-darkBlack">
-                  {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column) => (
-                        // Add the sorting props to control sorting. For this example
-                        // we can add them into the header props
-                        <th
-                          scope="col"
-                          className="group px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-                          {...column.getHeaderProps(
-                            column.getSortByToggleProps()
-                          )}
-                        >
-                          <div className="flex items-center justify-between">
-                            {column.render("Header")}
-                            {/* Add a sort direction indicator */}
-                            <span>
-                              {column.isSorted ? (
-                                column.isSortedDesc ? (
-                                  <SortDownIcon className="w-4 h-4 text-primary" />
-                                ) : (
-                                  <SortUpIcon className="w-4 h-4 text-primary" />
-                                )
-                              ) : (
-                                <SortIcon className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100" />
-                              )}
-                            </span>
-                          </div>
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody
-                  {...getTableBodyProps()}
-                  className="bg-black2 divide-y divide-gray2"
-                >
-                  {page.map((row, i) => {
-                    // new
-                    prepareRow(row);
-                    return (
-                      <tr {...row.getRowProps()}>
-                        {row.cells.map((cell) => {
-                          return (
-                            <td
-                              {...cell.getCellProps()}
-                              className="px-6 py-4 whitespace-nowrap"
-                              role="cell"
-                            >
-                              {cell.column.Cell.name === "defaultRenderer" ? (
-                                <div className="text-sm text-gray-500">
-                                  {cell.render("Cell")}
-                                </div>
-                              ) : (
-                                cell.render("Cell")
-                              )}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
       {/* Pagination */}
       <div className="py-3 flex items-center justify-between">
         <div className="flex-1 flex justify-between sm:hidden">
@@ -374,6 +297,84 @@ function Table({ columns, data }) {
           </div>
         </div>
       </div>
+      {/* table */}
+      <div className="mt-4 flex flex-col">
+        <div className="-my-2 overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
+          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+              <table
+                {...getTableProps()}
+                className="min-w-full divide-y divide-gray4"
+              >
+                <thead className="bg-darkBlack">
+                  {headerGroups.map((headerGroup) => (
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map((column) => (
+                        // Add the sorting props to control sorting. For this example
+                        // we can add them into the header props
+                        <th
+                          scope="col"
+                          className="group px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
+                          {...column.getHeaderProps(
+                            column.getSortByToggleProps()
+                          )}
+                        >
+                          <div className="flex items-center justify-between">
+                            {column.render("Header")}
+                            {/* Add a sort direction indicator */}
+                            <span>
+                              {column.isSorted ? (
+                                column.isSortedDesc ? (
+                                  <SortDownIcon className="w-4 h-4 text-primary" />
+                                ) : (
+                                  <SortUpIcon className="w-4 h-4 text-primary" />
+                                )
+                              ) : (
+                                <SortIcon className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100" />
+                              )}
+                            </span>
+                          </div>
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody
+                  {...getTableBodyProps()}
+                  className="bg-black2 divide-y divide-gray2"
+                >
+                  {page.map((row, i) => {
+                    // new
+                    prepareRow(row);
+                    return (
+                      <tr {...row.getRowProps()}>
+                        {row.cells.map((cell) => {
+                          return (
+                            <td
+                              {...cell.getCellProps()}
+                              className="px-6 py-4 whitespace-nowrap"
+                              role="cell"
+                            >
+                              {cell.column.Cell.name === "defaultRenderer" ? (
+                                <div className="text-sm text-gray-500">
+                                  {cell.render("Cell")}
+                                </div>
+                              ) : (
+                                cell.render("Cell")
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </>
   );
 }
