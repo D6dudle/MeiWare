@@ -95,6 +95,18 @@ const Sidebar = ({ trigger }) => {
     nav("/");
   };
 
+  function showMenu(g) {
+    if(!g) {
+      return true;
+    }
+    else if(UserService.getCurrentUser().isGestor) {
+      return true
+    }
+    else {
+      return false;
+    }
+  }
+
   return (
     <>
       <div
@@ -118,59 +130,61 @@ const Sidebar = ({ trigger }) => {
 
         {/* Menu */}
         {menus.map((menu, index) => {
-          return (
-            <div key={index} className="relative top-24">
-              <div className="divMenuItem">
-                <NavLink
-                  key={index}
-                  to={menu.path ? menu.path : menu.to}
-                  className={`menuItem ${
-                    open
-                      ? "w-44" &&
-                        (menu.opened
-                          ? "bg-primary rounded-sm text-darkBlack"
-                          : "w-44")
-                      : "w-12" &&
-                        (menu.opened
-                          ? "w-12 bg-primary rounded-sm text-darkBlack"
-                          : "w-12")
-                  }`}
-                  onClick={(event) => updateMenu(menu.to, path)}
-                >
-                  <span className="menuIcon">{menu.icon}</span>
-                  <span
-                    className={`menuTitle duration-400 ${!open && "hidden"}`}
+          if(showMenu(menu.gestor))
+            return (
+              <div key={index} className="relative top-24">
+                <div className="divMenuItem">
+                  <NavLink
+                    key={index}
+                    to={menu.path ? menu.path : menu.to}
+                    className={`menuItem ${
+                      open
+                        ? "w-44" &&
+                          (menu.opened
+                            ? "bg-primary rounded-sm text-darkBlack"
+                            : "w-44")
+                        : "w-12" &&
+                          (menu.opened
+                            ? "w-12 bg-primary rounded-sm text-darkBlack"
+                            : "w-12")
+                    }`}
+                    onClick={(event) => updateMenu(menu.to, path)}
                   >
-                    {menu.title}
-                  </span>
-                </NavLink>
-              </div>
-
-              {menu.submenu && menu.opened && open && (
-                <ul>
-                  {menu.submenuItems.map((submenuItem, index) => (
-                    <div
-                      key={index}
-                      className={`divSubmenu ${
-                        submenuItem.opened && "border-r-2 border-r-primary "
-                      }`}
+                    <span className="menuIcon">{menu.icon}</span>
+                    <span
+                      className={`menuTitle duration-400 ${!open && "hidden"}`}
                     >
-                      <NavLink
-                        key={index}
-                        to={submenuItem.to}
-                        className={`submenuItem ${
-                          submenuItem.opened ? "text-primary" : "text-white"
-                        }`}
-                        onClick={(event) => updateMenu(submenuItem.to, path)}
-                      >
-                        {submenuItem.title}
-                      </NavLink>
-                    </div>
-                  ))}
-                </ul>
-              )}
-            </div>
-          );
+                      {menu.title}
+                    </span>
+                  </NavLink>
+                </div>
+
+                {menu.submenu && menu.opened && open && (
+                  <ul>
+                    {menu.submenuItems.map((submenuItem, index) => {
+                      if(showMenu(submenuItem.gestor))
+                        return(<div
+                          key={index}
+                          className={`divSubmenu ${
+                            submenuItem.opened && "border-r-2 border-r-primary "
+                          }`}
+                        >
+                          <NavLink
+                            key={index}
+                            to={submenuItem.to}
+                            className={`submenuItem ${
+                              submenuItem.opened ? "text-primary" : "text-white"
+                            }`}
+                            onClick={(event) => updateMenu(submenuItem.to, path)}
+                          >
+                            {submenuItem.title}
+                          </NavLink>
+                        </div>);
+                   })}
+                  </ul>
+                )}
+              </div>
+            );
         })}
 
         {/* Logout */}
