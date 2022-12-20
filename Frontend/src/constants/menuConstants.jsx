@@ -18,6 +18,7 @@ export const Menus = [
         title: "Pesquisar formação",
         to: "formacao/pesquisar-formacao",
         opened: false,
+        gestor: true
       },
       {
         title: "Listar formação",
@@ -32,6 +33,7 @@ export const Menus = [
     icon: <CreditCard className="w-4 h-4" />,
     submenu: true,
     opened: false,
+    gestor: true,
     submenuItems: [
       {
         title: "Gerir pedidos",
