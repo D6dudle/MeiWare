@@ -89,7 +89,7 @@ export default function AprovarPublicacao() {
       <div className="sticky top-5">
         <h1 className=" text-white font-bold text-3xl">Aprovar publicação</h1>
         <div className="pt-4">
-          <div className="w-full pb-4">
+          <div className="w-full pb-2">
             <TextInput
               index={0}
               type="searchbar"
@@ -99,37 +99,38 @@ export default function AprovarPublicacao() {
             />
           </div>
 
-          <div className="w-full pb-4">
-            <TextInput
-              index={1}
-              name={"tags"}
-              type="dropsearch"
-              list={tagList}
-              multi={true}
-              value={values[1]}
-              placeholder="tags..."
-              callback={handleDropdown}
-              searchCall={filterTags}
-            />
-          </div>
-
-          <div className="w-full pb-4">
-            <TextInput
-              index={2}
-              name={"colaborador"}
-              type="dropsearch"
-              list={users}
-              multi={true}
-              value={values[2]}
-              placeholder="colaborador..."
-              callback={handleDropdown}
-              searchCall={filterColaborador}
-            />
+          <div className="flex flex-row w-full">
+            <div className="w-full pr-2">
+              <TextInput
+                index={1}
+                name={"tags"}
+                type="dropsearch"
+                list={tagList}
+                multi={true}
+                value={values[1]}
+                placeholder="tags..."
+                callback={handleDropdown}
+                searchCall={filterTags}
+              />
+            </div>
+            <div className="w-full pl-2">
+              <TextInput
+                index={2}
+                name={"colaborador"}
+                type="dropsearch"
+                list={users}
+                multi={true}
+                value={values[2]}
+                placeholder="colaborador..."
+                callback={handleDropdown}
+                searchCall={filterColaborador}
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="w-full h-full pt-8 overflow-scroll scrollbar-hide">
+      <div className="w-full h-full mt-8 overflow-scroll scrollbar-hide">
         <ul className="justify-start">
           {publicacoes.map((pub, index) => (
             <li key={index}>
@@ -142,7 +143,7 @@ export default function AprovarPublicacao() {
                     nomeformacao={pub.nomeformacao}
                     descricao={pub.descricao}
                     cursoId={pub.cursoId}
-                    arquivar={true}
+                    arquivar={false}
                     publicacaoCompleta={true}
                     aprovar={true}
                     urlBack={"/home/knowledge/aprovar-publicacao"}

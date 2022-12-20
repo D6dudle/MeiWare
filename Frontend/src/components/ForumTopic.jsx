@@ -12,6 +12,7 @@ export const ForumTopic = ({
   nomeFormacao,
   descricao,
   formacaoId,
+  arquivar = true,
   aprovar = false,
   urlBack,
 }) => {
@@ -74,7 +75,7 @@ export const ForumTopic = ({
             <Tag tagName={"teste"} />
             <Tag tagName={"Java"} />
           </div>
-          <div className="" onClick={arquivarPublicacaoHandler}>
+          <div style={{ display: arquivar ? "block" : "none" }} onClick={arquivarPublicacaoHandler}>
             <Button iconName={"ARQUIVAR"} textButton={"Arquivar Publicação"} />
           </div>
         </div>
