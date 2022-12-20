@@ -32,9 +32,6 @@ export default function ControloBudget() {
           <StatsCard titulo="Novas Formações" valor="9" valorAumento="60%" />
         </div>
       </div>
-      <div className="pt-4 mx-auto">
-        <Table columns={columns} data={data} />
-      </div>
     </div>
   );
 }
