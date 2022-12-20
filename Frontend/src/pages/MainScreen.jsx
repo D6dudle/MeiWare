@@ -22,7 +22,7 @@ import EditarColaborador from "./EditarColaborador";
 import EditarFormacao from "./EditarFormacao";
 import { useState, useRef } from "react";
 import Modal from "../components/Modal";
-import UserService from "../services/user.service";
+import PrivateRoutes from "../components/PrivateRoutes";
 
 
 function MenuInicial() {
@@ -53,19 +53,20 @@ export default function MainScreen() {
             {/* DEV */}
             <Route path="/exemplo" element={<Exemplo />} />
             <Route path="/modal" element={<Modal />} />
+
+
             {/* Definir todas as routes existentes */}
+            <Route path="/formacao/pesquisar-formacao" element={<PrivateRoutes.GestorRoute/>}>
+              <Route path="" element={<PesquisarFormacao />}/>
+            </Route>
+            <Route path="/formacao/pesquisar-formacao/editar-formacao" element={<EditarFormacao />}/>
             <Route path="/" element={<MenuInicial />} />
             <Route path="/formacao" element={<Formacao />} />
             <Route
               path="/formacao/adicionar-formacao"
               element={<AdicionarFormacao />}
             />
-            {UserService.getCurrentUser().isGestor && (
-              <Route
-              path="/formacao/pesquisar-formacao"
-              element={<PesquisarFormacao />}
-            />
-            )}
+            
             <Route
               path="/formacao/listar-formacao"
               element={<ListarFormacao />}
@@ -88,28 +89,21 @@ export default function MainScreen() {
               path="/knowledge/ver-publicacao-completa"
               element={<PesquisarForumConsulta />}
             />
-            {UserService.getCurrentUser().isGestor && (
-            <Route path="/controlo" element={<ControloBudget />} />
-            )}
-            {UserService.getCurrentUser().isGestor && (
-            <Route path="/controlo/gerir-pedidos" element={<GerirPedidos />} />)}
-            {UserService.getCurrentUser().isGestor && (
-            <Route path="/controlo/colaboradores" element={<Colaboradores />} />)}
-            {UserService.getCurrentUser().isGestor && (
+
+          <Route path="/controlo" element={<PrivateRoutes.GestorRoute/>}>
+            <Route path="" element={<ControloBudget />} />
+            <Route path="/controlo/gerir-pedidos" element={<GerirPedidos />} />
+            <Route path="/controlo/colaboradores" element={<Colaboradores />} />
             <Route
               path="/controlo/colaboradores/adicionar-colaborador"
               element={<AdicionarColaborador />}
-            />)}
-            {UserService.getCurrentUser().isGestor && (
+            />
             <Route
               path="/controlo/colaboradores/editar-colaborador/"
               element={<EditarColaborador />}
-            />)}
-            {UserService.getCurrentUser().isGestor && (
-            <Route
-              path="/formacao/pesquisar-formacao/editar-formacao"
-              element={<EditarFormacao />}
-            />)}
+            />
+          </Route>
+
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
