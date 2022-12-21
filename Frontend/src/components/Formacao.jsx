@@ -15,6 +15,8 @@ export const Formacao = ({
   consultar,
   urlBack,
   onItemDelete,
+  sidebarName,
+  onAceitarclick,
 }) => {
   const [modal, setModal] = useState({ show: false, data: null });
 
@@ -52,6 +54,11 @@ export const Formacao = ({
       show: true,
       data: "CANCELAR",
     });
+  };
+
+  const handleAceitarFormacaoClick = (e) => {
+    e.preventDefault();
+    onAceitarclick();
   };
 
   const handleFinalizarFormacaoClick = (e) => {
@@ -94,30 +101,44 @@ export const Formacao = ({
                   <Button className="h-10" iconName="CONSULTAR" textButton="" />
                 </div>
               ) : null}
-              <div className="" onClick={() => {
-                                  const params = {
-                                    id: idCurso,
-                                  };
+              <div
+                className=""
+                onClick={() => {
+                  const params = {
+                    id: idCurso,
+                  };
 
-                                  navigate(
-                                    {
-                                      pathname: "/home/formacao/pesquisar-formacao/editar-formacao",
-                                      search: createSearchParams(params).toString(),
-                                    },
-                                    {
-                                      state: {
-                                        prevUrl: location.pathname,
-                                        
-                                      },
-                                    }
-                                  );
-                                }}>
+                  navigate(
+                    {
+                      pathname:
+                        "/home/formacao/pesquisar-formacao/editar-formacao",
+                      search: createSearchParams(params).toString(),
+                    },
+                    {
+                      state: {
+                        prevUrl: location.pathname,
+                      },
+                    }
+                  );
+                }}
+              >
                 <Button
                   className="h-10"
                   iconName="EDITAR"
                   textButton="editar formação"
                 />
               </div>
+              {sidebarName === "Controlo de budget" &&
+              tipoFormacao === "PENDENTE" ? (
+                <div>
+                  <Button
+                    className="h-10"
+                    iconName="FINALIZAR"
+                    textButton="aceitar"
+                    handleClick={handleAceitarFormacaoClick}
+                  />
+                </div>
+              ) : null}
               <div
                 className={`${tipoFormacao !== "TERMINADA" ? "" : "hidden"}`}
                 //onClick={() => handleCancelarFormacaoClick}

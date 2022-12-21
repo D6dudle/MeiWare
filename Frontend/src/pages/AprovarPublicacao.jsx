@@ -4,6 +4,7 @@ import TextInput from "../components/TextInput";
 import DropzoneFiles from "../components/Dropzone";
 
 import ForumTopic from "../components/ForumTopic";
+import { EmptyState } from "../components/EmptyState";
 
 export default function AprovarPublicacao() {
   const pubList = [
@@ -84,6 +85,10 @@ export default function AprovarPublicacao() {
     //navigate(`/home`);
   };
 
+  const handleArquivarPublicacao = (list) => {
+    setPublicacoes(publicacoes.filter((data) => data.cursoId !== list.cursoId));
+  };
+
   return (
     <div className="flex flex-col pl-8 pr-8 w-full h-full overflow-hidden">
       <div className="sticky top-5">
@@ -132,26 +137,31 @@ export default function AprovarPublicacao() {
 
       <div className="w-full h-full mt-8 overflow-scroll scrollbar-hide">
         <ul className="justify-start">
-          {publicacoes.map((pub, index) => (
-            <li key={index}>
-              <div className="pb-4">
-                <div>
-                  <ForumTopic
-                    username={pub.username}
-                    dataFormacao={pub.dataFormacao}
-                    titulo={pub.titulo}
-                    nomeformacao={pub.nomeformacao}
-                    descricao={pub.descricao}
-                    cursoId={pub.cursoId}
-                    arquivar={false}
-                    publicacaoCompleta={true}
-                    aprovar={true}
-                    urlBack={"/home/knowledge/aprovar-publicacao"}
-                  />
+          {publicacoes !== null && publicacoes.length > 0 ? (
+            publicacoes.map((pub, index) => (
+              <li key={index}>
+                <div className="pb-4">
+                  <div>
+                    <ForumTopic
+                      username={pub.username}
+                      dataFormacao={pub.dataFormacao}
+                      titulo={pub.titulo}
+                      nomeformacao={pub.nomeformacao}
+                      descricao={pub.descricao}
+                      cursoId={pub.cursoId}
+                      arquivar={false}
+                      publicacaoCompleta={true}
+                      aprovar={true}
+                      urlBack={"/home/knowledge/aprovar-publicacao"}
+                      onForumTopicArchive={() => handleArquivarPublicacao(pub)}
+                    />
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
+              </li>
+            ))
+          ) : (
+            <EmptyState />
+          )}
         </ul>
       </div>
     </div>

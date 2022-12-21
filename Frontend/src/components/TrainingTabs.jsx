@@ -8,15 +8,13 @@ import AproveOrder from "./AproveOrder";
 import users from "../constants/usersAux.json";
 import { EmptyState } from "./EmptyState";
 
-export default function TrainingTabs() {
+export default function TrainingTabs({ sideBarName }) {
   const [activeFilter, setActiveFilter] = useState(null);
   const [filter, setFilter] = useState(null);
 
   const [search, setSearch] = useState();
   const [values, setValues] = useState([]);
   const [dataCardList, setDataCardList] = useState(Formacoes);
-
-  const [test, setTest] = useState(null);
 
   const handleCancelarFormacao = (card) => {
     //Gets the index of object to remove the formation
@@ -32,6 +30,31 @@ export default function TrainingTabs() {
     tempData[indexList].formacoes = updatedList;
     setDataCardList(tempData);
 
+    setFilter(updatedList);
+  };
+
+  const handleAceitarFormacaoPendente = (card) => {
+    //Igual ao handleCancelarFormacao (remove o elemento da lista)
+    //Gets the index of object to remove the formation
+    const indexList = dataCardList.findIndex((element) => {
+      return element.label === activeFilter;
+    });
+
+    const updatedList = dataCardList[indexList].formacoes.filter(
+      (formacao) => formacao.idCurso !== card.idCurso
+    );
+
+    const indexFormacaoDecorrer = dataCardList.findIndex((element) => {
+      return element.label === "Formações a decorrer";
+    });
+
+    var tempData = [...dataCardList];
+    tempData[indexList].formacoes = updatedList;
+
+    //Passar a formação atual para a formação a decorrer
+    card.tipoFormacao = "CURSO";
+    tempData[indexFormacaoDecorrer].formacoes.push(card);
+    setDataCardList(tempData);
     setFilter(updatedList);
   };
 
@@ -149,6 +172,8 @@ export default function TrainingTabs() {
                     consultar={true}
                     urlBack={"/home/formacao/listar-formacao"}
                     onItemDelete={() => handleCancelarFormacao(card)}
+                    sidebarName={sideBarName}
+                    onAceitarclick={() => handleAceitarFormacaoPendente(card)}
                   />
                 );
               })
