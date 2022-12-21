@@ -9,16 +9,16 @@ export const Formacoes = [
       {
         username: "Jane Doe",
         nomeformacao: "Introdução a react 1",
-        dataFormacao: "18/11/2022 14:00",
+        dataFormacao: "2022-11-18T14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         idCurso: "P-C-765",
         tipoFormacao: "PENDENTE",
       },
       {
-        username: "Jane Doe",
+        username: "José Miguel Silva Gomes",
         nomeformacao: "Introdução a react 2",
-        dataFormacao: "18/11/2022 14:00",
+        dataFormacao: "2022-11-19T14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         idCurso: "P-C-766",
@@ -27,7 +27,7 @@ export const Formacoes = [
       {
         username: "Jane Doe",
         nomeformacao: "Introdução a react 3",
-        dataFormacao: "18/11/2022 14:00",
+        dataFormacao: "2022-11-20T14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         idCurso: "P-C-767",
@@ -36,7 +36,7 @@ export const Formacoes = [
       {
         username: "Jane Doe",
         nomeformacao: "Introdução a react 4",
-        dataFormacao: "18/11/2022 14:00",
+        dataFormacao: "2022-11-20T15:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         idCurso: "P-C-768",
@@ -52,16 +52,16 @@ export const Formacoes = [
       {
         username: "Jane Doe",
         nomeformacao: "Introdução a react",
-        dataFormacao: "18/11/2022 14:00",
+        dataFormacao: "2022-11-18T14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         idCurso: "C-C-765",
         tipoFormacao: "CURSO",
       },
       {
-        username: "Jane Doe",
+        username: "José Miguel Silva Gomes",
         nomeformacao: "Introdução a react",
-        dataFormacao: "18/11/2022 14:00",
+        dataFormacao: "2022-11-18T14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         idCurso: "C-C-766",
@@ -76,9 +76,9 @@ export const Formacoes = [
     icon: <Check />,
     formacoes: [
       {
-        username: "Jane Doe",
+        username: "José Miguel Silva Gomes",
         nomeformacao: "Introdução a react",
-        dataFormacao: "18/11/2022 14:00",
+        dataFormacao: "2022-11-18T14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         idCurso: "T-C-765",
@@ -87,7 +87,7 @@ export const Formacoes = [
       {
         username: "Jane Doe",
         nomeformacao: "Introdução a react",
-        dataFormacao: "18/11/2022 14:00",
+        dataFormacao: "2022-11-18T14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         idCurso: "T-C-766",
@@ -96,16 +96,16 @@ export const Formacoes = [
       {
         username: "Jane Doe",
         nomeformacao: "Introdução a react",
-        dataFormacao: "18/11/2022 14:00",
+        dataFormacao: "2022-11-18T14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         idCurso: "T-C-767",
         tipoFormacao: "TERMINADA",
       },
       {
-        username: "Jane Doe",
+        username: "José Miguel Silva Gomes",
         nomeformacao: "Introdução a react",
-        dataFormacao: "18/11/2022 14:00",
+        dataFormacao: "2022-11-18T14:00",
         justificacaoFormacao:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         idCurso: "T-C-768",
