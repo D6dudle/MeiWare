@@ -1,9 +1,10 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { Image, Edit } from "react-feather";
 import { Button } from "./Button";
 import Tag from "./Tag";
 import { iconImageUpload } from "../constants/menuConstants";
 import { useNavigate } from "react-router-dom";
+import Modal from "./Modal";
 
 export const ForumTopic = ({
   username,
@@ -15,9 +16,18 @@ export const ForumTopic = ({
   arquivar = true,
   aprovar = false,
   urlBack,
+  onForumTopicArchive,
 }) => {
-  console.log("USERNAME: " + username);
   const navigate = useNavigate();
+  const [modalArquivar, setModalArquivar] = useState({
+    show: false,
+    data: null,
+  });
+
+  const [modalRejeitar, setModalRejeitar] = useState({
+    show: false,
+    data: null,
+  });
 
   const files = [
     { type: "application/pdf", path: "AncoraPraia.pdf", size: "2,59MB" },
@@ -43,14 +53,50 @@ export const ForumTopic = ({
     );
   };
 
-  const arquivarPublicacaoHandler = (e) => {
-    e.preventDefault();
-    alert("Click em Finalizar formação");
+  useEffect(() => {
+    console.log("Mudança no modal para " + modalArquivar.show);
+  }, [modalArquivar]);
+
+  const handleCloseModalArquivar = () => {
+    setModalArquivar({ show: false, data: null });
+    console.log("cliquei no fechar!");
+  };
+
+  const handleCloseModalRejeitar = () => {
+    setModalRejeitar({ show: false, data: null });
+  };
+
+  const confirmeActionModal = () => {
+    console.log("Vou arquivar a formação");
+    setModalArquivar({ show: false, data: null });
+    onForumTopicArchive();
+  };
+
+  const confirmeActionModalRejeitar = () => {
+    console.log("Vou rejeitar a formação");
+    onForumTopicArchive();
+    setModalRejeitar({ show: false, data: null });
   };
 
   const verPublicacaoHandler = (e, formacao) => {
     e.preventDefault();
     navigate(`/home/knowledge/ver-publicacao-completa`, { state: formacao });
+  };
+
+  const handleRejeitarPublicacaoClick = (e) => {
+    e.preventDefault();
+    setModalRejeitar({
+      show: true,
+      data: "REJEITAR",
+    });
+  };
+
+  const handleArquivarPublicacaoClick = (e) => {
+    e.preventDefault();
+    setModalArquivar({
+      show: true,
+      data: "REJEITAR",
+    });
   };
 
   return (
@@ -76,11 +122,19 @@ export const ForumTopic = ({
             <Tag tagName={"teste"} />
             <Tag tagName={"Java"} />
           </div>
-          <div
-            style={{ display: arquivar ? "block" : "none" }}
-            onClick={arquivarPublicacaoHandler}
-          >
-            <Button iconName={"ARQUIVAR"} textButton={"Arquivar Publicação"} />
+          <div style={{ display: arquivar ? "block" : "none" }}>
+            <Button
+              iconName={"ARQUIVAR"}
+              textButton={"Arquivar Publicação"}
+              handleClick={handleArquivarPublicacaoClick}
+            />
+            {modalArquivar.show && (
+              <Modal
+                closeModal={handleCloseModalArquivar}
+                confirmeActionModal={confirmeActionModal}
+                data={modalArquivar.data}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -167,9 +221,19 @@ export const ForumTopic = ({
         <div
           className="flex flex-row justify-between gap-4"
           style={{ display: aprovar ? "flex" : "none" }}
-          onClick={arquivarPublicacaoHandler}
         >
-          <Button iconName={"CANCELAR"} textButton={"Rejeitar"} />
+          <Button
+            iconName={"CANCELAR"}
+            textButton={"Rejeitar"}
+            handleClick={handleRejeitarPublicacaoClick}
+          />
+          {modalRejeitar.show && (
+            <Modal
+              closeModal={handleCloseModalRejeitar}
+              confirmeActionModal={confirmeActionModalRejeitar}
+              data={modalRejeitar.data}
+            />
+          )}
           <Button iconName={"FINALIZAR"} textButton={"Aprovar"} />
         </div>
       </div>

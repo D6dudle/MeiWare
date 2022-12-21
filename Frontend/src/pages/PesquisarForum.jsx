@@ -15,12 +15,6 @@ export const PesquisarForum = ({}) => {
     data: new Date(),
   });
 
-  useEffect(() => {
-    setListKnowledgeBase(null);
-  }, []);
-
-  console.log(listKnowledgeBase);
-
   const colaboradorStyles = {
     option: (provided) => ({
       ...provided,
@@ -57,6 +51,12 @@ export const PesquisarForum = ({}) => {
     { label: "Nuno", value: "Nuno" },
     { label: "Pedro", value: "Pedro" },
   ];
+
+  const handleArquivarPublicacao = (list) => {
+    setListKnowledgeBase(
+      listKnowledgeBase.filter((data) => data.formacaoId !== list.formacaoId)
+    );
+  };
 
   return (
     <div className="pl-8 pr-8 h-full overflow-scroll scrollbar-hide">
@@ -133,47 +133,24 @@ export const PesquisarForum = ({}) => {
         {/*Forum componente*/}
         <div>
           {listKnowledgeBase !== null && listKnowledgeBase.length > 0 ? (
-            listKnowledgeBase.map((list) => {
-              return (
-                <ForumTopic
-                  username={list.username}
-                  dataPublicacao={list.dataPublicacao}
-                  titulo={list.titulo}
-                  nomeFormacao={list.nomeFormacao}
-                  descricao={list.descricao}
-                  formacaoId={list.formacaoId}
-                  arquivar={list.arquivar}
-                  publicacaoCompleta={list.publicacaoCompleta}
-                  urlBack={"/home/knowledge"}
-                />
-              );
-            })
+            listKnowledgeBase.map((list, index) => (
+              <ForumTopic
+                key={index}
+                username={list.username}
+                dataPublicacao={list.dataPublicacao}
+                titulo={list.titulo}
+                nomeFormacao={list.nomeFormacao}
+                descricao={list.descricao}
+                formacaoId={list.formacaoId}
+                arquivar={list.arquivar}
+                publicacaoCompleta={list.publicacaoCompleta}
+                urlBack={"/home/knowledge"}
+                onForumTopicArchive={() => handleArquivarPublicacao(list)}
+              />
+            ))
           ) : (
             <EmptyState />
           )}
-
-          {/* {activeFilter !== null &&
-            Object.keys(filter).length > 0 &&
-            filter !== null ? (
-              filter.map((card, index) => {
-                return (
-                  <Formacao
-                    key={index}
-                    username={card.username}
-                    nomeformacao={card.nomeformacao}
-                    dataFormacao={card.dataFormacao}
-                    justificacaoFormacao={card.justificacaoFormacao}
-                    idCurso={card.idCurso}
-                    tipoFormacao={card.tipoFormacao}
-                    consultar={true}
-                    urlBack={"/home/formacao/listar-formacao"}
-                    onItemDelete={() => handleCancelarFormacao(card)}
-                  />
-                );
-              })
-            ) : (
-              <EmptyState />
-            )} */}
         </div>
       </div>
       <div></div>

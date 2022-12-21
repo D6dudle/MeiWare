@@ -8,8 +8,7 @@ import AproveOrder from "./AproveOrder";
 import users from "../constants/usersAux.json";
 import { EmptyState } from "./EmptyState";
 
-export default function TrainingTabs() {
-
+export default function TrainingTabs({ sideBarName }) {
   const [originalList, setOriginalList] = useState(Formacoes);
   const [filteredList, setFilteredList] = useState(originalList[0].formacoes);
 
@@ -20,9 +19,6 @@ export default function TrainingTabs() {
 
   const [search, setSearch] = useState();
   const [values, setValues] = useState([]);
-  
-
-  const [test, setTest] = useState(null);
 
   const handleCancelarFormacao = (card) => {
     //Gets the index of object to remove the formation
@@ -41,52 +37,80 @@ export default function TrainingTabs() {
     setFilteredList(updatedList);
   };
 
-  /* useEffect(() => {
-    console.log("Update");
-    console.log(originalList);
-  }, [originalList]); */
+  const handleAceitarFormacaoPendente = (card) => {
+    //Igual ao handleCancelarFormacao (remove o elemento da lista)
+    //Gets the index of object to remove the formation
+    const indexList = dataCardList.findIndex((element) => {
+      return element.label === activeFilter;
+    });
+
+    const updatedList = dataCardList[indexList].formacoes.filter(
+      (formacao) => formacao.idCurso !== card.idCurso
+    );
+
+    const indexFormacaoDecorrer = dataCardList.findIndex((element) => {
+      return element.label === "Formações a decorrer";
+    });
+
+    var tempData = [...dataCardList];
+    tempData[indexList].formacoes = updatedList;
+
+    //Passar a formação atual para a formação a decorrer
+    card.tipoFormacao = "CURSO";
+    tempData[indexFormacaoDecorrer].formacoes.push(card);
+    setDataCardList(tempData);
+    setFilter(updatedList);
+  };
 
   useEffect(() => {
-    var list = originalList.filter((item) => item.label == activeFilter)[0].formacoes;
-    if(search && search !== ""){
-      list = list.filter((item) => item.nomeformacao.toLowerCase().includes(search.toLowerCase()));
-      if(values.length > 0){
-        for(let i=0; i<values[1].length; i++){
+    console.log("Update");
+    console.log(originalList);
+  }, [originalList]);
+
+  useEffect(() => {
+    var list = originalList.filter((item) => item.label == activeFilter)[0]
+      .formacoes;
+    if (search && search !== "") {
+      list = list.filter((item) =>
+        item.nomeformacao.toLowerCase().includes(search.toLowerCase())
+      );
+      if (values.length > 0) {
+        for (let i = 0; i < values[1].length; i++) {
           list = list.filter((item) => item.username == values[1][i].label);
         }
       }
-    }else{
-      if(values.length > 0){
-        for(let i=0; i<values[1].length; i++){
+    } else {
+      if (values.length > 0) {
+        for (let i = 0; i < values[1].length; i++) {
           list = list.filter((item) => item.username == values[1][i].label);
         }
       }
     }
 
     var tempData = [...list];
-    tempData = sortByDate(tempData)
+    tempData = sortByDate(tempData);
     setFilteredList(tempData);
-
   }, [search, values, activeFilter, originalList, dateSortIncreasing]);
 
-  
   const filterColab = (inputValue) => {
     return colabList.filter((i) =>
       i.label.toLowerCase().includes(inputValue.toLowerCase())
     );
   };
 
-  const sortByDate = (data) =>{
-    if(dateSortIncreasing){
+  const sortByDate = (data) => {
+    if (dateSortIncreasing) {
       return data.sort(
-          (objA, objB) => Date.parse(objA.dataFormacao) - Date.parse(objB.dataFormacao)
-        )
-    }else{
+        (objA, objB) =>
+          Date.parse(objA.dataFormacao) - Date.parse(objB.dataFormacao)
+      );
+    } else {
       return data.sort(
-        (objA, objB) => Date.parse(objB.dataFormacao) - Date.parse(objA.dataFormacao)
-        )
+        (objA, objB) =>
+          Date.parse(objB.dataFormacao) - Date.parse(objA.dataFormacao)
+      );
     }
-  }
+  };
 
   const handleDateChanged = (increasing) => {
     setDateSort(increasing);
@@ -97,11 +121,9 @@ export default function TrainingTabs() {
   };
 
   const handleDropdown = (index, opt) => {
-
     let data = [...values];
     data[index] = opt;
     setValues(data);
-
   };
 
   const handleSelectedTab = (label) => {
@@ -167,7 +189,7 @@ export default function TrainingTabs() {
             />
           </div>
           <div className="flex justify-center items-center">
-            <DateOrder callback={handleDateChanged}/>
+            <DateOrder callback={handleDateChanged} />
           </div>
         </div>
       </div>
@@ -196,6 +218,8 @@ export default function TrainingTabs() {
                     consultar={true}
                     urlBack={"/home/formacao/listar-formacao"}
                     onItemDelete={() => handleCancelarFormacao(card)}
+                    sidebarName={sideBarName}
+                    onAceitarclick={() => handleAceitarFormacaoPendente(card)}
                   />
                 );
               })
