@@ -3,6 +3,7 @@ package meiware.coursemanagement.Services.JPA;
 import meiware.coursemanagement.Entities.JPA.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 public interface IPedidoFormacaoService {

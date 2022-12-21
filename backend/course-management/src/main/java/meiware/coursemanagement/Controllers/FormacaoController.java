@@ -4,6 +4,7 @@ import meiware.coursemanagement.Entities.JPA.PedidoAprovado;
 import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import meiware.coursemanagement.Entities.JPA.PedidoRejeitado;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
+import meiware.coursemanagement.Images.PedidoFormacaoImage;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,6 @@ public class FormacaoController {
     public ResponseEntity<?> getPedidosFormacaoByUtilizador(@RequestBody Utilizador utilizador) {
 
         try{
-            //TODO: PErguntar ao Jordão porque se não faz mais sentido por userId?
             List<PedidoFormacao> pedidosFormacao = pedidoFormacaoService.getPedidosFormacaoByUtilizador(utilizador);
             return new ResponseEntity<>(
                     pedidosFormacao,
@@ -126,10 +126,39 @@ public class FormacaoController {
         }
     }
 
+    /*@PostMapping (value = "/createPedidoFormacao")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> createPedidoFormacao(@RequestBody PedidoFormacaoImage pedidoFormacaoImage) {
+
+        System.out.println("[createPedidoFormacao]pedidoFormacao: " + pedidoFormacaoImage.getPedidoFormacao().toString());
+        if(!pedidoFormacaoImage.getFiles().isEmpty())
+            System.out.println("[createPedidoFormacao]files: " + pedidoFormacaoImage.getFiles().toString());
+        else{
+            throw new RuntimeException("files está vazio ou null");
+        }
+
+        try{
+            pedidoFormacaoService.createPedidoFormacao(pedidoFormacaoImage.getPedidoFormacao(), pedidoFormacaoImage.getFiles());
+            return new ResponseEntity<>(
+                    "Pedido de formação criado com sucesso.",
+                    HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(
+                    "Erro ao criar o pedido de formação.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }*/
+
     @PostMapping (value = "/createPedidoFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> createPedidoFormacao(@RequestBody PedidoFormacao pedidoFormacao,
-                                                  @RequestBody List<MultipartFile> files) {
+    public ResponseEntity<?> createPedidoFormacao(@RequestPart("files") List<MultipartFile> files, @RequestPart("pedidoFormacao") PedidoFormacao pedidoFormacao) {
+
+        if(!files.isEmpty())
+            System.out.println("[createPedidoFormacao]files: " + files.get(0).getOriginalFilename());
+        else{
+            throw new RuntimeException("files está vazio ou null");
+        }
+        System.out.println("[createPedidoFormacao]pedidoFormacao: " + pedidoFormacao.toString());
 
         try{
             pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files);

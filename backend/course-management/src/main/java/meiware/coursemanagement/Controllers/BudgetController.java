@@ -39,6 +39,9 @@ public class BudgetController {
 
 
     //https://docs.spring.io/spring-framework/docs/3.0.0.M3/reference/html/ch18s02.html
+    /* Exemplo Input
+        6.0
+     */
     @GetMapping(value = "/budgetById")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getBudgetById(@RequestBody Long budgetId) {
@@ -55,7 +58,12 @@ public class BudgetController {
         }
     }
 
-
+    /* Exemplo Input
+        {
+            "budget": 40000,
+            "ano": 2024
+        }
+     */
     @PostMapping(value = "/createBudget")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> createBudget(@Valid @RequestBody Budget budget) {
@@ -72,6 +80,13 @@ public class BudgetController {
         }
     }
 
+    /* Exemplo Input
+        {
+            "id": 6,
+            "ano": 2023,
+            "budget": "20000"
+        }
+     */
     @PutMapping(value = "/updateBudget")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> updateBudget(@Valid @RequestBody Budget budget) {
@@ -88,6 +103,13 @@ public class BudgetController {
         }
     }
 
+    /* Exemplo Input
+        {
+            "id": 6,
+            "ano": 2023,
+            "budget": "20000"
+        }
+     */
     @DeleteMapping(value = "/removeBudget")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> removeBudget(@Valid @RequestBody Budget budget) {

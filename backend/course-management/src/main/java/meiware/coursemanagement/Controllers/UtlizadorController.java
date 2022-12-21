@@ -85,11 +85,17 @@ public class UtlizadorController {
         }
     }
 
+    /* Input Example:
+        {
+            "id": "1",
+            "email": "jose@email.com",
+            "nome": "José"
+        }
+     */
     @GetMapping(value = "/managedUtilizadores")
     public ResponseEntity<?> getManagedUtilizadores(@RequestBody Utilizador manager) {
 
         try{
-            //TODO: perguntar ao Jordão se não deve ser managerId
             List<Utilizador> listaUtilizadores = utilizadorService.getManagedUtilizadores(manager);
             return new ResponseEntity<>(
                     listaUtilizadores,
@@ -110,6 +116,9 @@ public class UtlizadorController {
         }
     }
 
+    /* Input Example:
+        1
+     */
     @GetMapping(value = "/utilizadorById")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getUtilizadorById(@RequestBody Long id) {
@@ -126,6 +135,11 @@ public class UtlizadorController {
         }
     }
 
+    /*Input Example
+        {
+            "email": "jose@email.com"
+        }
+     */
     @GetMapping(value = "/utilizadorByEmail")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getUtilizadorByEmail(@RequestBody String email) {
@@ -143,7 +157,17 @@ public class UtlizadorController {
     }
 
     //TODO: perguntar na reunião se deve devolver uma nova lista de utilizadores
+    // ou o utilizador atualizado
+
+    /* Input Example:
+        {
+            "id": "1",
+            "email": "jose@email.com",
+            "nome": "Jossé"
+        }
+     */
     @PutMapping(value = "/updateUtilizador")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> updateUtilizador(@RequestBody Utilizador updatedUtilizador) {
 
         try{
@@ -159,6 +183,7 @@ public class UtlizadorController {
     }
 
     @DeleteMapping(value = "/removeUtilizador")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> removeUtilizador(@RequestBody Utilizador utilizador) {
 
         try{
