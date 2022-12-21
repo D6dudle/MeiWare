@@ -40,26 +40,26 @@ export default function TrainingTabs({ sideBarName }) {
   const handleAceitarFormacaoPendente = (card) => {
     //Igual ao handleCancelarFormacao (remove o elemento da lista)
     //Gets the index of object to remove the formation
-    const indexList = dataCardList.findIndex((element) => {
+    const indexList = originalList.findIndex((element) => {
       return element.label === activeFilter;
     });
 
-    const updatedList = dataCardList[indexList].formacoes.filter(
+    const updatedList = originalList[indexList].formacoes.filter(
       (formacao) => formacao.idCurso !== card.idCurso
     );
 
-    const indexFormacaoDecorrer = dataCardList.findIndex((element) => {
+    const indexFormacaoDecorrer = originalList.findIndex((element) => {
       return element.label === "Formações a decorrer";
     });
 
-    var tempData = [...dataCardList];
+    var tempData = [...originalList];
     tempData[indexList].formacoes = updatedList;
 
     //Passar a formação atual para a formação a decorrer
     card.tipoFormacao = "CURSO";
     tempData[indexFormacaoDecorrer].formacoes.push(card);
-    setDataCardList(tempData);
-    setFilter(updatedList);
+    setOriginalList(tempData);
+    setFilteredList(updatedList);
   };
 
   useEffect(() => {
