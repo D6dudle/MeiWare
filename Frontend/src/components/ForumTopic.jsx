@@ -16,6 +16,7 @@ export const ForumTopic = ({
   aprovar = false,
   urlBack,
 }) => {
+  console.log("USERNAME: " + username);
   const navigate = useNavigate();
 
   const files = [
@@ -75,7 +76,10 @@ export const ForumTopic = ({
             <Tag tagName={"teste"} />
             <Tag tagName={"Java"} />
           </div>
-          <div style={{ display: arquivar ? "block" : "none" }} onClick={arquivarPublicacaoHandler}>
+          <div
+            style={{ display: arquivar ? "block" : "none" }}
+            onClick={arquivarPublicacaoHandler}
+          >
             <Button iconName={"ARQUIVAR"} textButton={"Arquivar Publicação"} />
           </div>
         </div>
