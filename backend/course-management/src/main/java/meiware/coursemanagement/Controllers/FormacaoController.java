@@ -153,13 +153,6 @@ public class FormacaoController {
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> createPedidoFormacao(@RequestPart("files") List<MultipartFile> files, @RequestPart("pedidoFormacao") PedidoFormacao pedidoFormacao) {
 
-        if(!files.isEmpty())
-            System.out.println("[createPedidoFormacao]files: " + files.get(0).getOriginalFilename());
-        else{
-            throw new RuntimeException("files está vazio ou null");
-        }
-        System.out.println("[createPedidoFormacao]pedidoFormacao: " + pedidoFormacao.toString());
-
         try{
             pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files);
             return new ResponseEntity<>(
