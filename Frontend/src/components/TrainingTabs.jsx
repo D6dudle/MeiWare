@@ -9,41 +9,87 @@ import users from "../constants/usersAux.json";
 import { EmptyState } from "./EmptyState";
 
 export default function TrainingTabs() {
+
+  const [originalList, setOriginalList] = useState(Formacoes);
+  const [filteredList, setFilteredList] = useState(originalList[0].formacoes);
+
+  const [colabList, setColabList] = useState(users);
+
   const [activeFilter, setActiveFilter] = useState(null);
-  const [filter, setFilter] = useState(null);
+  const [dateSortIncreasing, setDateSort] = useState(false);
 
   const [search, setSearch] = useState();
   const [values, setValues] = useState([]);
-  const [dataCardList, setDataCardList] = useState(Formacoes);
+  
 
   const [test, setTest] = useState(null);
 
   const handleCancelarFormacao = (card) => {
     //Gets the index of object to remove the formation
-    const indexList = dataCardList.findIndex((element) => {
+    const indexList = originalList.findIndex((element) => {
       return element.label === activeFilter;
     });
 
-    const updatedList = dataCardList[indexList].formacoes.filter(
+    const updatedList = originalList[indexList].formacoes.filter(
       (formacao) => formacao.idCurso !== card.idCurso
     );
 
-    var tempData = [...dataCardList];
+    var tempData = [...originalList];
     tempData[indexList].formacoes = updatedList;
-    setDataCardList(tempData);
+    setOriginalList(tempData);
 
-    setFilter(updatedList);
+    setFilteredList(updatedList);
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("Update");
-    console.log(dataCardList);
-  }, [dataCardList]);
+    console.log(originalList);
+  }, [originalList]); */
 
-  const filterTags = (inputValue) => {
-    return users.filter((i) =>
+  useEffect(() => {
+    var list = originalList.filter((item) => item.label == activeFilter)[0].formacoes;
+    if(search && search !== ""){
+      list = list.filter((item) => item.nomeformacao.toLowerCase().includes(search.toLowerCase()));
+      if(values.length > 0){
+        for(let i=0; i<values[1].length; i++){
+          list = list.filter((item) => item.username == values[1][i].label);
+        }
+      }
+    }else{
+      if(values.length > 0){
+        for(let i=0; i<values[1].length; i++){
+          list = list.filter((item) => item.username == values[1][i].label);
+        }
+      }
+    }
+
+    var tempData = [...list];
+    tempData = sortByDate(tempData)
+    setFilteredList(tempData);
+
+  }, [search, values, activeFilter, originalList, dateSortIncreasing]);
+
+  
+  const filterColab = (inputValue) => {
+    return colabList.filter((i) =>
       i.label.toLowerCase().includes(inputValue.toLowerCase())
     );
+  };
+
+  const sortByDate = (data) =>{
+    if(dateSortIncreasing){
+      return data.sort(
+          (objA, objB) => Date.parse(objA.dataFormacao) - Date.parse(objB.dataFormacao)
+        )
+    }else{
+      return data.sort(
+        (objA, objB) => Date.parse(objB.dataFormacao) - Date.parse(objA.dataFormacao)
+        )
+    }
+  }
+
+  const handleDateChanged = (increasing) => {
+    setDateSort(increasing);
   };
 
   const handleType = (index, event) => {
@@ -51,15 +97,17 @@ export default function TrainingTabs() {
   };
 
   const handleDropdown = (index, opt) => {
+
     let data = [...values];
     data[index] = opt;
     setValues(data);
+
   };
 
   const handleSelectedTab = (label) => {
     setActiveFilter(label);
-    var list = dataCardList.filter((item) => item.label == label);
-    setFilter(list[0].formacoes);
+    //var list = originalList.filter((item) => item.label == label);
+    //setFilteredList(list[0].formacoes);
   };
 
   if (activeFilter == null) handleSelectedTab("Formações pendentes"); // Default tab
@@ -72,7 +120,7 @@ export default function TrainingTabs() {
       {/* First value */}
       <TabsHeader className="mt-0">
         <div className="flex items-start gap-8 px-[0.625rem]">
-          {dataCardList.map(({ label, value, icon }) => (
+          {originalList.map(({ label, value, icon }) => (
             <Tab
               key={value}
               value={value}
@@ -109,18 +157,17 @@ export default function TrainingTabs() {
               titleStyle={"font-bold mb-1 text-2xl"}
               style={"w-[30rem]"}
               placeholder="colaborador..."
-              list={users}
+              list={colabList}
               multi={true}
               showTitle={false}
               error={"Por favor selecione ou adicione um nome"}
               value={values[1]}
               callback={handleDropdown}
-              searchCall={filterTags}
+              searchCall={filterColab}
             />
           </div>
           <div className="flex justify-center items-center">
-            <DateOrder />
-            {activeFilter === "Formações pendentes" && <AproveOrder />}
+            <DateOrder callback={handleDateChanged}/>
           </div>
         </div>
       </div>
@@ -134,9 +181,9 @@ export default function TrainingTabs() {
           ) : null}
           <div className="overflowy-y-visible flex flex-nowrap justify-between flex-col gap-3">
             {activeFilter !== null &&
-            Object.keys(filter).length > 0 &&
-            filter !== null ? (
-              filter.map((card, index) => {
+            Object.keys(filteredList).length > 0 &&
+            filteredList !== null ? (
+              filteredList.map((card, index) => {
                 return (
                   <Formacao
                     key={index}
