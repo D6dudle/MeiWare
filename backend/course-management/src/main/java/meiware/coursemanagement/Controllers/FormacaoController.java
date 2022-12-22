@@ -49,7 +49,7 @@ public class FormacaoController {
     public ResponseEntity<?> getFormacoesAprovadas() {
 
         try{
-            List<PedidoAprovado> pedidosAprovadosList = pedidoFormacaoService.getFormacoesAprovadas();
+            List<PedidoAprovado> pedidosAprovadosList = pedidoFormacaoService.getPedidosAprovados();
             return new ResponseEntity<>(
                     pedidosAprovadosList,
                     HttpStatus.OK);
@@ -65,30 +65,13 @@ public class FormacaoController {
     public ResponseEntity<?> getFormacoesRejeitadas() {
 
         try{
-
-            List<PedidoRejeitado> pedidosRejeitadosList = pedidoFormacaoService.getFormacoesRejeitadas();
+            List<PedidoRejeitado> pedidosRejeitadosList = pedidoFormacaoService.getPedidosRejeitados();
             return new ResponseEntity<>(
                     pedidosRejeitadosList,
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
                     "Erro ao aceder aos pedidos de formações rejeitados.",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping(value = "/fedidosFormacaoByUtilizador")
-    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> getPedidosFormacaoByUtilizador(@RequestBody Utilizador utilizador) {
-
-        try{
-            List<PedidoFormacao> pedidosFormacao = pedidoFormacaoService.getPedidosFormacaoByUtilizador(utilizador);
-            return new ResponseEntity<>(
-                    pedidosFormacao,
-                    HttpStatus.OK);
-        }catch(Exception e){
-            return new ResponseEntity<>(
-                    "Erro ao aceder aos pedidos de formações.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

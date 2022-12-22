@@ -44,7 +44,7 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
-    public List<PedidoAprovado> getFormacoesAprovadas() {
+    public List<PedidoAprovado> getPedidosAprovados() {
         List<PedidoAprovado> formacoesAprovadas = new ArrayList<>();
 
         try {
@@ -57,12 +57,11 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
             e.printStackTrace();
         }
 
-
         return formacoesAprovadas;
     }
 
     @Override
-    public List<PedidoRejeitado> getFormacoesRejeitadas() {
+    public List<PedidoRejeitado> getPedidosRejeitados() {
         List<PedidoRejeitado> formacoesRejeitadas = new ArrayList<>();
 
         try {
@@ -77,12 +76,6 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
 
 
         return formacoesRejeitadas;
-    }
-
-    @Override
-    public List<PedidoFormacao> getPedidosFormacaoByUtilizador(Utilizador utilizador) {
-        // TODO
-        return null;
     }
 
     @Override
@@ -137,37 +130,40 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
-    public void updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao) {
+    public PedidoFormacao updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao) {
         try {
-            pedidoFormacaoRepository.save(updatedPedidoFormacao);
+            return pedidoFormacaoRepository.save(updatedPedidoFormacao);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
-    public void addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file) {
+    public PedidoFormacao addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file) {
         try {
             Anexo anexo = anexoService.createAnexo(file);
             AnexoRef anexoRef = new AnexoRef(anexo.getId(), anexo.getNome());
             anexoRefRepository.save(anexoRef);
             pedidoFormacao.getListAnexoRefs().add(anexoRef);
 
-            pedidoFormacaoRepository.save(pedidoFormacao);
+            return pedidoFormacaoRepository.save(pedidoFormacao);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
-    public void removeAnexoFromPedidoFormacao(PedidoFormacao pedidoFormacao, AnexoRef anexoRef) {
+    public PedidoFormacao removeAnexoFromPedidoFormacao(PedidoFormacao pedidoFormacao, AnexoRef anexoRef) {
         try {
             pedidoFormacao.getListAnexoRefs().remove(anexoRef);
-            pedidoFormacaoRepository.save(pedidoFormacao);
             anexoRefRepository.delete(anexoRef);
+            return pedidoFormacaoRepository.save(pedidoFormacao);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override

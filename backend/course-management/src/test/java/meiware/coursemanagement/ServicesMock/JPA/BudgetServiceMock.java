@@ -52,7 +52,7 @@ public class BudgetServiceMock{
 
         // then
         assertNotNull(budgets);
-        assertEquals(budgets, this.budgets);
+        assertEquals(this.budgets, budgets);
     }
 
     @DisplayName("Junit test 12 - Teste unitário do método createBudget de BudgetService.")

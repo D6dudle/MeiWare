@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +43,7 @@ public class PedidoFormacao {
 
     private boolean cancelada;
 
-    private boolean apagada;
+    private boolean apagada = false;
 
     @Column(columnDefinition = "DATE")
     private LocalDate apagadaNaData;
@@ -54,7 +55,7 @@ public class PedidoFormacao {
     private LocalDate dataUltimoUpdate;
 
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<AnexoRef> listAnexoRefs;
+    private Set<AnexoRef> listAnexoRefs = new HashSet<>();
 
     @ManyToOne(optional = false)
     private Utilizador quemFezPedido;
@@ -64,6 +65,17 @@ public class PedidoFormacao {
     }
 
     public PedidoFormacao(String nome, String descricao, String formador, LocalDate dataInicio, float preco, Utilizador quemFezPedido) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.formador = formador;
+        this.dataInicio = dataInicio;
+        this.preco = preco;
+        this.dataCriacao = LocalDate.now();
+        this.quemFezPedido = quemFezPedido;
+    }
+
+    public PedidoFormacao(long id, String nome, String descricao, String formador, LocalDate dataInicio, float preco, Utilizador quemFezPedido) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.formador = formador;
