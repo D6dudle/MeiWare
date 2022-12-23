@@ -42,6 +42,10 @@ public class Utilizador {
 
     public Utilizador(){    }
 
+    public Utilizador(long id) {
+        this.id = id;
+    }
+
     public Utilizador(String nome, String email, String password, Set<Role> roles){
         this.nome = nome;
         this.email = email;

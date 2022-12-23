@@ -30,6 +30,8 @@ dependencies {
 
 	testImplementation 'org.mockito:mockito-inline:4.8.0'
 	testImplementation 'org.mockito:mockito-junit-jupiter:4.8.0'
+
+	implementation 'org.modelmapper:modelmapper:3.0.0'
 }
 
 test {

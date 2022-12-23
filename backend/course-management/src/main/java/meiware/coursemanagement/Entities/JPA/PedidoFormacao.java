@@ -54,7 +54,7 @@ public class PedidoFormacao {
     @Column(columnDefinition = "DATE")
     private LocalDate dataUltimoUpdate;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<AnexoRef> listAnexoRefs = new HashSet<>();
 
     @ManyToOne(optional = false)
@@ -62,6 +62,10 @@ public class PedidoFormacao {
 
     public PedidoFormacao() {
 
+    }
+
+    public PedidoFormacao(long id) {
+        this.id = id;
     }
 
     public PedidoFormacao(String nome, String descricao, String formador, LocalDate dataInicio, float preco, Utilizador quemFezPedido) {
@@ -207,6 +211,14 @@ public class PedidoFormacao {
 
     public void setListAnexoRefs(Set<AnexoRef> listAnexoRefs) {
         this.listAnexoRefs = listAnexoRefs;
+    }
+
+    public void addAnexoRef(AnexoRef anexoRef) {
+        this.getListAnexoRefs().add(anexoRef);
+    }
+
+    public void removeAnexoRef(AnexoRef anexoRef) {
+        this.getListAnexoRefs().remove(anexoRef);
     }
 
     @Override

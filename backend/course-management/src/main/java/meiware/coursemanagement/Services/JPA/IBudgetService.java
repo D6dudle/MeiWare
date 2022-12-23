@@ -8,6 +8,6 @@ public interface IBudgetService {
     List<Budget> getBudgets();
     Budget getBudgetById(Long id);
     Budget createBudget(Budget newBudget);
-    Budget updateBudget(Budget updatedBudget);
+    void updateBudget(Budget updatedBudget);
     void removeBudget(Budget budget);
 }

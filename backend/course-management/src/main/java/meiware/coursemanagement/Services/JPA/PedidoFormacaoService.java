@@ -5,8 +5,10 @@ import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import meiware.coursemanagement.Repositories.JPA.IAnexoRefRepository;
 import meiware.coursemanagement.Repositories.JPA.IPedidoFormacaoRepository;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -25,6 +27,9 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     private IAnexoRefRepository anexoRefRepository;
     @Autowired
     private IAnexoService anexoService;
+
+    @Autowired
+    private ModelMapper mapper;
 
     @Override
     public List<PedidoFormacao> getPedidosFormacao() {
@@ -130,44 +135,51 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
-    public PedidoFormacao updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao) {
+    public void updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao) {
         try {
-            return pedidoFormacaoRepository.save(updatedPedidoFormacao);
+            PedidoFormacao pedidoFormacao = this.getPedidoFormacaoById(updatedPedidoFormacao.getId());
+            if(pedidoFormacao != null) {
+                mapper.map(updatedPedidoFormacao, pedidoFormacao);
+                pedidoFormacaoRepository.save(pedidoFormacao);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     @Override
-    public PedidoFormacao addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file) {
+    public void addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file) {
         try {
-            Anexo anexo = anexoService.createAnexo(file);
-            AnexoRef anexoRef = new AnexoRef(anexo.getId(), anexo.getNome());
-            anexoRefRepository.save(anexoRef);
-            pedidoFormacao.getListAnexoRefs().add(anexoRef);
-
-            return pedidoFormacaoRepository.save(pedidoFormacao);
+            PedidoFormacao pedido = this.getPedidoFormacaoById(pedidoFormacao.getId());
+            if(pedido != null) {
+                Anexo anexo = anexoService.createAnexo(file);
+                AnexoRef anexoRef = new AnexoRef(anexo.getId(), anexo.getNome());
+                anexoRefRepository.save(anexoRef);
+                pedido.addAnexoRef(anexoRef);
+                pedidoFormacaoRepository.save(pedido);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     @Override
-    public PedidoFormacao removeAnexoFromPedidoFormacao(PedidoFormacao pedidoFormacao, AnexoRef anexoRef) {
+    public void removeAnexoFromPedidoFormacao(PedidoFormacao pedidoFormacao, AnexoRef anexoRef) {
         try {
-            pedidoFormacao.getListAnexoRefs().remove(anexoRef);
-            anexoRefRepository.delete(anexoRef);
-            return pedidoFormacaoRepository.save(pedidoFormacao);
+            PedidoFormacao pedido = this.getPedidoFormacaoById(pedidoFormacao.getId());
+            if(pedido != null) {
+                pedido.removeAnexoRef(anexoRef);
+                pedidoFormacaoRepository.save(pedido);
+                anexoRefRepository.delete(anexoRef);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     @Override
-    public void removePedidoFormacao(PedidoFormacao pedidoFormacao) {
+    public void removePedidoFormacao(PedidoFormacao pedidoFormacao) { // Soft delete
         try {
             pedidoFormacao.setApagada(true);
             pedidoFormacao.setApagadaNaData(LocalDate.now());
