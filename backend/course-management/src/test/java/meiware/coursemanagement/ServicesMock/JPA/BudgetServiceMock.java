@@ -1,8 +1,12 @@
 package meiware.coursemanagement.ServicesMock.JPA;
 
 import meiware.coursemanagement.Entities.JPA.Budget;
+import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Repositories.JPA.IBudgetRepository;
+import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
 import meiware.coursemanagement.Services.JPA.BudgetService;
+import meiware.coursemanagement.Services.JPA.IUtilizadorService;
+import meiware.coursemanagement.Services.JPA.UtilizadorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -114,4 +118,6 @@ public class BudgetServiceMock{
         assertThat(updatedBudget.getBudget()).isEqualTo(5000);
         assertThat(updatedBudget.getAno()).isEqualTo(2002);*/
     }
+
+
 }
