@@ -121,12 +121,13 @@ public class UtlizadorController {
      */
     @GetMapping(value = "/utilizadorById")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> getUtilizadorById(@RequestBody Long id) {
+    public ResponseEntity<?> getUtilizadorById(@RequestParam("id") String idString) {
 
         try{
+            Long id = Long.valueOf(idString);
             Utilizador utilizador = utilizadorService.getUtilizadorById(id);
             return new ResponseEntity<>(
-                    utilizador,
+                    utilizador.toJSON(),
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(

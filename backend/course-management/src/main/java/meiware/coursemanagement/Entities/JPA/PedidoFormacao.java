@@ -1,6 +1,8 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -219,6 +221,27 @@ public class PedidoFormacao {
 
     public void removeAnexoRef(AnexoRef anexoRef) {
         this.getListAnexoRefs().remove(anexoRef);
+    }
+
+    public JSONObject toJSON(){
+        JSONObject obj = new JSONObject();
+        obj.put("id", id);
+        obj.put("nome", nome);
+        obj.put("descricao", descricao);
+        obj.put("formador", formador);
+        obj.put("dataInicio", dataInicio);
+        obj.put("dataFim", dataFim);
+        obj.put("preco", preco);
+        obj.put("justificao", justificao);
+        obj.put("status", status);
+        obj.put("cancelada", cancelada);
+        obj.put("apagada", apagada);
+        obj.put("apagadaNaData", apagadaNaData);
+        obj.put("dataCriacao", dataCriacao);
+        obj.put("dataUltimoUpdate", dataUltimoUpdate);
+        obj.put("listAnexoRef", listAnexoRefs);
+
+        return obj;
     }
 
     @Override

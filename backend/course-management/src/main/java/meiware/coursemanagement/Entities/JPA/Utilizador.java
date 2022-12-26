@@ -1,6 +1,7 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 import javax.persistence.*;
@@ -153,6 +154,31 @@ public class Utilizador {
             obj.put("managerId", -1);
         else
             obj.put("managerId", manager.getId());
+
+        JSONArray lists = new JSONArray();
+
+
+        for (PedidoFormacao listaPedidos : listPedidos){
+            lists.add(listaPedidos.toJSON());
+        }
+
+        obj.put("listaFormacoes", lists);
+        return obj;
+    }
+
+    public JSONObject toJSONAuth(){
+        JSONObject obj = new JSONObject();
+        obj.put("id", id);
+        obj.put("nome", nome);
+        obj.put("email", email);
+        obj.put("isColaborador", isColaborador());
+        obj.put("isGestor", isGestor());
+        obj.put("isAdministrador", isAdministrador());
+        if (manager == null)
+            obj.put("managerId", -1);
+        else
+            obj.put("managerId", manager.getId());
+
         return obj;
     }
     @Override
