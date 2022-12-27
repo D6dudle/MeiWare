@@ -179,11 +179,11 @@ public class JPAtest {
 
         PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(25l);
         pedidoFormacaoService.addAnexoToPedidoFormacao(pedidoFormacao, multipartFile);
-        System.out.println(anexoService.getAnexos().get(0).getNome());*/
+        System.out.println(anexoService.getAnexos().get(0).getNome());
         PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(25l);
-        pedidoFormacaoService.removeAnexoFromPedidoFormacao(pedidoFormacao, new AnexoRef("a", "a"));
+        pedidoFormacaoService.removeAnexoFromPedidoFormacao(pedidoFormacao, new AnexoRef("a", "a"));*/
         //pedidoFormacaoService.removeAnexoFromPedidoFormacao(pedidoFormacaoService.getPedidoFormacaoById(28l), (AnexoRef) pedidoFormacaoService.getPedidoFormacaoById(28l).getListAnexoRefs().toArray()[1]);
-
+        System.out.println(utilizadorService.getUtilizadorByEmail("jose@email.com"));
         /*System.out.println(iUtilizadorRepository.findById(Long.valueOf(1)).get().getListFormacoes());
         System.out.println(pedidoFormacaoService.getPedidoFormacaoById(newPedidoFormacao.getId()).getListAnexoRefs());
 

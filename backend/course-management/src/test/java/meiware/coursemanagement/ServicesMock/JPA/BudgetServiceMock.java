@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,9 @@ public class BudgetServiceMock{
 
     @Mock
     private IBudgetRepository budgetRepository;
+
+    @Mock
+    private ModelMapper modelMapper;
 
     @InjectMocks
     private BudgetService budgetService;
@@ -107,6 +111,7 @@ public class BudgetServiceMock{
     public void updateBudget() {
         /*// given - precondition or setup
         Budget budget = budgets.get(0);
+        given(budgetRepository.findById(budget.getId())).willReturn(Optional.of(budget));
         given(budgetRepository.save(budget)).willReturn(budget);
         budget.setBudget(5000);
         budget.setAno(2002);

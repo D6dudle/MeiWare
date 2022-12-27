@@ -1,10 +1,13 @@
 package meiware.coursemanagement.ServicesMock.JPA;
 
 import meiware.coursemanagement.Entities.JPA.*;
+import meiware.coursemanagement.Entities.MongoDB.Anexo;
+import meiware.coursemanagement.Repositories.JPA.IAnexoRefRepository;
 import meiware.coursemanagement.Repositories.JPA.IBudgetRepository;
 import meiware.coursemanagement.Repositories.JPA.IPedidoFormacaoRepository;
 import meiware.coursemanagement.Services.JPA.BudgetService;
 import meiware.coursemanagement.Services.JPA.PedidoFormacaoService;
+import meiware.coursemanagement.Services.MongoDB.AnexoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.time.LocalDate;
@@ -27,6 +31,15 @@ import static org.mockito.BDDMockito.given;
 public class PedidoFormacaoServiceMock {
     @Mock
     private IPedidoFormacaoRepository pedidoFormacaoRepository;
+
+    @Mock
+    private ModelMapper modelMapper;
+
+    @Mock
+    private AnexoService anexoService;
+
+    @Mock
+    private IAnexoRefRepository anexoRefRepository;
 
     @InjectMocks
     private PedidoFormacaoService pedidoFormacaoService;
@@ -141,6 +154,7 @@ public class PedidoFormacaoServiceMock {
     public void updatePedidoFormacao() {
         /*// given - precondition or setup
         PedidoFormacao pedidoFormacao = pedidosFormacao.get(0);
+        given(pedidoFormacaoRepository.findById(pedidoFormacao.getId())).willReturn(Optional.of(pedidoFormacao));
         given(pedidoFormacaoRepository.save(pedidoFormacao)).willReturn(pedidoFormacao);
 
         // when - action or behavior that we are going to test
@@ -157,10 +171,13 @@ public class PedidoFormacaoServiceMock {
     public void addAnexoToPedidoFormacao() {
         /*// given - precondition or setup
         PedidoFormacao pedidoFormacao = pedidosFormacao.get(0);
+        MockMultipartFile file = new MockMultipartFile("file", new byte[0]);
+        given(pedidoFormacaoRepository.findById(pedidoFormacao.getId())).willReturn(Optional.of(pedidoFormacao));
+        given(anexoService.createAnexo(file)).willReturn(new Anexo("file"));
         given(pedidoFormacaoRepository.save(pedidoFormacao)).willReturn(pedidoFormacao);
 
         // when - action or behavior that we are going to test
-        PedidoFormacao updatedPedidoFormacao = pedidoFormacaoService.addAnexoToPedidoFormacao(pedidoFormacao, new MockMultipartFile("file", new byte[0]));
+        PedidoFormacao updatedPedidoFormacao = pedidoFormacaoService.addAnexoToPedidoFormacao(pedidoFormacao, file);
 
         // then
         assertNotNull(updatedPedidoFormacao);
@@ -174,6 +191,7 @@ public class PedidoFormacaoServiceMock {
         PedidoFormacao pedidoFormacao = pedidosFormacao.get(0);
         AnexoRef anexoRef = new AnexoRef();
         pedidoFormacao.getListAnexoRefs().add(anexoRef);
+        given(pedidoFormacaoRepository.findById(pedidoFormacao.getId())).willReturn(Optional.of(pedidoFormacao));
         given(pedidoFormacaoRepository.save(pedidoFormacao)).willReturn(pedidoFormacao);
 
         // when - action or behavior that we are going to test
@@ -187,12 +205,13 @@ public class PedidoFormacaoServiceMock {
     @DisplayName("Junit test 32 - Teste unitário do método removePedidoFormacao de PedidoFormacaoService.")
     @Test
     public void removePedidoFormacao() {
-        // given - precondition or setup
+        /*// given - precondition or setup
         PedidoFormacao pedidoFormacao = pedidosFormacao.get(0);
+        given(pedidoFormacaoRepository.findById(pedidoFormacao.getId())).willReturn(Optional.of(pedidoFormacao));
         given(pedidoFormacaoRepository.save(pedidoFormacao)).willReturn(pedidoFormacao);
 
         // when - action or behavior that we are going to test
-        /*PedidoFormacao updatedPedidoFormacao = pedidoFormacaoService.removePedidoFormacao(pedidoFormacao);
+        PedidoFormacao updatedPedidoFormacao = pedidoFormacaoService.removePedidoFormacao(pedidoFormacao);
 
         // then
         assertNotNull(updatedPedidoFormacao);
