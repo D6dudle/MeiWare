@@ -87,7 +87,7 @@ public class PublicacaoService implements IPublicacaoService {
     public void removePublicacao(Publicacao publicacao) {
         try {
             for (Anexo anexo: publicacao.getAnexos()) {
-                anexoService.removeAnexo(anexo);
+                anexoService.removeAnexo(anexo.getId());
             }
 
             publicacaoRepository.delete(publicacao);

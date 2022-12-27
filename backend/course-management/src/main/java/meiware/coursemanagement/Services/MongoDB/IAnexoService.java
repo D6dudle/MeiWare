@@ -9,8 +9,13 @@ import java.util.List;
 
 public interface IAnexoService {
     List<Anexo> getAnexos();
+
     List<Anexo> getPedidoFormacaoAnexos(List<AnexoRef> anexoRefs);
+
     Anexo getAnexoById(String id);
+
     Anexo createAnexo(MultipartFile file) throws IOException;
-    void removeAnexo(Anexo anexo);
+
+    void removeAnexo(String id);
+
 }

@@ -170,13 +170,18 @@ public class JPAtest {
         //PedidoFormacao newPedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files).getId());
         pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files);*/
 
-        /*File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\T87.pdf");
+        /*File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\test.txt");
         FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
         InputStream input = new FileInputStream(file);
         OutputStream os = fileItem.getOutputStream();
         IOUtils.copy(input, os);
-        MultipartFile multipartFile = new CommonsMultipartFile(fileItem);*/
+        MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
 
+        PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(25l);
+        pedidoFormacaoService.addAnexoToPedidoFormacao(pedidoFormacao, multipartFile);
+        System.out.println(anexoService.getAnexos().get(0).getNome());*/
+        PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(25l);
+        pedidoFormacaoService.removeAnexoFromPedidoFormacao(pedidoFormacao, new AnexoRef("a", "a"));
         //pedidoFormacaoService.removeAnexoFromPedidoFormacao(pedidoFormacaoService.getPedidoFormacaoById(28l), (AnexoRef) pedidoFormacaoService.getPedidoFormacaoById(28l).getListAnexoRefs().toArray()[1]);
 
         /*System.out.println(iUtilizadorRepository.findById(Long.valueOf(1)).get().getListFormacoes());

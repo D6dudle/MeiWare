@@ -77,9 +77,9 @@ public class AnexoService implements IAnexoService {
     }
 
     @Override
-    public void removeAnexo(Anexo anexo) {
+    public void removeAnexo(String id) {
         try {
-            anexoRepository.delete(anexo);
+            anexoRepository.deleteById(id);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -171,6 +171,7 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
             if(pedido != null) {
                 pedido.removeAnexoRef(anexoRef);
                 pedidoFormacaoRepository.save(pedido);
+                anexoService.removeAnexo(anexoRef.getPath());
                 anexoRefRepository.delete(anexoRef);
             }
         } catch (Exception e) {
