@@ -91,14 +91,13 @@ public class FormacaoController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    //ByNomeFormação
     @GetMapping(value = "/pedidoFormacaoByNome")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getPedidoFormacaoByNome(@RequestParam String nome) {
 
         try{
             //TODO: verificar se não podem haver formações como o mesmo nome
-            System.out.println("--------" + nome);
             PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoByNome(nome);
             return new ResponseEntity<>(
                     pedidoFormacao,
