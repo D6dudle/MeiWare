@@ -4,6 +4,7 @@ import meiware.coursemanagement.Entities.JPA.Budget;
 import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import meiware.coursemanagement.Services.JPA.IBudgetService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
+import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,15 +43,38 @@ public class BudgetController {
     /* Exemplo Input
         6.0
      */
-    @GetMapping(value = "/budgetById")
+    @GetMapping(value = "/budgetByUserId")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> getBudgetById(@RequestBody Long budgetId) {
+    public ResponseEntity<?> getBudgetByUserId(@RequestParam("id") String id_str) {
 
         try{
-            Budget budget = budgetService.getBudgetById(budgetId);
+            Long userId = Long.valueOf(id_str);
+            List<Budget> budgetList = budgetService.getBudgetByUserId(userId);
+
+            JSONArray arr = new JSONArray();
+            for (Budget b : budgetList){
+                arr.add(b.toJSON());
+            }
             return new ResponseEntity<>(
-                    budget,
+                    arr,
+                    HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(
+                    "Erro ao aceder ao budget do utilizador.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/budgetById")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> getBudgetById(@RequestParam("id") String id_str) {
+
+        try{
+            Long id = Long.valueOf(id_str);
+            Budget budget = budgetService.getBudgetById(id);
+            return new ResponseEntity<>(
+                    budget.toJSON(),
+                    HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
                     "Erro ao aceder ao budget do utilizador.",

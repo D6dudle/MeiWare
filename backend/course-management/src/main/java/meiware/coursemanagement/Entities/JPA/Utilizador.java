@@ -5,6 +5,7 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -32,7 +33,7 @@ public class Utilizador {
     @ManyToOne(fetch = FetchType.LAZY)
     private Utilizador manager;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "user")
     private Set<Budget> listBudget;
 
     @OneToMany(mappedBy = "quemFezPedido", fetch = FetchType.EAGER)
@@ -52,6 +53,7 @@ public class Utilizador {
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.listBudget = new HashSet<>();
     }
 
     public Utilizador(String nome, String email, String password, Set<Role> roles, Utilizador manager){
@@ -60,6 +62,7 @@ public class Utilizador {
         this.password = password;
         this.roles = roles;
         this.manager = manager;
+        this.listBudget = new HashSet<>();
     }
 
     public Long getId() {
@@ -150,19 +153,19 @@ public class Utilizador {
         obj.put("isColaborador", isColaborador());
         obj.put("isGestor", isGestor());
         obj.put("isAdministrador", isAdministrador());
+
         if (manager == null)
             obj.put("managerId", -1);
         else
             obj.put("managerId", manager.getId());
 
         JSONArray lists = new JSONArray();
-
-
         for (PedidoFormacao listaPedidos : listPedidos){
             lists.add(listaPedidos.toJSON());
         }
-
         obj.put("listaFormacoes", lists);
+
+        obj.put("listBudget", listBudget);
         return obj;
     }
 

@@ -7,6 +7,7 @@ import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Images.PedidoFormacaoImage;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
+import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,15 @@ public class FormacaoController {
 
         try{
             List<PedidoFormacao> pedidosFormacaoList = pedidoFormacaoService.getPedidosFormacao();
+
+            JSONArray arr = new JSONArray();
+
+            for (PedidoFormacao p : pedidosFormacaoList){
+                arr.add(p.toJSON());
+            }
+
             return new ResponseEntity<>(
-                    pedidosFormacaoList,
+                    arr,
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
@@ -50,8 +58,15 @@ public class FormacaoController {
 
         try{
             List<PedidoAprovado> pedidosAprovadosList = pedidoFormacaoService.getPedidosAprovados();
+
+            JSONArray arr = new JSONArray();
+
+            for (PedidoFormacao p : pedidosAprovadosList){
+                arr.add(p.toJSON());
+            }
+
             return new ResponseEntity<>(
-                    pedidosAprovadosList,
+                    arr,
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
@@ -66,8 +81,14 @@ public class FormacaoController {
 
         try{
             List<PedidoRejeitado> pedidosRejeitadosList = pedidoFormacaoService.getPedidosRejeitados();
+
+            JSONArray arr = new JSONArray();
+
+            for (PedidoFormacao p : pedidosRejeitadosList){
+                arr.add(p.toJSON());
+            }
             return new ResponseEntity<>(
-                    pedidosRejeitadosList,
+                    arr,
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
@@ -78,12 +99,12 @@ public class FormacaoController {
 
     @GetMapping(value = "/pedidoFormacaoById")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> getPedidoFormacaoById(@RequestBody Long id) {
-
+    public ResponseEntity<?> getPedidoFormacaoById(@RequestParam("id") String id_str) {
+        Long id = Long.valueOf(id_str);
         try{
             PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(id);
             return new ResponseEntity<>(
-                    pedidoFormacao,
+                    pedidoFormacao.toJSON(),
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
@@ -92,6 +113,7 @@ public class FormacaoController {
         }
     }
     //ByNomeFormação
+    /*
     @GetMapping(value = "/pedidoFormacaoByNome")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getPedidoFormacaoByNome(@RequestParam String nome) {
@@ -109,7 +131,7 @@ public class FormacaoController {
         }
     }
 
-    /*@PostMapping (value = "/createPedidoFormacao")
+    @PostMapping (value = "/createPedidoFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> createPedidoFormacao(@RequestBody PedidoFormacaoImage pedidoFormacaoImage) {
 

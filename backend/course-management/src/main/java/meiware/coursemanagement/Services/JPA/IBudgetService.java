@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IBudgetService {
     List<Budget> getBudgets();
+    List<Budget> getBudgetByUserId(Long id);
     Budget getBudgetById(Long id);
     Budget createBudget(Budget newBudget);
     void updateBudget(Budget updatedBudget);

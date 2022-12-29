@@ -36,11 +36,7 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
         List<PedidoFormacao> pedidosFormacao = new ArrayList<>();
 
         try {
-            for (PedidoFormacao pd: pedidoFormacaoRepository.findAllByOrderByDataCriacaoDesc()) {
-                if(!pd.isApagada()) {
-                    pedidosFormacao.add(pd);
-                }
-            }
+            pedidosFormacao = pedidoFormacaoRepository.findPedidoFormacaoByApagadaFalseOrderByDataCriacaoDesc();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,8 +49,8 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
         List<PedidoAprovado> formacoesAprovadas = new ArrayList<>();
 
         try {
-            for (PedidoFormacao pd: pedidoFormacaoRepository.findAllByOrderByDataCriacaoDesc()) {
-                if(!pd.isApagada() && (pd instanceof PedidoAprovado)) {
+            for (PedidoFormacao pd: pedidoFormacaoRepository.findPedidoFormacaoByApagadaFalseOrderByDataCriacaoDesc()) {
+                if(pd instanceof PedidoAprovado) {
                     formacoesAprovadas.add((PedidoAprovado) pd);
                 }
             }
@@ -70,8 +66,8 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
         List<PedidoRejeitado> formacoesRejeitadas = new ArrayList<>();
 
         try {
-            for (PedidoFormacao pd: pedidoFormacaoRepository.findAllByOrderByDataCriacaoDesc()) {
-                if(!pd.isApagada() && (pd instanceof PedidoRejeitado)) {
+            for (PedidoFormacao pd: pedidoFormacaoRepository.findPedidoFormacaoByApagadaFalseOrderByDataCriacaoDesc()) {
+                if(pd instanceof PedidoRejeitado) {
                     formacoesRejeitadas.add((PedidoRejeitado) pd);
                 }
             }
@@ -86,7 +82,7 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     @Override
     public PedidoFormacao getPedidoFormacaoById(Long id) {
         try {
-            PedidoFormacao pd = pedidoFormacaoRepository.findById(id).orElse(null);
+            PedidoFormacao pd = pedidoFormacaoRepository.findByApagadaFalseAndId(id).orElse(null);
 
             if(pd != null && !pd.isApagada()) {
                 return pd;
@@ -102,11 +98,8 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     public PedidoFormacao getPedidoFormacaoByNome(String nome) {
 
         try {
-            PedidoFormacao pd = pedidoFormacaoRepository.findByNome(nome);
-
-            if(!pd.isApagada()) {
-                return pd;
-            }
+            PedidoFormacao pd = pedidoFormacaoRepository.findByApagadaFalseAndNome(nome);
+            return pd;
         } catch (Exception e) {
             e.printStackTrace();
         }

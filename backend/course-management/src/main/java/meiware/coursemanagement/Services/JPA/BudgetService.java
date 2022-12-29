@@ -34,6 +34,19 @@ public class BudgetService implements IBudgetService{
     }
 
     @Override
+    public List<Budget> getBudgetByUserId(Long id) {
+        List<Budget> budgetList= new ArrayList<>();
+
+        try {
+            budgetList = budgetRepository.findBudgetByUser_Id(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return budgetList;
+    }
+
+    @Override
     public Budget getBudgetById(Long id) {
         Budget budget = null;
 

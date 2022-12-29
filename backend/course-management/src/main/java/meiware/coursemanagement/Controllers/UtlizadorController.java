@@ -1,8 +1,10 @@
 package meiware.coursemanagement.Controllers;
 
+import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
+import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +28,15 @@ public class UtlizadorController {
 
         try{
             List<Utilizador> listaUtilizadores = utilizadorService.getUtilizadores();
+
+            JSONArray arr = new JSONArray();
+
+            for (Utilizador u : listaUtilizadores){
+                arr.add(u.toJSON());
+            }
+
             return new ResponseEntity<>(
-                    listaUtilizadores,
+                    arr,
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
@@ -42,10 +51,15 @@ public class UtlizadorController {
 
         try{
             List<Utilizador> listaUtilizadores = utilizadorService.getColaboradores();
+
+            JSONArray arr = new JSONArray();
+
+            for (Utilizador u : listaUtilizadores){
+                arr.add(u.toJSON());
+            }
             return new ResponseEntity<>(
-                    listaUtilizadores,
+                    arr,
                     HttpStatus.OK);
-            //System.out.println("First user: " + listaUtilizadores.get(0).toJSON());
         }catch(Exception e){
             return new ResponseEntity<>(
                     "Erro ao aceder aos colaboradores.",
@@ -59,8 +73,14 @@ public class UtlizadorController {
 
         try{
             List<Utilizador> listaUtilizadores = utilizadorService.getGestores();
+
+            JSONArray arr = new JSONArray();
+
+            for (Utilizador u : listaUtilizadores){
+                arr.add(u.toJSON());
+            }
             return new ResponseEntity<>(
-                    listaUtilizadores,
+                    arr,
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
@@ -75,8 +95,14 @@ public class UtlizadorController {
 
         try{
             List<Utilizador> listaUtilizadores = utilizadorService.getAdministradores();
+
+            JSONArray arr = new JSONArray();
+
+            for (Utilizador u : listaUtilizadores){
+                arr.add(u.toJSON());
+            }
             return new ResponseEntity<>(
-                    listaUtilizadores,
+                    arr,
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
@@ -97,8 +123,14 @@ public class UtlizadorController {
 
         try{
             List<Utilizador> listaUtilizadores = utilizadorService.getManagedUtilizadores(manager);
+
+            JSONArray arr = new JSONArray();
+
+            for (Utilizador u : listaUtilizadores){
+                arr.add(u.toJSON());
+            }
             return new ResponseEntity<>(
-                    listaUtilizadores,
+                    arr,
                     HttpStatus.OK);
         }catch(Exception e){
             if(manager.isAdministrador())
@@ -131,28 +163,23 @@ public class UtlizadorController {
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
-                    "Erro ao aceder aos utilizador.",
+                    "Erro ao aceder ao utilizador.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    /*Input Example
-        {
-            "email": "jose@email.com"
-        }
-     */
     @GetMapping(value = "/utilizadorByEmail")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> getUtilizadorByEmail(@RequestBody String email) {
+    public ResponseEntity<?> getUtilizadorByEmail(@RequestParam("email") String email) {
 
         try{
             Utilizador utilizador = utilizadorService.getUtilizadorByEmail(email);
             return new ResponseEntity<>(
-                    utilizador,
+                    utilizador.toJSON(),
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
-                    "Erro ao aceder aos utilizador.",
+                    "Erro ao aceder ao utilizador.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

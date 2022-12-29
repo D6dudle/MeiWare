@@ -124,7 +124,7 @@ public class PedidoFormacaoServiceMock {
     @Test
     public void getPedidoFormacaoByNome() {
         // given - precondition or setup
-        given(pedidoFormacaoRepository.findByNome("Pedido de formacao 3")).willReturn(pedidosFormacao.get(1));
+        given(pedidoFormacaoRepository.findByApagadaFalseAndNome("Pedido de formacao 3")).willReturn(pedidosFormacao.get(1));
 
         // when - action or behavior that we are going to test
         PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoByNome("Pedido de formacao 3");
