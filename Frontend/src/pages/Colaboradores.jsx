@@ -17,6 +17,8 @@ export default function Colaboradores() {
   const [search, setSearch] = useState();
   const [modal, setModal] = useState({ show: false, data: null });
 
+
+  
   const dataUsers = React.useMemo(() => getDataUsers(), []);
   const columns = React.useMemo(() => getColumnsTable(), []);
 
@@ -136,7 +138,7 @@ export default function Colaboradores() {
         </div>
 
         <div className="pt-4 pl-4 pr-8 mx-auto">
-            <Table columns={columns} data={dataUsers} />
+            <Table columns={columns} data={dataUsers}/>
         </div>
 
       </div>

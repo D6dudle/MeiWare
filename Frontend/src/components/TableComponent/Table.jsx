@@ -1,5 +1,4 @@
-import React from "react";
-import regeneratorRuntime from "regenerator-runtime";
+import React, {useState, useEffect, useCallback} from "react";
 import {
   useTable,
   useFilters,
@@ -13,7 +12,8 @@ import { Button, PageButton } from "./Button";
 import { classNames } from "./Utils";
 import { SortIcon, SortUpIcon, SortDownIcon } from "./Icons";
 //import { PencilAltIcon } from '@heroicons/react/solid'
-import { useNavigate, useLocation, createSearchParams } from "react-router-dom";
+import { useNavigate, useLocation, createSearchParams} from "react-router-dom";
+import Modal from "../Modal";
 
 import {
   HiChevronDoubleLeft,
@@ -22,6 +22,10 @@ import {
   HiChevronDoubleRight,
   HiPencilAlt,
 } from "react-icons/hi";
+
+
+
+import {FiMinus} from "react-icons/fi"
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -128,15 +132,39 @@ export function AvatarCell({ value, column, row }) {
   );
 }
 
+
+
 const tableHooks = (hooks) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [modal, setModal] = useState({ show: false, data: null });
+  const handleCloseModal = () => {
+    setModal({ show: false, data: null });
+  };
+
+  const confirmeActionModal = (u) => {
+    console.log("Vou excluir o colaborador");
+    /*
+    setUsers(usersList.filter((user) => u.email !== user.email));
+    setUser(users[0]);
+    setModal({ show: false, data: null });*/
+  };
+
+  const handleExcluir = (u) => {
+    console.log("handle excluir" + u);
+    setModal({
+      show: true,
+      data: "EXCLUIR",
+    });
+  };
+
   hooks.visibleColumns.push((columns) => [
     ...columns,
     {
       id: "Edit",
       Header: "",
       Cell: ({ row }) => (
+        <div className="flex gap-12">
         <HiPencilAlt
           className="text-white"
           onClick={() => {
@@ -157,6 +185,25 @@ const tableHooks = (hooks) => {
             );
           }}
         />
+        <FiMinus 
+          className="text-white"
+          onClick={() => {
+            const params = {
+              id: row.original.age,
+            };
+            handleExcluir(row.original.age);
+          }}
+        
+        />
+        {
+        modal.show && (
+            <Modal
+              closeModal={handleCloseModal}
+              confirmeActionModal={() => confirmeActionModal(row.original.age)}
+              //data={modal.data}
+            />
+        )}
+        </div>
       ),
     },
   ]);
