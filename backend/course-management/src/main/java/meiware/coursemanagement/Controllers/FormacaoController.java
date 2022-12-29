@@ -156,7 +156,7 @@ public class FormacaoController {
             pedidoFormacaoService.updatePedidoFormacao(pedidoFormacao);
             return new ResponseEntity<>(
                     "Pedido de formação: " + pedidoFormacao.getNome() + "atualizado com sucesso.",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+                    HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
                     "Erro ao atualizar o pedido de formação: " + pedidoFormacao.getNome() + ".",
@@ -172,7 +172,7 @@ public class FormacaoController {
             pedidoFormacaoService.removePedidoFormacao(pedidoFormacao);
             return new ResponseEntity<>(
                     "Pedido de formação: " + pedidoFormacao.getNome() + "eliminado com sucesso.",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+                    HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
                     "Erro ao eliminar o pedido de formação: " + pedidoFormacao.getNome() + ".",
