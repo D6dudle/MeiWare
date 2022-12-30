@@ -7,6 +7,8 @@ import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Images.PedidoFormacaoImage;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -164,6 +166,122 @@ public class FormacaoController {
         }
     }
 
+    @PutMapping (value = "/aprovarPedidoFormacaoAdmin")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> aprovarPedidoFormacaoAdmin(@RequestBody String JSONBody) {
+        try{
+            JSONObject object = new JSONObject(JSONBody);
+            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            long adminId = object.getLong("adminId");
+
+            PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
+            if(pedidoFormacao != null && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
+                pedidoFormacaoService.aprovarPedidoFormacao(pedidoFormacaoId, adminId);
+                return new ResponseEntity<>(
+                        "Pedido de formação: " + pedidoFormacao.getNome() + " aprovado com sucesso.",
+                        HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>("Pedido de formação inexistente ou inválido.", HttpStatus.BAD_REQUEST);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Erro ao aprovar o pedido de formação.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping (value = "/rejeitarPedidoFormacaoAdmin")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> rejeitarPedidoFormacaoAdmin(@RequestBody String JSONBody) {
+        try{
+            JSONObject object = new JSONObject(JSONBody);
+            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            long adminId = object.getLong("adminId");
+            String comentario = object.getString("comentario");
+
+            PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
+            if(pedidoFormacao != null && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
+                pedidoFormacaoService.rejeitarPedidoFormacao(pedidoFormacaoId, adminId, comentario);
+                return new ResponseEntity<>(
+                        "Pedido de formação: " + pedidoFormacao.getNome() + " rejeitado com sucesso.",
+                        HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>("Pedido de formação inexistente ou inválido.", HttpStatus.BAD_REQUEST);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Erro ao rejeitar o pedido de formação.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping (value = "/aprovarPedidoFormacaoGestor")
+    @PreAuthorize("hasRole('GESTOR')")
+    public ResponseEntity<?> aprovarPedidoFormacaoGestor(@RequestBody String JSONBody) {
+        try{
+            JSONObject object = new JSONObject(JSONBody);
+            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            long gestorId = object.getLong("gestorId");
+
+            PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
+            if(pedidoFormacao != null && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
+                if(pedidoFormacao.getQuemFezPedido().getManager().getId() == gestorId) {
+                    pedidoFormacaoService.aprovarPedidoFormacao(pedidoFormacaoId, gestorId);
+                    return new ResponseEntity<>(
+                            "Pedido de formação: " + pedidoFormacao.getNome() + " aprovado com sucesso.",
+                            HttpStatus.OK);
+                }
+                else {
+                    return new ResponseEntity<>("Não tem permissões para aprovar o pedido: " + pedidoFormacao.getNome() + ".", HttpStatus.FORBIDDEN);
+                }
+            }
+            else {
+                return new ResponseEntity<>("Pedido de formação inexistente ou inválido.", HttpStatus.BAD_REQUEST);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Erro ao aprovar o pedido de formação.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping (value = "/rejeitarPedidoFormacaoGestor")
+    @PreAuthorize("hasRole('GESTOR')")
+    public ResponseEntity<?> rejeitarPedidoFormacaoGestor(@RequestBody String JSONBody) {
+        try{
+            JSONObject object = new JSONObject(JSONBody);
+            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            long gestorId = object.getLong("gestorId");
+            String comentario = object.getString("comentario");
+
+            PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
+            if(pedidoFormacao != null && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
+                if(pedidoFormacao.getQuemFezPedido().getManager().getId() == gestorId) {
+                    pedidoFormacaoService.rejeitarPedidoFormacao(pedidoFormacaoId, gestorId, comentario);
+                    return new ResponseEntity<>(
+                            "Pedido de formação: " + pedidoFormacao.getNome() + " rejeitado com sucesso.",
+                            HttpStatus.OK);
+                }
+                else {
+                    return new ResponseEntity<>("Não tem permissões para aprovar o pedido: " + pedidoFormacao.getNome() + ".", HttpStatus.FORBIDDEN);
+                }
+            }
+            else {
+                return new ResponseEntity<>("Pedido de formação inexistente ou inválido.", HttpStatus.BAD_REQUEST);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Erro ao rejeitar o pedido de formação.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @DeleteMapping(value = "/removePedidoFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> removePedidoFormacao(@RequestBody PedidoFormacao pedidoFormacao) {
@@ -171,7 +289,7 @@ public class FormacaoController {
         try{
             pedidoFormacaoService.removePedidoFormacao(pedidoFormacao);
             return new ResponseEntity<>(
-                    "Pedido de formação: " + pedidoFormacao.getNome() + "eliminado com sucesso.",
+                    "Pedido de formação: " + pedidoFormacao.getNome() + " eliminado com sucesso.",
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(

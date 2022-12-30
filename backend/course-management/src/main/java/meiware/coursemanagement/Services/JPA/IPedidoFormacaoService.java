@@ -14,6 +14,8 @@ public interface IPedidoFormacaoService {
     PedidoFormacao getPedidoFormacaoByNome(String nome);
     PedidoFormacao createPedidoFormacao(PedidoFormacao newPedidoFormacao, List<MultipartFile> files);
     void updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao);
+    void aprovarPedidoFormacao(long pedidoFormacaoId, long utilizadorId);
+    void rejeitarPedidoFormacao(long pedidoFormacaoId, long utilizadorId, String comentario);
     void addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file);
     void removeAnexoFromPedidoFormacao(PedidoFormacao pedidoFormacao, AnexoRef anexoRef);
     void removePedidoFormacao(PedidoFormacao pedidoFormacao);

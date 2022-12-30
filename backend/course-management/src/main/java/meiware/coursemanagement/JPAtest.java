@@ -1,10 +1,7 @@
 package meiware.coursemanagement;
 
 import jdk.jshell.execution.Util;
-import meiware.coursemanagement.Entities.JPA.AnexoRef;
-import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
-import meiware.coursemanagement.Entities.JPA.Role;
-import meiware.coursemanagement.Entities.JPA.Utilizador;
+import meiware.coursemanagement.Entities.JPA.*;
 import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import meiware.coursemanagement.Entities.MongoDB.Publicacao;
 import meiware.coursemanagement.Repositories.JPA.IAnexoRefRepository;
@@ -183,7 +180,7 @@ public class JPAtest {
         PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(25l);
         pedidoFormacaoService.removeAnexoFromPedidoFormacao(pedidoFormacao, new AnexoRef("a", "a"));*/
         //pedidoFormacaoService.removeAnexoFromPedidoFormacao(pedidoFormacaoService.getPedidoFormacaoById(28l), (AnexoRef) pedidoFormacaoService.getPedidoFormacaoById(28l).getListAnexoRefs().toArray()[1]);
-        System.out.println(utilizadorService.getUtilizadorByEmail("jose@email.com"));
+        //System.out.println(utilizadorService.getUtilizadorByEmail("jose@email.com"));
         /*System.out.println(iUtilizadorRepository.findById(Long.valueOf(1)).get().getListFormacoes());
         System.out.println(pedidoFormacaoService.getPedidoFormacaoById(newPedidoFormacao.getId()).getListAnexoRefs());
 
@@ -192,6 +189,9 @@ public class JPAtest {
         System.out.println(pedidoFormacaoService.getPedidoFormacaoById(newPedidoFormacao.getId()).getListAnexoRefs());
         anexoRepository.deleteAll();*/
 
+        //pedidoFormacaoService.rejeitarPedidoFormacao(43l, 4l);
+        //pedidoFormacaoService.rejeitarPedidoFormacao(44l);
+        //System.out.println(pedidoFormacaoService.getPedidoFormacaoById(43l) instanceof PedidoRejeitado);
         log.info("------- MONGO ------");
 
             /*try{
