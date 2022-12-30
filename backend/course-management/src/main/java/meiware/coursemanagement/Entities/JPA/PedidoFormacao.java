@@ -1,8 +1,7 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -39,7 +38,7 @@ public class PedidoFormacao {
     @NotNull
     private float preco;
 
-    private String justificao;
+    private String justificacao;
 
     private boolean status;
 
@@ -143,12 +142,12 @@ public class PedidoFormacao {
         this.preco = preco;
     }
 
-    public String getJustificao() {
-        return justificao;
+    public String getJustificacao() {
+        return justificacao;
     }
 
-    public void setJustificao(String justificao) {
-        this.justificao = justificao;
+    public void setJustificacao(String justificacao) {
+        this.justificacao = justificacao;
     }
 
     public boolean isStatus() {
@@ -232,7 +231,7 @@ public class PedidoFormacao {
         obj.put("dataInicio", dataInicio);
         obj.put("dataFim", dataFim);
         obj.put("preco", preco);
-        obj.put("justificao", justificao);
+        obj.put("justificao", justificacao);
         obj.put("status", status);
         obj.put("cancelada", cancelada);
         obj.put("apagada", apagada);
@@ -255,7 +254,7 @@ public class PedidoFormacao {
                 ", dataInicio=" + dataInicio +
                 ", dataFim=" + dataFim +
                 ", preco=" + preco +
-                ", justificao='" + justificao + '\'' +
+                ", justificao='" + justificacao + '\'' +
                 ", status=" + status +
                 ", cancelada=" + cancelada +
                 ", apagada=" + apagada +

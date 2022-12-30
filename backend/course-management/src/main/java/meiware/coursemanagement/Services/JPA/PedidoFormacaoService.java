@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +33,9 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
 
     @Autowired
     private ModelMapper mapper;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public List<PedidoFormacao> getPedidosFormacao() {
@@ -140,6 +146,25 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
             e.printStackTrace();
         }
     }
+
+    @Override
+    @Transactional
+    public void aprovarPedidoFormacao(long pedidoFormacaoId, long utilizadorId) {
+        try {
+            em.createNativeQuery("UPDATE pedido_formacao SET concluida = false, tipo = ?, quem_aprovou_id = ?, data_aprovacao = ? WHERE id = ?").setParameter(1, "APROVADA").setParameter(2, utilizadorId).setParameter(3, LocalDate.now()).setParameter(4, pedidoFormacaoId).executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    @Transactional
+    public void rejeitarPedidoFormacao(long pedidoFormacaoId, long utilizadorId, String comentario) {
+        try {
+            em.createNativeQuery("UPDATE pedido_formacao SET tipo = ?, quem_rejeitou_id = ?, data_rejeicao = ?, comentario = ? WHERE id = ?").setParameter(1, "REJEITADA").setParameter(2, utilizadorId).setParameter(3, LocalDate.now()).setParameter(4, comentario).setParameter(5, pedidoFormacaoId).executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }    }
 
     @Override
     public void addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file) {

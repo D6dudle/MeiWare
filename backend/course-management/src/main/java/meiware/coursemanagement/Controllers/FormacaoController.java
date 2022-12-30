@@ -8,6 +8,8 @@ import meiware.coursemanagement.Images.PedidoFormacaoImage;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
 import net.minidev.json.JSONArray;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,25 +29,26 @@ public class FormacaoController {
     @Autowired
     IPedidoFormacaoService pedidoFormacaoService;
 
-    //TODO: perguntar ao Jordão como é que ele vai tratar da aceitação/recusa das formações
+    // TODO: perguntar ao Jordão como é que ele vai tratar da aceitação/recusa das
+    // formações
 
     @GetMapping(value = "/pedidosFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getPedidosFormacao() {
 
-        try{
+        try {
             List<PedidoFormacao> pedidosFormacaoList = pedidoFormacaoService.getPedidosFormacao();
 
             JSONArray arr = new JSONArray();
 
-            for (PedidoFormacao p : pedidosFormacaoList){
+            for (PedidoFormacao p : pedidosFormacaoList) {
                 arr.add(p.toJSON());
             }
 
             return new ResponseEntity<>(
                     arr,
                     HttpStatus.OK);
-        }catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     "Erro ao aceder aos pedidos de formações.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
@@ -56,19 +59,19 @@ public class FormacaoController {
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getFormacoesAprovadas() {
 
-        try{
+        try {
             List<PedidoAprovado> pedidosAprovadosList = pedidoFormacaoService.getPedidosAprovados();
 
             JSONArray arr = new JSONArray();
 
-            for (PedidoFormacao p : pedidosAprovadosList){
+            for (PedidoFormacao p : pedidosAprovadosList) {
                 arr.add(p.toJSON());
             }
 
             return new ResponseEntity<>(
                     arr,
                     HttpStatus.OK);
-        }catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     "Erro ao aceder aos pedidos de formações aprovados.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
@@ -79,18 +82,18 @@ public class FormacaoController {
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getFormacoesRejeitadas() {
 
-        try{
+        try {
             List<PedidoRejeitado> pedidosRejeitadosList = pedidoFormacaoService.getPedidosRejeitados();
 
             JSONArray arr = new JSONArray();
 
-            for (PedidoFormacao p : pedidosRejeitadosList){
+            for (PedidoFormacao p : pedidosRejeitadosList) {
                 arr.add(p.toJSON());
             }
             return new ResponseEntity<>(
                     arr,
                     HttpStatus.OK);
-        }catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     "Erro ao aceder aos pedidos de formações rejeitados.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
@@ -101,87 +104,216 @@ public class FormacaoController {
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getPedidoFormacaoById(@RequestParam("id") String id_str) {
         Long id = Long.valueOf(id_str);
-        try{
+        try {
             PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(id);
             return new ResponseEntity<>(
                     pedidoFormacao.toJSON(),
                     HttpStatus.OK);
-        }catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     "Erro ao aceder ao pedido de formação.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //ByNomeFormação
+    // ByNomeFormação
     /*
-    @GetMapping(value = "/pedidoFormacaoByNome")
+     * @GetMapping(value = "/pedidoFormacaoByNome")
+     * 
+     * @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')"
+     * )
+     * public ResponseEntity<?> getPedidoFormacaoByNome(@RequestParam String nome) {
+     * 
+     * try{
+     * //TODO: verificar se não podem haver formações como o mesmo nome
+     * PedidoFormacao pedidoFormacao =
+     * pedidoFormacaoService.getPedidoFormacaoByNome(nome);
+     * return new ResponseEntity<>(
+     * pedidoFormacao,
+     * HttpStatus.OK);
+     * }catch(Exception e){
+     * return new ResponseEntity<>(
+     * "Erro ao aceder ao pedido de formação.",
+     * HttpStatus.INTERNAL_SERVER_ERROR);
+     * }
+     * }
+     * 
+     * @PostMapping (value = "/createPedidoFormacao")
+     * 
+     * @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')"
+     * )
+     * public ResponseEntity<?> createPedidoFormacao(@RequestBody
+     * PedidoFormacaoImage pedidoFormacaoImage) {
+     * 
+     * System.out.println("[createPedidoFormacao]pedidoFormacao: " +
+     * pedidoFormacaoImage.getPedidoFormacao().toString());
+     * if(!pedidoFormacaoImage.getFiles().isEmpty())
+     * System.out.println("[createPedidoFormacao]files: " +
+     * pedidoFormacaoImage.getFiles().toString());
+     * else{
+     * throw new RuntimeException("files está vazio ou null");
+     * }
+     * 
+     * try{
+     * pedidoFormacaoService.createPedidoFormacao(pedidoFormacaoImage.
+     * getPedidoFormacao(), pedidoFormacaoImage.getFiles());
+     * return new ResponseEntity<>(
+     * "Pedido de formação criado com sucesso.",
+     * HttpStatus.OK);
+     * }catch(Exception e){
+     * return new ResponseEntity<>(
+     * "Erro ao criar o pedido de formação.",
+     * HttpStatus.INTERNAL_SERVER_ERROR);
+     * }
+     * }
+     */
+
+    @PostMapping(value = "/createPedidoFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> getPedidoFormacaoByNome(@RequestParam String nome) {
+    public ResponseEntity<?> createPedidoFormacao(@RequestPart("files") List<MultipartFile> files,
+            @RequestPart("pedidoFormacao") PedidoFormacao pedidoFormacao) {
 
-        try{
-            //TODO: verificar se não podem haver formações como o mesmo nome
-            PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoByNome(nome);
-            return new ResponseEntity<>(
-                    pedidoFormacao,
-                    HttpStatus.OK);
-        }catch(Exception e){
-            return new ResponseEntity<>(
-                    "Erro ao aceder ao pedido de formação.",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping (value = "/createPedidoFormacao")
-    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> createPedidoFormacao(@RequestBody PedidoFormacaoImage pedidoFormacaoImage) {
-
-        System.out.println("[createPedidoFormacao]pedidoFormacao: " + pedidoFormacaoImage.getPedidoFormacao().toString());
-        if(!pedidoFormacaoImage.getFiles().isEmpty())
-            System.out.println("[createPedidoFormacao]files: " + pedidoFormacaoImage.getFiles().toString());
-        else{
-            throw new RuntimeException("files está vazio ou null");
-        }
-
-        try{
-            pedidoFormacaoService.createPedidoFormacao(pedidoFormacaoImage.getPedidoFormacao(), pedidoFormacaoImage.getFiles());
-            return new ResponseEntity<>(
-                    "Pedido de formação criado com sucesso.",
-                    HttpStatus.OK);
-        }catch(Exception e){
-            return new ResponseEntity<>(
-                    "Erro ao criar o pedido de formação.",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
-
-    @PostMapping (value = "/createPedidoFormacao")
-    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> createPedidoFormacao(@RequestPart("files") List<MultipartFile> files, @RequestPart("pedidoFormacao") PedidoFormacao pedidoFormacao) {
-
-        try{
+        try {
             pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files);
             return new ResponseEntity<>(
                     "Pedido de formação criado com sucesso.",
                     HttpStatus.OK);
-        }catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     "Erro ao criar o pedido de formação.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping (value = "/updatePedidoFormacao")
+    @PutMapping(value = "/updatePedidoFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> updatePedidoFormacao(@RequestBody PedidoFormacao pedidoFormacao) {
 
-        try{
+        try {
             pedidoFormacaoService.updatePedidoFormacao(pedidoFormacao);
             return new ResponseEntity<>(
                     "Pedido de formação: " + pedidoFormacao.getNome() + "atualizado com sucesso.",
                     HttpStatus.OK);
-        }catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     "Erro ao atualizar o pedido de formação: " + pedidoFormacao.getNome() + ".",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/aprovarPedidoFormacaoAdmin")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> aprovarPedidoFormacaoAdmin(@RequestBody String JSONBody) {
+        try {
+            JSONObject object = new JSONObject(JSONBody);
+            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            long adminId = object.getLong("adminId");
+
+            PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
+            if (pedidoFormacao != null
+                    && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
+                pedidoFormacaoService.aprovarPedidoFormacao(pedidoFormacaoId, adminId);
+                return new ResponseEntity<>(
+                        "Pedido de formação: " + pedidoFormacao.getNome() + " aprovado com sucesso.",
+                        HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Pedido de formação inexistente ou inválido.", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Erro ao aprovar o pedido de formação.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/rejeitarPedidoFormacaoAdmin")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> rejeitarPedidoFormacaoAdmin(@RequestBody String JSONBody) {
+        try {
+            JSONObject object = new JSONObject(JSONBody);
+            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            long adminId = object.getLong("adminId");
+            String comentario = object.getString("comentario");
+
+            PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
+            if (pedidoFormacao != null
+                    && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
+                pedidoFormacaoService.rejeitarPedidoFormacao(pedidoFormacaoId, adminId, comentario);
+                return new ResponseEntity<>(
+                        "Pedido de formação: " + pedidoFormacao.getNome() + " rejeitado com sucesso.",
+                        HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Pedido de formação inexistente ou inválido.", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Erro ao rejeitar o pedido de formação.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/aprovarPedidoFormacaoGestor")
+    @PreAuthorize("hasRole('GESTOR')")
+    public ResponseEntity<?> aprovarPedidoFormacaoGestor(@RequestBody String JSONBody) {
+        try {
+            JSONObject object = new JSONObject(JSONBody);
+            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            long gestorId = object.getLong("gestorId");
+
+            PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
+            if (pedidoFormacao != null
+                    && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
+                if (pedidoFormacao.getQuemFezPedido().getManager().getId() == gestorId) {
+                    pedidoFormacaoService.aprovarPedidoFormacao(pedidoFormacaoId, gestorId);
+                    return new ResponseEntity<>(
+                            "Pedido de formação: " + pedidoFormacao.getNome() + " aprovado com sucesso.",
+                            HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(
+                            "Não tem permissões para aprovar o pedido: " + pedidoFormacao.getNome() + ".",
+                            HttpStatus.FORBIDDEN);
+                }
+            } else {
+                return new ResponseEntity<>("Pedido de formação inexistente ou inválido.", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Erro ao aprovar o pedido de formação.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/rejeitarPedidoFormacaoGestor")
+    @PreAuthorize("hasRole('GESTOR')")
+    public ResponseEntity<?> rejeitarPedidoFormacaoGestor(@RequestBody String JSONBody) {
+        try {
+            JSONObject object = new JSONObject(JSONBody);
+            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            long gestorId = object.getLong("gestorId");
+            String comentario = object.getString("comentario");
+
+            PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
+            if (pedidoFormacao != null
+                    && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
+                if (pedidoFormacao.getQuemFezPedido().getManager().getId() == gestorId) {
+                    pedidoFormacaoService.rejeitarPedidoFormacao(pedidoFormacaoId, gestorId, comentario);
+                    return new ResponseEntity<>(
+                            "Pedido de formação: " + pedidoFormacao.getNome() + " rejeitado com sucesso.",
+                            HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(
+                            "Não tem permissões para aprovar o pedido: " + pedidoFormacao.getNome() + ".",
+                            HttpStatus.FORBIDDEN);
+                }
+            } else {
+                return new ResponseEntity<>("Pedido de formação inexistente ou inválido.", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Erro ao rejeitar o pedido de formação.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -190,17 +322,15 @@ public class FormacaoController {
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> removePedidoFormacao(@RequestBody PedidoFormacao pedidoFormacao) {
 
-        try{
+        try {
             pedidoFormacaoService.removePedidoFormacao(pedidoFormacao);
             return new ResponseEntity<>(
-                    "Pedido de formação: " + pedidoFormacao.getNome() + "eliminado com sucesso.",
+                    "Pedido de formação: " + pedidoFormacao.getNome() + " eliminado com sucesso.",
                     HttpStatus.OK);
-        }catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     "Erro ao eliminar o pedido de formação: " + pedidoFormacao.getNome() + ".",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
-
-

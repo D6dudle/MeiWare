@@ -1,8 +1,8 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -161,7 +161,7 @@ public class Utilizador {
 
         JSONArray lists = new JSONArray();
         for (PedidoFormacao listaPedidos : listPedidos){
-            lists.add(listaPedidos.toJSON());
+            lists.put(listaPedidos.toJSON());
         }
         obj.put("listaFormacoes", lists);
 
