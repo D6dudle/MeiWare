@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useCallback} from "react";
+import 'regenerator-runtime/runtime'
 import {
   useTable,
   useFilters,
@@ -26,7 +27,7 @@ import {
 
 
 import {FiMinus} from "react-icons/fi"
-
+import { isConstructorDeclaration } from "typescript";
 // Define a default UI for filtering
 function GlobalFilter({
   preGlobalFilteredRows,
@@ -138,6 +139,8 @@ const tableHooks = (hooks) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [modal, setModal] = useState({ show: false, data: null });
+
+
   const handleCloseModal = () => {
     setModal({ show: false, data: null });
   };
@@ -188,10 +191,7 @@ const tableHooks = (hooks) => {
         <FiMinus 
           className="text-white"
           onClick={() => {
-            const params = {
-              id: row.original.age,
-            };
-            handleExcluir(row.original.age);
+            handleExcluir(row.original.id);
           }}
         
         />

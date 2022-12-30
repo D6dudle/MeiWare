@@ -51,6 +51,8 @@ export default function Colaboradores() {
 
   const [data, setData] = useState(() => getColaboradores(), []);
 
+
+  console.log(data);
   const teste =
     (() => {
       console.log("data --> ", data);
@@ -82,6 +84,7 @@ export default function Colaboradores() {
   const handleName = () => {
     setOrder(!order);
   };
+
 
   return (
     <div className="w-full h-full overflow-scroll scrollbar-hide">
