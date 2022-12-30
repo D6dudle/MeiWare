@@ -37,6 +37,14 @@ public class Budget {
         this.id = id;
     }
 
+    public Utilizador getUser() {
+        return user;
+    }
+
+    public void setUser(Utilizador user) {
+        this.user = user;
+    }
+
     public int getBudget() {
         return budget;
     }

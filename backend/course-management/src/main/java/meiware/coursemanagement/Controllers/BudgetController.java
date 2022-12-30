@@ -28,9 +28,14 @@ public class BudgetController {
 
         try{
             List<Budget> budgets = budgetService.getBudgets();
+
+            JSONArray arr = new JSONArray();
+            for (Budget b : budgets){
+                arr.add(b.toJSON());
+            }
             return new ResponseEntity<>(
-                    budgets,
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+                    arr,
+                    HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
                     "Erro ao aceder aos valores de budgets.",
