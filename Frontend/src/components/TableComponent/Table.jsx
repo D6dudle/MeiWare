@@ -22,6 +22,7 @@ import {
   HiChevronRight,
   HiChevronDoubleRight,
   HiPencilAlt,
+  HiTrash,
 } from "react-icons/hi";
 
 
@@ -39,6 +40,8 @@ function GlobalFilter({
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
   }, 200);
+
+
 
   return (
     <label className="flex gap-x-2 items-baseline w-fit">
@@ -168,23 +171,20 @@ const tableHooks = (hooks) => {
       Header: "",
       Cell: ({ row }) => (
         <div className="flex gap-12">
-        <HiPencilAlt
-          className="text-white"
-          onClick={() => {
-            const params = {
-              id: row.original.age,
-            };
-
-            navigate(
-              {
-                pathname: "/home/controlo/colaboradores/editar-colaborador",
-                search: createSearchParams(params).toString(),
-              },
-              {
-                state: {
-                  prevUrl: location.pathname,
+         <HiPencilAlt
+            className="text-white"
+            onClick={() => {
+              const params = {
+                id: row.original.age,
+              };
+              navigate(
+                {
+                  pathname: "/home/controlo/colaboradores/editar-colaborador",
+                  search: createSearchParams(params).toString(),
                 },
-              }
+                {
+                state: {
+                  prevUrl: location.pathname,}}
             );
           }}
         />
@@ -205,6 +205,7 @@ const tableHooks = (hooks) => {
         )}
         </div>
       ),
+
     },
   ]);
 };
