@@ -39,7 +39,7 @@ export default function Colaboradores() {
     axios
       .get("http://localhost:8080/api/utilizador/colaboradores")
       .then(function (response) {
-        console.log(response);
+        console.log("Response: " + response);
       })
       .catch(function (error) {
         console.log(error);
@@ -52,7 +52,8 @@ export default function Colaboradores() {
   const [data, setData] = useState(() => getColaboradores(), []);
 
 
-  console.log(data);
+
+  console.log("Data from database: " + data);
   const teste =
     (() => {
       console.log("data --> ", data);

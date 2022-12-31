@@ -26,8 +26,6 @@ import {
 } from "react-icons/hi";
 
 
-
-import {FiMinus} from "react-icons/fi"
 import { isConstructorDeclaration } from "typescript";
 // Define a default UI for filtering
 function GlobalFilter({
@@ -141,11 +139,11 @@ export function AvatarCell({ value, column, row }) {
 const tableHooks = (hooks) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [modal, setModal] = useState({ show: false, data: null });
+  const [modalUser, setModalUser] = useState({ show: false, data: null });
 
 
   const handleCloseModal = () => {
-    setModal({ show: false, data: null });
+    setModalUser({ show: false, data: null });
   };
 
   const confirmeActionModal = (u) => {
@@ -158,10 +156,12 @@ const tableHooks = (hooks) => {
 
   const handleExcluir = (u) => {
     console.log("handle excluir" + u);
-    setModal({
+    setModalUser({
       show: true,
       data: "EXCLUIR",
     });
+
+    console.log("modal: " + modalUser.show);
   };
 
   hooks.visibleColumns.push((columns) => [
@@ -188,15 +188,15 @@ const tableHooks = (hooks) => {
             );
           }}
         />
-        <FiMinus 
+        <HiTrash 
           className="text-white"
           onClick={() => {
-            handleExcluir(row.original.id);
+            handleExcluir(row.original.age);
           }}
-        
+
         />
         {
-        modal.show && (
+        modalUser.show && (
             <Modal
               closeModal={handleCloseModal}
               confirmeActionModal={() => confirmeActionModal(row.original.age)}
