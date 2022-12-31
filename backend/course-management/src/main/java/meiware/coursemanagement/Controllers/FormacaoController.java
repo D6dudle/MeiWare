@@ -7,8 +7,8 @@ import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Images.PedidoFormacaoImage;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
-import net.minidev.json.JSONArray;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,14 +39,18 @@ public class FormacaoController {
         try {
             List<PedidoFormacao> pedidosFormacaoList = pedidoFormacaoService.getPedidosFormacao();
 
+            JSONObject obj = new JSONObject();
             JSONArray arr = new JSONArray();
+            JSONObject obj2 = new JSONObject();
+            obj2.put("Test", 2);
+
 
             for (PedidoFormacao p : pedidosFormacaoList) {
-                arr.add(p.toJSON());
+                arr.put(p.toJSON());
             }
-
+            obj.put("listaFormacoes", arr);
             return new ResponseEntity<>(
-                    arr,
+                    arr.toString(),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(
@@ -65,7 +69,7 @@ public class FormacaoController {
             JSONArray arr = new JSONArray();
 
             for (PedidoFormacao p : pedidosAprovadosList) {
-                arr.add(p.toJSON());
+                arr.put(p.toJSON());
             }
 
             return new ResponseEntity<>(
@@ -88,7 +92,7 @@ public class FormacaoController {
             JSONArray arr = new JSONArray();
 
             for (PedidoFormacao p : pedidosRejeitadosList) {
-                arr.add(p.toJSON());
+                arr.put(p.toJSON());
             }
             return new ResponseEntity<>(
                     arr,
