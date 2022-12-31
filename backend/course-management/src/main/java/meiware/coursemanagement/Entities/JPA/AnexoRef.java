@@ -3,6 +3,7 @@ package meiware.coursemanagement.Entities.JPA;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class AnexoRef {
@@ -46,6 +47,18 @@ public class AnexoRef {
         this.nome = nome;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AnexoRef anexoRef = (AnexoRef) o;
+        return id.equals(anexoRef.id) && path.equals(anexoRef.path) && nome.equals(anexoRef.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, path, nome);
+    }
 
     @Override
     public String toString() {

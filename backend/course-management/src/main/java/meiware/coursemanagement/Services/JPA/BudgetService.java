@@ -2,6 +2,7 @@ package meiware.coursemanagement.Services.JPA;
 
 import meiware.coursemanagement.Entities.JPA.Budget;
 import meiware.coursemanagement.Repositories.JPA.IBudgetRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ public class BudgetService implements IBudgetService{
 
     @Autowired
     private IBudgetRepository budgetRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public List<Budget> getBudgets() {
@@ -27,6 +31,19 @@ public class BudgetService implements IBudgetService{
         }
 
         return budgets;
+    }
+
+    @Override
+    public List<Budget> getBudgetByUserId(Long id) {
+        List<Budget> budgetList= new ArrayList<>();
+
+        try {
+            budgetList = budgetRepository.findBudgetByUser_Id(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return budgetList;
     }
 
     @Override
@@ -53,13 +70,17 @@ public class BudgetService implements IBudgetService{
     }
 
     @Override
-    public Budget updateBudget(Budget updatedBudget) {
+    public void updateBudget(Budget updatedBudget) {
         try {
-            return budgetRepository.save(updatedBudget);
+            Budget budget = this.getBudgetById(updatedBudget.getId());
+            if (budget != null) {
+                modelMapper.map(updatedBudget, budget);
+                budgetRepository.save(budget);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     @Override

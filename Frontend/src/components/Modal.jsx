@@ -19,6 +19,22 @@ export default function Modal({ closeModal, confirmeActionModal, data }) {
       body2: "e não vai ser possível consultar mais esta formação",
       showInput: false,
     },
+    {
+      tipo: "ARQUIVAR",
+      header: "Tem a certeza que quer arquivar a publicação?",
+      body: "toda a informação acerca desta publicação será",
+      boldWord: "apagada ",
+      body2: "e não vai ser possível consultar mais esta publicação",
+      showInput: true,
+    },
+    {
+      tipo: "REJEITAR",
+      header: "Tem a certeza que quer rejeitar a publicação?",
+      body: "toda a informação acerca desta publicação será",
+      boldWord: "apagada ",
+      body2: "e não vai ser possível consultar mais esta publicação",
+      showInput: true,
+    },
   ];
 
   const prepareConfirmeActionModal = () => {

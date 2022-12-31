@@ -2,14 +2,11 @@ import React, { useState, useCallback, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { PlusCircle } from "react-feather";
 import TextInput from "../components/TextInput";
-import DefaultAvatar from "../assets/DefaultAvatar.png";
 import GoBackButton from "../components/GoBackButton";
-import { useLocation } from "react-router-dom";
-import { getDataUsers } from "../constants/tabelaUtilizadores";
-import DropdownFilter from "../components/DropdownFilter";
-import { input } from "@material-tailwind/react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function EditarColaborador() {
+  const navigate = useNavigate();
   const personId = useLocation().search.slice(4);
   //Dumb Data
   const initialData = {
@@ -39,7 +36,6 @@ export default function EditarColaborador() {
 
   var prevUrl = useLocation().state;
   if (prevUrl === null) {
-    console.log("NADA");
     prevUrl = "/home/controlo/colaboradores";
   } else {
     prevUrl = prevUrl.prevUrl;
@@ -149,6 +145,10 @@ export default function EditarColaborador() {
     console.log(initialData);
   };
 
+  const goBack = () => {
+    navigate("/home/controlo/colaboradores");
+  };
+
   return (
     <div className="w-full h-full overflow-y-hidden ml-8 mr-8">
       <div className="sticky mt-16 ml-8 flex flex-row items-center gap-5">
@@ -198,8 +198,14 @@ export default function EditarColaborador() {
             </div>
 
             <div className="absolute right-20 bottom-10">
+              <button
+                className="sticky bottom-0 mr-2 px-4 py-2 bg-darkBlack text-gray4 font-semibold text-sm rounded-sm hover:shadow-btn border-[1px] border-gray4  focus:border-white"
+                onClick={goBack}
+              >
+                Cancelar
+              </button>
               <button className="sticky bottom-0 px-4 py-2 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white">
-                Submeter
+                Editar
               </button>
             </div>
           </form>

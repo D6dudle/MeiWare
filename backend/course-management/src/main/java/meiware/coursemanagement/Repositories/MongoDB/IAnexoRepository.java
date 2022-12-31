@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IAnexoRepository extends MongoRepository<Anexo, String> {
+    void deleteById(String id);
 }

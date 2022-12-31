@@ -18,7 +18,7 @@ export const Menus = [
         title: "Pesquisar formação",
         to: "formacao/pesquisar-formacao",
         opened: false,
-        gestor: true
+        gestor: true,
       },
       {
         title: "Listar formação",
@@ -103,5 +103,19 @@ export const dataCard = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     idCurso: "J-F-111",
     tipoFormacao: "PENDENTE",
+  },
+];
+
+export const knowledgeBaseList = [
+  {
+    username: "Bruno Gandres",
+    dataPublicacao: "21/11/2000",
+    titulo: "Materiais React JS",
+    nomeFormacao: "Introdução a ReactJS 2023",
+    descricao:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget lobortis lectus, non sodales purus. Duis eget ex congue, mattis nulla vel, suscipit velit. Cras sollicitudin lectus ut nibh sollicitudin, eu sodales ligula bibendum. Integer elementum congue ultrices. Curabitur justo nulla, scelerisque id pellentesque nec, placerat vel urna. Duis condimentum lacinia auctor. Morbi sed nisl non magna congue convallis vitae sed enim.",
+    formacaoId: "G-C-765",
+    arquivar: true,
+    publicacaoCompleta: true,
   },
 ];

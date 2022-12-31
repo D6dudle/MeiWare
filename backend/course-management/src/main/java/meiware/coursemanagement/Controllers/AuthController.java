@@ -65,10 +65,10 @@ public class AuthController {
 
         Utilizador user = utilizadorRepository.findByEmail(userDetails.getEmail());
         return ResponseEntity.ok(new JwtResponse(jwt,
-                user.toJSON()));
+                user.toJSONAuth()));
     }
 
-    @PostMapping("/signup")
+        @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         boolean isUnknownRole = false;
         if (utilizadorRepository.existsByEmail(signUpRequest.getEmail())) {

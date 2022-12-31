@@ -1,6 +1,6 @@
 package meiware.coursemanagement.Payload.Response;
 
-import net.minidev.json.JSONObject;
+import org.json.JSONObject;
 
 import java.util.List;
 

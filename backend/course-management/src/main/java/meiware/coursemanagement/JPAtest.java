@@ -1,12 +1,10 @@
 package meiware.coursemanagement;
 
 import jdk.jshell.execution.Util;
-import meiware.coursemanagement.Entities.JPA.AnexoRef;
-import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
-import meiware.coursemanagement.Entities.JPA.Role;
-import meiware.coursemanagement.Entities.JPA.Utilizador;
+import meiware.coursemanagement.Entities.JPA.*;
 import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import meiware.coursemanagement.Entities.MongoDB.Publicacao;
+import meiware.coursemanagement.Repositories.JPA.IAnexoRefRepository;
 import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
 import meiware.coursemanagement.Repositories.MongoDB.IAnexoRepository;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
@@ -62,6 +60,9 @@ public class JPAtest {
 
     @Autowired
     private IUtilizadorService utilizadorService;
+
+    @Autowired
+    private IAnexoRefRepository anexoRefRepository;
 
     @EventListener
     public void onApplicationEvent(ApplicationReadyEvent event) throws Exception {
@@ -129,15 +130,14 @@ public class JPAtest {
         pedidoFormacaoService.createPedidoFormacao(pedidoFormacao3, new ArrayList<>());*/
 
 
-
         // for (Customer bauer : repository.findByLastName("Bauer")) {
         //  log.info(bauer.toString());
         // }
 
-        /*File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
+        /*File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\10 - Mobile Railway.pdf");
         FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
-        File file2 = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_pm_t_L5_v1.1.pdf");
+        File file2 = new File("C:\\Users\\Diogo Filipe\\Desktop\\T87.pdf");
         FileItem fileItem2 = new DiskFileItem("file2", Files.probeContentType(file2.toPath()), false, file2.getName(), (int) file2.length(), file2.getParentFile());
 
 
@@ -159,14 +159,29 @@ public class JPAtest {
         MultipartFile multipartFile2 = new CommonsMultipartFile(fileItem2);
 
         List<MultipartFile> files = new ArrayList<>();
-        files.add(multipartFile);*/
-        //files.add(multipartFile2);
+        files.add(multipartFile);
+        files.add(multipartFile2);
 
-        /*PedidoFormacao pedidoFormacao = new PedidoFormacao("Pedido de Formacao", "Isto e um pedido de formacao...", "Formador", LocalDate.now(), 100);
-        pedidoFormacao.setQuemFezPedido(iUtilizadorRepository.findById(Long.valueOf(1)).get());
-        PedidoFormacao newPedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files).getId());
+        PedidoFormacao pedidoFormacao = new PedidoFormacao("Pedido de Formacao", "Isto e um pedido de formacao...", "Formador", LocalDate.now(), 100, utilizadorService.getUtilizadorById(5l));
+        //pedidoFormacao.setQuemFezPedido(iUtilizadorRepository.findById(Long.valueOf(1)).get());
+        //PedidoFormacao newPedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files).getId());
+        pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files);*/
 
-        System.out.println(iUtilizadorRepository.findById(Long.valueOf(1)).get().getListFormacoes());
+        /*File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\test.txt");
+        FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+        InputStream input = new FileInputStream(file);
+        OutputStream os = fileItem.getOutputStream();
+        IOUtils.copy(input, os);
+        MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+
+        PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(25l);
+        pedidoFormacaoService.addAnexoToPedidoFormacao(pedidoFormacao, multipartFile);
+        System.out.println(anexoService.getAnexos().get(0).getNome());
+        PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(25l);
+        pedidoFormacaoService.removeAnexoFromPedidoFormacao(pedidoFormacao, new AnexoRef("a", "a"));*/
+        //pedidoFormacaoService.removeAnexoFromPedidoFormacao(pedidoFormacaoService.getPedidoFormacaoById(28l), (AnexoRef) pedidoFormacaoService.getPedidoFormacaoById(28l).getListAnexoRefs().toArray()[1]);
+        //System.out.println(utilizadorService.getUtilizadorByEmail("jose@email.com"));
+        /*System.out.println(iUtilizadorRepository.findById(Long.valueOf(1)).get().getListFormacoes());
         System.out.println(pedidoFormacaoService.getPedidoFormacaoById(newPedidoFormacao.getId()).getListAnexoRefs());
 
         pedidoFormacaoService.removeAnexoFromPedidoFormacao(newPedidoFormacao, (AnexoRef) newPedidoFormacao.getListAnexoRefs().toArray()[0]);
@@ -174,6 +189,9 @@ public class JPAtest {
         System.out.println(pedidoFormacaoService.getPedidoFormacaoById(newPedidoFormacao.getId()).getListAnexoRefs());
         anexoRepository.deleteAll();*/
 
+        //pedidoFormacaoService.rejeitarPedidoFormacao(43l, 4l);
+        //pedidoFormacaoService.rejeitarPedidoFormacao(44l);
+        //System.out.println(pedidoFormacaoService.getPedidoFormacaoById(43l) instanceof PedidoRejeitado);
         log.info("------- MONGO ------");
 
             /*try{

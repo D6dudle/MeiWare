@@ -116,18 +116,20 @@ export default function AdicionarColaborador() {
             <div className="flex flex-wrap justify-between sm:justify-start">
               <div className="mr-20">
                 {/* Image */}
-                <div
-                  {...getRootProps()}
-                  className="relative w-16 h-16 mb-4 cursor-pointer"
-                >
-                  <img className="rounded-full" src={image.preview} />
-                  <PlusCircle className="bottom-0 left-10 absolute w-5 h-5 text-primary" />
-                  <input {...getInputProps()} />
+                <div className="flex items-center justify-center">
+                  <div
+                    {...getRootProps()}
+                    className="relative w-16 h-16 mb-4 cursor-pointer"
+                  >
+                    <img className="rounded-full" src={image.preview} />
+                    <PlusCircle className="bottom-0 left-10 absolute w-5 h-5 text-primary" />
+                    <input {...getInputProps()} />
+                  </div>
                 </div>
                 <ul>
                   {pubFields.map((field, index) => (
                     <li key={index}>
-                      <div className="mb-4">
+                      <div className="mb-4 w-[295px]">
                         <TextInput
                           index={index}
                           name={field.name}

@@ -2,9 +2,13 @@ package meiware.coursemanagement.Services.JPA;
 
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
+import org.modelmapper.Conditions;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +16,8 @@ import java.util.List;
 public class UtilizadorService implements IUtilizadorService {
     @Autowired
     private IUtilizadorRepository utilizadorRepository;
+    @Autowired
+    private ModelMapper mapper;
 
     @Override
     public List<Utilizador> getUtilizadores() {
@@ -134,7 +140,11 @@ public class UtilizadorService implements IUtilizadorService {
     @Override
     public void updateUtilizador(Utilizador updatedUtilizador) {
         try {
-            utilizadorRepository.save(updatedUtilizador);
+            Utilizador utilizador = this.getUtilizadorById(updatedUtilizador.getId());
+            if(utilizador != null) {
+                mapper.map(updatedUtilizador, utilizador);
+                utilizadorRepository.save(utilizador);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

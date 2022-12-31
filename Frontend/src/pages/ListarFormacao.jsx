@@ -9,7 +9,7 @@ export default function ListarFormacao() {
           Listar formações
         </h1>
       </div>
-      <TrainingTabs />
+      <TrainingTabs sideBarName={"Formações"} />
     </div>
   );
 }

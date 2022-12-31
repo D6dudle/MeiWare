@@ -1,12 +1,17 @@
 package meiware.coursemanagement.Controllers;
 
+import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
+import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //TODO: corrigir returns
 
@@ -18,127 +23,208 @@ public class UtlizadorController {
     IUtilizadorService utilizadorService;
 
     @GetMapping(value = "/utilizadores")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getUtilizadores() {
-        System.out.println("/utilizadores");
+
         try{
-            utilizadorService.getUtilizadores();
+            List<Utilizador> listaUtilizadores = utilizadorService.getUtilizadores();
+
+            JSONArray arr = new JSONArray();
+
+            for (Utilizador u : listaUtilizadores){
+                arr.add(u.toJSON());
+            }
+
+            return new ResponseEntity<>(
+                    arr,
+                    HttpStatus.OK);
         }catch(Exception e){
-
+            return new ResponseEntity<>(
+                    "Erro ao aceder aos utilizadores.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return null;
     }
 
     @GetMapping(value = "/colaboradores")
-    @PreAuthorize("hasRole('GESTOR')")
+    @PreAuthorize("hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getColaboradores() {
-        System.out.println("/colaboradores");
 
         try{
-            utilizadorService.getColaboradores();
-        }catch(Exception e){
-            return null;
-        }
+            List<Utilizador> listaUtilizadores = utilizadorService.getColaboradores();
 
-        return null;
+            JSONArray arr = new JSONArray();
+
+            for (Utilizador u : listaUtilizadores){
+                arr.add(u.toJSON());
+            }
+            return new ResponseEntity<>(
+                    arr,
+                    HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(
+                    "Erro ao aceder aos colaboradores.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(value = "/gestores")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getGestores() {
 
         try{
-            utilizadorService.getGestores();
+            List<Utilizador> listaUtilizadores = utilizadorService.getGestores();
+
+            JSONArray arr = new JSONArray();
+
+            for (Utilizador u : listaUtilizadores){
+                arr.add(u.toJSON());
+            }
+            return new ResponseEntity<>(
+                    arr,
+                    HttpStatus.OK);
         }catch(Exception e){
-
+            return new ResponseEntity<>(
+                    "Erro ao aceder aos gestores.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return null;
     }
 
     @GetMapping(value = "/administradores")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getAdministradores() {
 
         try{
-            utilizadorService.getAdministradores();
+            List<Utilizador> listaUtilizadores = utilizadorService.getAdministradores();
+
+            JSONArray arr = new JSONArray();
+
+            for (Utilizador u : listaUtilizadores){
+                arr.add(u.toJSON());
+            }
+            return new ResponseEntity<>(
+                    arr,
+                    HttpStatus.OK);
         }catch(Exception e){
-
+            return new ResponseEntity<>(
+                    "Erro ao aceder aos administradores.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return null;
     }
 
+    /* Input Example:
+        {
+            "id": "1",
+            "email": "jose@email.com",
+            "nome": "José"
+        }
+     */
     @GetMapping(value = "/managedUtilizadores")
     public ResponseEntity<?> getManagedUtilizadores(@RequestBody Utilizador manager) {
 
         try{
-            //TODO: perguntar ao Jordão se não deve ser managerId
-            utilizadorService.getManagedUtilizadores(manager);
+            List<Utilizador> listaUtilizadores = utilizadorService.getManagedUtilizadores(manager);
+
+            JSONArray arr = new JSONArray();
+
+            for (Utilizador u : listaUtilizadores){
+                arr.add(u.toJSON());
+            }
+            return new ResponseEntity<>(
+                    arr,
+                    HttpStatus.OK);
         }catch(Exception e){
-
+            if(manager.isAdministrador())
+                return new ResponseEntity<>(
+                        "Erro ao aceder aos utilizadores geridos pelo administrador: " + manager.getNome() + ".",
+                        HttpStatus.INTERNAL_SERVER_ERROR);
+            else if(manager.isGestor())
+                return new ResponseEntity<>(
+                        "Erro ao aceder aos utilizadores geridos pelo gestor: " + manager.getNome() + ".",
+                        HttpStatus.INTERNAL_SERVER_ERROR);
+            else
+                return new ResponseEntity<>(
+                        "O utilizador: " + manager.getNome() + "não pode gerir utilizadores.",
+                        HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return null;
     }
 
+    /* Input Example:
+        1
+     */
     @GetMapping(value = "/utilizadorById")
-    public ResponseEntity<?> getUtilizadorById(@RequestBody Long id) {
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> getUtilizadorById(@RequestParam("id") String idString) {
 
         try{
-            utilizadorService.getUtilizadorById(id);
+            Long id = Long.valueOf(idString);
+            Utilizador utilizador = utilizadorService.getUtilizadorById(id);
+            return new ResponseEntity<>(
+                    utilizador.toJSON(),
+                    HttpStatus.OK);
         }catch(Exception e){
-
+            return new ResponseEntity<>(
+                    "Erro ao aceder ao utilizador.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return null;
     }
 
     @GetMapping(value = "/utilizadorByEmail")
-    public ResponseEntity<?> getUtilizadorByEmail(@RequestBody String email) {
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> getUtilizadorByEmail(@RequestParam("email") String email) {
 
         try{
-            utilizadorService.getUtilizadorByEmail(email);
+            Utilizador utilizador = utilizadorService.getUtilizadorByEmail(email);
+            return new ResponseEntity<>(
+                    utilizador.toJSON(),
+                    HttpStatus.OK);
         }catch(Exception e){
-
+            return new ResponseEntity<>(
+                    "Erro ao aceder ao utilizador.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return null;
     }
 
-    @PostMapping(value = "/createUtilizador")
-    public ResponseEntity<?> createUtilizador(@RequestBody Utilizador newUtilizador) {
+    //TODO: perguntar na reunião se deve devolver uma nova lista de utilizadores
+    // ou o utilizador atualizado
 
-        try{
-            utilizadorService.createUtilizador(newUtilizador);
-        }catch(Exception e){
-
+    /* Input Example:
+        {
+            "id": "1",
+            "email": "jose@email.com",
+            "nome": "Jossé"
         }
-
-        return null;
-    }
-
+     */
     @PutMapping(value = "/updateUtilizador")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> updateUtilizador(@RequestBody Utilizador updatedUtilizador) {
 
         try{
             utilizadorService.updateUtilizador(updatedUtilizador);
+            return new ResponseEntity<>(
+                    "Utilizador atualizado com sucesso",
+                    HttpStatus.OK);
         }catch(Exception e){
-
+            return new ResponseEntity<>(
+                    "Erro ao atualizar o utilizador: " + updatedUtilizador.getNome(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return null;
     }
 
     @DeleteMapping(value = "/removeUtilizador")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> removeUtilizador(@RequestBody Utilizador utilizador) {
 
         try{
-            //TODO: perguntar ao Jordão se não deve ser utilizadorId
             utilizadorService.removeUtilizador(utilizador);
+            return new ResponseEntity<>(
+                    "Utilizador removido com sucesso",
+                    HttpStatus.OK);
         }catch(Exception e){
-
+            return new ResponseEntity<>(
+                    "Erro ao remover o utilizador: " + utilizador.getNome(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return null;
     }
 }
 

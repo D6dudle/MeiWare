@@ -10,7 +10,6 @@ public interface IPublicacaoService {
     List<Publicacao> getPublicacoes();
     Publicacao getPublicacaoById(String id);
     String createPublicacao(Publicacao newPublicacao, List<MultipartFile> files) throws IOException;
-    void updatePublicacao(Publicacao updatedPublicacao);
-    void arquivarPublicacao(Publicacao publicacao);
+    void arquivarPublicacao(Publicacao publicacaoArquivada);
     void removePublicacao(Publicacao publicacao);
 }

@@ -5,10 +5,16 @@ import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import meiware.coursemanagement.Repositories.JPA.IAnexoRefRepository;
 import meiware.coursemanagement.Repositories.JPA.IPedidoFormacaoRepository;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,16 +31,18 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     @Autowired
     private IAnexoService anexoService;
 
+    @Autowired
+    private ModelMapper mapper;
+
+    @PersistenceContext
+    private EntityManager em;
+
     @Override
     public List<PedidoFormacao> getPedidosFormacao() {
         List<PedidoFormacao> pedidosFormacao = new ArrayList<>();
 
         try {
-            for (PedidoFormacao pd: pedidoFormacaoRepository.findAllByOrderByDataCriacaoDesc()) {
-                if(!pd.isApagada()) {
-                    pedidosFormacao.add(pd);
-                }
-            }
+            pedidosFormacao = pedidoFormacaoRepository.findPedidoFormacaoByApagadaFalseOrderByDataCriacaoDesc();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,12 +51,12 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
-    public List<PedidoAprovado> getFormacoesAprovadas() {
+    public List<PedidoAprovado> getPedidosAprovados() {
         List<PedidoAprovado> formacoesAprovadas = new ArrayList<>();
 
         try {
-            for (PedidoFormacao pd: pedidoFormacaoRepository.findAllByOrderByDataCriacaoDesc()) {
-                if(!pd.isApagada() && (pd instanceof PedidoAprovado)) {
+            for (PedidoFormacao pd: pedidoFormacaoRepository.findPedidoFormacaoByApagadaFalseOrderByDataCriacaoDesc()) {
+                if(pd instanceof PedidoAprovado) {
                     formacoesAprovadas.add((PedidoAprovado) pd);
                 }
             }
@@ -56,17 +64,16 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
             e.printStackTrace();
         }
 
-
         return formacoesAprovadas;
     }
 
     @Override
-    public List<PedidoRejeitado> getFormacoesRejeitadas() {
+    public List<PedidoRejeitado> getPedidosRejeitados() {
         List<PedidoRejeitado> formacoesRejeitadas = new ArrayList<>();
 
         try {
-            for (PedidoFormacao pd: pedidoFormacaoRepository.findAllByOrderByDataCriacaoDesc()) {
-                if(!pd.isApagada() && (pd instanceof PedidoRejeitado)) {
+            for (PedidoFormacao pd: pedidoFormacaoRepository.findPedidoFormacaoByApagadaFalseOrderByDataCriacaoDesc()) {
+                if(pd instanceof PedidoRejeitado) {
                     formacoesRejeitadas.add((PedidoRejeitado) pd);
                 }
             }
@@ -79,15 +86,9 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
-    public List<PedidoFormacao> getPedidosFormacaoByUtilizador(Utilizador utilizador) {
-        // TODO
-        return null;
-    }
-
-    @Override
     public PedidoFormacao getPedidoFormacaoById(Long id) {
         try {
-            PedidoFormacao pd = pedidoFormacaoRepository.findById(id).orElse(null);
+            PedidoFormacao pd = pedidoFormacaoRepository.findByApagadaFalseAndId(id).orElse(null);
 
             if(pd != null && !pd.isApagada()) {
                 return pd;
@@ -103,11 +104,8 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     public PedidoFormacao getPedidoFormacaoByNome(String nome) {
 
         try {
-            PedidoFormacao pd = pedidoFormacaoRepository.findByNome(nome);
-
-            if(!pd.isApagada()) {
-                return pd;
-            }
+            PedidoFormacao pd = pedidoFormacaoRepository.findByApagadaFalseAndNome(nome);
+            return pd;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -138,21 +136,47 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     @Override
     public void updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao) {
         try {
-            pedidoFormacaoRepository.save(updatedPedidoFormacao);
+            PedidoFormacao pedidoFormacao = this.getPedidoFormacaoById(updatedPedidoFormacao.getId());
+            if(pedidoFormacao != null) {
+                mapper.map(updatedPedidoFormacao, pedidoFormacao);
+                pedidoFormacaoRepository.save(pedidoFormacao);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
+    @Transactional
+    public void aprovarPedidoFormacao(long pedidoFormacaoId, long utilizadorId) {
+        try {
+            em.createNativeQuery("UPDATE pedido_formacao SET concluida = false, tipo = ?, quem_aprovou_id = ?, data_aprovacao = ? WHERE id = ?").setParameter(1, "APROVADA").setParameter(2, utilizadorId).setParameter(3, LocalDate.now()).setParameter(4, pedidoFormacaoId).executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    @Transactional
+    public void rejeitarPedidoFormacao(long pedidoFormacaoId, long utilizadorId, String comentario) {
+        try {
+            em.createNativeQuery("UPDATE pedido_formacao SET tipo = ?, quem_rejeitou_id = ?, data_rejeicao = ?, comentario = ? WHERE id = ?").setParameter(1, "REJEITADA").setParameter(2, utilizadorId).setParameter(3, LocalDate.now()).setParameter(4, comentario).setParameter(5, pedidoFormacaoId).executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }    }
+
+    @Override
     public void addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file) {
         try {
-            Anexo anexo = anexoService.createAnexo(file);
-            AnexoRef anexoRef = new AnexoRef(anexo.getId(), anexo.getNome());
-            anexoRefRepository.save(anexoRef);
-            pedidoFormacao.getListAnexoRefs().add(anexoRef);
-
-            pedidoFormacaoRepository.save(pedidoFormacao);
+            PedidoFormacao pedido = this.getPedidoFormacaoById(pedidoFormacao.getId());
+            if(pedido != null) {
+                Anexo anexo = anexoService.createAnexo(file);
+                AnexoRef anexoRef = new AnexoRef(anexo.getId(), anexo.getNome());
+                anexoRefRepository.save(anexoRef);
+                pedido.addAnexoRef(anexoRef);
+                pedidoFormacaoRepository.save(pedido);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,16 +185,20 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     @Override
     public void removeAnexoFromPedidoFormacao(PedidoFormacao pedidoFormacao, AnexoRef anexoRef) {
         try {
-            pedidoFormacao.getListAnexoRefs().remove(anexoRef);
-            pedidoFormacaoRepository.save(pedidoFormacao);
-            anexoRefRepository.delete(anexoRef);
+            PedidoFormacao pedido = this.getPedidoFormacaoById(pedidoFormacao.getId());
+            if(pedido != null) {
+                pedido.removeAnexoRef(anexoRef);
+                pedidoFormacaoRepository.save(pedido);
+                anexoService.removeAnexo(anexoRef.getPath());
+                anexoRefRepository.delete(anexoRef);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void removePedidoFormacao(PedidoFormacao pedidoFormacao) {
+    public void removePedidoFormacao(PedidoFormacao pedidoFormacao) { // Soft delete
         try {
             pedidoFormacao.setApagada(true);
             pedidoFormacao.setApagadaNaData(LocalDate.now());

@@ -76,26 +76,21 @@ function DropzoneFiles() {
               <div className="">{filePath}• </div>
             </div>
             <div className="relative w-2/5">
-              <div className="flex columns-2 gap-8">
-                {sizeFile}
-                
-              </div>
+              <div className="flex columns-2 gap-8">{sizeFile}</div>
             </div>
             <div className="pb-12">
-                  <button
-                    className="flex h-[24px] w-[24px] px-1 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white"
-                    onClick={() => handleRemoveFile(filePath)}
-                  >
-                    <X className="" />
-                  </button>
-                </div>
+              <button
+                className="flex h-[24px] w-[24px] px-1 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white"
+                onClick={() => handleRemoveFile(filePath)}
+              >
+                <X className="" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
     );
   };
-
-  
 
   return (
     <div className="flex flex-col justify-center items-center w-full">
@@ -106,8 +101,11 @@ function DropzoneFiles() {
         <label
           htmlFor="dropzone-file"
           className={`flex flex-col items-center justify-center w-[483px] h-[308px] border-2 border-dashed  ${
-            (isDragReject ? "border-error": 
-            (isDragAccept ? "border-success" : 'border-gray3'))
+            isDragReject
+              ? "border-error"
+              : isDragAccept
+              ? "border-success"
+              : "border-gray3"
           }  rounded-md cursor-pointer bg-transparent hover:bg-gray3 `}
         >
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -125,9 +123,9 @@ function DropzoneFiles() {
       </div>
       {files.length > 0 && (
         <div className="">
-          {files?.map((file) => (
+          {files?.map((file, index) => (
             <ListarFicheiros
-              key={file.name}
+              key={index}
               fileType={file.type}
               filePath={file.path}
               fileSize={file.size}

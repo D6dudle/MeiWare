@@ -1,9 +1,11 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -36,13 +38,13 @@ public class PedidoFormacao {
     @NotNull
     private float preco;
 
-    private String justificao;
+    private String justificacao;
 
     private boolean status;
 
     private boolean cancelada;
 
-    private boolean apagada;
+    private boolean apagada = false;
 
     @Column(columnDefinition = "DATE")
     private LocalDate apagadaNaData;
@@ -53,8 +55,8 @@ public class PedidoFormacao {
     @Column(columnDefinition = "DATE")
     private LocalDate dataUltimoUpdate;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<AnexoRef> listAnexoRefs;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<AnexoRef> listAnexoRefs = new HashSet<>();
 
     @ManyToOne(optional = false)
     private Utilizador quemFezPedido;
@@ -63,7 +65,22 @@ public class PedidoFormacao {
 
     }
 
+    public PedidoFormacao(long id) {
+        this.id = id;
+    }
+
     public PedidoFormacao(String nome, String descricao, String formador, LocalDate dataInicio, float preco, Utilizador quemFezPedido) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.formador = formador;
+        this.dataInicio = dataInicio;
+        this.preco = preco;
+        this.dataCriacao = LocalDate.now();
+        this.quemFezPedido = quemFezPedido;
+    }
+
+    public PedidoFormacao(long id, String nome, String descricao, String formador, LocalDate dataInicio, float preco, Utilizador quemFezPedido) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.formador = formador;
@@ -125,12 +142,12 @@ public class PedidoFormacao {
         this.preco = preco;
     }
 
-    public String getJustificao() {
-        return justificao;
+    public String getJustificacao() {
+        return justificacao;
     }
 
-    public void setJustificao(String justificao) {
-        this.justificao = justificao;
+    public void setJustificacao(String justificacao) {
+        this.justificacao = justificacao;
     }
 
     public boolean isStatus() {
@@ -197,6 +214,36 @@ public class PedidoFormacao {
         this.listAnexoRefs = listAnexoRefs;
     }
 
+    public void addAnexoRef(AnexoRef anexoRef) {
+        this.getListAnexoRefs().add(anexoRef);
+    }
+
+    public void removeAnexoRef(AnexoRef anexoRef) {
+        this.getListAnexoRefs().remove(anexoRef);
+    }
+
+    public JSONObject toJSON(){
+        JSONObject obj = new JSONObject();
+        obj.put("id", id);
+        obj.put("nome", nome);
+        obj.put("descricao", descricao);
+        obj.put("formador", formador);
+        obj.put("dataInicio", dataInicio);
+        obj.put("dataFim", dataFim);
+        obj.put("preco", preco);
+        obj.put("justificao", justificacao);
+        obj.put("status", status);
+        obj.put("cancelada", cancelada);
+        obj.put("apagada", apagada);
+        obj.put("apagadaNaData", apagadaNaData);
+        obj.put("dataCriacao", dataCriacao);
+        obj.put("dataUltimoUpdate", dataUltimoUpdate);
+        obj.put("listAnexoRef", listAnexoRefs);
+        obj.put("quemFezPedido", quemFezPedido.getId());
+
+        return obj;
+    }
+
     @Override
     public String toString() {
         return "PedidoFormacao{" +
@@ -207,7 +254,7 @@ public class PedidoFormacao {
                 ", dataInicio=" + dataInicio +
                 ", dataFim=" + dataFim +
                 ", preco=" + preco +
-                ", justificao='" + justificao + '\'' +
+                ", justificao='" + justificacao + '\'' +
                 ", status=" + status +
                 ", cancelada=" + cancelada +
                 ", apagada=" + apagada +

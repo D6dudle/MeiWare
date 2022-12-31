@@ -70,18 +70,10 @@ public class PublicacaoService implements IPublicacaoService {
     }
 
     @Override
-    public void updatePublicacao(Publicacao updatedPublicacao) {
+    public void arquivarPublicacao(Publicacao publicacaoArquivada) {
         try {
-            publicacaoRepository.save(updatedPublicacao);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void arquivarPublicacao(Publicacao publicacao) {
-        try {
-            if(this.getPublicacaoById(publicacao.getId()) != null) {
+            Publicacao publicacao = this.getPublicacaoById(publicacaoArquivada.getId());
+            if(publicacao != null) {
                 publicacao.setArquivada();
                 publicacao.setArquivadaEm(LocalDate.now());
                 publicacaoRepository.save(publicacao);
@@ -95,7 +87,7 @@ public class PublicacaoService implements IPublicacaoService {
     public void removePublicacao(Publicacao publicacao) {
         try {
             for (Anexo anexo: publicacao.getAnexos()) {
-                anexoService.removeAnexo(anexo);
+                anexoService.removeAnexo(anexo.getId());
             }
 
             publicacaoRepository.delete(publicacao);
