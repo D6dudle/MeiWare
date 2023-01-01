@@ -3,13 +3,14 @@ package meiware.coursemanagement.Payload.Response;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
-    private JSONObject user;
+    private Map user;
 
-    public JwtResponse(String accessToken, JSONObject user) {
+    public JwtResponse(String accessToken, Map user) {
         this.token = accessToken;
         this.user = user;
     }
@@ -30,11 +31,11 @@ public class JwtResponse {
         this.type = tokenType;
     }
 
-    public JSONObject getUser() {
+    public Map getUser() {
         return user;
     }
 
-    public void setUser(JSONObject user) {
+    public void setUser(Map user) {
         this.user = user;
     }
 }
