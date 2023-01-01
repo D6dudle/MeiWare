@@ -24,6 +24,7 @@ import java.util.List;
 //PedidoFormacaoController
 @RestController
 @RequestMapping("/api/formacao")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class FormacaoController {
 
     @Autowired
@@ -33,22 +34,38 @@ public class FormacaoController {
     // formações
 
     @GetMapping(value = "/pedidosFormacao")
-    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getPedidosFormacao() {
 
         try {
             List<PedidoFormacao> pedidosFormacaoList = pedidoFormacaoService.getPedidosFormacao();
-
-            JSONObject obj = new JSONObject();
             JSONArray arr = new JSONArray();
-            JSONObject obj2 = new JSONObject();
-            obj2.put("Test", 2);
-
 
             for (PedidoFormacao p : pedidosFormacaoList) {
                 arr.put(p.toJSON());
             }
-            obj.put("listaFormacoes", arr);
+
+            return new ResponseEntity<>(
+                    arr.toString(),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    "Erro ao aceder aos pedidos de formações.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/pedidosFormacaoEquipa")
+    @PreAuthorize("hasRole('GESTOR')")
+    public ResponseEntity<?> getPedidosFormacaoEquipa(@RequestParam("id") String id_str) {
+        try {
+            long gestorId = Long.parseLong(id_str);
+            List<PedidoFormacao> pedidosFormacaoList = pedidoFormacaoService.getPedidosFormacaoEquipa(gestorId);
+            JSONArray arr = new JSONArray();
+
+            for (PedidoFormacao p : pedidosFormacaoList) {
+                arr.put(p.toJSON());
+            }
             return new ResponseEntity<>(
                     arr.toString(),
                     HttpStatus.OK);
