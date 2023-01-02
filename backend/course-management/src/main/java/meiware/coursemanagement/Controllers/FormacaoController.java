@@ -6,6 +6,7 @@ import meiware.coursemanagement.Entities.JPA.PedidoRejeitado;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Images.PedidoFormacaoImage;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
+import meiware.coursemanagement.Services.JPA.IUtilizadorService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
 
 import org.json.JSONArray;
@@ -29,6 +30,9 @@ public class FormacaoController {
     @Autowired
     IPedidoFormacaoService pedidoFormacaoService;
 
+    @Autowired
+    IUtilizadorService utilizadorService; //Necessario para buscar as formacoes por utilizador via email
+
     // TODO: perguntar ao Jordão como é que ele vai tratar da aceitação/recusa das
     // formações
 
@@ -39,16 +43,12 @@ public class FormacaoController {
         try {
             List<PedidoFormacao> pedidosFormacaoList = pedidoFormacaoService.getPedidosFormacao();
 
-            JSONObject obj = new JSONObject();
             JSONArray arr = new JSONArray();
-            JSONObject obj2 = new JSONObject();
-            obj2.put("Test", 2);
 
 
             for (PedidoFormacao p : pedidosFormacaoList) {
                 arr.put(p.toJSON());
             }
-            obj.put("listaFormacoes", arr);
             return new ResponseEntity<>(
                     arr.toString(),
                     HttpStatus.OK);
@@ -56,6 +56,25 @@ public class FormacaoController {
             return new ResponseEntity<>(
                     "Erro ao aceder aos pedidos de formações.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @GetMapping(value = "pedidosFormacaoByUserId")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> getListaFormacaoByUser(@RequestParam("id") String id){
+        try{
+            Utilizador utilizador = utilizadorService.getUtilizadorById(Long.valueOf(id));
+            JSONObject obj = utilizador.listaFormacaoUsertoJSON();
+
+            return new ResponseEntity<>(
+                    obj.toMap(),
+
+                HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                "Erro ao aceder aos pedidos de formações.",
+                HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -73,7 +92,7 @@ public class FormacaoController {
             }
 
             return new ResponseEntity<>(
-                    arr,
+                    arr.toString(),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(

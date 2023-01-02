@@ -52,4 +52,5 @@ public class PedidoRejeitado extends PedidoFormacao{
     public void setQuemRejeitou(Utilizador quemRejeitou) {
         this.quemRejeitou = quemRejeitou;
     }
+
 }

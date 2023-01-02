@@ -169,6 +169,46 @@ public class Utilizador {
         return obj;
     }
 
+    public JSONObject listaFormacaoUsertoJSON(){
+        JSONObject obj = new JSONObject();
+
+        JSONArray lists = new JSONArray();
+        for (PedidoFormacao listaPedidos : listPedidos){
+           //Retorna um JSON Object com a formacao
+            lists.put(listaFormacaoToJSON(listaPedidos));
+        }
+        obj.put("listaFormacoes", lists);
+        return obj;
+    }
+
+    public JSONObject listaFormacaoToJSON(PedidoFormacao listaFormacao){
+        JSONObject obj = new JSONObject();
+        obj.put("username", listaFormacao.getQuemFezPedido().getNome());
+        obj.put("nomeFormacao", listaFormacao.getNome());
+        obj.put("dataFormacao", listaFormacao.getDataCriacao());
+        obj.put("idCurso", listaFormacao.getId());
+
+        //PENDENTE
+        //CURSO
+        //REJEITADA
+        //TERMINADA
+
+        if (listaFormacao.getDiscriminatorValue().equals("PedidoFormacao") && !listaFormacao.isApagada()){
+            // A formacao ainda esta pendente
+            obj.put("tipoFormacao", "PENDENTE");
+        }else if (listaFormacao.getDiscriminatorValue().equals("APROVADA") && !listaFormacao.isApagada()){
+            if (listaFormacao instanceof PedidoAprovado){
+                PedidoAprovado auxAprovado = (PedidoAprovado)listaFormacao;
+                if (auxAprovado.isConcluida())
+                    obj.put("tipoFormacao", "TERMINADA");
+                obj.put("tipoFormacao", "CURSO");
+            }
+        }else if (listaFormacao.getDiscriminatorValue().equals("REJEITADA") && !listaFormacao.isApagada() ) {
+            obj.put("tipoFormacao", "REJEITADA");
+        }
+        return obj;
+    }
+
     public JSONObject toJSONAuth(){
         JSONObject obj = new JSONObject();
         obj.put("id", id);
