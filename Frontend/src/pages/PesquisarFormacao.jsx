@@ -194,7 +194,7 @@ export const PesquisarFormacao = ({}) => {
             .map((card, index) => (
               <Formacao
                 key={index}
-                username={card.quemFezPedido}
+                username={card.quemFezPedidoNome}
                 nomeformacao={card.nome}
                 dataFormacao={card.dataCriacao}
                 justificacaoFormacao={card.justificacao}
