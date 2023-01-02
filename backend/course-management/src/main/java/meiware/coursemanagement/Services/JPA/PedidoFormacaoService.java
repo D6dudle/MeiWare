@@ -51,6 +51,19 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
+    public List<PedidoFormacao> getPedidosFormacaoEquipa(long gestorId) {
+        List<PedidoFormacao> pedidosFormacao = new ArrayList<>();
+
+        try {
+            pedidosFormacao = pedidoFormacaoRepository.findPedidoFormacaoByApagadaFalseAndQuemFezPedidoManagerIdOrderByDataCriacaoDesc(gestorId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return pedidosFormacao;
+    }
+
+    @Override
     public List<PedidoAprovado> getPedidosAprovados() {
         List<PedidoAprovado> formacoesAprovadas = new ArrayList<>();
 

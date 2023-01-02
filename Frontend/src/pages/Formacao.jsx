@@ -9,7 +9,7 @@ export default function Formacao() {
 
   return (
     <div className="pl-8 pt-4 pr-8 w-full h-full overflow-scroll scrollbar-hide">
-      <h1 className="text-2xl font-bold">Bem vinda utilizador!</h1>
+      <h1 className="text-2xl font-bold">Bem vindo(a) utilizador(a)!</h1>
       <div className="pt-12 ">
         <h1 className="text-4xl font-bold pb-4">Dashboard Overview</h1>
         <StatsLargeCard
