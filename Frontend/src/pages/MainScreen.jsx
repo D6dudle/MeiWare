@@ -65,10 +65,11 @@ export default function MainScreen() {
 
 
             {/* Definir todas as routes existentes */}
+            {/*
             <Route path="/formacao/pesquisar-formacao" element={<PrivateRoutes.GestorRoute/>}>
               <Route path="" element={<PesquisarFormacao />}/>
-            </Route>
-            <Route path="/formacao/pesquisar-formacao/editar-formacao" element={<EditarFormacao />}/>
+            </Route> */}
+            
             <Route path="/" element={<MenuInicial />} />
             <Route path="/formacao" element={<Formacao />} />
             <Route
@@ -77,10 +78,10 @@ export default function MainScreen() {
             />
             
             <Route
-              path="/formacao/listar-formacao"
+              path="/formacao/minhas-formacoes"
               element={<ListarFormacao />}
             />
-            
+            <Route path="/formacao/minhas-formacoes/editar-formacao" element={<EditarFormacao />}/>
             <Route
               path="/formacao/pesquisar-detalhes"
               element={<PesquisarDetalhes />}
@@ -101,7 +102,8 @@ export default function MainScreen() {
 
           <Route path="/controlo" element={<PrivateRoutes.GestorRoute/>}>
             <Route path="" element={<ControloBudget />} />
-            <Route path="/controlo/gerir-pedidos" element={<GerirPedidos />} />
+            <Route path="/controlo/gerir-formacoes" element={<GerirPedidos />} />
+            <Route path="/controlo/gerir-formacoes/editar-formacao" element={<EditarFormacao />}/>
             <Route path="/controlo/colaboradores" element={<Colaboradores />} />
             <Route
               path="/controlo/colaboradores/adicionar-colaborador"

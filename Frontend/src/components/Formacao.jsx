@@ -111,7 +111,7 @@ export const Formacao = ({
                   navigate(
                     {
                       pathname:
-                        "/home/formacao/pesquisar-formacao/editar-formacao",
+                      window.location.pathname + "/editar-formacao",
                       search: createSearchParams(params).toString(),
                     },
                     {

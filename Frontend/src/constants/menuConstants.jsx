@@ -14,15 +14,10 @@ export const Menus = [
         to: "formacao/adicionar-formacao",
         opened: false,
       },
+    
       {
-        title: "Pesquisar formação",
-        to: "formacao/pesquisar-formacao",
-        opened: false,
-        gestor: true,
-      },
-      {
-        title: "Listar formação",
-        to: "formacao/listar-formacao",
+        title: "Minhas formações",
+        to: "formacao/minhas-formacoes",
         opened: false,
       },
     ],
@@ -36,8 +31,8 @@ export const Menus = [
     gestor: true,
     submenuItems: [
       {
-        title: "Gerir pedidos",
-        to: "controlo/gerir-pedidos",
+        title: "Gerir formações",
+        to: "controlo/gerir-formacoes",
         opened: false,
       },
       {
