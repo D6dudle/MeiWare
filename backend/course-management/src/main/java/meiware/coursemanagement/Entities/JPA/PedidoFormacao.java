@@ -239,8 +239,8 @@ public class PedidoFormacao {
         obj.put("dataCriacao", dataCriacao);
         obj.put("dataUltimoUpdate", dataUltimoUpdate);
         obj.put("listAnexoRef", listAnexoRefs);
-        obj.put("quemFezPedido", quemFezPedido.getId());
-
+        obj.put("quemFezPedidoId", quemFezPedido.getId());
+        obj.put("quemFezPedidoNome", quemFezPedido.getNome());
         return obj;
     }
 

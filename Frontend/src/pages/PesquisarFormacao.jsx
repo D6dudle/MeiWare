@@ -11,6 +11,8 @@ import DateOrder from "../components/DateOrder";
 import { dataCard } from "../constants/menuConstants";
 import { useEffect } from "react";
 import { EmptyState } from "../components/EmptyState";
+import PedidoFormacaoService from "../services/pedido-formacao.serivce";
+import UserService from "../services/user.service";
 
 export const PesquisarFormacao = ({}) => {
   const [formationCamps, setFormationCamps] = useState({
@@ -18,10 +20,24 @@ export const PesquisarFormacao = ({}) => {
     data: new Date(),
   });
 
-  const [dataCardList, setDataCardList] = useState(dataCard);
+  const [dataCardList, setDataCardList] = useState([]);
   const [isRejeitadas, setAprovadas] = useState(false); // Is Aprovadas open?
   const [query, setQuery] = useState("");
   const [filteredArray, setFilteredArray] = useState(null);
+
+  useEffect(() => {
+    const user = UserService.getCurrentUser();
+    if(user.isAdministrador) {
+      PedidoFormacaoService.getPedidosFormacaoAll().then((data)=>{
+        setDataCardList(data);
+      });
+    }
+    else if(user.isGestor) {
+      PedidoFormacaoService.getPedidosFormacaoEquipa(user.id).then((data)=>{
+        setDataCardList(data);
+      });
+    }
+  }, []);
 
   const corFormacao = [
     { tipo: "TERMINADA", cor: "primary" },
@@ -151,6 +167,7 @@ export const PesquisarFormacao = ({}) => {
               <DateOrder />
             </div>
           </div>
+          
           <div className="flex mb-4 mr-auto">
             <Calendar
               color=""
@@ -162,27 +179,26 @@ export const PesquisarFormacao = ({}) => {
           </div>
         </div>
       </div>
-
       <div className="mt-8">
         {dataCardList.filter(
           (item) =>
-            item.nomeformacao.toLowerCase().includes(query) &&
+            item.nome.toLowerCase().includes(query) &&
             containsList(formationCamps.nomeColaborador, item.username)
         ).length > 0 ? (
           dataCardList
             .filter(
               (item) =>
-                item.nomeformacao.toLowerCase().includes(query) &&
+                item.nome.toLowerCase().includes(query) &&
                 containsList(formationCamps.nomeColaborador, item.username)
             )
             .map((card, index) => (
               <Formacao
                 key={index}
-                username={card.username}
-                nomeformacao={card.nomeformacao}
-                dataFormacao={card.dataFormacao}
-                justificacaoFormacao={card.justificacaoFormacao}
-                idCurso={card.idCurso}
+                username={card.quemFezPedidoNome}
+                nomeformacao={card.nome}
+                dataFormacao={card.dataCriacao}
+                justificacaoFormacao={card.justificacao}
+                idCurso={card.id}
                 tipoFormacao={card.tipoFormacao}
                 consultar={card.consultar}
                 urlBack={"/home/formacao/pesquisar-formacao"}

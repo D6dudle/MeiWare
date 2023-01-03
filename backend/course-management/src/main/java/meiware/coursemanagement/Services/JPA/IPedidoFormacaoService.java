@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface IPedidoFormacaoService {
     List<PedidoFormacao> getPedidosFormacao();
+    List<PedidoFormacao> getPedidosFormacaoEquipa(long gestorId);
     List<PedidoAprovado> getPedidosAprovados();
     List<PedidoRejeitado> getPedidosRejeitados();
     PedidoFormacao getPedidoFormacaoById(Long id);

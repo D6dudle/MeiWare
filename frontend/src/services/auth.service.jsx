@@ -9,11 +9,9 @@ const login = (email, password) => {
       password,
     })
     .then((response) => {
-      if (response.data.accessToken) {
-        console.log("response " + response.data.user);
-       
+      if (response.data.token) {
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        
+        localStorage.setItem("token", JSON.stringify(response.data.token));
       }
 
       return response.data;
@@ -22,6 +20,7 @@ const login = (email, password) => {
 
 const logout = () => {
   localStorage.removeItem("user");
+  localStorage.removeItem("token");
 };
 
 const register = (name, email, password, roleList) => {
@@ -40,7 +39,8 @@ const register = (name, email, password, roleList) => {
 
 const isLoggedIn = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  return user != null;
+  const token = JSON.parse(localStorage.getItem("token"));
+  return user != null && token != null;
 };
 
 const AuthService = {
