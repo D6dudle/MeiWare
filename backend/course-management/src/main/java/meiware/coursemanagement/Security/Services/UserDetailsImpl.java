@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import meiware.coursemanagement.Entities.JPA.*;
 import meiware.coursemanagement.Security.JWT.AuthTokenFilter;
-import net.minidev.json.JSONObject;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;

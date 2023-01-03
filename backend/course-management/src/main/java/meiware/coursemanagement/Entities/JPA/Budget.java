@@ -1,7 +1,7 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
-import net.minidev.json.JSONObject;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 

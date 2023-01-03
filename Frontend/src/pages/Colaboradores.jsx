@@ -17,7 +17,7 @@ export default function Colaboradores() {
   const [search, setSearch] = useState();
   const [modal, setModal] = useState({ show: false, data: null });
 
-
+  const [dados, setDados] = useState(null);
   
   const dataUsers = React.useMemo(() => getDataUsers(), []);
   const columns = React.useMemo(() => getColumnsTable(), []);

@@ -154,18 +154,33 @@ public class Utilizador {
         obj.put("isGestor", isGestor());
         obj.put("isAdministrador", isAdministrador());
 
+
         if (manager == null)
             obj.put("managerId", -1);
         else
             obj.put("managerId", manager.getId());
 
+        //Daqui para baixo está a dar erro
+        System.out.println("Lista de Pedidos: " + listPedidos.size());
+
         JSONArray lists = new JSONArray();
+        JSONArray listsBudget = new JSONArray();
+
         for (PedidoFormacao listaPedidos : listPedidos){
+
             lists.put(listaPedidos.toJSON());
+
         }
+
         obj.put("listaFormacoes", lists);
 
-        obj.put("listBudget", listBudget);
+
+        for (Budget listaBudget : listBudget){
+
+            listsBudget.put(listaBudget.toJSON());
+        }
+        obj.put("listBudget", listsBudget);
+
         return obj;
     }
 
@@ -182,6 +197,7 @@ public class Utilizador {
         else
             obj.put("managerId", manager.getId());
 
+        System.out.println(obj);
         return obj;
     }
     @Override

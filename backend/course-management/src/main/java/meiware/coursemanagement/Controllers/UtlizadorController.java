@@ -4,7 +4,8 @@ import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
-import net.minidev.json.JSONArray;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +30,14 @@ public class UtlizadorController {
         try{
             List<Utilizador> listaUtilizadores = utilizadorService.getUtilizadores();
 
+
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.add(u.toJSON());
+
+                arr.put(u.toJSON());
             }
+
 
             return new ResponseEntity<>(
                     arr,
@@ -55,7 +59,7 @@ public class UtlizadorController {
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.add(u.toJSON());
+                arr.put(u.toJSON());
             }
             return new ResponseEntity<>(
                     arr,
@@ -77,7 +81,7 @@ public class UtlizadorController {
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.add(u.toJSON());
+                arr.put(u.toJSON());
             }
             return new ResponseEntity<>(
                     arr,
@@ -99,7 +103,7 @@ public class UtlizadorController {
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.add(u.toJSON());
+                arr.put(u.toJSON());
             }
             return new ResponseEntity<>(
                     arr,
@@ -127,7 +131,7 @@ public class UtlizadorController {
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.add(u.toJSON());
+                arr.put(u.toJSON());
             }
             return new ResponseEntity<>(
                     arr,
