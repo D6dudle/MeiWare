@@ -8,6 +8,8 @@ import users from "../constants/usersAux"; // Remove later
 import Modal from "../components/Modal";
 import { getDataUsers, getColumnsTable } from "../constants/tabelaUtilizadores";
 import Table from "../components/TableComponent/Table";
+import ColaboradoresService from "../services/get-colaboradores.service";
+import UserService from "../services/user.service";
 
 export default function Colaboradores() {
   const navigate = useNavigate();
@@ -33,27 +35,26 @@ export default function Colaboradores() {
     setModal({ show: false, data: null });
   };
 
+  useEffect(() => {
+    const user = UserService.getCurrentUser();
+    if(user.isAdministrador) {
+      console.log("ALL COLABORADORES");
+      ColaboradoresService.getColaboradoresAll().then((data)=>{
+        console.log(data);
+        //setDataCardList(data);
+      });
+    }
+  }, []);
+
   /*ZONA dE TESTES*/
 
-  const getColaboradores = () => {
-    axios
-      .get("http://localhost:8080/api/utilizador/colaboradores")
-      .then(function (response) {
-        console.log("Response: " + response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(function () {});
 
-    return [];
-  };
-
-  const [data, setData] = useState(() => getColaboradores(), []);
+  //const [data, setData] = useState(() => getColaboradores(), []);
 
 
 
-  console.log("Data from database: " + data);
+  //console.log("Data from database: " + data);
+  /*
   const teste =
     (() => {
       console.log("data --> ", data);
@@ -105,6 +106,8 @@ export default function Colaboradores() {
             value={search}
             callback={handleType}
           />
+          
+          
 
           <div className="flex md:flex-row flex-col justify-evenly md:justify-between md:items-center items-start gap-8 pt-2">
             <div className="flex gap-1">

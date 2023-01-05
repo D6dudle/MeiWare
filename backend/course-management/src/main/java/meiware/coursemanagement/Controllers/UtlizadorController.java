@@ -40,7 +40,7 @@ public class UtlizadorController {
 
 
             return new ResponseEntity<>(
-                    arr.toString(),
+                    arr,
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
@@ -62,7 +62,7 @@ public class UtlizadorController {
                 arr.put(u.toJSON());
             }
             return new ResponseEntity<>(
-                    arr,
+                    arr.toString(),
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
