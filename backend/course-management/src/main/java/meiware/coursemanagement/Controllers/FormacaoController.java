@@ -89,7 +89,6 @@ public class FormacaoController {
 
             return new ResponseEntity<>(
                     obj.toMap(),
-
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(

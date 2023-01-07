@@ -30,7 +30,6 @@ export const PesquisarFormacao = ({}) => {
     if (user.isAdministrador) {
       PedidoFormacaoService.getPedidosFormacaoAll().then((data) => {
         setDataCardList(data);
-        console.log(dataCardList);
       });
     } else if (user.isGestor) {
       PedidoFormacaoService.getPedidosFormacaoEquipa(user.id).then((data) => {
@@ -195,7 +194,7 @@ export const PesquisarFormacao = ({}) => {
               <Formacao
                 key={index}
                 username={card.quemFezPedido}
-                nomeformacao={card.nome}
+                nomeFormacao={card.nome}
                 dataFormacao={card.dataCriacao}
                 justificacaoFormacao={card.justificacao}
                 idCurso={card.id}

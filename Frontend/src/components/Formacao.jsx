@@ -7,7 +7,7 @@ import Modal from "./Modal";
 
 export const Formacao = ({
   username,
-  nomeformacao,
+  nomeFormacao,
   dataFormacao,
   justificacaoFormacao,
   idCurso,
@@ -88,7 +88,7 @@ export const Formacao = ({
                   onClick={(e) =>
                     handleConsultarFormacaoClick(e, {
                       username,
-                      nomeformacao,
+                      nomeFormacao,
                       dataFormacao,
                       justificacaoFormacao,
                       idCurso,
@@ -172,7 +172,7 @@ export const Formacao = ({
           <div>
             <p className="text-sm text-white font-semibold pt-3">
               <span className="text-gray3">Nome da formação: </span>
-              {nomeformacao}
+              {nomeFormacao}
             </p>
           </div>
           <div className="flex pt-3 gap-10 ">

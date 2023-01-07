@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Tabs, TabsHeader, TabsBody, Tab } from "@material-tailwind/react";
 import TextInput from "../components/TextInput";
 import { Formacao } from "../components/Formacao";
-import { Formacoes } from "../constants/formacoes";
 import DateOrder from "./DateOrder";
-import AproveOrder from "./AproveOrder";
 import users from "../constants/usersAux.json";
 import { EmptyState } from "./EmptyState";
-
+import UserService from "../services/user.service";
 import { Loading } from "./Loading";
 import ListaFormacaoUserService from "../services/getListaFormacaoUser";
 import { AlertCircle, Zap, Check } from "react-feather";
@@ -40,17 +38,15 @@ export default function TrainingTabs({ sideBarName }) {
   ];
 
   useEffect(() => {
-    setTimeout(() => {
-      ListaFormacaoUserService.getListaFormacaoUser(3).then((data) => {
-        setRawList(data);
-        setLoading(false); //set loading state
-      });
-    }, 1000);
+    const user = UserService.getCurrentUser();
+    ListaFormacaoUserService.getListaFormacaoUser(user.id).then((data) => {
+      setRawList(data);
+      setLoading(false); //set loading state
+    });
   }, []);
 
   useEffect(() => {
     if (rawList != null) {
-      console.log(rawList);
       const arr = Object.values(rawList)[0];
 
       for (const property in arr) {
@@ -124,17 +120,13 @@ export default function TrainingTabs({ sideBarName }) {
     setFilteredList(updatedList);
   };
 
-  //useEffect(() => {
-  //console.log("Update");
-  //console.log(originalList);
-  //}, [originalList]);
-
   useEffect(() => {
     var list = originalList?.filter((item) => item?.label == activeFilter)[0]
       ?.formacoes;
+
     if (search && search !== "") {
       list = list.filter((item) =>
-        item.nomeformacao.toLowerCase().includes(search.toLowerCase())
+        item.nomeFormacao.toLowerCase().includes(search.toLowerCase())
       );
       if (values.length > 0) {
         for (let i = 0; i < values[1].length; i++) {
@@ -277,7 +269,7 @@ export default function TrainingTabs({ sideBarName }) {
                   <Formacao
                     key={index}
                     username={card.username}
-                    nomeformacao={card.nomeformacao}
+                    nomeFormacao={card.nomeFormacao}
                     dataFormacao={card.dataFormacao}
                     justificacaoFormacao={card.justificacaoFormacao}
                     idCurso={card.idCurso}

@@ -188,6 +188,7 @@ public class Utilizador {
         obj.put("dataFormacao", listaFormacao.getDataCriacao());
         obj.put("idCurso", listaFormacao.getId());
 
+        obj.put("justificacaoFormacao", listaFormacao.getJustificacao());
         //PENDENTE
         //CURSO
         //REJEITADA
