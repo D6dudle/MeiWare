@@ -27,13 +27,13 @@ export const PesquisarFormacao = ({}) => {
 
   useEffect(() => {
     const user = UserService.getCurrentUser();
-    if(user.isAdministrador) {
-      PedidoFormacaoService.getPedidosFormacaoAll().then((data)=>{
+    if (user.isAdministrador) {
+      PedidoFormacaoService.getPedidosFormacaoAll().then((data) => {
         setDataCardList(data);
+        console.log(dataCardList);
       });
-    }
-    else if(user.isGestor) {
-      PedidoFormacaoService.getPedidosFormacaoEquipa(user.id).then((data)=>{
+    } else if (user.isGestor) {
+      PedidoFormacaoService.getPedidosFormacaoEquipa(user.id).then((data) => {
         setDataCardList(data);
       });
     }
@@ -167,7 +167,7 @@ export const PesquisarFormacao = ({}) => {
               <DateOrder />
             </div>
           </div>
-          
+
           <div className="flex mb-4 mr-auto">
             <Calendar
               color=""

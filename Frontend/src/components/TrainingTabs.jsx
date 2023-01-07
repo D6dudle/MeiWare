@@ -8,9 +8,71 @@ import AproveOrder from "./AproveOrder";
 import users from "../constants/usersAux.json";
 import { EmptyState } from "./EmptyState";
 
+import { Loading } from "./Loading";
+import ListaFormacaoUserService from "../services/getListaFormacaoUser";
+import { AlertCircle, Zap, Check } from "react-feather";
+
 export default function TrainingTabs({ sideBarName }) {
-  const [originalList, setOriginalList] = useState(Formacoes);
-  const [filteredList, setFilteredList] = useState(originalList[0].formacoes);
+  const [isLoading, setLoading] = useState(true); // Loading state
+  const [rawList, setRawList] = useState([]);
+  const [originalList, setOriginalList] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
+
+  var JSONList = [
+    {
+      label: "Formações pendentes",
+      value: "pendentes",
+      icon: <AlertCircle />,
+      formacoes: [],
+    },
+    {
+      label: "Formações a decorrer",
+      value: "decorrer",
+      icon: <Zap />,
+      formacoes: [],
+    },
+    {
+      label: "Formações terminadas",
+      value: "terminadas",
+      icon: <Check />,
+      formacoes: [],
+    },
+  ];
+
+  useEffect(() => {
+    setTimeout(() => {
+      ListaFormacaoUserService.getListaFormacaoUser(3).then((data) => {
+        setRawList(data);
+        setLoading(false); //set loading state
+      });
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    if (rawList != null) {
+      console.log(rawList);
+      const arr = Object.values(rawList)[0];
+
+      for (const property in arr) {
+        // Resposta com a lista de formações do user
+        if (arr[property]?.tipoFormacao === "PENDENTE") {
+          JSONList[0].formacoes.push(arr[property]);
+          //console.log("PENDENTE");
+        } else if (arr[property]?.tipoFormacao === "CURSO") {
+          JSONList[1].formacoes.push(arr[property]);
+          //console.log("CURSO");
+        } else if (arr[property]?.tipoFormacao === "TERMINADA") {
+          JSONList[2].formacoes.push(arr[property]);
+          //console.log("TERMINADA");
+        } else {
+          //console.log("REJEITADA");
+        }
+      }
+
+      setOriginalList(JSONList);
+      setFilteredList(JSONList[0].formacoes);
+    }
+  }, [rawList]);
 
   const [colabList, setColabList] = useState(users);
 
@@ -62,14 +124,14 @@ export default function TrainingTabs({ sideBarName }) {
     setFilteredList(updatedList);
   };
 
-  useEffect(() => {
-    console.log("Update");
-    console.log(originalList);
-  }, [originalList]);
+  //useEffect(() => {
+  //console.log("Update");
+  //console.log(originalList);
+  //}, [originalList]);
 
   useEffect(() => {
-    var list = originalList.filter((item) => item.label == activeFilter)[0]
-      .formacoes;
+    var list = originalList?.filter((item) => item?.label == activeFilter)[0]
+      ?.formacoes;
     if (search && search !== "") {
       list = list.filter((item) =>
         item.nomeformacao.toLowerCase().includes(search.toLowerCase())
@@ -87,10 +149,12 @@ export default function TrainingTabs({ sideBarName }) {
       }
     }
 
-    var tempData = [...list];
-    tempData = sortByDate(tempData);
-    setFilteredList(tempData);
-  }, [search, values, activeFilter, originalList, dateSortIncreasing]);
+    if (list != null) {
+      var tempData = [...list];
+      tempData = sortByDate(tempData);
+      setFilteredList(tempData);
+    }
+  }, [search, values, activeFilter, dateSortIncreasing]); //Estava aqui o originalList tb
 
   const filterColab = (inputValue) => {
     return colabList.filter((i) =>
@@ -133,6 +197,9 @@ export default function TrainingTabs({ sideBarName }) {
   };
 
   if (activeFilter == null) handleSelectedTab("Formações pendentes"); // Default tab
+
+  if (originalList == null || activeFilter?.length == null || isLoading)
+    return <Loading />;
 
   return (
     <Tabs
@@ -203,7 +270,7 @@ export default function TrainingTabs({ sideBarName }) {
           ) : null}
           <div className="overflowy-y-visible flex flex-nowrap justify-between flex-col gap-3">
             {activeFilter !== null &&
-            Object.keys(filteredList).length > 0 &&
+            filteredList.length > 0 &&
             filteredList !== null ? (
               filteredList.map((card, index) => {
                 return (
