@@ -202,7 +202,10 @@ public class Utilizador {
                 PedidoAprovado auxAprovado = (PedidoAprovado)listaFormacao;
                 if (auxAprovado.isConcluida())
                     obj.put("tipoFormacao", "TERMINADA");
-                obj.put("tipoFormacao", "CURSO");
+                else{
+                    obj.put("tipoFormacao", "CURSO");
+                }
+
             }
         }else if (listaFormacao.getDiscriminatorValue().equals("REJEITADA") && !listaFormacao.isApagada() ) {
             obj.put("tipoFormacao", "REJEITADA");

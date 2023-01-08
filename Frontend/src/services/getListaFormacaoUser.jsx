@@ -12,8 +12,22 @@ async function getListaFormacaoUser(userId) {
     .then((r) => r.data);
 }
 
+const finalizaFormacaoUser = (formacaoId, nomeFormacao) => {
+  return axios
+    .put(
+      API_URL + "finalizarPedidoFormacao",
+      {
+        pedidoFormacaoId: formacaoId,
+        nomeFormacao: nomeFormacao,
+      },
+      { headers: authHeader() }
+    )
+    .then((r) => r.data);
+};
+
 const ListaFormacaoUserService = {
   getListaFormacaoUser,
+  finalizaFormacaoUser,
 };
 
 export default ListaFormacaoUserService;

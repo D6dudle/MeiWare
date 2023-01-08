@@ -17,6 +17,7 @@ export const Formacao = ({
   onItemDelete,
   sidebarName,
   onAceitarclick,
+  onFinalizarClick,
 }) => {
   const [modal, setModal] = useState({ show: false, data: null });
 
@@ -39,6 +40,14 @@ export const Formacao = ({
 
   const corFormacaoBorder = corFormacao.find(
     ({ tipo }) => tipo == tipoFormacao
+  );
+
+  console.log(
+    justificacaoFormacao +
+      " " +
+      corFormacaoBorder?.cor +
+      " " +
+      corFormacaoBorder?.tipo
   );
 
   const navigate = useNavigate();
@@ -64,6 +73,7 @@ export const Formacao = ({
   const handleFinalizarFormacaoClick = (e) => {
     e.preventDefault();
     alert("Click em Finalizar formação");
+    onFinalizarClick();
   };
 
   return (
@@ -159,12 +169,13 @@ export const Formacao = ({
               </div>
               <div
                 className={`${tipoFormacao === "CURSO" ? null : "hidden"}`}
-                onClick={handleFinalizarFormacaoClick}
+                //onClick={handleFinalizarFormacaoClick}
               >
                 <Button
                   className="h-10"
                   iconName="FINALIZAR"
                   textButton="finalizar"
+                  handleClick={handleFinalizarFormacaoClick}
                 />
               </div>
             </div>

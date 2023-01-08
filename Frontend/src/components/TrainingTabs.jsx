@@ -66,6 +66,7 @@ export default function TrainingTabs({ sideBarName }) {
       }
 
       setOriginalList(JSONList);
+      console.log(JSONList);
       setFilteredList(JSONList[0].formacoes);
     }
   }, [rawList]);
@@ -116,6 +117,40 @@ export default function TrainingTabs({ sideBarName }) {
     //Passar a formação atual para a formação a decorrer
     card.tipoFormacao = "CURSO";
     tempData[indexFormacaoDecorrer].formacoes.push(card);
+    setOriginalList(tempData);
+    setFilteredList(updatedList);
+  };
+
+  const handleFinalizarFormacao = (card) => {
+    //Updates the Database
+    ListaFormacaoUserService.finalizaFormacaoUser(
+      card.idCurso,
+      card.nomeFormacao
+    ).then((data) => {
+      console.log(data);
+    });
+    //Igual ao handleCancelarFormacao (remove o elemento da lista)
+    //Gets the index of object to remove the formation
+
+    const indexList = originalList.findIndex((element) => {
+      return element.label === activeFilter;
+    });
+
+    const updatedList = originalList[indexList].formacoes.filter(
+      (formacao) => formacao.idCurso !== card.idCurso
+    );
+
+    const indexFormacaoDecorrer = originalList.findIndex((element) => {
+      return element.label === "Formações terminadas";
+    });
+
+    var tempData = [...originalList];
+    tempData[indexList].formacoes = updatedList;
+
+    //Passar a formação atual para a formação a decorrer
+    card.tipoFormacao = "TERMINADA";
+    tempData[indexFormacaoDecorrer].formacoes.push(card);
+    console.log(card);
     setOriginalList(tempData);
     setFilteredList(updatedList);
   };
@@ -279,6 +314,7 @@ export default function TrainingTabs({ sideBarName }) {
                     onItemDelete={() => handleCancelarFormacao(card)}
                     sidebarName={sideBarName}
                     onAceitarclick={() => handleAceitarFormacaoPendente(card)}
+                    onFinalizarClick={() => handleFinalizarFormacao(card)}
                   />
                 );
               })

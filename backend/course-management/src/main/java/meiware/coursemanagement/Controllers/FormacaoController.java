@@ -242,6 +242,27 @@ public class FormacaoController {
         }
     }
 
+    @PutMapping(value = "/finalizarPedidoFormacao")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> finalizaPedidoFormacao(@RequestBody String JSONBody) {
+        try {
+            JSONObject object = new JSONObject(JSONBody);
+            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            String nomeFormacao = object.getString("nomeFormacao");
+
+            pedidoFormacaoService.finalizaPedidoFormacao(pedidoFormacaoId);
+                return new ResponseEntity<>(
+                        "Pedido de formação: " + nomeFormacao + " aprovado com sucesso.",
+                        HttpStatus.OK);
+
+            } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Erro ao aprovar o pedido de formação.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping(value = "/aprovarPedidoFormacaoAdmin")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> aprovarPedidoFormacaoAdmin(@RequestBody String JSONBody) {
@@ -375,4 +396,8 @@ public class FormacaoController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
+
 }
