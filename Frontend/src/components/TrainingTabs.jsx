@@ -66,7 +66,6 @@ export default function TrainingTabs({ sideBarName }) {
       }
 
       setOriginalList(JSONList);
-      console.log(JSONList);
       setFilteredList(JSONList[0].formacoes);
     }
   }, [rawList]);

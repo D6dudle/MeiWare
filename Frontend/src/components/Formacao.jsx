@@ -42,14 +42,6 @@ export const Formacao = ({
     ({ tipo }) => tipo == tipoFormacao
   );
 
-  console.log(
-    justificacaoFormacao +
-      " " +
-      corFormacaoBorder?.cor +
-      " " +
-      corFormacaoBorder?.tipo
-  );
-
   const navigate = useNavigate();
 
   const handleConsultarFormacaoClick = (e, formacao) => {
