@@ -46,7 +46,25 @@ public class FormacaoController {
             JSONArray arr = new JSONArray();
 
             for (PedidoFormacao p : pedidosFormacaoList) {
-                arr.put(p.toJSON());
+                JSONObject auxP = p.toJSON();
+                auxP.put("username", p.getQuemFezPedido().getNome());
+                if (p.getDiscriminatorValue().equals("PedidoFormacao") && !p.isApagada()){
+                    // A formacao ainda esta pendente
+                    auxP.put("tipoFormacao", "PENDENTE");
+                }else if (p.getDiscriminatorValue().equals("APROVADA") && !p.isApagada()){
+                    if (p instanceof PedidoAprovado){
+                        PedidoAprovado auxAprovado = (PedidoAprovado)p;
+                        if (auxAprovado.isConcluida())
+                            auxP.put("tipoFormacao", "TERMINADA");
+                        else{
+                            auxP.put("tipoFormacao", "CURSO");
+                        }
+
+                    }
+                }else if (p.getDiscriminatorValue().equals("REJEITADA") && !p.isApagada() ) {
+                    auxP.put("tipoFormacao", "REJEITADA");
+                }
+                arr.put(auxP);
             }
 
             return new ResponseEntity<>(

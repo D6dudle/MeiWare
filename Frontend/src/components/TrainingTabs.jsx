@@ -9,13 +9,17 @@ import UserService from "../services/user.service";
 import { Loading } from "./Loading";
 import ListaFormacaoUserService from "../services/getListaFormacaoUser";
 import { AlertCircle, Zap, Check } from "react-feather";
+import PedidoFormacaoService from "../services/pedido-formacao.serivce";
 
-export default function TrainingTabs({ sideBarName }) {
+export default function TrainingTabs({ sideBarName, nomeEcra }) {
   const [isLoading, setLoading] = useState(true); // Loading state
   const [rawList, setRawList] = useState([]);
   const [originalList, setOriginalList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
 
+  var urlBack = "";
+
+  
   var JSONList = [
     {
       label: "Formações pendentes",
@@ -37,38 +41,81 @@ export default function TrainingTabs({ sideBarName }) {
     },
   ];
 
-  useEffect(() => {
-    const user = UserService.getCurrentUser();
-    ListaFormacaoUserService.getListaFormacaoUser(user.id).then((data) => {
-      setRawList(data);
-      setLoading(false); //set loading state
-    });
-  }, []);
 
-  useEffect(() => {
-    if (rawList != null) {
-      const arr = Object.values(rawList)[0];
-
-      for (const property in arr) {
-        // Resposta com a lista de formações do user
-        if (arr[property]?.tipoFormacao === "PENDENTE") {
-          JSONList[0].formacoes.push(arr[property]);
-          //console.log("PENDENTE");
-        } else if (arr[property]?.tipoFormacao === "CURSO") {
-          JSONList[1].formacoes.push(arr[property]);
-          //console.log("CURSO");
-        } else if (arr[property]?.tipoFormacao === "TERMINADA") {
-          JSONList[2].formacoes.push(arr[property]);
-          //console.log("TERMINADA");
-        } else {
-          //console.log("REJEITADA");
+  if(nomeEcra == 'LISTARFORMACOES') {
+    useEffect(() => {
+      const user = UserService.getCurrentUser();
+      ListaFormacaoUserService.getListaFormacaoUser(user.id).then((data) => {
+        setRawList(data);
+        setLoading(false); //set loading state
+      });
+    }, []);
+    useEffect(() => {
+      if (rawList != null) {
+        const arr = Object.values(rawList)[0];
+        for (const property in arr) {
+          // Resposta com a lista de formações do user
+          if (arr[property]?.tipoFormacao === "PENDENTE") {
+            JSONList[0].formacoes.push(arr[property]);
+            //console.log("PENDENTE");
+          } else if (arr[property]?.tipoFormacao === "CURSO") {
+            JSONList[1].formacoes.push(arr[property]);
+            //console.log("CURSO");
+          } else if (arr[property]?.tipoFormacao === "TERMINADA") {
+            JSONList[2].formacoes.push(arr[property]);
+            //console.log("TERMINADA");
+          } else {
+            //console.log("REJEITADA");
+          }
         }
+  
+        setOriginalList(JSONList);
+        setFilteredList(JSONList[0].formacoes);
       }
+    }, [rawList]);
+    urlBack = "/home/formacao/listar-formacao";
+  } else if(nomeEcra == 'GERIRPEDIDOS') {
+    useEffect(() => {
+      const user = UserService.getCurrentUser();
+      if (user.isAdministrador) {
+        PedidoFormacaoService.getPedidosFormacaoAll().then((data) => {
+          setRawList(data);
+          setLoading(false);
+        });
+      } else if (user.isGestor) {
+        PedidoFormacaoService.getPedidosFormacaoEquipa(user.id).then((data) => {
+          setRawList(data);
+          setLoading(false);
+        });
+      }
+    }, []);
+    
+    useEffect(() => {
+      if (rawList != null) {
+        for (const property in rawList) {
+          // Resposta com a lista de formações do user
+          if (rawList[property]?.tipoFormacao === "PENDENTE") {
+            JSONList[0].formacoes.push(rawList[property]);
+            //console.log("PENDENTE");
+          } else if (rawList[property]?.tipoFormacao === "CURSO") {
+            JSONList[1].formacoes.push(rawList[property]);
+            //console.log("CURSO");
+          } else if (rawList[property]?.tipoFormacao === "TERMINADA") {
+            JSONList[2].formacoes.push(rawList[property]);
+            //console.log("TERMINADA");
+          } else {
+            //console.log("REJEITADA");
+          }
+        }
+  
+        setOriginalList(JSONList);
+        setFilteredList(JSONList[0].formacoes);
+      }
+    }, [rawList]);
+    urlBack = "/home/controlo/gerir-pedidos";
+  }
 
-      setOriginalList(JSONList);
-      setFilteredList(JSONList[0].formacoes);
-    }
-  }, [rawList]);
+  
 
   const [colabList, setColabList] = useState(users);
 
@@ -309,7 +356,7 @@ export default function TrainingTabs({ sideBarName }) {
                     idCurso={card.idCurso}
                     tipoFormacao={card.tipoFormacao}
                     consultar={true}
-                    urlBack={"/home/formacao/listar-formacao"}
+                    urlBack={urlBack}
                     onItemDelete={() => handleCancelarFormacao(card)}
                     sidebarName={sideBarName}
                     onAceitarclick={() => handleAceitarFormacaoPendente(card)}
