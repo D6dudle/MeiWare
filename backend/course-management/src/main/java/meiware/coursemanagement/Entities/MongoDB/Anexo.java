@@ -21,6 +21,11 @@ public class Anexo {
         this.nome = nome;
     }
 
+    public Anexo(String id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
     public String getId() {
         return id;
     }
