@@ -277,10 +277,4 @@ public class PedidoFormacao {
                 '}';
     }
 
-    @Transient
-    public String getDiscriminatorValue(){
-        DiscriminatorValue val = this.getClass().getAnnotation( DiscriminatorValue.class );
-
-        return val == null ? null : val.value();
-    }
 }
