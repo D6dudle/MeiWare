@@ -53,7 +53,7 @@ public class PublicacaoService implements IPublicacaoService {
     @Override
     public String createPublicacao(Publicacao newPublicacao, List<MultipartFile> files) {
         try {
-            if (files.size() > 0) {
+            if (files != null && files.size() > 0) {
                 List<Anexo> anexos = new ArrayList<>();
                 for (MultipartFile file: files) {
                     anexos.add(anexoService.createAnexo(file));
@@ -86,8 +86,10 @@ public class PublicacaoService implements IPublicacaoService {
     @Override
     public void removePublicacao(Publicacao publicacao) {
         try {
-            for (Anexo anexo: publicacao.getAnexos()) {
-                anexoService.removeAnexo(anexo.getId());
+            if(publicacao.getAnexos() != null) {
+                for (Anexo anexo : publicacao.getAnexos()) {
+                    anexoService.removeAnexo(anexo.getId());
+                }
             }
 
             publicacaoRepository.delete(publicacao);

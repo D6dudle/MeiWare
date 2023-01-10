@@ -1,5 +1,6 @@
 package meiware.coursemanagement.ServicesMock.MongoDB;
 
+import meiware.coursemanagement.Entities.JPA.AnexoRef;
 import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import meiware.coursemanagement.Repositories.MongoDB.IAnexoRepository;
 import meiware.coursemanagement.Services.MongoDB.AnexoService;
@@ -40,11 +41,13 @@ public class AnexoServiceMock{
 
 
     List<Anexo> anexos = new ArrayList<>();
+    List<AnexoRef> anexosRef = new ArrayList<>();
 
     @BeforeEach
     public void setup(){
         for(int i = 0; i < 3 ; i++){
             anexos.add(new Anexo(String.valueOf(i), "Anexo " + i));
+            anexosRef.add(new AnexoRef("Path" + i, "Nome" + i));
         }
     }
 
@@ -83,15 +86,19 @@ public class AnexoServiceMock{
 
     @DisplayName("Junit test 41 - Teste unitário do método getPedidoFormacaoAnexos de AnexoService.")
     @Test
-    public void getPedidoFormacaoAnexos() { // TODO
+    public void getPedidoFormacaoAnexos() {
         // given - precondition or setup
-
+        List<String> paths = new ArrayList<>();
+        for(AnexoRef i : anexosRef)
+            paths.add(i.getPath());
+        given(anexoRepository.findAllById(paths)).willReturn(anexos);
 
         // when - action or behavior that we are going to test
-
+        List<Anexo> anexosList = anexoService.getPedidoFormacaoAnexos(anexosRef);
 
         // then
-
+        assertNotNull(anexosList);
+        assertEquals(anexosList, anexos);
     }
 
     @DisplayName("Junit test 42 - Teste unitário do método getAnexoById de AnexoService.")
