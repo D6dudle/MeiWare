@@ -14,5 +14,6 @@ public interface IUtilizadorService {
     Utilizador getUtilizadorByEmail(String email);
     Utilizador createUtilizador(Utilizador newUtilizador);
     void updateUtilizador(Utilizador updatedUtilizador);
-    void removeUtilizador(Utilizador utilizador);
+    void removeUtilizador(Long id);
+
 }

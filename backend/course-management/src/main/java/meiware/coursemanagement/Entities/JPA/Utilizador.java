@@ -167,16 +167,17 @@ public class Utilizador {
         JSONArray listsBudget = new JSONArray();
 
 
-        for (PedidoFormacao listaPedidos : listPedidos){
+        //for (PedidoFormacao listaPedidos : listPedidos){
 
-            lists.put(listaPedidos.toJSON());
+            //lists.put(listaPedidos.toJSON());
 
-        }
+        //}
 
-        obj.put("listaFormacoes", lists);
+        //obj.put("listaFormacoes", lists);
 
         //System.out.println("Formacoes: " + listaFormacaoUsertoJSON());
         obj.put("listaFormacoesHandled", listaFormacaoUsertoJSON());
+
         for (Budget listaBudget : listBudget){
 
             listsBudget.put(listaBudget.toJSON());

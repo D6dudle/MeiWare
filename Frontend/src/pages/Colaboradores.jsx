@@ -46,7 +46,6 @@ export default function Colaboradores() {
 
         for(var c = 0; c < data.length; c++){
           if(!data[c].isAdministrador){
-            console.log(data[c]);
 
             formacoesFeitas = 0;
             formacoesPendentes = 0;

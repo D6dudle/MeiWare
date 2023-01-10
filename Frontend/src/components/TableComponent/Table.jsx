@@ -15,6 +15,7 @@ import { SortIcon, SortUpIcon, SortDownIcon } from "./Icons";
 //import { PencilAltIcon } from '@heroicons/react/solid'
 import { useNavigate, useLocation, createSearchParams} from "react-router-dom";
 import Modal from "../Modal";
+import UtilizadoresService from "../../services/get-utilizadores.service";
 
 import {
   HiChevronDoubleLeft,
@@ -142,6 +143,8 @@ const tableHooks = (hooks) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [modalUser, setModalUser] = useState({ show: false, data: null });
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
 
 
   const handleCloseModal = () => {
@@ -158,14 +161,13 @@ const tableHooks = (hooks) => {
 
   const handleExcluir = (u) => {
     console.log("handle excluir" + u);
-    /*
-    setModalUser({
-      show: true,
-      data: "EXCLUIR",
+    UtilizadoresService.removeUtilizador(u).then((data)=>{
+      
+      console.log(data);  
+      window.location.reload(false);
+      
     });
-
-    console.log("modal: " + modalUser.show);*/
-  };
+  }
 
   hooks.visibleColumns.push((columns) => [
     ...columns,

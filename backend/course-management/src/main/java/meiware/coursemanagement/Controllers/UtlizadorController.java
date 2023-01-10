@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 //TODO: corrigir returns
@@ -218,17 +219,18 @@ public class UtlizadorController {
     }
 
     @DeleteMapping(value = "/removeUtilizador")
-    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> removeUtilizador(@RequestBody Utilizador utilizador) {
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    @Transactional
+    public ResponseEntity<?> removeUtilizador(@RequestParam("id") String idString) {
 
         try{
-            utilizadorService.removeUtilizador(utilizador);
+            utilizadorService.removeUtilizador(Long.parseLong(idString));
             return new ResponseEntity<>(
                     "Utilizador removido com sucesso",
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
-                    "Erro ao remover o utilizador: " + utilizador.getNome(),
+                    "Erro ao remover o utilizador",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
