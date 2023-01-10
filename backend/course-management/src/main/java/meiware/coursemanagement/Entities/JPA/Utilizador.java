@@ -1,6 +1,8 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,8 +41,14 @@ public class Utilizador {
     @OneToMany(mappedBy = "quemFezPedido", fetch = FetchType.EAGER)
     private Set<PedidoFormacao> listPedidos;
 
-    @ManyToMany(mappedBy = "formandos")
+
+    @ManyToMany(mappedBy = "formandos", cascade = CascadeType.ALL)
     private Set<PedidoAprovado> listFormacoes;
+
+
+
+
+    private Boolean apagado = false;
 
     public Utilizador(){    }
 
@@ -87,6 +95,14 @@ public class Utilizador {
 
     public String getPassword() {
         return password;
+    }
+
+    public Boolean isApagado() {
+        return apagado;
+    }
+
+    public void setApagado(Boolean apagado) {
+        this.apagado = apagado;
     }
 
     public void setPassword(String password) {
@@ -153,7 +169,7 @@ public class Utilizador {
         obj.put("isColaborador", isColaborador());
         obj.put("isGestor", isGestor());
         obj.put("isAdministrador", isAdministrador());
-
+        obj.put("isApagado", apagado);
 
         if (manager == null)
             obj.put("managerId", -1);
@@ -184,50 +200,6 @@ public class Utilizador {
         }
         obj.put("listBudget", listsBudget);
 
-        return obj;
-    }
-
-    public JSONObject listaFormacaoUsertoJSON(){
-        JSONObject obj = new JSONObject();
-
-        JSONArray lists = new JSONArray();
-        for (PedidoFormacao listaPedidos : listPedidos){
-           //Retorna um JSON Object com a formacao
-            lists.put(listaFormacaoToJSON(listaPedidos));
-        }
-        obj.put("listaFormacoes", lists);
-        return obj;
-    }
-
-    public JSONObject listaFormacaoToJSON(PedidoFormacao listaFormacao){
-        JSONObject obj = new JSONObject();
-        obj.put("username", listaFormacao.getQuemFezPedido().getNome());
-        obj.put("nomeFormacao", listaFormacao.getNome());
-        obj.put("dataFormacao", listaFormacao.getDataCriacao());
-        obj.put("idCurso", listaFormacao.getId());
-
-        obj.put("justificacaoFormacao", listaFormacao.getJustificacao());
-        //PENDENTE
-        //CURSO
-        //REJEITADA
-        //TERMINADA
-
-        if (listaFormacao.getDiscriminatorValue().equals("PedidoFormacao") && !listaFormacao.isApagada()){
-            // A formacao ainda esta pendente
-            obj.put("tipoFormacao", "PENDENTE");
-        }else if (listaFormacao.getDiscriminatorValue().equals("APROVADA") && !listaFormacao.isApagada()){
-            if (listaFormacao instanceof PedidoAprovado){
-                PedidoAprovado auxAprovado = (PedidoAprovado)listaFormacao;
-                if (auxAprovado.isConcluida())
-                    obj.put("tipoFormacao", "TERMINADA");
-                else{
-                    obj.put("tipoFormacao", "CURSO");
-                }
-
-            }
-        }else if (listaFormacao.getDiscriminatorValue().equals("REJEITADA") && !listaFormacao.isApagada() ) {
-            obj.put("tipoFormacao", "REJEITADA");
-        }
         return obj;
     }
 

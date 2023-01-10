@@ -153,7 +153,12 @@ public class UtilizadorService implements IUtilizadorService {
     @Override
     public void removeUtilizador(Long id) {
         try {
-            utilizadorRepository.deleteUtilizadorById(id);
+            Utilizador u = getUtilizadorById(id);
+            u.setApagado(true);
+            utilizadorRepository.save(u);
+
+            //utilizadorRepository.deleteUtilizadorById(id);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

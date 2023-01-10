@@ -1,6 +1,8 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.json.JSONObject;
 
 import javax.persistence.*;
@@ -275,12 +277,5 @@ public class PedidoFormacao {
                 ", dataUltimoUpdate=" + dataUltimoUpdate +
                 ", listAnexoRef=" + listAnexoRefs +
                 '}';
-    }
-
-    @Transient
-    public String getDiscriminatorValue(){
-        DiscriminatorValue val = this.getClass().getAnnotation( DiscriminatorValue.class );
-
-        return val == null ? null : val.value();
     }
 }

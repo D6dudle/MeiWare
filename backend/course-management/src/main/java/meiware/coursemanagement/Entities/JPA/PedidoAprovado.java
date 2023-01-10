@@ -14,7 +14,7 @@ public class PedidoAprovado extends PedidoFormacao{
     private LocalDate dataAprovacao;
     @Column(columnDefinition = "DATE")
     private LocalDate dataConclusao;
-    private boolean concluida;
+    private Boolean concluida;
 
     @ManyToOne
     private Utilizador quemAprovou;
