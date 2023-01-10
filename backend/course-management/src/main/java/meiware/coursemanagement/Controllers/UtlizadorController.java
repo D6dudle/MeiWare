@@ -61,7 +61,9 @@ public class UtlizadorController {
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.put(u.toJSON());
+                if(!u.isApagado()) {
+                    arr.put(u.toJSON());
+                }
 
             }
 
