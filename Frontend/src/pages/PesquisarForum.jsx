@@ -1,19 +1,55 @@
 import { useState, useEffect } from "react";
 import { Search } from "react-feather";
 import Select from "react-select";
+import TextInput from "../components/TextInput";
 import { ChevronDown, ChevronUp, Filter, Minus, Plus } from "react-feather";
-
+import users from "../constants/usersAux.json";
 import ForumTopic from "../components/ForumTopic";
+import DateOrder from "../components/DateOrder";
 import { knowledgeBaseList } from "../constants/menuConstants";
 import { EmptyState } from "../components/EmptyState";
 
 export const PesquisarForum = ({}) => {
   const [listKnowledgeBase, setListKnowledgeBase] = useState(knowledgeBaseList);
+  const [filteredList, setFilteredList] = useState(listKnowledgeBase);
   const [query, setQuery] = useState("");
+  const [search, setSearch] = useState();
+  const [dateSortIncreasing, setDateSort] = useState(false);
+  const [values, setValues] = useState([]);
+  const [colabList, setColabList] = useState(users);
   const [formationCamps, setFormationCamps] = useState({
     nomeColaborador: [],
     data: new Date(),
   });
+
+  useEffect(() => {
+    var list = knowledgeBaseList;
+    if (search && search !== "") {
+      list = list.filter((item) =>
+        item.nomeFormacao.toLowerCase().includes(search.toLowerCase())
+      );
+      if (values.length > 0) {
+        for (let i = 0; i < values[1].length; i++) {
+          list = list.filter((item) => item.username == values[1][i].label);
+        }
+      }
+    } else {
+      if (values.length > 0) {
+        for (let i = 0; i < values[1].length; i++) {
+          list = list.filter((item) => item.username == values[1][i].label);
+        }
+      }
+    }
+
+    var tempData = [...list];
+    setFilteredList(tempData);
+  }, [search, values, knowledgeBaseList, dateSortIncreasing]);
+
+  const filterColab = (inputValue) => {
+    return colabList.filter((i) =>
+      i.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
 
   const colaboradorStyles = {
     option: (provided) => ({
@@ -42,7 +78,6 @@ export const PesquisarForum = ({}) => {
       padding: 0,
     }),
   };
-  const [isDataDecrescente, setDataDecrescente] = useState(false); // Is DataDecrescente open?
   const colaboradores = [
     { label: "Bruno", value: "Bruno" },
     { label: "Diogo", value: "Diogo" },
@@ -58,82 +93,68 @@ export const PesquisarForum = ({}) => {
     );
   };
 
+  const handleType = (index, event) => {
+    setSearch(event.target.value);
+  };
+
+  const handleDropdown = (index, opt) => {
+    let data = [...values];
+    data[index] = opt;
+    setValues(data);
+  };
+
+  const handleDateChanged = (increasing) => {
+    setDateSort(increasing);
+  };
+
   return (
     <div className="pl-8 pr-8 h-full overflow-scroll scrollbar-hide">
       <h1 className="sticky text-white font-bold mt-[30px] text-2xl">
         Pesquisar no Fórum
       </h1>
 
-      <div className="mt-8  justify-evenly">
-        <div className="flex flex-wrap justify-between sm:justify-start">
-          <div className="mr-20 w-8/12">
+      <div className="mt-8 justify-evenly">
+        <div className="flex flex-row gap-4 mb-2">
+          <div className="flex flex-row h-fit justify-between items-center gap-8">
             {/* PESQUISA... */}
-            <div className="relative">
-              <div className="absolute left-2 top-5">
-                <Search className="h-4" />
-              </div>
+            <TextInput
+              index={1}
+              name={"pesquisa..."}
+              type={"searchbar"}
+              style={"w-[30rem]"}
+              showTitle={false}
+              callback={handleType}
+              value={search}
+            />
 
-              <input
-                type="text"
-                placeholder="pesquisa..."
-                className="inputText search pl-[35px]"
-                id="nomeSearchForum"
-                onChange={(e) => setQuery(e.target.value)}
+            {/* COLABORADOR */}
+            <div>
+              <TextInput
+                index={1}
+                name={"colaborador"}
+                type="dropsearch"
+                titleStyle={"font-bold mb-1 text-2xl"}
+                style={"w-[30rem]"}
+                placeholder="colaborador..."
+                list={colabList}
+                multi={true}
+                showTitle={false}
+                error={"Por favor selecione ou adicione um nome"}
+                value={values[1]}
+                callback={handleDropdown}
+                searchCall={filterColab}
               />
             </div>
 
-            {/* COLABORADOR */}
-            <div className="mb-4">
-              <div className="relative">
-                <div className="absolute left-5 top-4">
-                  <Search className="h-5" />
-                </div>
-
-                <Select
-                  //className={` ${formationCamps.nomeColaborador || isSubmit === false ? null : 'border-error'}`}
-                  styles={colaboradorStyles}
-                  options={colaboradores}
-                  isMulti
-                  placeholder="colaborador..."
-                  value={formationCamps.nomeColaborador}
-                  onChange={(opt) => {
-                    console.log(opt);
-                    setFormationCamps({
-                      ...formationCamps,
-                      nomeColaborador: opt,
-                    });
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-1 mb-4">
-              <button
-                className="btnSearchFunc"
-                onClick={() => {
-                  /* Logica ordenar lista */
-                  setDataDecrescente(!isDataDecrescente);
-                }}
-              >
-                {isDataDecrescente ? (
-                  <>
-                    <p className="btnIcons leading-[120%]">Data Decrescente</p>
-                    <ChevronDown className="w-4 h-4 btnIcons" />
-                  </>
-                ) : (
-                  <>
-                    <p className="btnIcons leading-[120%]">Data Crescente</p>
-                    <ChevronUp className="w-4 h-4 btnIcons" />
-                  </>
-                )}
-              </button>
+            <div className="flex justify-center items-center">
+              <DateOrder callback={handleDateChanged} />
             </div>
           </div>
         </div>
         {/*Forum componente*/}
         <div>
-          {listKnowledgeBase !== null && listKnowledgeBase.length > 0 ? (
-            listKnowledgeBase.map((list, index) => (
+          {Object.keys(filteredList).length > 0 && filteredList !== null ? (
+            filteredList.map((list, index) => (
               <ForumTopic
                 key={index}
                 username={list.username}
