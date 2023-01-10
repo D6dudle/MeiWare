@@ -45,7 +45,7 @@ public class BudgetServiceMock{
     @BeforeEach
     public void setup(){
         for(int i = 0; i < 3 ; i++){
-            budgets.add(new Budget((long) i, i*500, 2020+i));
+            budgets.add(new Budget(new Utilizador(), i*500, 2020+i));
         }
     }
 
@@ -67,7 +67,7 @@ public class BudgetServiceMock{
     @Test
     public void createBudget() {
         // given - precondition or setup
-        Budget newBudget = new Budget(4l, 1000, 2030);
+        Budget newBudget = new Budget(new Utilizador(), 1000, 2030);
         given(budgetRepository.save(newBudget)).willReturn(newBudget);
 
         // when - action or behavior that we are going to test
