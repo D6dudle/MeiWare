@@ -177,7 +177,21 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
             em.createNativeQuery("UPDATE pedido_formacao SET tipo = ?, quem_rejeitou_id = ?, data_rejeicao = ?, comentario = ? WHERE id = ?").setParameter(1, "REJEITADA").setParameter(2, utilizadorId).setParameter(3, LocalDate.now()).setParameter(4, comentario).setParameter(5, pedidoFormacaoId).executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
-        }    }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void finalizaPedidoFormacao(long pedidoFormacaoId) {
+        try {
+            em.createNativeQuery("UPDATE pedido_formacao SET concluida = true, data_conclusao = ? WHERE id = ?").setParameter(1, LocalDate.now()).setParameter(2, pedidoFormacaoId).executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
     @Override
     public void addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file) {

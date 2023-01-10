@@ -9,7 +9,7 @@ export default function GerirPedidos() {
           Gerir formações
         </h1>
       </div>
-      <TrainingTabs sideBarName={"Controlo de budget"} />
+      <TrainingTabs sideBarName={"Controlo de budget"} nomeEcra={"GERIRPEDIDOS"} />
     </div>
   );
 }

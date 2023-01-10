@@ -16,7 +16,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -109,6 +111,25 @@ public class UtilizadorServiceMock {
         assertEquals(this.users, users);
     }
 
+    @DisplayName("Junit test 17 - Teste unitário do método createUtilizador de UtilizadorService")
+    @Test
+    public void createUtilizador() {
+        // given - precondition or setup
+        Set<Role> auxUserRoles = new HashSet<>();
+        auxUserRoles.add(Role.GESTOR);
+        auxUserRoles.add(Role.ADMINISTRADOR);
+        auxUserRoles.add(Role.COLABORADOR);
+        Utilizador auxUser = new Utilizador("Ptiago", "ptiago@email.com", "123456", auxUserRoles);
+        given(utilizadorRepository.save(auxUser)).willReturn(auxUser);
+
+        // when - action or behavior that we are going to test
+        Utilizador user = utilizadorService.createUtilizador(auxUser);
+
+        // then
+        assertNotNull(user);
+        assertEquals(user, auxUser);
+    }
+
     @DisplayName("Junit test 33 - Teste unitário do método getColaboradores de UtilzadoresService.")
     @Test
     public void getColaboradores() {
@@ -176,5 +197,114 @@ public class UtilizadorServiceMock {
         }
     }
 
+    @DisplayName("Junit test 36 - Teste unitário do método getManagedUtilizadores de UtilizadorService.")
+    @Test
+    public void getManagedUtilizadores() {
+        // given - precondition or setup
+        Set<Role> auxUserRoles = new HashSet<>();
+        auxUserRoles.add(Role.GESTOR);
+        auxUserRoles.add(Role.ADMINISTRADOR);
+        auxUserRoles.add(Role.COLABORADOR);
+        Utilizador manager = new Utilizador("Ptiago", "ptiago@email.com", "123456", auxUserRoles);
+
+        List<Utilizador> usersCopy = new ArrayList<>(users);
+
+        for(Utilizador i: usersCopy)
+            i.setManager(manager);
+
+        given(utilizadorRepository.findAllByManager(manager)).willReturn(usersCopy);
+        given(utilizadorRepository.findById(manager.getId())).willReturn(Optional.of(manager));
+
+        // when - action or behavior that we are going to test
+        List<Utilizador> users = utilizadorService.getManagedUtilizadores(manager);
+        // then
+        assertNotNull(users);
+
+        for (Utilizador u: users) {
+            assertEquals(u.getManager(), manager);
+        }
+    }
+
+    @DisplayName("Junit test 37 - Teste unitário do método getUtilizadorById de UtilizadorService.")
+    @Test
+    public void getUtilizadorById() {
+        // given - precondition or setup
+        Set<Role> auxUserRoles = new HashSet<>();
+        auxUserRoles.add(Role.GESTOR);
+        auxUserRoles.add(Role.ADMINISTRADOR);
+        auxUserRoles.add(Role.COLABORADOR);
+        Utilizador auxUser = new Utilizador("Ptiago", "ptiago@email.com", "123456", auxUserRoles);
+
+        given(utilizadorRepository.findById(auxUser.getId())).willReturn(Optional.of(auxUser));
+
+        // when - action or behavior that we are going to test
+        Utilizador user = utilizadorService.getUtilizadorById(auxUser.getId());
+
+        // then
+        assertNotNull(user);
+        assertEquals(auxUser, user);
+    }
+
+    @DisplayName("Junit test 38 - Teste unitário do método getUtilizadorByEmail de UtilizadorService.")
+    @Test
+    public void getUtilizadorByEmail() {
+        // given - precondition or setup
+        Set<Role> auxUserRoles = new HashSet<>();
+        auxUserRoles.add(Role.GESTOR);
+        auxUserRoles.add(Role.ADMINISTRADOR);
+        auxUserRoles.add(Role.COLABORADOR);
+        Utilizador auxUser = new Utilizador("Ptiago", "ptiago@email.com", "123456", auxUserRoles);
+
+        given(utilizadorRepository.findByEmail(auxUser.getEmail())).willReturn(auxUser);
+
+        // when - action or behavior that we are going to test
+        Utilizador user = utilizadorService.getUtilizadorByEmail(auxUser.getEmail());
+
+        // then
+        assertNotNull(user);
+        assertEquals(auxUser, user);
+    }
+
+    @DisplayName("Junit test 39 - Teste unitário do método updateUtilizador de UtilizadorService.")
+    @Test
+    public void updateUtilizador() {
+        // given - precondition or setup
+        /* Set<Role> auxUserRoles = new HashSet<>();
+        auxUserRoles.add(Role.GESTOR);
+        auxUserRoles.add(Role.ADMINISTRADOR);
+        auxUserRoles.add(Role.COLABORADOR);
+        Utilizador auxUser = new Utilizador("Ptiago", "ptiago@email.com", "123456", auxUserRoles);
+
+        given(utilizadorRepository.findByEmail(auxUser.getEmail())).willReturn(auxUser);
+        given(utilizadorRepository.save(auxUser)).willReturn(auxUser);
+
+        // when - action or behavior that we are going to test
+        auxUser.setNome("PtiagoNEW");
+        Utilizador updatedUser = utilizadorService.getUtilizadorByEmail(auxUser.getEmail());
+
+        // then
+        assertNotNull(updatedUser);
+        assertThat(updatedUser.getEmail().equals("PtiagoNEW"));*/
+    }
+
+    @DisplayName("Junit test 40 - Teste unitário do método removeUtilizador de UtilizadorService.")
+    @Test
+    public void removeUtilizador() {
+        // given - precondition or setup
+        Set<Role> auxUserRoles = new HashSet<>();
+        auxUserRoles.add(Role.GESTOR);
+        auxUserRoles.add(Role.ADMINISTRADOR);
+        auxUserRoles.add(Role.COLABORADOR);
+        Utilizador auxUser = new Utilizador("Ptiago", "ptiago@email.com", "123456", auxUserRoles);
+
+        given(utilizadorRepository.findByEmail(auxUser.getEmail())).willReturn(null);
+
+        // when - action or behavior that we are going to test
+        utilizadorService.removeUtilizador(auxUser);
+        Utilizador user = utilizadorService.getUtilizadorByEmail(auxUser.getEmail());
+
+        // then
+        assertNull(user);
+    }
 
 }

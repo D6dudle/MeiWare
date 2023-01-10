@@ -76,7 +76,7 @@ export const FormacaoDetalhes = ({
         <div className="flex order-1 justify-between w-full">
           <div className="flex gap-4">
             {tags.map((tag, index) => (
-              <Tag tagName={tag} />
+              <Tag key={tag} tagName={tag} />
             ))}
           </div>
         </div>
@@ -147,9 +147,9 @@ export const FormacaoDetalhes = ({
       <div className="flex flex-none order-5 pt-4">
         {files.length > 0 && (
           <div className="w-full pl-4">
-            {files?.map((file) => (
+            {files?.map((file, index) => (
               <ListarFicheiros
-                key={file.name}
+                key={index}
                 fileType={file.type}
                 filePath={file.path}
                 fileSize={file.size}

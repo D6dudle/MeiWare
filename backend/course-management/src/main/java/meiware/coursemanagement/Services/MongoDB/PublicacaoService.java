@@ -110,8 +110,10 @@ public class PublicacaoService implements IPublicacaoService {
     @Override
     public void removePublicacao(Publicacao publicacao) {
         try {
-            for (Anexo anexo: publicacao.getAnexos()) {
-                anexoService.removeAnexo(anexo.getId());
+            if(publicacao.getAnexos() != null) {
+                for (Anexo anexo : publicacao.getAnexos()) {
+                    anexoService.removeAnexo(anexo.getId());
+                }
             }
 
             publicacaoRepository.delete(publicacao);

@@ -7,7 +7,7 @@ import Modal from "./Modal";
 
 export const Formacao = ({
   username,
-  nomeformacao,
+  nomeFormacao,
   dataFormacao,
   justificacaoFormacao,
   idCurso,
@@ -17,6 +17,7 @@ export const Formacao = ({
   onItemDelete,
   sidebarName,
   onAceitarclick,
+  onFinalizarClick,
 }) => {
   const [modal, setModal] = useState({ show: false, data: null });
 
@@ -64,6 +65,7 @@ export const Formacao = ({
   const handleFinalizarFormacaoClick = (e) => {
     e.preventDefault();
     alert("Click em Finalizar formação");
+    onFinalizarClick();
   };
 
   return (
@@ -88,7 +90,7 @@ export const Formacao = ({
                   onClick={(e) =>
                     handleConsultarFormacaoClick(e, {
                       username,
-                      nomeformacao,
+                      nomeFormacao,
                       dataFormacao,
                       justificacaoFormacao,
                       idCurso,
@@ -159,12 +161,13 @@ export const Formacao = ({
               </div>
               <div
                 className={`${tipoFormacao === "CURSO" ? null : "hidden"}`}
-                onClick={handleFinalizarFormacaoClick}
+                //onClick={handleFinalizarFormacaoClick}
               >
                 <Button
                   className="h-10"
                   iconName="FINALIZAR"
                   textButton="finalizar"
+                  handleClick={handleFinalizarFormacaoClick}
                 />
               </div>
             </div>
@@ -172,7 +175,7 @@ export const Formacao = ({
           <div>
             <p className="text-sm text-white font-semibold pt-3">
               <span className="text-gray3">Nome da formação: </span>
-              {nomeformacao}
+              {nomeFormacao}
             </p>
           </div>
           <div className="flex pt-3 gap-10 ">

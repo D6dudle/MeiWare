@@ -12,6 +12,7 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo")
+@DiscriminatorValue("PedidoFormacao")
 public class PedidoFormacao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -224,14 +225,14 @@ public class PedidoFormacao {
 
     public JSONObject toJSON(){
         JSONObject obj = new JSONObject();
-        obj.put("id", id);
-        obj.put("nome", nome);
+        obj.put("idCurso", id);
+        obj.put("nomeFormacao", nome);
         obj.put("descricao", descricao);
         obj.put("formador", formador);
-        obj.put("dataInicio", dataInicio);
+        obj.put("dataFormacao", dataInicio);
         obj.put("dataFim", dataFim);
         obj.put("preco", preco);
-        obj.put("justificao", justificacao);
+        obj.put("justificacaoFormacao", justificacao);
         obj.put("status", status);
         obj.put("cancelada", cancelada);
         obj.put("apagada", apagada);
@@ -243,6 +244,17 @@ public class PedidoFormacao {
         obj.put("quemFezPedidoNome", quemFezPedido.getNome());
         return obj;
     }
+
+
+
+    @Transient
+    public String getDiscriminatorValue(){
+        DiscriminatorValue val = this.getClass().getAnnotation( DiscriminatorValue.class );
+
+        return val == null ? null : val.value();
+    }
+
+
 
     @Override
     public String toString() {

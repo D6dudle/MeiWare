@@ -110,7 +110,7 @@ describe('Smoke Tests', () => {
 
     })
 
-    it('TC05 - Smoke Test do ecrã Pesquisar formação.', () => {
+    /* it('TC05 - Smoke Test do ecrã Pesquisar formação.', () => {  // CANCELADO
       // Opens Search Formation Screen
       cy.wait(2000);
       cy.visit('/home/formacao/pesquisar-formacao');
@@ -127,7 +127,7 @@ describe('Smoke Tests', () => {
       // Campo de “colaborador…” está enabled
       // cy.xpath("(//input[@id='react-select-5-input'])[1]").should('be.enabled');   // ---> Este ecra tem de ser reformulado
 
-    })
+    })*/
 
     it('TC06 - Smoke Test do ecrã Listar formações.', () => {
       // Opens Search Formation Screen

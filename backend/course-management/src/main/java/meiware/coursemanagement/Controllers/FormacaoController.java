@@ -6,6 +6,7 @@ import meiware.coursemanagement.Entities.JPA.PedidoRejeitado;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Images.PedidoFormacaoImage;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
+import meiware.coursemanagement.Services.JPA.IUtilizadorService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
 
 import org.json.JSONArray;
@@ -30,6 +31,9 @@ public class FormacaoController {
     @Autowired
     IPedidoFormacaoService pedidoFormacaoService;
 
+    @Autowired
+    IUtilizadorService utilizadorService; // Necessario para buscar as formacoes por utilizador via email
+
     // TODO: perguntar ao Jordão como é que ele vai tratar da aceitação/recusa das
     // formações
 
@@ -42,7 +46,25 @@ public class FormacaoController {
             JSONArray arr = new JSONArray();
 
             for (PedidoFormacao p : pedidosFormacaoList) {
-                arr.put(p.toJSON());
+                JSONObject auxP = p.toJSON();
+                auxP.put("username", p.getQuemFezPedido().getNome());
+                if (p.getDiscriminatorValue().equals("PedidoFormacao") && !p.isApagada()){
+                    // A formacao ainda esta pendente
+                    auxP.put("tipoFormacao", "PENDENTE");
+                }else if (p.getDiscriminatorValue().equals("APROVADA") && !p.isApagada()){
+                    if (p instanceof PedidoAprovado){
+                        PedidoAprovado auxAprovado = (PedidoAprovado)p;
+                        if (auxAprovado.isConcluida())
+                            auxP.put("tipoFormacao", "TERMINADA");
+                        else{
+                            auxP.put("tipoFormacao", "CURSO");
+                        }
+
+                    }
+                }else if (p.getDiscriminatorValue().equals("REJEITADA") && !p.isApagada() ) {
+                    auxP.put("tipoFormacao", "REJEITADA");
+                }
+                arr.put(auxP);
             }
 
             return new ResponseEntity<>(
@@ -76,6 +98,23 @@ public class FormacaoController {
         }
     }
 
+    @GetMapping(value = "pedidosFormacaoByUserId")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> getListaFormacaoByUser(@RequestParam("id") String id) {
+        try {
+            Utilizador utilizador = utilizadorService.getUtilizadorById(Long.valueOf(id));
+            JSONObject obj = utilizador.listaFormacaoUsertoJSON();
+
+            return new ResponseEntity<>(
+                    obj.toMap(),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    "Erro ao aceder aos pedidos de formações.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping(value = "/formacoesAprovadas")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getFormacoesAprovadas() {
@@ -90,7 +129,7 @@ public class FormacaoController {
             }
 
             return new ResponseEntity<>(
-                    arr,
+                    arr.toString(),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(
@@ -217,6 +256,27 @@ public class FormacaoController {
         } catch (Exception e) {
             return new ResponseEntity<>(
                     "Erro ao atualizar o pedido de formação: " + pedidoFormacao.getNome() + ".",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/finalizarPedidoFormacao")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> finalizaPedidoFormacao(@RequestBody String JSONBody) {
+        try {
+            JSONObject object = new JSONObject(JSONBody);
+            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            String nomeFormacao = object.getString("nomeFormacao");
+
+            pedidoFormacaoService.finalizaPedidoFormacao(pedidoFormacaoId);
+                return new ResponseEntity<>(
+                        "Pedido de formação: " + nomeFormacao + " aprovado com sucesso.",
+                        HttpStatus.OK);
+
+            } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Erro ao aprovar o pedido de formação.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -354,4 +414,8 @@ public class FormacaoController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
+
 }

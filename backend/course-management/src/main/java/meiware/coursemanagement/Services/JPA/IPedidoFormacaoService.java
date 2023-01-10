@@ -20,4 +20,5 @@ public interface IPedidoFormacaoService {
     void addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file);
     void removeAnexoFromPedidoFormacao(PedidoFormacao pedidoFormacao, AnexoRef anexoRef);
     void removePedidoFormacao(PedidoFormacao pedidoFormacao);
+    void finalizaPedidoFormacao(long pedidoFormacaoId);
 }
