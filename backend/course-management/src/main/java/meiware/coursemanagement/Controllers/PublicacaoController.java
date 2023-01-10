@@ -1,6 +1,5 @@
 package meiware.coursemanagement.Controllers;
 
-import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import meiware.coursemanagement.Entities.MongoDB.Publicacao;
 import meiware.coursemanagement.Services.MongoDB.IPublicacaoService;
 import org.json.JSONObject;
@@ -83,7 +82,7 @@ public class PublicacaoController {
     }
 
     @PutMapping(value = "/aprovarPublicacao")
-    @PreAuthorize("hasRole('GESTOR')")
+    @PreAuthorize("hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> aprovarPublicacao(@RequestBody String JSONBody) {
         try {
             JSONObject object = new JSONObject(JSONBody);
@@ -108,7 +107,7 @@ public class PublicacaoController {
     }
 
     @PutMapping(value = "/arquivarPublicacao")
-    @PreAuthorize("hasRole('GESTOR')")
+    @PreAuthorize("hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> arquivarPublicacao(@RequestBody String JSONBody) {
         try {
             JSONObject object = new JSONObject(JSONBody);

@@ -1,8 +1,5 @@
 package meiware.coursemanagement.Entities.MongoDB;
 
-import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
