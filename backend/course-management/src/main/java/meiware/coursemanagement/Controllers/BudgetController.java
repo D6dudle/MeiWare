@@ -4,7 +4,7 @@ import meiware.coursemanagement.Entities.JPA.Budget;
 import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import meiware.coursemanagement.Services.JPA.IBudgetService;
 import meiware.coursemanagement.Services.MongoDB.IAnexoService;
-import net.minidev.json.JSONArray;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class BudgetController {
 
             JSONArray arr = new JSONArray();
             for (Budget b : budgets){
-                arr.add(b.toJSON());
+                arr.put(b.toJSON());
             }
             return new ResponseEntity<>(
                     arr,
@@ -58,7 +58,7 @@ public class BudgetController {
 
             JSONArray arr = new JSONArray();
             for (Budget b : budgetList){
-                arr.add(b.toJSON());
+                arr.put(b.toJSON());
             }
             return new ResponseEntity<>(
                     arr,

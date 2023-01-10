@@ -1,6 +1,7 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.Cascade;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,12 +40,12 @@ public class Utilizador {
     @OneToMany(mappedBy = "quemFezPedido", fetch = FetchType.EAGER)
     private Set<PedidoFormacao> listPedidos;
 
-    @ManyToMany(mappedBy = "formandos")
-    private Set<PedidoAprovado> listFormacoes;
+    @ManyToMany(mappedBy = "formandos", cascade = CascadeType.ALL)
+    private Set<PedidoFormacao> listFormacoes;
 
     public Utilizador(){    }
 
-    public Utilizador(long id) {
+    public Utilizador(Long id) {
         this.id = id;
     }
 
@@ -125,23 +126,35 @@ public class Utilizador {
         this.listPedidos = listPedidos;
     }
 
-    public Set<PedidoAprovado> getListFormacoes() {
+    public Set<PedidoFormacao> getListFormacoes() {
         return listFormacoes;
     }
 
-    public void setListFormacoes(Set<PedidoAprovado> listFormacoes) {
+    public void setListFormacoes(Set<PedidoFormacao> listFormacoes) {
         this.listFormacoes = listFormacoes;
     }
 
-    public boolean isAdministrador() {
+    public void addFormacao(PedidoFormacao pedidoAprovado){
+        if(this.listFormacoes == null)
+            this.listFormacoes = new HashSet<>();
+        this.listFormacoes.add(pedidoAprovado);
+    }
+
+    public void remFormacao(PedidoFormacao pedidoAprovado){
+        if(this.listFormacoes == null)
+            this.listFormacoes = new HashSet<>();
+        this.listFormacoes.remove(pedidoAprovado);
+    }
+
+    public Boolean isAdministrador() {
         return roles.contains(Role.ADMINISTRADOR);
     }
 
-    public boolean isGestor() {
+    public Boolean isGestor() {
         return roles.contains(Role.GESTOR);
     }
 
-    public boolean isColaborador() {
+    public Boolean isColaborador() {
         return roles.contains(Role.COLABORADOR);
     }
 
@@ -160,10 +173,16 @@ public class Utilizador {
             obj.put("managerId", manager.getId());
 
         JSONArray lists = new JSONArray();
-        for (PedidoFormacao listaPedidos : listPedidos){
+        for (PedidoFormacao listaPedidos : listFormacoes){
             lists.put(listaPedidos.toJSON());
         }
         obj.put("listaFormacoes", lists);
+
+        lists = new JSONArray();
+        for (PedidoFormacao listaPedidos : listPedidos){
+            lists.put(listaPedidos.toJSON());
+        }
+        obj.put("listaPedidos", lists);
 
         obj.put("listBudget", listBudget);
         return obj;
@@ -173,11 +192,18 @@ public class Utilizador {
         JSONObject obj = new JSONObject();
 
         JSONArray lists = new JSONArray();
-        for (PedidoFormacao listaPedidos : listPedidos){
+        for (PedidoFormacao listaPedidos : listFormacoes){
            //Retorna um JSON Object com a formacao
             lists.put(listaFormacaoToJSON(listaPedidos));
         }
         obj.put("listaFormacoes", lists);
+
+        lists = new JSONArray();
+        for (PedidoFormacao listaPedidos : listPedidos){
+            //Retorna um JSON Object com a formacao
+            lists.put(listaFormacaoToJSON(listaPedidos));
+        }
+        obj.put("listaPedidos", lists);
         return obj;
     }
 

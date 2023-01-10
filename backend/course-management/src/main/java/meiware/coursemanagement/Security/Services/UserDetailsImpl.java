@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import meiware.coursemanagement.Entities.JPA.*;
 import meiware.coursemanagement.Security.JWT.AuthTokenFilter;
-import net.minidev.json.JSONObject;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDetailsImpl implements UserDetails {
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
 
     private static final Logger logger = LoggerFactory.getLogger(UserDetailsImpl.class);
 

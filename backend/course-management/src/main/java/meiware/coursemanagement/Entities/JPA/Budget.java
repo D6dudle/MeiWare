@@ -1,7 +1,7 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
-import net.minidev.json.JSONObject;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 
@@ -15,15 +15,15 @@ public class Budget {
     @ManyToOne
     private Utilizador user;
     @NotNull
-    private int budget;
+    private Integer budget;
     @NotNull
-    private int ano;
+    private Integer ano;
 
     public Budget() {
 
     }
 
-    public Budget(Utilizador user, int budget, int ano) {
+    public Budget(Utilizador user, Integer budget, Integer ano) {
         this.user = user;
         this.budget = budget;
         this.ano = ano;
@@ -45,19 +45,19 @@ public class Budget {
         this.user = user;
     }
 
-    public int getBudget() {
+    public Integer getBudget() {
         return budget;
     }
 
-    public void setBudget(int budget) {
+    public void setBudget(Integer budget) {
         this.budget = budget;
     }
 
-    public int getAno() {
+    public Integer getAno() {
         return ano;
     }
 
-    public void setAno(int ano) {
+    public void setAno(Integer ano) {
         this.ano = ano;
     }
 
