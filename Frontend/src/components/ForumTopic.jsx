@@ -118,9 +118,9 @@ export const ForumTopic = ({
       <div className="flex flex-row order-1 justify-between items-center pl-4 pt-4 pr-4">
         <div className="flex order-1 justify-between w-full">
           <div className="flex gap-4">
-            <Tag tagName={"React"} />
-            <Tag tagName={"teste"} />
-            <Tag tagName={"Java"} />
+            <Tag key={"React"} tagName={"React"} />
+            <Tag key={"teste"} tagName={"teste"} />
+            <Tag key={"JAVA"} tagName={"Java"} />
           </div>
           <div style={{ display: arquivar ? "block" : "none" }}>
             <Button

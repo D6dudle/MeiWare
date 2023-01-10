@@ -70,4 +70,6 @@ public class PedidoAprovado extends PedidoFormacao{
     public void setFormandos(Set<Utilizador> formandos) {
         this.formandos = formandos;
     }
+
+
 }
