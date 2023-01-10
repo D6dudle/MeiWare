@@ -20,7 +20,7 @@ export default function Colaboradores() {
   const [modal, setModal] = useState({ show: false, data: null });
 
   const [dados, setDados] = useState(null);
-  
+  const [dataColaborators, setDataColaborators] = useState([]);
   const dataUsers = React.useMemo(() => getDataUsers(), []);
   const columns = React.useMemo(() => getColumnsTable(), []);
 
@@ -40,33 +40,32 @@ export default function Colaboradores() {
     if(user.isAdministrador) {
       console.log("ALL COLABORADORES");
       ColaboradoresService.getColaboradoresAll().then((data)=>{
-        console.log(data);
         //setDataCardList(data);
+        var role, budgetUtilizado, budgetPendente;
+        const dataHandled = [];
+
+        setDataColaborators(data);
+
+        var nome = data[0].nome;
+        var email = data[0].email;
+        if(data[0].isColaborador){
+          role = "Colaborador";
+        }
+        if(data[0].listBudget.length == 0){
+          budgetUtilizado = "0.0€"
+        }
+    
+
+
+        console.log(nome + email + role + ' ' + budgetUtilizado);
+
+
+
       });
     }
   }, []);
 
-  /*ZONA dE TESTES*/
 
-
-  //const [data, setData] = useState(() => getColaboradores(), []);
-
-
-
-  //console.log("Data from database: " + data);
-  /*
-  const teste =
-    (() => {
-      console.log("data --> ", data);
-    },
-    [data]);
-
-  const teste2 =
-    (() => {
-      console.log("<-- print --> ");
-    },
-    []);
-  /*ZONA dE TESTES*/
 
   const handleExcluir = (u) => {
     setModal({
@@ -86,7 +85,6 @@ export default function Colaboradores() {
   const handleName = () => {
     setOrder(!order);
   };
-
 
   return (
     <div className="w-full h-full overflow-scroll scrollbar-hide">
@@ -145,7 +143,7 @@ export default function Colaboradores() {
         </div>
 
         <div className="pt-4 pl-4 pr-8 mx-auto">
-            <Table columns={columns} data={dataUsers}/>
+            <Table columns={columns} data={dataColaborators}/>
         </div>
 
       </div>

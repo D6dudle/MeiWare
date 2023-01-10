@@ -100,20 +100,11 @@ export const getColumnsTable = () => {
   const data = [
     {
       Header: "Nome", //title of colum
-      accessor: "name", //atributo que vai buscar à data chave do objeto
+      accessor: "nome", //atributo que vai buscar à data chave do objeto
       Cell: AvatarCell,
       imgAccessor: "imgUrl",
       emailAccessor: "email",
     },
-    {
-      Header: "Função",
-      accessor: "title",
-    },
-    /* {
-    Header: "Role",
-    accessor: 'status',
-    Cell: StatusPill,
-  }, */
     {
       Header: "Budget Utilizado",
       accessor: "budgetUsed",

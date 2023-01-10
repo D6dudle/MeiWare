@@ -160,8 +160,8 @@ public class Utilizador {
         else
             obj.put("managerId", manager.getId());
 
-        //Daqui para baixo está a dar erro
-        System.out.println("Lista de Pedidos: " + listPedidos.size());
+
+        //System.out.println("Lista de Pedidos: " + listPedidos.size());
 
         JSONArray lists = new JSONArray();
         JSONArray listsBudget = new JSONArray();

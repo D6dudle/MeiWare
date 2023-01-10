@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/utilizador")
+@CrossOrigin(origins = {"http://127.0.0.1:5173/", "http://localhost:5173/"})
 public class UtlizadorController {
 
     @Autowired
@@ -40,7 +41,7 @@ public class UtlizadorController {
 
 
             return new ResponseEntity<>(
-                    arr,
+                    arr.toString(),
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
@@ -52,7 +53,7 @@ public class UtlizadorController {
     @GetMapping(value = "/colaboradores")
     @PreAuthorize("hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getColaboradores() {
-
+        System.out.println("Entrei no controlador.........");
         try{
             List<Utilizador> listaUtilizadores = utilizadorService.getColaboradores();
 

@@ -4,8 +4,8 @@ import authHeader from "./auth-header";
 const API_URL = "http://localhost:8080/api/utilizador/";
 
 const getColaboradoresAll = () => {
-    console.log("Entrou no service" + authHeader);
-    console.log(API_URL + "colaboradores");
+    //console.log("Entrou no service" + authHeader);
+    console.log(API_URL + "colaboradores/");
     return axios.get(API_URL + "colaboradores", { headers: authHeader() }).then((r) => r.data);
 };
 
