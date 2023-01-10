@@ -1,6 +1,8 @@
 package meiware.coursemanagement.Entities.MongoDB;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.Binary;
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +13,7 @@ public class Anexo {
     @Id
     private String id;
     private String nome;
+    @JsonIgnore
     private Binary conteudo;
 
     public Anexo() {
@@ -48,5 +51,14 @@ public class Anexo {
 
     public void setConteudo(Binary conteudo) {
         this.conteudo = conteudo;
+    }
+
+    @Override
+    public String toString() {
+        return "Anexo{" +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
+                ", conteudo=" + conteudo +
+                '}';
     }
 }

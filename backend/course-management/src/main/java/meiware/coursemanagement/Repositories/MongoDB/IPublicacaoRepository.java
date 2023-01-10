@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface IPublicacaoRepository extends MongoRepository<Publicacao, String> {
-    List<Publicacao> findAllByOrderByDataCriacaoDesc();
+    List<Publicacao> findAllByArquivadaIsFalseAndAprovadaIsFalseOrderByDataCriacaoDesc();
+    List<Publicacao> findAllByArquivadaIsFalseAndAprovadaIsTrueOrderByDataCriacaoDesc();
 }
