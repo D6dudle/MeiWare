@@ -5,6 +5,7 @@ import DropzoneFiles from "../components/Dropzone";
 import users from "../constants/usersAux.json";
 import ForumTopic from "../components/ForumTopic";
 import { EmptyState } from "../components/EmptyState";
+import ListaUtilizadoresService from "../services/getListaUtilizadoresService";
 
 export default function AprovarPublicacao() {
   const pubList = [
@@ -42,10 +43,18 @@ export default function AprovarPublicacao() {
   const [publicacoes, setPublicacoes] = useState(pubList);
   const [filteredList, setFilteredList] = useState(publicacoes);
   const [search, setSearch] = useState();
-  const [colabList, setColabList] = useState(users);
+  const [colabList, setColabList] = useState([]);
   const [tagList, setTags] = useState(tags);
   const [values, setValues] = useState([]);
   const [tagValues, setTagValues] = useState([]);
+
+  useEffect(() => {
+    //Obter lista de colaboradores no dropdown
+
+    ListaUtilizadoresService.getListaUtilizadores().then((data) => {
+      setColabList(data);
+    });
+  }, []);
 
   useEffect(() => {
     var list = publicacoes;
@@ -141,7 +150,7 @@ export default function AprovarPublicacao() {
           <div className="mt-2 justify-evenly">
             <div className="flex flex-row w-full gap-4 mb-2">
               <div className="flex flex-row h-fit justify-between items-center gap-8">
-                <div>
+                <div className="pt-4">
                   <TextInput
                     index={1}
                     name={"tags"}
@@ -149,7 +158,7 @@ export default function AprovarPublicacao() {
                     titleStyle={"font-bold mb-1 text-2xl"}
                     style={"w-[50rem]"}
                     placeholder="tags..."
-                    list={tagList}
+                    list={colabList}
                     multi={true}
                     showTitle={false}
                     error={"Por favor selecione ou adicione uma tag"}
@@ -163,7 +172,7 @@ export default function AprovarPublicacao() {
                   <TextInput
                     index={1}
                     name={"colaborador"}
-                    type="dropsearch"
+                    type="dropdown"
                     titleStyle={"font-bold mb-1 text-2xl"}
                     style={"w-[50rem]"}
                     placeholder="colaborador..."
