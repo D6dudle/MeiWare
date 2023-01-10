@@ -10,16 +10,17 @@ import { Loading } from "./Loading";
 import ListaFormacaoUserService from "../services/getListaFormacaoUser";
 import { AlertCircle, Zap, Check } from "react-feather";
 import PedidoFormacaoService from "../services/pedido-formacao.serivce";
+import ListaUtilizadoresService from "../services/getListaUtilizadoresService";
 
 export default function TrainingTabs({ sideBarName, nomeEcra }) {
   const [isLoading, setLoading] = useState(true); // Loading state
   const [rawList, setRawList] = useState([]);
   const [originalList, setOriginalList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
+  const [colabList, setColabList] = useState([]);
 
   var urlBack = "";
 
-  
   var JSONList = [
     {
       label: "Formações pendentes",
@@ -41,8 +42,15 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
     },
   ];
 
+  useEffect(() => {
+    //Obter lista de colaboradores no dropdown
 
-  if(nomeEcra == 'LISTARFORMACOES') {
+    ListaUtilizadoresService.getListaUtilizadores().then((data) => {
+      setColabList(data);
+    });
+  }, []);
+
+  if (nomeEcra == "LISTARFORMACOES") {
     useEffect(() => {
       const user = UserService.getCurrentUser();
       ListaFormacaoUserService.getListaFormacaoUser(user.id).then((data) => {
@@ -68,13 +76,13 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
             //console.log("REJEITADA");
           }
         }
-  
+
         setOriginalList(JSONList);
         setFilteredList(JSONList[0].formacoes);
       }
     }, [rawList]);
     urlBack = "/home/formacao/listar-formacao";
-  } else if(nomeEcra == 'GERIRPEDIDOS') {
+  } else if (nomeEcra == "GERIRPEDIDOS") {
     useEffect(() => {
       const user = UserService.getCurrentUser();
       if (user.isAdministrador) {
@@ -89,7 +97,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
         });
       }
     }, []);
-    
+
     useEffect(() => {
       if (rawList != null) {
         for (const property in rawList) {
@@ -107,17 +115,13 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
             //console.log("REJEITADA");
           }
         }
-  
+
         setOriginalList(JSONList);
         setFilteredList(JSONList[0].formacoes);
       }
     }, [rawList]);
-    urlBack = "/home/controlo/gerir-pedidos";
+    urlBack = "/home/controlo/gerir-formacoes";
   }
-
-  
-
-  const [colabList, setColabList] = useState(users);
 
   const [activeFilter, setActiveFilter] = useState(null);
   const [dateSortIncreasing, setDateSort] = useState(false);
@@ -315,7 +319,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
             <TextInput
               index={1}
               name={"colaborador"}
-              type="dropsearch"
+              type="dropdown"
               titleStyle={"font-bold mb-1 text-2xl"}
               style={"w-[30rem]"}
               placeholder="colaborador..."

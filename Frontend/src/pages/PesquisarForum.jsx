@@ -8,6 +8,7 @@ import ForumTopic from "../components/ForumTopic";
 import DateOrder from "../components/DateOrder";
 import { knowledgeBaseList } from "../constants/menuConstants";
 import { EmptyState } from "../components/EmptyState";
+import ListaUtilizadoresService from "../services/getListaUtilizadoresService";
 
 export const PesquisarForum = ({}) => {
   const [listKnowledgeBase, setListKnowledgeBase] = useState(knowledgeBaseList);
@@ -16,11 +17,19 @@ export const PesquisarForum = ({}) => {
   const [search, setSearch] = useState();
   const [dateSortIncreasing, setDateSort] = useState(false);
   const [values, setValues] = useState([]);
-  const [colabList, setColabList] = useState(users);
+  const [colabList, setColabList] = useState([]);
   const [formationCamps, setFormationCamps] = useState({
     nomeColaborador: [],
     data: new Date(),
   });
+
+  useEffect(() => {
+    //Obter lista de colaboradores no dropdown
+
+    ListaUtilizadoresService.getListaUtilizadores().then((data) => {
+      setColabList(data);
+    });
+  }, []);
 
   useEffect(() => {
     var list = knowledgeBaseList;
@@ -132,7 +141,7 @@ export const PesquisarForum = ({}) => {
               <TextInput
                 index={1}
                 name={"colaborador"}
-                type="dropsearch"
+                type="dropdown"
                 titleStyle={"font-bold mb-1 text-2xl"}
                 style={"w-[30rem]"}
                 placeholder="colaborador..."

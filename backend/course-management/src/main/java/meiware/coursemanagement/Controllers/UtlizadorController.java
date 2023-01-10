@@ -4,7 +4,7 @@ import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
-import net.minidev.json.JSONArray;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +17,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/utilizador")
+@CrossOrigin(origins = "http://localhost:5173/")
+
 public class UtlizadorController {
 
     @Autowired
@@ -32,11 +34,35 @@ public class UtlizadorController {
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.add(u.toJSON());
+                arr.put(u.toJSON());
             }
 
             return new ResponseEntity<>(
                     arr,
+                    HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(
+                    "Erro ao aceder aos utilizadores.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/listaUtilizadores")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> getListaUtilizadores() {
+
+        try{
+            List<Utilizador> listaUtilizadores = utilizadorService.getUtilizadores();
+
+            JSONArray arr = new JSONArray();
+
+
+            for (Utilizador u : listaUtilizadores){
+                //Devolve a lista de acordo com o dropdown existente na frontend
+                arr.put(u.colaboradorToJSON());
+            }
+            return new ResponseEntity<>(
+                    arr.toString(),
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
@@ -55,7 +81,7 @@ public class UtlizadorController {
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.add(u.toJSON());
+                arr.put(u.toJSON());
             }
             return new ResponseEntity<>(
                     arr,
@@ -77,7 +103,7 @@ public class UtlizadorController {
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.add(u.toJSON());
+                arr.put(u.toJSON());
             }
             return new ResponseEntity<>(
                     arr,
@@ -99,7 +125,7 @@ public class UtlizadorController {
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.add(u.toJSON());
+                arr.put(u.toJSON());
             }
             return new ResponseEntity<>(
                     arr,
@@ -127,7 +153,7 @@ public class UtlizadorController {
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.add(u.toJSON());
+                arr.put(u.toJSON());
             }
             return new ResponseEntity<>(
                     arr,
