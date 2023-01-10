@@ -12,6 +12,7 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo")
+@DiscriminatorValue("PedidoFormacao")
 public class PedidoFormacao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -263,5 +264,12 @@ public class PedidoFormacao {
                 ", dataUltimoUpdate=" + dataUltimoUpdate +
                 ", listAnexoRef=" + listAnexoRefs +
                 '}';
+    }
+
+    @Transient
+    public String getDiscriminatorValue(){
+        DiscriminatorValue val = this.getClass().getAnnotation( DiscriminatorValue.class );
+
+        return val == null ? null : val.value();
     }
 }

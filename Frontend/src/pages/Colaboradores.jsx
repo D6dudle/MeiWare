@@ -6,10 +6,11 @@ import TrainingUserInfo from "../components/TrainingUserInfo";
 import TextInput from "../components/TextInput";
 import users from "../constants/usersAux"; // Remove later
 import Modal from "../components/Modal";
-import { getDataUsers, getColumnsTable } from "../constants/tabelaUtilizadores";
+import {getColumnsTable } from "../constants/tabelaUtilizadores";
 import Table from "../components/TableComponent/Table";
 import ColaboradoresService from "../services/get-colaboradores.service";
 import UserService from "../services/user.service";
+import UtilizadoresService from "../services/get-utilizadores.service";
 
 export default function Colaboradores() {
   const navigate = useNavigate();
@@ -19,9 +20,7 @@ export default function Colaboradores() {
   const [search, setSearch] = useState();
   const [modal, setModal] = useState({ show: false, data: null });
 
-  const [dados, setDados] = useState(null);
   const [dataColaborators, setDataColaborators] = useState([]);
-  const dataUsers = React.useMemo(() => getDataUsers(), []);
   const columns = React.useMemo(() => getColumnsTable(), []);
 
   const handleCloseModal = () => {
@@ -38,31 +37,142 @@ export default function Colaboradores() {
   useEffect(() => {
     const user = UserService.getCurrentUser();
     if(user.isAdministrador) {
-      console.log("ALL COLABORADORES");
-      ColaboradoresService.getColaboradoresAll().then((data)=>{
-        //setDataCardList(data);
-        var role, budgetUtilizado, budgetPendente;
+      console.log("O USER É ADMIN -> A IMPRIMIR ALL COLABORADORES");
+
+      UtilizadoresService.getUtilizadoresAll().then((data)=>{
+        var role, budgetUtilizado, budgetPendente, formacoesFeitas = 0, formacoesPendentes = 0, id;
         const dataHandled = [];
+        var colaborador = {};
 
-        setDataColaborators(data);
+        for(var c = 0; c < data.length; c++){
+          if(!data[c].isAdministrador){
+            console.log(data[c]);
 
-        var nome = data[0].nome;
-        var email = data[0].email;
-        if(data[0].isColaborador){
-          role = "Colaborador";
+            formacoesFeitas = 0;
+            formacoesPendentes = 0;
+            budgetUtilizado = 0;
+            budgetPendente = 0;
+
+            var nome = data[c].nome;
+            var email = data[c].email;
+            var id = data[c].id;
+
+
+            if(data[c].isColaborador){
+              role = "Colaborador";
+            }
+
+            if(data[c].isGestor){
+              role = "manager";
+            }
+            
+          
+            if(data[c].listaFormacoesHandled.length != 0){
+
+              for(var i = 0; i < data[c].listaFormacoesHandled.listaFormacoes.length; i++){
+                var formacao = data[c].listaFormacoesHandled.listaFormacoes[i];
+                if(formacao.tipoFormacao == 'TERMINADA'){
+                  formacoesFeitas++;
+                  budgetUtilizado += parseInt(formacao.preco);
+
+                  
+                }
+                if(formacao.tipoFormacao == 'PENDENTE'){
+                  formacoesPendentes++;
+                  budgetPendente += parseInt(formacao.preco);
+                }
+              }
+            }
+
+            
+            colaborador = { "id": id,
+                            "nome": nome, 
+                            "email": email, 
+                            "budgetUsed": budgetUtilizado, 
+                            "role": role, 
+                            "numFormacao": formacoesFeitas, 
+                            "numFormacaoPendentes": formacoesPendentes,
+                            "emAprovacao": budgetPendente
+                          };
+
+            dataHandled.push(colaborador);
+
+            setDataColaborators(dataHandled);
+
+          }
+
+
+
         }
-        if(data[0].listBudget.length == 0){
-          budgetUtilizado = "0.0€"
-        }
-    
-
-
-        console.log(nome + email + role + ' ' + budgetUtilizado);
-
-
-
       });
     }
+    //Se o user logado for Gestor só aparecem os colaboradores associados a ele
+    else if(user.isGestor) {
+
+      console.log("O user é gestor");
+      ColaboradoresService.getColaboradoresAll().then((data)=>{
+        var role, budgetUtilizado, budgetPendente, formacoesFeitas, formacoesPendentes, id;
+        const dataHandled = [];
+        var colaborador = {};
+
+        for(var c = 0; c < data.length; c++){
+          //verifica se o colaborador tem o mesmo managerID que o gestor logado
+          if(user.id == data[c].managerId){
+
+            formacoesFeitas = 0;
+            formacoesPendentes = 0;
+            budgetUtilizado = 0;
+            budgetPendente = 0;
+
+            var nome = data[c].nome;
+            var email = data[c].email;
+            var id = data[c].id;
+
+
+            if(data[c].isColaborador){
+              role = "Colaborador";
+            }
+            
+          
+            if(data[c].listaFormacoesHandled.length != 0){
+
+              for(var i = 0; i < data[c].listaFormacoesHandled.listaFormacoes.length; i++){
+                var formacao = data[c].listaFormacoesHandled.listaFormacoes[i];
+                if(formacao.tipoFormacao == 'TERMINADA'){
+                  formacoesFeitas++;
+                  budgetUtilizado += parseInt(formacao.preco);
+
+                  
+                }
+                if(formacao.tipoFormacao == 'PENDENTE'){
+                  formacoesPendentes++;
+                  budgetPendente += parseInt(formacao.preco);
+                }
+              }
+            }
+            
+            colaborador = { "id": id,
+                            "nome": nome, 
+                            "email": email, 
+                            "budgetUsed": budgetUtilizado, 
+                            "role": role, 
+                            "numFormacao": formacoesFeitas, 
+                            "numFormacaoPendentes": formacoesPendentes,
+                            "emAprovacao": budgetPendente
+                          };
+
+            dataHandled.push(colaborador);
+
+            setDataColaborators(dataHandled);
+            
+          }
+        
+        }
+        
+      });
+    }
+
+
   }, []);
 
 
@@ -82,10 +192,6 @@ export default function Colaboradores() {
     setSearch(event.target.value);
   };
 
-  const handleName = () => {
-    setOrder(!order);
-  };
-
   return (
     <div className="w-full h-full overflow-scroll scrollbar-hide">
       <h1 className="text-white font-bold text-3xl pt-8 pl-8">
@@ -93,27 +199,10 @@ export default function Colaboradores() {
       </h1>
 
       <div className="pt-8 pl-4 pr-8">
-        <div className="pr-8">
-          <TextInput
-            index={1}
-            name={"pesquisa..."}
-            type={"searchbar"}
-            placeholder="colaborador..."
-            style={"md:w-[100%] w-[15rem]"}
-            showTitle={false}
-            value={search}
-            callback={handleType}
-          />
-          
+        <div className="pr-8">        
           
 
           <div className="flex md:flex-row flex-col justify-evenly md:justify-between md:items-center items-start gap-8 pt-2">
-            <div className="flex gap-1">
-              <button className="btnSearchFunc">
-                <p className="btnIcons ">Mais filtros</p>
-                <Filter className="w-4 h-4 btnIcons" />
-              </button>
-            </div>
 
             <div className="flex gap-14">
               <button

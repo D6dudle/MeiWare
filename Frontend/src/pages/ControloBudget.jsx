@@ -1,12 +1,7 @@
 import React from "react";
 import { StatsCard, StatsLargeCard } from "../components/StatsCard";
-import { getDataUsers, getColumnsTable } from "../constants/tabelaUtilizadores";
-import Table from "../components/TableComponent/Table";
 
 export default function ControloBudget() {
-  const data = React.useMemo(() => getDataUsers(), []);
-  const columns = React.useMemo(() => getColumnsTable(), []);
-
   return (
     <div className="pl-8 pt-8 pr-8 w-full h-full overflow-scroll scrollbar-hide">
       <h1 className="text-3xl font-bold">Dashboard</h1>

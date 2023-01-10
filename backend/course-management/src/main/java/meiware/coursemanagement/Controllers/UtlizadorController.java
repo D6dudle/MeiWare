@@ -53,15 +53,17 @@ public class UtlizadorController {
     @GetMapping(value = "/colaboradores")
     @PreAuthorize("hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getColaboradores() {
-        System.out.println("Entrei no controlador.........");
         try{
             List<Utilizador> listaUtilizadores = utilizadorService.getColaboradores();
 
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
+
                 arr.put(u.toJSON());
+
             }
+
             return new ResponseEntity<>(
                     arr.toString(),
                     HttpStatus.OK);

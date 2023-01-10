@@ -166,6 +166,7 @@ public class Utilizador {
         JSONArray lists = new JSONArray();
         JSONArray listsBudget = new JSONArray();
 
+
         for (PedidoFormacao listaPedidos : listPedidos){
 
             lists.put(listaPedidos.toJSON());
@@ -174,7 +175,8 @@ public class Utilizador {
 
         obj.put("listaFormacoes", lists);
 
-
+        //System.out.println("Formacoes: " + listaFormacaoUsertoJSON());
+        obj.put("listaFormacoesHandled", listaFormacaoUsertoJSON());
         for (Budget listaBudget : listBudget){
 
             listsBudget.put(listaBudget.toJSON());
@@ -210,5 +212,50 @@ public class Utilizador {
                 ", roles=" + roles +
                 ", manager=" + manager +
                 '}';
+    }
+
+    public JSONObject listaFormacaoUsertoJSON(){
+        JSONObject obj = new JSONObject();
+
+        JSONArray lists = new JSONArray();
+        for (PedidoFormacao listaPedidos : listPedidos){
+            //Retorna um JSON Object com a formacao
+            lists.put(listaFormacaoToJSON(listaPedidos));
+        }
+        obj.put("listaFormacoes", lists);
+        return obj;
+    }
+
+    public JSONObject listaFormacaoToJSON(PedidoFormacao listaFormacao){
+        JSONObject obj = new JSONObject();
+        obj.put("username", listaFormacao.getQuemFezPedido().getNome());
+        obj.put("nomeFormacao", listaFormacao.getNome());
+        obj.put("dataFormacao", listaFormacao.getDataCriacao());
+        obj.put("idCurso", listaFormacao.getId());
+        obj.put("preco", listaFormacao.getPreco());
+
+        obj.put("justificacaoFormacao", listaFormacao.getJustificacao());
+        //PENDENTE
+        //CURSO
+        //REJEITADA
+        //TERMINADA
+
+        if (listaFormacao.getDiscriminatorValue().equals("PedidoFormacao") && !listaFormacao.isApagada()){
+            // A formacao ainda esta pendente
+            obj.put("tipoFormacao", "PENDENTE");
+        }else if (listaFormacao.getDiscriminatorValue().equals("APROVADA") && !listaFormacao.isApagada()){
+            if (listaFormacao instanceof PedidoAprovado){
+                PedidoAprovado auxAprovado = (PedidoAprovado)listaFormacao;
+                if (auxAprovado.isConcluida())
+                    obj.put("tipoFormacao", "TERMINADA");
+                else{
+                    obj.put("tipoFormacao", "CURSO");
+                }
+
+            }
+        }else if (listaFormacao.getDiscriminatorValue().equals("REJEITADA") && !listaFormacao.isApagada() ) {
+            obj.put("tipoFormacao", "REJEITADA");
+        }
+        return obj;
     }
 }

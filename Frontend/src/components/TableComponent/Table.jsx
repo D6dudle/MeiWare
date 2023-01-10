@@ -55,7 +55,9 @@ function GlobalFilter({
         placeholder={`${count} entradas...`}
       />
     </label>
+    
   );
+  
 }
 
 // This is a custom filter UI for selecting
@@ -156,12 +158,13 @@ const tableHooks = (hooks) => {
 
   const handleExcluir = (u) => {
     console.log("handle excluir" + u);
+    /*
     setModalUser({
       show: true,
       data: "EXCLUIR",
     });
 
-    console.log("modal: " + modalUser.show);
+    console.log("modal: " + modalUser.show);*/
   };
 
   hooks.visibleColumns.push((columns) => [
@@ -172,10 +175,10 @@ const tableHooks = (hooks) => {
       Cell: ({ row }) => (
         <div className="flex gap-12">
          <HiPencilAlt
-            className="text-white"
+            className="text-white cursor-pointer"
             onClick={() => {
               const params = {
-                id: row.original.age,
+                id: row.original.id,
               };
               navigate(
                 {
@@ -189,9 +192,9 @@ const tableHooks = (hooks) => {
           }}
         />
         <HiTrash 
-          className="text-white"
+          className="text-white cursor-pointer"
           onClick={() => {
-            handleExcluir(row.original.age);
+            handleExcluir(row.original.id);
           }}
 
         />
