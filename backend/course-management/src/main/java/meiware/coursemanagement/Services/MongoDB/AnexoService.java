@@ -66,7 +66,7 @@ public class AnexoService implements IAnexoService {
     @Override
     public Anexo createAnexo(MultipartFile file) {
         try {
-            Anexo anexo = new Anexo("abc", file.getOriginalFilename());
+            Anexo anexo = new Anexo(file.getOriginalFilename());
             anexo.setConteudo(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
             return anexoRepository.save(anexo);
         } catch (Exception e) {

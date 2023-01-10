@@ -20,10 +20,26 @@ public class PublicacaoService implements IPublicacaoService {
     private IAnexoService anexoService;
 
     @Override
-    public List<Publicacao> getPublicacoes() {
+    public List<Publicacao> getPublicacoesPendentes() {
         List<Publicacao> publicacoes = new ArrayList<>();
         try {
-            for (Publicacao p: publicacaoRepository.findAllByOrderByDataCriacaoDesc()) {
+            for (Publicacao p: publicacaoRepository.findAllByArquivadaIsFalseAndAprovadaIsFalseOrderByDataCriacaoDesc()) {
+                if(!p.isArquivada()) {
+                    publicacoes.add(p);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return publicacoes;
+    }
+
+    @Override
+    public List<Publicacao> getPublicacoesAprovadas() {
+        List<Publicacao> publicacoes = new ArrayList<>();
+        try {
+            for (Publicacao p: publicacaoRepository.findAllByArquivadaIsFalseAndAprovadaIsTrueOrderByDataCriacaoDesc()) {
                 if(!p.isArquivada()) {
                     publicacoes.add(p);
                 }
@@ -51,17 +67,18 @@ public class PublicacaoService implements IPublicacaoService {
     }
 
     @Override
-    public String createPublicacao(Publicacao newPublicacao, List<MultipartFile> files) {
+    public Publicacao createPublicacao(Publicacao newPublicacao, List<MultipartFile> files) {
         try {
+            Publicacao publicacao = new Publicacao(newPublicacao.getTitulo(), newPublicacao.getDescricao(), newPublicacao.getTags(), newPublicacao.getTituloFormacao());
             if (files.size() > 0) {
                 List<Anexo> anexos = new ArrayList<>();
                 for (MultipartFile file: files) {
                     anexos.add(anexoService.createAnexo(file));
                 }
-                newPublicacao.setAnexos(anexos);
+                publicacao.setAnexos(anexos);
             }
 
-            return publicacaoRepository.insert(newPublicacao).getId();
+            return publicacaoRepository.save(publicacao);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,14 +87,21 @@ public class PublicacaoService implements IPublicacaoService {
     }
 
     @Override
+    public void aprovarPublicacao(Publicacao publicacao) {
+        try {
+            publicacao.setAprovada(true);
+            publicacaoRepository.save(publicacao);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void arquivarPublicacao(Publicacao publicacaoArquivada) {
         try {
-            Publicacao publicacao = this.getPublicacaoById(publicacaoArquivada.getId());
-            if(publicacao != null) {
-                publicacao.setArquivada();
-                publicacao.setArquivadaEm(LocalDate.now());
-                publicacaoRepository.save(publicacao);
-            }
+            publicacaoArquivada.setArquivada();
+            publicacaoArquivada.setArquivadaEm(LocalDate.now());
+            publicacaoRepository.save(publicacaoArquivada);
         } catch (Exception e) {
             e.printStackTrace();
         }

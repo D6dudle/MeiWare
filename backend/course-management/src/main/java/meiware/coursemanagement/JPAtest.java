@@ -216,12 +216,11 @@ public class JPAtest {
                 log.info(post.toString());
             }*/
 
-        /*
-        //MongoDb files
-        File file = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_CM_Theoretical_Work.zip");
+        /*//MongoDb files
+        File file = new File("backend/course-management/src/main/resources/files/2022_CM_Theoretical_Work.zip");
         FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
-        File file2 = new File("C:\\Users\\Diogo Filipe\\Desktop\\2022_pm_t_L5_v1.1.pdf");
+        File file2 = new File("backend/course-management/src/main/resources/files/2022_pm_t_L5_v1.1.pdf");
         FileItem fileItem2 = new DiskFileItem("file2", Files.probeContentType(file2.toPath()), false, file2.getName(), (int) file2.length(), file2.getParentFile());
 
 
@@ -244,18 +243,18 @@ public class JPAtest {
 
         List<MultipartFile> files = new ArrayList<>();
         files.add(multipartFile);
-        files.add(multipartFile2);
+        //files.add(multipartFile2);
 
-        Publicacao publicacao = new Publicacao("Publicacao Teste", "Isto e uma publicacao teste...", new HashSet<>(), "Formacao 1");
+        Publicacao publicacao = new Publicacao("Publicacao Teste 2", "Isto e uma publicacao teste...", new HashSet<>(), "Formacao 1");
 
         String id = publicacaoService.createPublicacao(publicacao, files);
         Publicacao pub = publicacaoService.getPublicacaoById(id);
-        publicacaoService.arquivarPublicacao(pub);
+        //publicacaoService.arquivarPublicacao(pub);
         //publicacaoService.removePublicacao(pub);
         //String id = anexoService.createAnexo(multipartFile);
         //Anexo anexo = anexoService.getAnexoById(id);
-        System.out.println(publicacaoService.getPublicacoes());
-        *//*File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(0).getNome());
+        System.out.println(publicacaoService.getPublicacoes());*/
+        /*File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(0).getNome());
         File newFile2 = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(1).getNome());
 
         FileUtils.writeByteArrayToFile(newFile, pub.getAnexos().get(0).getConteudo().getData());

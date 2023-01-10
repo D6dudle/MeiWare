@@ -1,5 +1,8 @@
 package meiware.coursemanagement.Entities.MongoDB;
 
+import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,6 +20,7 @@ public class Publicacao {
     private LocalDate dataCriacao;
     private Set<String> tags;
     private String tituloFormacao;
+    private boolean aprovada;
     private boolean arquivada;
     private LocalDate arquivadaEm;
     private List<Anexo> anexos;
@@ -29,6 +33,7 @@ public class Publicacao {
         this.dataCriacao = LocalDate.now();
         this.tags = tags;
         this.tituloFormacao = tituloFormacao;
+        this.aprovada = false;
         this.arquivada = false;
     }
 
@@ -80,6 +85,14 @@ public class Publicacao {
         this.tituloFormacao = tituloFormacao;
     }
 
+    public boolean isAprovada() {
+        return aprovada;
+    }
+
+    public void setAprovada(boolean aprovada) {
+        this.aprovada = aprovada;
+    }
+
     public boolean isArquivada() {
         return arquivada;
     }
@@ -117,6 +130,7 @@ public class Publicacao {
                 ", dataCriacao=" + dataCriacao +
                 ", tags=" + tags +
                 ", tituloFormacao='" + tituloFormacao + '\'' +
+                ", aprovada=" + aprovada +
                 ", arquivada=" + arquivada +
                 ", arquivadaEm=" + arquivadaEm +
                 ", anexos=" + anexos +

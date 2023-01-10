@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IPublicacaoService {
-    List<Publicacao> getPublicacoes();
+    List<Publicacao> getPublicacoesPendentes();
+    List<Publicacao> getPublicacoesAprovadas();
     Publicacao getPublicacaoById(String id);
-    String createPublicacao(Publicacao newPublicacao, List<MultipartFile> files) throws IOException;
+    Publicacao createPublicacao(Publicacao newPublicacao, List<MultipartFile> files);
+    void aprovarPublicacao(Publicacao publicacao);
     void arquivarPublicacao(Publicacao publicacaoArquivada);
     void removePublicacao(Publicacao publicacao);
 }
