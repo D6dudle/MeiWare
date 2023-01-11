@@ -47,18 +47,18 @@ export default function EditarColaborador() {
       setInitialData(utilizador);
       
       console.log(utilizador);
-      
+
       pubFields[0]["value"] = utilizador.nome;
       pubFields[1]["value"] = utilizador.email;
 
       if(utilizador.isAdministrador){
-        pubFields[2]["value"] = "Administrador";
+        pubFields[2]["value"] = rolesList[0];
       }
       else if(utilizador.isGestor){
-        pubFields[2]["value"] = "Gestor";
+        pubFields[2]["value"] = rolesList[1];
       }
       else{
-        pubFields[2]["value"] = "Colaborador";
+        pubFields[2]["value"] = rolesList[2];
       }
       
       for(var i = 0; i < ManagerList.length; i++){
@@ -145,6 +145,7 @@ export default function EditarColaborador() {
     });
     fields.push({
       name: "cargo",
+      type: "dropsearch",
       required: true,
       callback: handleType,
       value: rolesList[0],
@@ -210,10 +211,30 @@ export default function EditarColaborador() {
 
     initialData.nome = pubFields[0]["value"];
     initialData.email = pubFields[1]["value"];
-    initialData.role = pubFields[2]["value"];
-    //initialData.manager.name = pubFields[3]["value"]["value"];
+    if(pubFields[2]["value"] == rolesList[0].value){
+      initialData.isAdministrador = true;
+      initialData.isGestor = false;
+      initialData.isColaborador = false;
+    }
+    else if(pubFields[2]["value"] ==  rolesList[1].value){
+      initialData.isAdministrador = false;
+      initialData.isGestor = true;
+      initialData.isColaborador = true;
+    }
+    else{
+      initialData.isAdministrador = false;
+      initialData.isGestor = false;
+      initialData.isColaborador = true;
+    }
 
+    //initialData.manager.name = pubFields[3]["value"]["value"];
     console.log(initialData);
+
+    UtilizadoresService.updateUtilizador(initialData).then((data)=>{
+      console.log(data);
+    });
+
+    
   };
 
   const goBack = () => {
