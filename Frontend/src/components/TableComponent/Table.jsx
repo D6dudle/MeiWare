@@ -1,5 +1,5 @@
-import React from "react";
-import regeneratorRuntime from "regenerator-runtime";
+import React, {useState, useEffect, useCallback} from "react";
+import 'regenerator-runtime/runtime'
 import {
   useTable,
   useFilters,
@@ -13,7 +13,10 @@ import { Button, PageButton } from "./Button";
 import { classNames } from "./Utils";
 import { SortIcon, SortUpIcon, SortDownIcon } from "./Icons";
 //import { PencilAltIcon } from '@heroicons/react/solid'
-import { useNavigate, useLocation, createSearchParams } from "react-router-dom";
+import { useNavigate, useLocation, createSearchParams} from "react-router-dom";
+import Modal from "../Modal";
+import UtilizadoresService from "../../services/get-utilizadores.service";
+import { Plus } from "react-feather";
 
 import {
   HiChevronDoubleLeft,
@@ -21,8 +24,11 @@ import {
   HiChevronRight,
   HiChevronDoubleRight,
   HiPencilAlt,
+  HiTrash,
 } from "react-icons/hi";
 
+
+import { isConstructorDeclaration } from "typescript";
 // Define a default UI for filtering
 function GlobalFilter({
   preGlobalFilteredRows,
@@ -34,6 +40,8 @@ function GlobalFilter({
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
   }, 200);
+
+
 
   return (
     <label className="flex gap-x-2 items-baseline w-fit">
@@ -49,7 +57,9 @@ function GlobalFilter({
         placeholder={`${count} entradas...`}
       />
     </label>
+    
   );
+  
 }
 
 // This is a custom filter UI for selecting
@@ -128,42 +138,87 @@ export function AvatarCell({ value, column, row }) {
   );
 }
 
+
+
 const tableHooks = (hooks) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [modalUser, setModalUser] = useState({ show: false, data: null });
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+
+
+  const handleCloseModal = () => {
+    setModalUser({ show: false, data: null });
+  };
+
+  const confirmeActionModal = (u) => {
+    console.log("Vou excluir o colaborador");
+    /*
+    setUsers(usersList.filter((user) => u.email !== user.email));
+    setUser(users[0]);
+    setModal({ show: false, data: null });*/
+  };
+
+  const handleExcluir = (u) => {
+    console.log("handle excluir" + u);
+    UtilizadoresService.removeUtilizador(u).then((data)=>{
+      
+      console.log(data);  
+      
+    });
+  }
+
   hooks.visibleColumns.push((columns) => [
     ...columns,
     {
       id: "Edit",
       Header: "",
       Cell: ({ row }) => (
-        <HiPencilAlt
-          className="text-white"
-          onClick={() => {
-            const params = {
-              id: row.original.age,
-            };
-
-            navigate(
-              {
-                pathname: "/home/controlo/colaboradores/editar-colaborador",
-                search: createSearchParams(params).toString(),
-              },
-              {
-                state: {
-                  prevUrl: location.pathname,
+        <div className="flex gap-12">
+         <HiPencilAlt
+            className="text-white cursor-pointer"
+            onClick={() => {
+              const params = {
+                id: row.original.id,
+              };
+              navigate(
+                {
+                  pathname: "/home/controlo/colaboradores/editar-colaborador",
+                  search: createSearchParams(params).toString(),
                 },
-              }
+                {
+                state: {
+                  prevUrl: location.pathname,}}
             );
           }}
         />
+        <HiTrash 
+          className="text-white cursor-pointer"
+          onClick={() => {
+            handleExcluir(row.original.id);
+          }}
+
+        />
+        {
+        modalUser.show && (
+            <Modal
+              closeModal={handleCloseModal}
+              confirmeActionModal={() => confirmeActionModal(row.original.age)}
+              //data={modal.data}
+            />
+        )}
+        </div>
       ),
+
     },
   ]);
 };
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
+  const navigate = useNavigate();
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -197,24 +252,38 @@ function Table({ columns, data }) {
     usePagination // new
   );
 
+  const handleAdicionar = () => {
+    navigate("/home/controlo/colaboradores/adicionar-colaborador");
+  };
+
+
   // Render the UI for your table
   return (
     <>
-      <div className="sm:flex sm:gap-x-2">
+      <div className="flex md:flex-row flex-col justify-evenly md:justify-between md:items-center items-start gap-8 pt-2">
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
           globalFilter={state.globalFilter}
           setGlobalFilter={setGlobalFilter}
+          
+          
         />
         {headerGroups.map((headerGroup) =>
           headerGroup.headers.map((column) =>
             column.Filter ? (
-              <div className="mt-2 sm:mt-0" key={column.id}>
+              <div className="" key={column.id}>
                 {column.render("Filter")}
               </div>
             ) : null
           )
         )}
+        
+        <button
+          className="actionButtons bg-primary"
+          onClick={() => handleAdicionar()}>
+            <Plus className="w-4 h-4 text-black" />
+            <p className="actionBtnInsideInfo">Adicionar colaborador</p>
+          </button>
       </div>
       {/* Pagination */}
       <div className="py-3 flex items-center justify-between">
@@ -296,7 +365,9 @@ function Table({ columns, data }) {
             </nav>
           </div>
         </div>
+        
       </div>
+      
       {/* table */}
       <div className="mt-4 flex flex-col">
         <div className="-my-2 overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">

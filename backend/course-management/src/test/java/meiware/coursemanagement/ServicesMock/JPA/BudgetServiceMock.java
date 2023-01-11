@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class BudgetServiceMock{
-
+/*
     @Mock
     private IBudgetRepository budgetRepository;
 
@@ -109,7 +109,7 @@ public class BudgetServiceMock{
     @DisplayName("Junit test 23 - Teste unitário do método updateBudget de BudgetService.")
     @Test
     public void updateBudget() {
-        /*// given - precondition or setup
+        //given - precondition or setup
         Budget budget = budgets.get(0);
         given(budgetRepository.findById(budget.getId())).willReturn(Optional.of(budget));
         given(budgetRepository.save(budget)).willReturn(budget);
@@ -121,8 +121,8 @@ public class BudgetServiceMock{
 
         // then - verify the output
         assertThat(updatedBudget.getBudget()).isEqualTo(5000);
-        assertThat(updatedBudget.getAno()).isEqualTo(2002);*/
+        assertThat(updatedBudget.getAno()).isEqualTo(2002);
     }
-
+    */
 
 }

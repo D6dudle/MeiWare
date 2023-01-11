@@ -2,6 +2,8 @@ package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,6 +44,11 @@ public class Utilizador {
 
     @ManyToMany(mappedBy = "formandos", cascade = CascadeType.ALL)
     private Set<PedidoFormacao> listFormacoes;
+
+
+
+
+    private Boolean apagado = false;
 
     public Utilizador(){    }
 
@@ -88,6 +95,14 @@ public class Utilizador {
 
     public String getPassword() {
         return password;
+    }
+
+    public Boolean isApagado() {
+        return apagado;
+    }
+
+    public void setApagado(Boolean apagado) {
+        this.apagado = apagado;
     }
 
     public void setPassword(String password) {
@@ -166,17 +181,73 @@ public class Utilizador {
         obj.put("isColaborador", isColaborador());
         obj.put("isGestor", isGestor());
         obj.put("isAdministrador", isAdministrador());
+        obj.put("isApagado", apagado);
 
         if (manager == null)
             obj.put("managerId", -1);
         else
             obj.put("managerId", manager.getId());
 
+
+        //System.out.println("Lista de Pedidos: " + listPedidos.size());
+
         JSONArray lists = new JSONArray();
         for (PedidoFormacao listaPedidos : listFormacoes){
             lists.put(listaPedidos.toJSON());
-        }
         obj.put("listaFormacoes", lists);
+        
+        lists = new JSONArray();
+        for (PedidoFormacao listaPedidos : listPedidos){
+            lists.put(listaPedidos.toJSON());
+        }
+        obj.put("listaPedidos", lists);
+        
+
+        //System.out.println("Formacoes: " + listaFormacaoUsertoJSON());
+        obj.put("listaFormacoesHandled", listaFormacaoUsertoJSON());
+        
+        JSONArray listsBudget = new JSONArray();
+        for (Budget listaBudget : listBudget){
+            listsBudget.put(listaBudget.toJSON());
+        }
+        obj.put("listBudget", listsBudget);
+
+        return obj;
+    }
+
+    public JSONObject toJSONAuth(){
+        JSONObject obj = new JSONObject();
+        obj.put("id", id);
+        obj.put("nome", nome);
+        obj.put("email", email);
+        obj.put("isColaborador", isColaborador());
+        obj.put("isGestor", isGestor());
+        obj.put("isAdministrador", isAdministrador());
+        if (manager == null)
+            obj.put("managerId", -1);
+        else
+            obj.put("managerId", manager.getId());
+
+        System.out.println(obj);
+        return obj;
+    }
+    @Override
+    public String toString() {
+        return "Utilizador{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                ", manager=" + manager +
+                '}';
+    }
+
+    public JSONObject colaboradorToJSON(){
+        JSONObject obj = new JSONObject();
+        obj.put("id", id);
+        obj.put("label", nome);
+        obj.put("value", nome);
 
         lists = new JSONArray();
         for (PedidoFormacao listaPedidos : listPedidos){
@@ -213,6 +284,7 @@ public class Utilizador {
         obj.put("nomeFormacao", listaFormacao.getNome());
         obj.put("dataFormacao", listaFormacao.getDataCriacao());
         obj.put("idCurso", listaFormacao.getId());
+        obj.put("preco", listaFormacao.getPreco());
 
         obj.put("justificacaoFormacao", listaFormacao.getJustificacao());
         //PENDENTE
@@ -237,32 +309,5 @@ public class Utilizador {
             obj.put("tipoFormacao", "REJEITADA");
         }
         return obj;
-    }
-
-    public JSONObject toJSONAuth(){
-        JSONObject obj = new JSONObject();
-        obj.put("id", id);
-        obj.put("nome", nome);
-        obj.put("email", email);
-        obj.put("isColaborador", isColaborador());
-        obj.put("isGestor", isGestor());
-        obj.put("isAdministrador", isAdministrador());
-        if (manager == null)
-            obj.put("managerId", -1);
-        else
-            obj.put("managerId", manager.getId());
-
-        return obj;
-    }
-    @Override
-    public String toString() {
-        return "Utilizador{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
-                ", manager=" + manager +
-                '}';
     }
 }

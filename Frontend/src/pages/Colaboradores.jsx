@@ -6,8 +6,16 @@ import TrainingUserInfo from "../components/TrainingUserInfo";
 import TextInput from "../components/TextInput";
 import users from "../constants/usersAux"; // Remove later
 import Modal from "../components/Modal";
-import { getDataUsers, getColumnsTable } from "../constants/tabelaUtilizadores";
+import {getColumnsTable } from "../constants/tabelaUtilizadores";
 import Table from "../components/TableComponent/Table";
+import ColaboradoresService from "../services/get-colaboradores.service";
+import UserService from "../services/user.service";
+import UtilizadoresService from "../services/get-utilizadores.service";
+import TableV2 from "../components/TableV2/Table";
+import Searchbar from "../components/TableV2/SearchBar";
+import DropDown from "../components/TableV2/Dropdown";
+
+
 
 export default function Colaboradores() {
   const navigate = useNavigate();
@@ -16,8 +24,9 @@ export default function Colaboradores() {
   const [actualUser, setUser] = useState(usersList[0]);
   const [search, setSearch] = useState();
   const [modal, setModal] = useState({ show: false, data: null });
+  const [filteredData, setFilteredData] = useState([]);
 
-  const dataUsers = React.useMemo(() => getDataUsers(), []);
+  const [dataColaborators, setDataColaborators] = useState([]);
   const columns = React.useMemo(() => getColumnsTable(), []);
 
   const handleCloseModal = () => {
@@ -31,36 +40,147 @@ export default function Colaboradores() {
     setModal({ show: false, data: null });
   };
 
-  /*ZONA dE TESTES*/
+  useEffect(() => {
+    const user = UserService.getCurrentUser();
+    if(user.isAdministrador) {
+      console.log("O USER É ADMIN -> A IMPRIMIR ALL COLABORADORES");
 
-  const getColaboradores = () => {
-    axios
-      .get("http://localhost:8080/api/utilizador/colaboradores")
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(function () {});
+      UtilizadoresService.getUtilizadoresAll().then((data)=>{
+        var role, budgetUtilizado, budgetPendente, formacoesFeitas = 0, formacoesPendentes = 0, id;
+        const dataHandled = [];
+        var colaborador = {};
 
-    return [];
-  };
+        for(var c = 0; c < data.length; c++){
+          if(!data[c].isAdministrador){
+            
+            formacoesFeitas = 0;
+            formacoesPendentes = 0;
+            budgetUtilizado = 0;
+            budgetPendente = 0;
 
-  const [data, setData] = useState(() => getColaboradores(), []);
+            var nome = data[c].nome;
+            var email = data[c].email;
+            var id = data[c].id;
 
-  const teste =
-    (() => {
-      console.log("data --> ", data);
-    },
-    [data]);
 
-  const teste2 =
-    (() => {
-      console.log("<-- print --> ");
-    },
-    []);
-  /*ZONA dE TESTES*/
+            if(data[c].isColaborador){
+              role = "Colaborador";
+            }
+
+            if(data[c].isGestor){
+              role = "manager";
+            }
+            
+          
+            if(data[c].listaFormacoesHandled.length != 0){
+
+              for(var i = 0; i < data[c].listaFormacoesHandled.listaFormacoes.length; i++){
+                var formacao = data[c].listaFormacoesHandled.listaFormacoes[i];
+                if(formacao.tipoFormacao == 'TERMINADA'){
+                  formacoesFeitas++;
+                  budgetUtilizado += parseInt(formacao.preco);
+
+                  
+                }
+                if(formacao.tipoFormacao == 'PENDENTE'){
+                  formacoesPendentes++;
+                  budgetPendente += parseInt(formacao.preco);
+                }
+              }
+            }
+
+            
+            colaborador = { "id": id,
+                            "nome": nome, 
+                            "email": email, 
+                            "budgetUsed": budgetUtilizado, 
+                            "role": role, 
+                            "numFormacao": formacoesFeitas, 
+                            "numFormacaoPendentes": formacoesPendentes,
+                            "emAprovacao": budgetPendente
+                          };
+
+            dataHandled.push(colaborador);
+
+            setDataColaborators(dataHandled);
+
+          }
+
+
+
+        }
+      }, );
+    }
+    //Se o user logado for Gestor só aparecem os colaboradores associados a ele
+    else if(user.isGestor) {
+
+      console.log("O user é gestor");
+      ColaboradoresService.getColaboradoresAll().then((data)=>{
+        var role, budgetUtilizado, budgetPendente, formacoesFeitas, formacoesPendentes, id;
+        const dataHandled = [];
+        var colaborador = {};
+
+        for(var c = 0; c < data.length; c++){
+          //verifica se o colaborador tem o mesmo managerID que o gestor logado
+          if(user.id == data[c].managerId){
+
+            formacoesFeitas = 0;
+            formacoesPendentes = 0;
+            budgetUtilizado = 0;
+            budgetPendente = 0;
+
+            var nome = data[c].nome;
+            var email = data[c].email;
+            var id = data[c].id;
+
+
+            if(data[c].isColaborador){
+              role = "Colaborador";
+            }
+            
+          
+            if(data[c].listaFormacoesHandled.length != 0){
+
+              for(var i = 0; i < data[c].listaFormacoesHandled.listaFormacoes.length; i++){
+                var formacao = data[c].listaFormacoesHandled.listaFormacoes[i];
+                if(formacao.tipoFormacao == 'TERMINADA'){
+                  formacoesFeitas++;
+                  budgetUtilizado += parseInt(formacao.preco);
+
+                  
+                }
+                if(formacao.tipoFormacao == 'PENDENTE'){
+                  formacoesPendentes++;
+                  budgetPendente += parseInt(formacao.preco);
+                }
+              }
+            }
+            
+            colaborador = { "id": id,
+                            "nome": nome, 
+                            "email": email, 
+                            "budgetUsed": budgetUtilizado, 
+                            "role": role, 
+                            "numFormacao": formacoesFeitas, 
+                            "numFormacaoPendentes": formacoesPendentes,
+                            "emAprovacao": budgetPendente
+                          };
+
+            dataHandled.push(colaborador);
+
+            setDataColaborators(dataHandled);
+            
+          }
+        
+        }
+        
+      });
+    }
+
+
+  }, [dataColaborators]);
+
+
 
   const handleExcluir = (u) => {
     setModal({
@@ -77,8 +197,34 @@ export default function Colaboradores() {
     setSearch(event.target.value);
   };
 
-  const handleName = () => {
-    setOrder(!order);
+  const onItemClick = (e) => {
+    console.log("e", e);
+    if (e === "all") {
+      setFilteredData(dataColaborators);
+    } else {
+      const result = dataColaborators.filter((item) => item.gender === e);
+
+      setFilteredData(result);
+    }
+  };
+
+  const onSearchbarChange = (e) => {
+    const value = e.target.value;
+    console.log(filteredData);
+    if (value === "") {
+      setFilteredData(dataColaborators);
+    } else {
+      if (filteredData.length > 0) {
+        
+        const result = filteredData.filter((item) => item.nome === value);
+        console.log(result);
+        setFilteredData(result);
+      } else {
+        const result = dataColaborators.filter((item) => item.nome === value);
+
+        setFilteredData(result);
+      }
+    }
   };
 
   return (
@@ -88,27 +234,12 @@ export default function Colaboradores() {
       </h1>
 
       <div className="pt-8 pl-4 pr-8">
-        <div className="pr-8">
-          <TextInput
-            index={1}
-            name={"pesquisa..."}
-            type={"searchbar"}
-            placeholder="colaborador..."
-            style={"md:w-[100%] w-[15rem]"}
-            showTitle={false}
-            value={search}
-            callback={handleType}
-          />
-
+        <div className="pr-8">        
+          
+          {/*
           <div className="flex md:flex-row flex-col justify-evenly md:justify-between md:items-center items-start gap-8 pt-2">
-            <div className="flex gap-1">
-              <button className="btnSearchFunc">
-                <p className="btnIcons ">Mais filtros</p>
-                <Filter className="w-4 h-4 btnIcons" />
-              </button>
-            </div>
-
             <div className="flex gap-14">
+              
               <button
                 className="actionButtons bg-error"
                 onClick={() => handleExcluir(actualUser)}
@@ -123,6 +254,7 @@ export default function Colaboradores() {
                   data={modal.data}
                 />
               )}
+              
 
               <button
                 className="actionButtons bg-primary"
@@ -132,11 +264,15 @@ export default function Colaboradores() {
                 <p className="actionBtnInsideInfo">Adicionar colaborador</p>
               </button>
             </div>
-          </div>
-        </div>
+              </div>*/}
+        </div> 
 
         <div className="pt-4 pl-4 pr-8 mx-auto">
-            <Table columns={columns} data={dataUsers} />
+          
+            <Table columns={columns} data={dataColaborators}/>
+            {/*
+            <TableV2 columns={columns} data={filteredData.length > 0 ? filteredData : dataColaborators}/>*/}
+            
         </div>
 
       </div>

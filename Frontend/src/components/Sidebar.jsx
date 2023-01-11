@@ -21,6 +21,7 @@ const Sidebar = ({ trigger }) => {
 
   useEffect(() => {
     const user = UserService.getCurrentUser();
+  
     var highestRole = "COLABORADOR";
     if (user.isGestor) highestRole = "GESTOR";
     if (user.isAdministrador) highestRole = "ADMIN";
@@ -104,6 +105,7 @@ const Sidebar = ({ trigger }) => {
     }
     else {
       return false;
+      
     }
   }
 

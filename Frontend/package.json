@@ -12,6 +12,8 @@
     "@material-tailwind/react": "^1.2.4",
     "axios": "^1.2.1",
     "chart.js": "^4.0.1",
+    "cors": "^2.8.5",
+    "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.0.1",
     "react-circular-progressbar": "^2.1.0",

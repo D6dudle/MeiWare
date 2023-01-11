@@ -8,7 +8,7 @@ import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import "./calendar.css";
 
-import Lupa from "../assets/search.svg"
+import Lupa from "../assets/search.svg";
 
 const lupa = () => ({
   alignItems: "center",
@@ -17,7 +17,7 @@ const lupa = () => ({
     display: "inline-block",
     paddingTop: "5px",
     content: `url(${Lupa})`,
-    zoom:"100%",
+    zoom: "100%",
     marginRight: 8,
     height: "fit-content",
     width: "fit-content",
@@ -35,7 +35,7 @@ const nada = () => ({
   },
 });
 
-const customStyles = (valid, iconName, empty) => {
+export const customStyles = (valid, iconName, empty) => {
   const icon = (ico) => {
     switch (ico) {
       case "lupa":
@@ -151,7 +151,7 @@ function TextInput({
   searchCall,
   showTitle = true,
   titleStyle = null,
-  placeholder
+  placeholder,
 }) {
   const [isSubmitted, setSubmitted] = useState(false);
   const [isValid, setValid] = useState(false);
@@ -195,7 +195,7 @@ function TextInput({
   switch (type) {
     case "dropsearch":
       return (
-        <div>
+        <div className="mb-4">
           <label
             style={{ display: showTitle ? "block" : "none" }}
             htmlFor={name}
@@ -206,7 +206,7 @@ function TextInput({
           <AsyncSelect
             noOptionsMessage={() => "Não encontrado"}
             loadingMessage={() => "a pesquisar..."}
-            placeholder={ placeholder ? placeholder : "pesquisa..."}
+            placeholder={placeholder ? placeholder : "pesquisa..."}
             className={` ${style}`}
             styles={
               multi
@@ -249,7 +249,7 @@ function TextInput({
               type="search"
               className={`inputFilter pl-[35px] ${style}`}
               id={name}
-              placeholder={ placeholder ? placeholder : "pesquisa..."}
+              placeholder={placeholder ? placeholder : "pesquisa..."}
               onChange={(e) => {
                 callback(index, e);
               }}
@@ -278,7 +278,7 @@ function TextInput({
                 isSubmitted ? (isValid ? null : "border-error") : null
               }`}
               id={name}
-              placeholder={ placeholder ? placeholder : name}
+              placeholder={placeholder ? placeholder : name}
               value={date.toLocaleDateString()}
               onClick={(e) => {
                 setDatePick(!datePick);
@@ -309,7 +309,7 @@ function TextInput({
       );
     case "dropdown":
       return (
-        <div className="mb-4">
+        <div className="">
           <label
             style={{ display: showTitle ? "block" : "none" }}
             htmlFor={name}
@@ -329,7 +329,7 @@ function TextInput({
               }
               options={list}
               isMulti={multi}
-              placeholder={ placeholder ? placeholder : name}
+              placeholder={placeholder ? placeholder : name}
               value={value}
               onChange={(e) => {
                 callback(index, e);
@@ -360,7 +360,7 @@ function TextInput({
               isSubmitted ? (value ? null : "border-error") : null
             }`}
             id={name}
-            placeholder={ placeholder ? placeholder : name}
+            placeholder={placeholder ? placeholder : name}
             onChange={(e) => {
               callback(index, e);
               value == null ? setValid(false) : setValid(true);
@@ -392,7 +392,7 @@ function TextInput({
                 isSubmitted ? (value ? null : "border-error") : null
               }`}
               id={name}
-              placeholder={ placeholder ? placeholder : name}
+              placeholder={placeholder ? placeholder : name}
               onChange={(e) => {
                 callback(index, e);
                 value == null ? setValid(false) : setValid(true);

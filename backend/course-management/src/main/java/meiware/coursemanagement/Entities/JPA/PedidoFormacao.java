@@ -1,6 +1,8 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.json.JSONObject;
 
 import javax.persistence.*;

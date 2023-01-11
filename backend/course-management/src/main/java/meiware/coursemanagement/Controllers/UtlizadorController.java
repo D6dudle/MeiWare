@@ -9,12 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 //TODO: corrigir returns
 
 @RestController
 @RequestMapping("/api/utilizador")
+@CrossOrigin(origins = {"http://127.0.0.1:5173/", "http://localhost:5173/"})
 public class UtlizadorController {
 
     @Autowired
@@ -27,12 +29,40 @@ public class UtlizadorController {
         try{
             List<Utilizador> listaUtilizadores = utilizadorService.getUtilizadores();
 
+
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.put(u.toJSON());
+                if(!u.isApagado()) {
+                    arr.put(u.toJSON());
+                }
             }
 
+
+            return new ResponseEntity<>(
+                    arr.toString(),
+                    HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(
+                    "Erro ao aceder aos utilizadores.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/listaUtilizadores")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> getListaUtilizadores() {
+
+        try{
+            List<Utilizador> listaUtilizadores = utilizadorService.getUtilizadores();
+
+            JSONArray arr = new JSONArray();
+
+
+            for (Utilizador u : listaUtilizadores){
+                //Devolve a lista de acordo com o dropdown existente na frontend
+                arr.put(u.colaboradorToJSON());
+            }
             return new ResponseEntity<>(
                     arr.toString(),
                     HttpStatus.OK);
@@ -46,15 +76,17 @@ public class UtlizadorController {
     @GetMapping(value = "/colaboradores")
     @PreAuthorize("hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> getColaboradores() {
-
         try{
             List<Utilizador> listaUtilizadores = utilizadorService.getColaboradores();
 
             JSONArray arr = new JSONArray();
 
             for (Utilizador u : listaUtilizadores){
-                arr.put(u.toJSON());
+                if(!u.isApagado()) {
+                    arr.put(u.toJSON());
+                }
             }
+
             return new ResponseEntity<>(
                     arr.toString(),
                     HttpStatus.OK);
@@ -209,17 +241,18 @@ public class UtlizadorController {
     }
 
     @DeleteMapping(value = "/removeUtilizador")
-    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> removeUtilizador(@RequestBody Utilizador utilizador) {
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    @Transactional
+    public ResponseEntity<?> removeUtilizador(@RequestParam("id") String idString) {
 
         try{
-            utilizadorService.removeUtilizador(utilizador);
+            utilizadorService.removeUtilizador(Long.parseLong(idString));
             return new ResponseEntity<>(
                     "Utilizador removido com sucesso",
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
-                    "Erro ao remover o utilizador: " + utilizador.getNome(),
+                    "Erro ao remover o utilizador",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
