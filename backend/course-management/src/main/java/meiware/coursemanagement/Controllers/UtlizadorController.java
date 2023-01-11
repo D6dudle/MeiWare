@@ -5,7 +5,6 @@ import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +41,30 @@ public class UtlizadorController {
             }
 
 
+            return new ResponseEntity<>(
+                    arr.toString(),
+                    HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(
+                    "Erro ao aceder aos utilizadores.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/listaUtilizadores")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> getListaUtilizadores() {
+
+        try{
+            List<Utilizador> listaUtilizadores = utilizadorService.getUtilizadores();
+
+            JSONArray arr = new JSONArray();
+
+
+            for (Utilizador u : listaUtilizadores){
+                //Devolve a lista de acordo com o dropdown existente na frontend
+                arr.put(u.colaboradorToJSON());
+            }
             return new ResponseEntity<>(
                     arr.toString(),
                     HttpStatus.OK);

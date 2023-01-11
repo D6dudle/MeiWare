@@ -231,6 +231,15 @@ public class Utilizador {
                 '}';
     }
 
+    public JSONObject colaboradorToJSON(){
+        JSONObject obj = new JSONObject();
+        obj.put("id", id);
+        obj.put("label", nome);
+        obj.put("value", nome);
+
+        return obj;
+    }
+
     public JSONObject listaFormacaoUsertoJSON(){
         JSONObject obj = new JSONObject();
 
