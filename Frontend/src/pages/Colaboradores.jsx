@@ -43,7 +43,7 @@ export default function Colaboradores() {
   useEffect(() => {
     const user = UserService.getCurrentUser();
     if(user.isAdministrador) {
-      console.log("O USER É ADMIN -> A IMPRIMIR ALL COLABORADORES");
+      //console.log("O USER É ADMIN -> A IMPRIMIR ALL COLABORADORES");
 
       UtilizadoresService.getUtilizadoresAll().then((data)=>{
         var role, budgetUtilizado, budgetPendente, formacoesFeitas = 0, formacoesPendentes = 0, id;
@@ -114,7 +114,7 @@ export default function Colaboradores() {
     //Se o user logado for Gestor só aparecem os colaboradores associados a ele
     else if(user.isGestor) {
 
-      console.log("O user é gestor");
+      //console.log("O user é gestor");
       ColaboradoresService.getColaboradoresAll().then((data)=>{
         var role, budgetUtilizado, budgetPendente, formacoesFeitas, formacoesPendentes, id;
         const dataHandled = [];

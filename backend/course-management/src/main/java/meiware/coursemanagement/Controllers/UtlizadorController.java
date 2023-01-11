@@ -113,7 +113,7 @@ public class UtlizadorController {
                 arr.put(u.toJSON());
             }
             return new ResponseEntity<>(
-                    arr,
+                    arr.toString(),
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
@@ -192,7 +192,7 @@ public class UtlizadorController {
             Long id = Long.valueOf(idString);
             Utilizador utilizador = utilizadorService.getUtilizadorById(id);
             return new ResponseEntity<>(
-                    utilizador.toJSON(),
+                    utilizador.toJSON().toMap(),
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(

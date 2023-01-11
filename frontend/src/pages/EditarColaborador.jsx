@@ -1,15 +1,82 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { PlusCircle } from "react-feather";
 import TextInput from "../components/TextInput";
 import GoBackButton from "../components/GoBackButton";
 import { useLocation, useNavigate } from "react-router-dom";
+import UtilizadoresService from "../services/get-utilizadores.service";
 
+import { Loading } from "../components/Loading";
 export default function EditarColaborador() {
   const navigate = useNavigate();
   const personId = useLocation().search.slice(4);
+
+  const [userEdit, setUserEdit] = useState([]);
+  const [initialData, setInitialData] = useState([]);
+  const [isLoading, setLoading] = useState(true); // Loading state
+  const [gestList, setGestList] = useState([]);
+  const [gestAssociado, setGestAssociado] = useState([]);
+
+  const fakeManagerList = [
+    { label: "Francisco", value: "Francisco" },
+    { label: "Jon Jones", value: "Jon Jones" },
+  ];
+
+  const ManagerList = [];
+  
+  useEffect(() => {
+    //Obter lista de gestores
+    UtilizadoresService.getGestoresAll().then((data)=>{
+      setGestList(data);
+
+      for(var i = 0; i < data.length; i++){
+      
+        var manager = {
+          label: data[i].nome,
+          value: data[i].nome,
+          id: data[i].id,
+        }
+        ManagerList.push(manager);
+      }
+      
+    }); 
+  }, []);
+  
+  useEffect(() => {
+    UtilizadoresService.getUtilizadoresById(personId).then((utilizador)=>{
+      setInitialData(utilizador);
+      
+      console.log(utilizador);
+      
+      pubFields[0]["value"] = utilizador.nome;
+      pubFields[1]["value"] = utilizador.email;
+
+      if(utilizador.isAdministrador){
+        pubFields[2]["value"] = "Administrador";
+      }
+      else if(utilizador.isGestor){
+        pubFields[2]["value"] = "Gestor";
+      }
+      else{
+        pubFields[2]["value"] = "Colaborador";
+      }
+      
+      for(var i = 0; i < ManagerList.length; i++){
+        if(ManagerList[i].id = utilizador.managerId){
+          pubFields[3]["value"]["value"] = ManagerList[i].nome;
+        }
+      }
+      
+
+    });
+  }, []);
+
+
+
+
+
   //Dumb Data
-  const initialData = {
+  const initialDatas = {
     id: 1,
     name: "Jenny Wilson",
     email: "jenny.wilson@example.com",
@@ -29,10 +96,12 @@ export default function EditarColaborador() {
     },
   };
 
-  const fakeManagerList = [
-    { label: "Francisco", value: "Francisco" },
-    { label: "Jon Jones", value: "Jon Jones" },
-  ];
+  
+  const rolesList = [
+    { label: "Administrador", value: "administrador" },
+    { label: "Gestor", value: "gestor" },
+    { label: "Colaborador", value: "colaborador" },
+  ]
 
   var prevUrl = useLocation().state;
   if (prevUrl === null) {
@@ -47,17 +116,21 @@ export default function EditarColaborador() {
   });
 
   const filterManager = (inputValue) => {
-    return fakeManagerList.filter((i) =>
+    return ManagerList.filter((i) =>
       i.label.toLowerCase().includes(inputValue.toLowerCase())
     );
   };
 
   const references = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
+  
+
   const config = (handleType, handleDropdown) => {
     const fields = [];
+
+
     fields.push({
-      name: "nome",
+      name: "Nome",
       required: true,
       callback: handleType,
       value: initialData.name,
@@ -74,15 +147,15 @@ export default function EditarColaborador() {
       name: "cargo",
       required: true,
       callback: handleType,
-      value: initialData.role,
+      value: rolesList[0],
       trigger: references[2],
     });
     fields.push({
       name: "gestor responsável",
       type: "dropsearch",
-      list: fakeManagerList,
+      list: gestList,
       callback: handleDropdown,
-      value: fakeManagerList[1], //Preencher com manager
+      value: ManagerList, //Preencher com manager
       searchCall: filterManager,
       trigger: references[3],
     });
@@ -135,12 +208,10 @@ export default function EditarColaborador() {
       }
     }
 
-    //TODO: UPLOAD DA FOTO PARA A BASE DE DADOS
-    // ver: https://www.bezkoder.com/react-file-upload-spring-boot/
-    initialData.name = pubFields[0]["value"];
+    initialData.nome = pubFields[0]["value"];
     initialData.email = pubFields[1]["value"];
     initialData.role = pubFields[2]["value"];
-    initialData.manager.name = pubFields[3]["value"]["value"];
+    //initialData.manager.name = pubFields[3]["value"]["value"];
 
     console.log(initialData);
   };
@@ -148,6 +219,8 @@ export default function EditarColaborador() {
   const goBack = () => {
     navigate("/home/controlo/colaboradores");
   };
+
+
 
   return (
     <div className="w-full h-full overflow-y-hidden ml-8 mr-8">
@@ -172,6 +245,7 @@ export default function EditarColaborador() {
                     <input {...getInputProps()} />
                   </div>
                 </div>
+
                 <ul className="grid grid-cols-2">
                   {pubFields.map((field, index) => (
                     <li key={index}>
