@@ -93,12 +93,39 @@ public class FormacaoController {
     public ResponseEntity<?> getPedidosFormacaoEquipa(@RequestParam("id") String id_str) {
         try {
             Long gestorId = Long.parseLong(id_str);
-            List<PedidoFormacao> pedidosFormacaoList = pedidoFormacaoService.getPedidosFormacaoEquipa(gestorId);
+            Utilizador gestor = utilizadorService.getUtilizadorById(gestorId);
+            List<PedidoFormacao> pedidosFormacaoList = pedidoFormacaoService.getPedidosFormacaoEquipa(gestor);
             JSONArray arr = new JSONArray();
 
             for (PedidoFormacao p : pedidosFormacaoList) {
-                arr.put(p.toJSON());
+
+                for (Utilizador u : p.getFormandos()) {
+                    JSONObject auxP = new JSONObject();
+                    //Correspondem às pessoas que vão fazer a formacao
+                    if (!u.getId().equals(gestor.getId())){
+                        auxP = p.toJSONEquipa(u.getNome());
+                    }
+
+                    if (p.getDiscriminatorValue().equals("PedidoFormacao") && !p.isApagada()) {
+                        // A formacao ainda esta pendente
+                        auxP.put("tipoFormacao", "PENDENTE");
+                    } else if (p.getDiscriminatorValue().equals("APROVADA") && !p.isApagada()) {
+                        if (p instanceof PedidoAprovado) {
+                            PedidoAprovado auxAprovado = (PedidoAprovado) p;
+                            if (auxAprovado.isConcluida())
+                                auxP.put("tipoFormacao", "TERMINADA");
+                            else {
+                                auxP.put("tipoFormacao", "CURSO");
+                            }
+
+                        }
+                    } else if (p.getDiscriminatorValue().equals("REJEITADA") && !p.isApagada()) {
+                        auxP.put("tipoFormacao", "REJEITADA");
+                    }
+                    arr.put(auxP);
+                }
             }
+
             return new ResponseEntity<>(
                     arr.toString(),
                     HttpStatus.OK);
@@ -330,7 +357,7 @@ public class FormacaoController {
 
             PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
             if (pedidoFormacao != null
-                    && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
+                    && !((pedidoFormacao instanceof PedidoRejeitado))) {
                 pedidoFormacaoService.rejeitarPedidoFormacao(pedidoFormacaoId, adminId, comentario);
                 return new ResponseEntity<>(
                         "Pedido de formação: " + pedidoFormacao.getNome() + " rejeitado com sucesso.",

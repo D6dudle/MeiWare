@@ -270,6 +270,29 @@ public class PedidoFormacao {
     }
 
 
+    public JSONObject toJSONEquipa(String nomeFormando){
+        JSONObject obj = new JSONObject();
+        obj.put("idCurso", id);
+        obj.put("nomeFormacao", nome);
+        obj.put("descricao", descricao);
+        obj.put("formador", formador);
+        obj.put("dataFormacao", dataInicio);
+        obj.put("dataFim", dataFim);
+        obj.put("preco", preco);
+        obj.put("justificacaoFormacao", justificacao);
+        obj.put("status", status);
+        obj.put("cancelada", cancelada);
+        obj.put("apagada", apagada);
+        obj.put("apagadaNaData", apagadaNaData);
+        obj.put("dataCriacao", dataCriacao);
+        obj.put("dataUltimoUpdate", dataUltimoUpdate);
+        obj.put("listAnexoRef", listAnexoRefs);
+        obj.put("quemFezPedidoId", quemFezPedido.getId());
+        obj.put("quemFezPedidoNome", quemFezPedido.getNome());
+        obj.put("username", nomeFormando);
+        return obj;
+    }
+
 
     @Transient
     public String getDiscriminatorValue(){

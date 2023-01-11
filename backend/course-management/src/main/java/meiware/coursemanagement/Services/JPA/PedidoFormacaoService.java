@@ -26,6 +26,8 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     @Autowired
     private IPedidoFormacaoRepository pedidoFormacaoRepository;
     @Autowired
+    private IUtilizadorRepository utilizadorRepository;
+    @Autowired
     private UtilizadorService utilizadorService;
     @Autowired
     private IAnexoRefRepository anexoRefRepository;
@@ -52,11 +54,17 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
-    public List<PedidoFormacao> getPedidosFormacaoEquipa(Long gestorId) {
+    public List<PedidoFormacao> getPedidosFormacaoEquipa(Utilizador gestor) {
         List<PedidoFormacao> pedidosFormacao = new ArrayList<>();
 
+
         try {
-            pedidosFormacao = pedidoFormacaoRepository.findPedidoFormacaoByApagadaFalseAndQuemFezPedidoManagerIdOrderByDataCriacaoDesc(gestorId);
+            //pedidosFormacao = pedidoFormacaoRepository.findPedidoFormacaoByApagadaFalseAndQuemFezPedidoManagerIdOrderByDataCriacaoDesc(gestorId);
+            List<Utilizador> teamList = utilizadorRepository.findAllByManager(gestor);
+            for (Utilizador u: teamList) {
+                pedidosFormacao.addAll(u.getListFormacoes());
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

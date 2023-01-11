@@ -25,10 +25,10 @@ const finalizaFormacaoUser = (formacaoId, nomeFormacao) => {
     .then((r) => r.data);
 };
 
-const aprovarFormacaoUser = (formacaoId, adminId) => {
+const aprovarFormacaoUserAdmin = (formacaoId, adminId) => {
   return axios
     .put(
-      API_URL + "finalizarPedidoFormacao",
+      API_URL + "aprovarPedidoFormacaoAdmin",
       {
         pedidoFormacaoId: formacaoId,
         adminId: adminId,
@@ -38,10 +38,54 @@ const aprovarFormacaoUser = (formacaoId, adminId) => {
     .then((r) => r.data);
 };
 
+const aprovarPedidoFormacaoGestor = (formacaoId, gestorId) => {
+  return axios
+    .put(
+      API_URL + "aprovarPedidoFormacaoGestor",
+      {
+        pedidoFormacaoId: formacaoId,
+        adminId: gestorId,
+      },
+      { headers: authHeader() }
+    )
+    .then((r) => r.data);
+};
+
+const rejeitarPedidoFormacaoAdmin = (formacaoId, adminId, comentario) => {
+  return axios
+    .put(
+      API_URL + "rejeitarPedidoFormacaoAdmin",
+      {
+        pedidoFormacaoId: formacaoId,
+        adminId: adminId,
+        comentario: comentario,
+      },
+      { headers: authHeader() }
+    )
+    .then((r) => r.data);
+};
+
+const rejeitarPedidoFormacaoGestor = (formacaoId, gestorId, comentario) => {
+  return axios
+    .put(
+      API_URL + "rejeitarPedidoFormacaoGestor",
+      {
+        pedidoFormacaoId: formacaoId,
+        gestorId: gestorId,
+        comentario: comentario,
+      },
+      { headers: authHeader() }
+    )
+    .then((r) => r.data);
+};
+
 const ListaFormacaoUserService = {
   getListaFormacaoUser,
   finalizaFormacaoUser,
-  aprovarFormacaoUser,
+  aprovarFormacaoUserAdmin,
+  aprovarPedidoFormacaoGestor,
+  rejeitarPedidoFormacaoAdmin,
+  rejeitarPedidoFormacaoGestor,
 };
 
 export default ListaFormacaoUserService;

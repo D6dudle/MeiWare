@@ -33,9 +33,9 @@ export const Formacao = ({
     setModal({ show: false, data: null });
   };
 
-  const confirmeActionModal = () => {
-    console.log("Vou cancelar a formação");
-    onItemDelete();
+  const confirmeActionModal = (justificacaoFormacao) => {
+    console.log(justificacaoFormacao);
+    onItemDelete(justificacaoFormacao);
     setModal({ show: false, data: null });
   };
 

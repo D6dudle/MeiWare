@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IPedidoFormacaoService {
     List<PedidoFormacao> getPedidosFormacao();
-    List<PedidoFormacao> getPedidosFormacaoEquipa(Long gestorId);
+    List<PedidoFormacao> getPedidosFormacaoEquipa(Utilizador gestor);
     List<PedidoAprovado> getPedidosAprovados();
     List<PedidoRejeitado> getPedidosRejeitados();
     PedidoFormacao getPedidoFormacaoById(Long id);
