@@ -16,6 +16,7 @@ import { SortIcon, SortUpIcon, SortDownIcon } from "./Icons";
 import { useNavigate, useLocation, createSearchParams} from "react-router-dom";
 import Modal from "../Modal";
 import UtilizadoresService from "../../services/get-utilizadores.service";
+import { Plus } from "react-feather";
 
 import {
   HiChevronDoubleLeft,
@@ -164,7 +165,6 @@ const tableHooks = (hooks) => {
     UtilizadoresService.removeUtilizador(u).then((data)=>{
       
       console.log(data);  
-      window.location.reload(false);
       
     });
   }
@@ -217,6 +217,8 @@ const tableHooks = (hooks) => {
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
+  const navigate = useNavigate();
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -250,24 +252,38 @@ function Table({ columns, data }) {
     usePagination // new
   );
 
+  const handleAdicionar = () => {
+    navigate("/home/controlo/colaboradores/adicionar-colaborador");
+  };
+
+
   // Render the UI for your table
   return (
     <>
-      <div className="sm:flex sm:gap-x-2">
+      <div className="flex md:flex-row flex-col justify-evenly md:justify-between md:items-center items-start gap-8 pt-2">
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
           globalFilter={state.globalFilter}
           setGlobalFilter={setGlobalFilter}
+          
+          
         />
         {headerGroups.map((headerGroup) =>
           headerGroup.headers.map((column) =>
             column.Filter ? (
-              <div className="mt-2 sm:mt-0" key={column.id}>
+              <div className="" key={column.id}>
                 {column.render("Filter")}
               </div>
             ) : null
           )
         )}
+        
+        <button
+          className="actionButtons bg-primary"
+          onClick={() => handleAdicionar()}>
+            <Plus className="w-4 h-4 text-black" />
+            <p className="actionBtnInsideInfo">Adicionar colaborador</p>
+          </button>
       </div>
       {/* Pagination */}
       <div className="py-3 flex items-center justify-between">
@@ -349,7 +365,9 @@ function Table({ columns, data }) {
             </nav>
           </div>
         </div>
+        
       </div>
+      
       {/* table */}
       <div className="mt-4 flex flex-col">
         <div className="-my-2 overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">

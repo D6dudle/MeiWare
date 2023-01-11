@@ -11,6 +11,11 @@ import Table from "../components/TableComponent/Table";
 import ColaboradoresService from "../services/get-colaboradores.service";
 import UserService from "../services/user.service";
 import UtilizadoresService from "../services/get-utilizadores.service";
+import TableV2 from "../components/TableV2/Table";
+import Searchbar from "../components/TableV2/SearchBar";
+import DropDown from "../components/TableV2/Dropdown";
+
+
 
 export default function Colaboradores() {
   const navigate = useNavigate();
@@ -19,6 +24,7 @@ export default function Colaboradores() {
   const [actualUser, setUser] = useState(usersList[0]);
   const [search, setSearch] = useState();
   const [modal, setModal] = useState({ show: false, data: null });
+  const [filteredData, setFilteredData] = useState([]);
 
   const [dataColaborators, setDataColaborators] = useState([]);
   const columns = React.useMemo(() => getColumnsTable(), []);
@@ -103,7 +109,7 @@ export default function Colaboradores() {
 
 
         }
-      });
+      }, );
     }
     //Se o user logado for Gestor só aparecem os colaboradores associados a ele
     else if(user.isGestor) {
@@ -172,7 +178,7 @@ export default function Colaboradores() {
     }
 
 
-  }, []);
+  }, [dataColaborators]);
 
 
 
@@ -191,6 +197,36 @@ export default function Colaboradores() {
     setSearch(event.target.value);
   };
 
+  const onItemClick = (e) => {
+    console.log("e", e);
+    if (e === "all") {
+      setFilteredData(dataColaborators);
+    } else {
+      const result = dataColaborators.filter((item) => item.gender === e);
+
+      setFilteredData(result);
+    }
+  };
+
+  const onSearchbarChange = (e) => {
+    const value = e.target.value;
+    console.log(filteredData);
+    if (value === "") {
+      setFilteredData(dataColaborators);
+    } else {
+      if (filteredData.length > 0) {
+        
+        const result = filteredData.filter((item) => item.nome === value);
+        console.log(result);
+        setFilteredData(result);
+      } else {
+        const result = dataColaborators.filter((item) => item.nome === value);
+
+        setFilteredData(result);
+      }
+    }
+  };
+
   return (
     <div className="w-full h-full overflow-scroll scrollbar-hide">
       <h1 className="text-white font-bold text-3xl pt-8 pl-8">
@@ -200,10 +236,10 @@ export default function Colaboradores() {
       <div className="pt-8 pl-4 pr-8">
         <div className="pr-8">        
           
-
+          {/*
           <div className="flex md:flex-row flex-col justify-evenly md:justify-between md:items-center items-start gap-8 pt-2">
-
             <div className="flex gap-14">
+              
               <button
                 className="actionButtons bg-error"
                 onClick={() => handleExcluir(actualUser)}
@@ -218,6 +254,7 @@ export default function Colaboradores() {
                   data={modal.data}
                 />
               )}
+              
 
               <button
                 className="actionButtons bg-primary"
@@ -227,11 +264,15 @@ export default function Colaboradores() {
                 <p className="actionBtnInsideInfo">Adicionar colaborador</p>
               </button>
             </div>
-          </div>
-        </div>
+              </div>*/}
+        </div> 
 
         <div className="pt-4 pl-4 pr-8 mx-auto">
+          
             <Table columns={columns} data={dataColaborators}/>
+            {/*
+            <TableV2 columns={columns} data={filteredData.length > 0 ? filteredData : dataColaborators}/>*/}
+            
         </div>
 
       </div>
