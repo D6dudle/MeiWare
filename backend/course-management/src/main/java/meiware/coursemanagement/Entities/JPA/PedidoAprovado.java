@@ -19,14 +19,11 @@ public class PedidoAprovado extends PedidoFormacao{
     @ManyToOne
     private Utilizador quemAprovou;
 
-    @ManyToMany
-    private Set<Utilizador> formandos;
-
     public PedidoAprovado(){
 
     }
 
-    public PedidoAprovado(long id, String nome, String descricao, String formador, LocalDate dataInicio, float preco, Utilizador quemFezPedido, LocalDate dataAprovacao){
+    public PedidoAprovado(Long id, String nome, String descricao, String formador, LocalDate dataInicio, Float preco, Utilizador quemFezPedido, LocalDate dataAprovacao){
         super(id, nome, descricao, formador, dataInicio, preco, quemFezPedido);
         this.dataAprovacao = dataAprovacao;
     }
@@ -47,11 +44,11 @@ public class PedidoAprovado extends PedidoFormacao{
         dataConclusao = dataConclusao;
     }
 
-    public boolean isConcluida() {
+    public Boolean isConcluida() {
         return concluida;
     }
 
-    public void setConcluida(boolean concluida) {
+    public void setConcluida(Boolean concluida) {
         this.concluida = concluida;
     }
 
@@ -62,14 +59,4 @@ public class PedidoAprovado extends PedidoFormacao{
     public void setQuemAprovou(Utilizador quemAprovou) {
         this.quemAprovou = quemAprovou;
     }
-
-    public Set<Utilizador> getFormandos() {
-        return formandos;
-    }
-
-    public void setFormandos(Set<Utilizador> formandos) {
-        this.formandos = formandos;
-    }
-
-
 }

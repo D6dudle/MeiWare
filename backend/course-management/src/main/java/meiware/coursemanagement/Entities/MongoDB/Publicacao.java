@@ -17,8 +17,8 @@ public class Publicacao {
     private LocalDate dataCriacao;
     private Set<String> tags;
     private String tituloFormacao;
-    private boolean aprovada;
-    private boolean arquivada;
+    private Boolean aprovada;
+    private Boolean arquivada;
     private LocalDate arquivadaEm;
     private List<Anexo> anexos;
     public Publicacao() {
@@ -82,15 +82,15 @@ public class Publicacao {
         this.tituloFormacao = tituloFormacao;
     }
 
-    public boolean isAprovada() {
+    public Boolean isAprovada() {
         return aprovada;
     }
 
-    public void setAprovada(boolean aprovada) {
+    public void setAprovada(Boolean aprovada) {
         this.aprovada = aprovada;
     }
 
-    public boolean isArquivada() {
+    public Boolean isArquivada() {
         return arquivada;
     }
 
@@ -98,7 +98,7 @@ public class Publicacao {
         this.arquivada = true;
     }
 
-    public void setArquivada(boolean arquivada) {
+    public void setArquivada(Boolean arquivada) {
         this.arquivada = arquivada;
     }
 
