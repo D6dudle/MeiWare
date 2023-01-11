@@ -216,7 +216,7 @@ public class JPAtest {
                 log.info(post.toString());
             }*/
 
-        /*//MongoDb files
+        //MongoDb files
         File file = new File("backend/course-management/src/main/resources/files/2022_CM_Theoretical_Work.zip");
         FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
@@ -245,15 +245,13 @@ public class JPAtest {
         files.add(multipartFile);
         //files.add(multipartFile2);
 
-        Publicacao publicacao = new Publicacao("Publicacao Teste 2", "Isto e uma publicacao teste...", new HashSet<>(), "Formacao 1");
+        Publicacao publicacao = new Publicacao("Publicacao Teste 3", "Isto e uma publicacao teste...", new HashSet<>(), "Formacao 1", "Diogo");
 
-        String id = publicacaoService.createPublicacao(publicacao, files);
-        Publicacao pub = publicacaoService.getPublicacaoById(id);
+        publicacaoService.createPublicacao(publicacao, files);
         //publicacaoService.arquivarPublicacao(pub);
         //publicacaoService.removePublicacao(pub);
         //String id = anexoService.createAnexo(multipartFile);
         //Anexo anexo = anexoService.getAnexoById(id);
-        System.out.println(publicacaoService.getPublicacoes());*/
         /*File newFile = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(0).getNome());
         File newFile2 = new File("C:\\Users\\Diogo Filipe\\Documents\\GitHub\\MeiWare\\backend\\course-management\\src\\main\\resources\\files\\" + pub.getAnexos().get(1).getNome());
 

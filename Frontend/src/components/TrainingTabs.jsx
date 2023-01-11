@@ -9,7 +9,7 @@ import UserService from "../services/user.service";
 import { Loading } from "./Loading";
 import ListaFormacaoUserService from "../services/getListaFormacaoUser";
 import { AlertCircle, Zap, Check } from "react-feather";
-import PedidoFormacaoService from "../services/pedido-formacao.serivce";
+import PedidoFormacaoService from "../services/pedido-formacao.service";
 import ListaUtilizadoresService from "../services/getListaUtilizadoresService";
 
 export default function TrainingTabs({ sideBarName, nomeEcra }) {

@@ -68,6 +68,7 @@ export const iconImageUpload = [
   { type: "image/jpeg", icon: Image },
   { type: "application/pdf", icon: File },
   { type: "application/zip", icon: Archive },
+  { type: "application/x-zip-compressed", icon: Archive },
 ];
 
 export const dataCard = [

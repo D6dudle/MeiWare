@@ -13,6 +13,7 @@ export const ForumTopic = ({
   nomeFormacao,
   descricao,
   formacaoId,
+  anexos,
   arquivar = true,
   aprovar = false,
   urlBack,
@@ -36,14 +37,15 @@ export const ForumTopic = ({
     { type: "application/zip", path: "Benfica.zip", size: "2,59MB" },
   ];
 
-  const ListarFicheiros = ({ fileType, filePath, fileSize }) => {
+  const ListarFicheiros = ({ fileType, fileName, fileSize }) => {
     const icon = iconImageUpload.find(({ type }) => type === fileType);
+    console.log(fileName)
     return (
       <div className="flex flex-col justify-between items-start pb-4 w-full">
         <div className="flex flex-row justify-between items-center gap-4 order-none w-full">
           <div className="flex flex-row items-center mr-4">
             <icon.icon className="mr-2 flex" />
-            <div className="pl-4 font-normal text-xs">{filePath} •</div>
+            <div className="pl-4 font-normal text-xs">{fileName} •</div>
           </div>
           <div className="order-1 pr-[20px]">
             <div className="flex font-normal text-xs ">{fileSize}</div>
@@ -147,27 +149,6 @@ export const ForumTopic = ({
         </p>
       </div>
 
-      {/*Retangulo Curso Associado*/}
-      <div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] mb-4">
-        <div className="flex flex-col items-start order-none w-4/5">
-          <p className="order-none text-gray3 font-bold pt-3 text-xl pl-4 ">
-            Formação Associada
-          </p>
-
-          <div className="flex-none order-1 self-stretch pl-4 flex-row pb-[18px] font-semibold text-sm">
-            <p className="text-sm text-white font-semibold pt-3">
-              <span className="text-gray3">Nome da formação: </span>
-              {nomeFormacao}
-            </p>
-          </div>
-        </div>
-        {/* Form ID*/}
-        <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
-          <p className="text-xs text-gray4 font-medium">ID da Formação</p>
-          <p className="text-base font-normal text-white">{formacaoId}</p>
-        </div>
-      </div>
-
       {/*Retangulo Descrição*/}
       <div className="flex-none order-4 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] pb-4">
         {/*Titulo*/}
@@ -182,16 +163,37 @@ export const ForumTopic = ({
           </p>
         </div>
       </div>
+      
+      {/*Retangulo Curso Associado*/}
+      <div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] mb-4">
+        <div className="flex flex-col items-start order-none w-4/5">
+          <p className="order-none text-gray3 font-bold pt-3 text-xl pl-4 ">
+            Formação Associada
+          </p>
+
+          <div className="flex-none order-1 self-stretch pl-4 flex-row pb-[18px] font-semibold text-sm">
+            <p className="text-sm text-white font-semibold pt-3">
+              <span className="text-gray3">Nome da formação: </span>
+              {nomeFormacao}
+            </p>
+          </div>
+        </div>
+        {/* Form ID <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
+          <p className="text-xs text-gray4 font-medium">ID da Formação</p>
+          <p className="text-base font-normal text-white">{formacaoId}</p>
+        </div>*/}
+      </div>
+
       {/*Retangulo Ficheiros Adicionados*/}
       <div className="flex flex-none order-5 pt-4">
-        {files.length > 0 && (
+        {anexos.length > 0 && (
           <div className="w-full pl-4">
-            {files?.map((file) => (
+            {anexos.map((file) => (
               <ListarFicheiros
-                key={file.name}
-                fileType={file.type}
-                filePath={file.path}
+                key={file.nome}
+                fileName={file.nome}
                 fileSize={file.size}
+                fileType={file.type}
               />
             ))}
           </div>
