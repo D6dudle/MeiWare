@@ -4,6 +4,7 @@ import { Button } from "../components/Button";
 import { Image, Edit } from "react-feather";
 import { useNavigate, createSearchParams, useLocation } from "react-router-dom";
 import Modal from "./Modal";
+import UserService from "../services/user.service";
 
 export const Formacao = ({
   username,
@@ -18,8 +19,15 @@ export const Formacao = ({
   sidebarName,
   onAceitarclick,
   onFinalizarClick,
+  nomeEcra,
 }) => {
   const [modal, setModal] = useState({ show: false, data: null });
+
+  //Não e preciso mas também não é um problema
+  const user = UserService.getCurrentUser();
+  if (nomeEcra == "LISTARFORMACOES") {
+    username = user.nome;
+  }
 
   const handleCloseModal = () => {
     setModal({ show: false, data: null });
@@ -112,8 +120,7 @@ export const Formacao = ({
 
                   navigate(
                     {
-                      pathname:
-                      window.location.pathname + "/editar-formacao",
+                      pathname: window.location.pathname + "/editar-formacao",
                       search: createSearchParams(params).toString(),
                     },
                     {

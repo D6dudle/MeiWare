@@ -25,9 +25,23 @@ const finalizaFormacaoUser = (formacaoId, nomeFormacao) => {
     .then((r) => r.data);
 };
 
+const aprovarFormacaoUser = (formacaoId, adminId) => {
+  return axios
+    .put(
+      API_URL + "finalizarPedidoFormacao",
+      {
+        pedidoFormacaoId: formacaoId,
+        adminId: adminId,
+      },
+      { headers: authHeader() }
+    )
+    .then((r) => r.data);
+};
+
 const ListaFormacaoUserService = {
   getListaFormacaoUser,
   finalizaFormacaoUser,
+  aprovarFormacaoUser,
 };
 
 export default ListaFormacaoUserService;

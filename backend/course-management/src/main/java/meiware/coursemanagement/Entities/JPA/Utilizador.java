@@ -46,8 +46,6 @@ public class Utilizador {
     private Set<PedidoFormacao> listFormacoes;
 
 
-
-
     private Boolean apagado = false;
 
     public Utilizador(){    }
@@ -192,20 +190,21 @@ public class Utilizador {
         //System.out.println("Lista de Pedidos: " + listPedidos.size());
 
         JSONArray lists = new JSONArray();
-        for (PedidoFormacao listaPedidos : listFormacoes){
-            lists.put(listaPedidos.toJSON());
-        obj.put("listaFormacoes", lists);
-        
-        lists = new JSONArray();
-        for (PedidoFormacao listaPedidos : listPedidos){
+        for (PedidoFormacao listaPedidos : listFormacoes) {
             lists.put(listaPedidos.toJSON());
         }
+        obj.put("listaFormacoes", lists);
+
+        lists = new JSONArray();
+        for (PedidoFormacao listaPedidos1 : listPedidos){
+            lists.put(listaPedidos1.toJSON());
+        }
         obj.put("listaPedidos", lists);
-        
+
 
         //System.out.println("Formacoes: " + listaFormacaoUsertoJSON());
-        obj.put("listaFormacoesHandled", listaFormacaoUsertoJSON());
-        
+        obj.put("listaFormacoesHandled", listaFormacaoUsertoJSON(id));
+
         JSONArray listsBudget = new JSONArray();
         for (Budget listaBudget : listBudget){
             listsBudget.put(listaBudget.toJSON());
@@ -213,7 +212,7 @@ public class Utilizador {
         obj.put("listBudget", listsBudget);
 
         return obj;
-    }
+        }
 
     public JSONObject toJSONAuth(){
         JSONObject obj = new JSONObject();
@@ -231,6 +230,7 @@ public class Utilizador {
         System.out.println(obj);
         return obj;
     }
+
     @Override
     public String toString() {
         return "Utilizador{" +
@@ -249,38 +249,38 @@ public class Utilizador {
         obj.put("label", nome);
         obj.put("value", nome);
 
-        lists = new JSONArray();
-        for (PedidoFormacao listaPedidos : listPedidos){
-            lists.put(listaPedidos.toJSON());
-        }
-        obj.put("listaPedidos", lists);
-
-        obj.put("listBudget", listBudget);
         return obj;
     }
 
-    public JSONObject listaFormacaoUsertoJSON(){
+    public JSONObject listaFormacaoUsertoJSON(Long userID){
         JSONObject obj = new JSONObject();
 
         JSONArray lists = new JSONArray();
         for (PedidoFormacao listaPedidos : listFormacoes){
            //Retorna um JSON Object com a formacao
-            lists.put(listaFormacaoToJSON(listaPedidos));
+            lists.put(listaFormacaoToJSON(listaPedidos, userID));
         }
         obj.put("listaFormacoes", lists);
 
         lists = new JSONArray();
         for (PedidoFormacao listaPedidos : listPedidos){
             //Retorna um JSON Object com a formacao
-            lists.put(listaFormacaoToJSON(listaPedidos));
+            lists.put(listaFormacaoToJSON(listaPedidos, userID));
         }
         obj.put("listaPedidos", lists);
         return obj;
     }
 
-    public JSONObject listaFormacaoToJSON(PedidoFormacao listaFormacao){
+    public JSONObject listaFormacaoToJSON(PedidoFormacao listaFormacao, Long userID){
         JSONObject obj = new JSONObject();
-        obj.put("username", listaFormacao.getQuemFezPedido().getNome());
+
+        for (Utilizador u : listaFormacao.getFormandos()){
+            //Correspondem às pessoas que vão fazer a formacao
+            if (u.getId() == userID)
+                obj.put("username", u.getNome());
+        }
+
+        //obj.put("username", listaFormacao.getQuemFezPedido().getNome());
         obj.put("nomeFormacao", listaFormacao.getNome());
         obj.put("dataFormacao", listaFormacao.getDataCriacao());
         obj.put("idCurso", listaFormacao.getId());

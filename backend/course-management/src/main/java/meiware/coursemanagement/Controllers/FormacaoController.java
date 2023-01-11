@@ -44,7 +44,21 @@ public class FormacaoController {
 
             for (PedidoFormacao p : pedidosFormacaoList) {
                 JSONObject auxP = p.toJSON();
-                auxP.put("username", p.getQuemFezPedido().getNome());
+
+                String username = "";
+                int i = 0;
+                for (Utilizador u : p.getFormandos()){
+                    //Correspondem ao nome das pessoas que vão fazer uma formação
+                    auxP.put("username", u.getNome());
+                    username += u.getNome();
+                    if (i != p.getFormandos().size() - 1)
+                        username += ", ";
+                    i++;
+                }
+                auxP.put("username", username);
+
+                //NOTA quem fez o pedido pode não ser a pessoa a quem o curso se destina no caso de ser admin
+                //auxP.put("username", p.getQuemFezPedido().getNome());
                 if (p.getDiscriminatorValue().equals("PedidoFormacao") && !p.isApagada()) {
                     // A formacao ainda esta pendente
                     auxP.put("tipoFormacao", "PENDENTE");
@@ -100,7 +114,7 @@ public class FormacaoController {
     public ResponseEntity<?> getListaFormacaoByUser(@RequestParam("id") String id) {
         try {
             Utilizador utilizador = utilizadorService.getUtilizadorById(Long.valueOf(id));
-            JSONObject obj = utilizador.listaFormacaoUsertoJSON();
+            JSONObject obj = utilizador.listaFormacaoUsertoJSON(Long.valueOf(id));
 
             return new ResponseEntity<>(
                     obj.toMap(),

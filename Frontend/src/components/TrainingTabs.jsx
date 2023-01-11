@@ -60,6 +60,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
     }, []);
     useEffect(() => {
       if (rawList != null) {
+        console.log(rawList);
         const arr = Object.values(rawList)[0];
         for (const property in arr) {
           // Resposta com a lista de formações do user
@@ -149,6 +150,13 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
   const handleAceitarFormacaoPendente = (card) => {
     //Igual ao handleCancelarFormacao (remove o elemento da lista)
     //Gets the index of object to remove the formation
+    const user = UserService.getCurrentUser(); //Admin ID
+    ListaFormacaoUserService.aprovarFormacaoUser(card.idCurso, user.id).then(
+      (data) => {
+        console.log(data);
+      }
+    );
+
     const indexList = originalList.findIndex((element) => {
       return element.label === activeFilter;
     });
@@ -365,6 +373,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
                     sidebarName={sideBarName}
                     onAceitarclick={() => handleAceitarFormacaoPendente(card)}
                     onFinalizarClick={() => handleFinalizarFormacao(card)}
+                    nomeEcra={nomeEcra}
                   />
                 );
               })
