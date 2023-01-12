@@ -31,6 +31,7 @@ export default function AdicionarFormacao() {
   const [isSubmit, setIsSubmit] = useState(false);
   const [listaUtilizadores, setListaUtilizadores] = useState([]);
   const [files, setFiles] = useState([]);
+  const user = UserService.getCurrentUser();
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -44,7 +45,6 @@ export default function AdicionarFormacao() {
   };
 
   useEffect(() => {
-    const user = UserService.getCurrentUser();
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       //sucess
       //Communicate with Backend to write in DB
@@ -65,6 +65,7 @@ export default function AdicionarFormacao() {
       };
 
       const formandos = [];
+      console.log(formationCamps.nomeColaborador);
       formationCamps.nomeColaborador.forEach((nome) => {
         formandos.push({
           id: nome.id,
@@ -76,7 +77,7 @@ export default function AdicionarFormacao() {
         pedidoFormacao,
         formandos
       ).then((data) => {
-        console.log(data);
+        //console.log(data);
       });
 
       //console.log(formationCamps);
@@ -116,9 +117,16 @@ export default function AdicionarFormacao() {
   };
 
   useEffect(() => {
-    ListaUtilizadoresService.getListaUtilizadores().then((data) => {
-      setListaUtilizadores(data);
-    });
+    if (user.isAdministrador) {
+      ListaUtilizadoresService.getListaUtilizadores().then((data) => {
+        setListaUtilizadores(data);
+      });
+    } else {
+      setFormationCamps({
+        ...formationCamps,
+        nomeColaborador: [{ id: user.id }],
+      });
+    }
   }, []);
 
   const [file, setFile] = useState();
@@ -233,38 +241,40 @@ export default function AdicionarFormacao() {
 
               <div className="mr-20 w-[332px]">
                 {/* NOME COLABORADOR*/}
-                <div className="mb-4">
-                  <label
-                    htmlFor="nomeColaborador"
-                    className="text-gray5 text-[14px] "
-                  >
-                    nome colaborador
-                  </label>
-                  <div className="relative">
-                    <Select
-                      className={` ${
-                        formationCamps.nomeColaborador || isSubmit === false
-                          ? null
-                          : "border-error"
-                      }`}
-                      styles={customStyles(true)}
-                      options={listaUtilizadores}
-                      isMulti
-                      placeholder="colaborador..."
-                      value={formationCamps.nomeColaborador}
-                      onChange={(opt) => {
-                        console.log(opt);
-                        setFormationCamps({
-                          ...formationCamps,
-                          nomeColaborador: opt,
-                        });
-                      }}
-                    />
-                    <p className="relative top-1 text-xs text-error">
-                      {formErrors.nomeColaborador}
-                    </p>
+                {user.isAdministrador && (
+                  <div className="mb-4">
+                    <label
+                      htmlFor="nomeColaborador"
+                      className="text-gray5 text-[14px] "
+                    >
+                      nome colaborador
+                    </label>
+                    <div className="relative">
+                      <Select
+                        className={` ${
+                          formationCamps.nomeColaborador || isSubmit === false
+                            ? null
+                            : "border-error"
+                        }`}
+                        styles={customStyles(true)}
+                        options={listaUtilizadores}
+                        isMulti
+                        placeholder="colaborador..."
+                        value={formationCamps.nomeColaborador}
+                        onChange={(opt) => {
+                          console.log(opt);
+                          setFormationCamps({
+                            ...formationCamps,
+                            nomeColaborador: opt,
+                          });
+                        }}
+                      />
+                      <p className="relative top-1 text-xs text-error">
+                        {formErrors.nomeColaborador}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
                 {/* DATA */}
                 <div className="mb-4">
                   <label htmlFor="data" className="text-gray5 text-[14px]">
