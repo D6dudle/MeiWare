@@ -36,12 +36,19 @@ export default function EditarColaborador() {
           value: data[i].nome,
           id: data[i].id,
         }
-        ManagerList.push(manager);
+
+        if(ManagerList.some(manager => m.id === manager.id)){
+          console.log("Object found inside the array." + m.id);
+
+          
+        }else{
+          ManagerList.push(manager);
+        }
       }
-      
+
     }); 
   }, []);
-  
+
   useEffect(() => {
     UtilizadoresService.getUtilizadoresById(personId).then((utilizador)=>{
       setInitialData(utilizador);
@@ -63,7 +70,9 @@ export default function EditarColaborador() {
       
       for(var i = 0; i < ManagerList.length; i++){
         if(ManagerList[i].id = utilizador.managerId){
-          pubFields[3]["value"]["value"] = ManagerList[i].nome;
+          console.log("Encontroyu." + ManagerList[i].nome);
+          //pubFields[3]["value"]["value"] = ManagerList[i].nome;
+          //setGestAssociado(ManagerList[i]);
         }
       }
       
@@ -72,6 +81,10 @@ export default function EditarColaborador() {
   }, []);
 
 
+
+  
+    
+  
 
 
 
@@ -153,10 +166,10 @@ export default function EditarColaborador() {
     });
     fields.push({
       name: "gestor responsável",
-      type: "dropsearch",
-      list: gestList,
+      type: "dropdown",
+      list: ManagerList,
       callback: handleDropdown,
-      value: ManagerList, //Preencher com manager
+      value: gestAssociado, //Preencher com manager
       searchCall: filterManager,
       trigger: references[3],
     });
@@ -192,6 +205,7 @@ export default function EditarColaborador() {
     const handleDropdown = (index, opt) => {
       let data = [...pubFields];
       data[index]["value"] = opt;
+      console.log("DATA: " + data);
       setPubFields(data);
     };
 
@@ -227,12 +241,17 @@ export default function EditarColaborador() {
       initialData.isColaborador = true;
     }
 
+    console.log("manager" +  pubFields[3]["value"].id);
+
+    initialData.managerId = pubFields[3]["value"].id;
+
     //initialData.manager.name = pubFields[3]["value"]["value"];
     console.log(initialData);
 
+    /*
     UtilizadoresService.updateUtilizador(initialData).then((data)=>{
       console.log(data);
-    });
+    });*/
 
     
   };
@@ -283,7 +302,7 @@ export default function EditarColaborador() {
                           style={field.style}
                           error={field.error}
                           trigger={field.trigger}
-                          searchCall={field.searchCall}
+                          searchCall={filterManager}
                         />
                       </div>
                     </li>
