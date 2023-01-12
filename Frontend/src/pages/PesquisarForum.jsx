@@ -130,74 +130,78 @@ export const PesquisarForum = ({}) => {
   };
 
   return (
-    <div className="pl-8 pr-8 h-full overflow-scroll scrollbar-hide">
-      <h1 className="sticky text-white font-bold mt-[30px] text-2xl">
-        Pesquisar no Fórum
-      </h1>
+    <div className="pl-8 pr-8 h-full scrollbar-hide">
+      <div className="h-full flex flex-col">
+        <div className="sticky top-5">
+          <h1 className="sticky text-white font-bold mt-[30px] text-2xl">
+            Pesquisar no Fórum
+          </h1>
+          <div className="mt-8 justify-evenly">
+            <div className="flex flex-row gap-4 mb-2">
+              <div className="flex flex-row h-fit justify-between items-center gap-8">
+                {/* PESQUISA... */}
+                <TextInput
+                  index={1}
+                  name={"pesquisa..."}
+                  type={"searchbar"}
+                  style={"w-[30rem]"}
+                  showTitle={false}
+                  callback={handleType}
+                  value={search}
+                />
 
-      <div className="mt-8 justify-evenly">
-        <div className="flex flex-row gap-4 mb-2">
-          <div className="flex flex-row h-fit justify-between items-center gap-8">
-            {/* PESQUISA... */}
-            <TextInput
-              index={1}
-              name={"pesquisa..."}
-              type={"searchbar"}
-              style={"w-[30rem]"}
-              showTitle={false}
-              callback={handleType}
-              value={search}
-            />
+                {/* COLABORADOR */}
+                <div>
+                  <TextInput
+                    index={1}
+                    name={"colaborador"}
+                    type="dropdown"
+                    titleStyle={"font-bold mb-1 text-2xl"}
+                    style={"w-[30rem]"}
+                    placeholder="colaborador..."
+                    list={colabList}
+                    multi={true}
+                    showTitle={false}
+                    error={"Por favor selecione ou adicione um nome"}
+                    value={values[1]}
+                    callback={handleDropdown}
+                    searchCall={filterColab}
+                  />
+                </div>
 
-            {/* COLABORADOR */}
-            <div>
-              <TextInput
-                index={1}
-                name={"colaborador"}
-                type="dropdown"
-                titleStyle={"font-bold mb-1 text-2xl"}
-                style={"w-[30rem]"}
-                placeholder="colaborador..."
-                list={colabList}
-                multi={true}
-                showTitle={false}
-                error={"Por favor selecione ou adicione um nome"}
-                value={values[1]}
-                callback={handleDropdown}
-                searchCall={filterColab}
-              />
-            </div>
-
-            <div className="flex justify-center items-center">
-              <DateOrder callback={handleDateChanged} />
+                <div className="flex justify-center items-center">
+                  <DateOrder callback={handleDateChanged} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
         {/*Forum componente*/}
-        <div>
-          {Object.keys(filteredList).length > 0 && filteredList !== null ? (
-            filteredList.map((list, index) => (
-              <ForumTopic
-                key={index}
-                username={list.quemPublicou}
-                dataPublicacao={list.dataCriacao}
-                titulo={list.titulo}
-                nomeFormacao={list.tituloFormacao}
-                descricao={list.descricao}
-                formacaoId={list.formacaoId}
-                anexos={list.anexos}
-                tags={list.tags}
-                arquivar={UserService.getCurrentUser().isGestor}
-                urlBack={"/home/knowledge"}
-                onForumTopicArchive={() => handleArquivarPublicacao(list)}
-              />
-            ))
-          ) : (
-            <EmptyState />
-          )}
+        <div className="pt-3 pb-3 overflow-y-scroll scrollbar-hide">
+          <div className="overflowy-y-visible flex flex-nowrap justify-between flex-col gap-3">
+            {Object.keys(filteredList).length > 0 && filteredList !== null ? (
+              filteredList.map((list, index) => (
+                <ForumTopic
+                  key={index}
+                  username={list.quemPublicou}
+                  dataPublicacao={list.dataCriacao}
+                  titulo={list.titulo}
+                  nomeFormacao={list.tituloFormacao}
+                  descricao={list.descricao}
+                  formacaoId={list.formacaoId}
+                  anexos={list.anexos}
+                  tags={list.tags}
+                  arquivar={UserService.getCurrentUser().isGestor}
+                  urlBack={"/home/knowledge"}
+                  onForumTopicArchive={() => handleArquivarPublicacao(list)}
+                />
+              ))
+            ) : (
+              <EmptyState />
+            )}
+        </div>
         </div>
       </div>
-      <div></div>
     </div>
   );
 };

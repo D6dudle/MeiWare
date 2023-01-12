@@ -12,24 +12,21 @@ export const PublicacaoDetalhes = ({
   nomeFormacao,
   descricao,
   formacaoId,
-  tags,
+  tags=[],
   urlBack,
+  files
 }) => {
-  const files = [
-    { type: "application/pdf", path: "Montemor-o-Velho.pdf", size: "2,59MB" },
-    { type: "image/png", path: "Portugal.png", size: "5,58MB" },
-    { type: "image/jpeg", path: "Sporting.jpeg", size: "6,66MB" },
-    { type: "application/zip", path: "Benfica.zip", size: "11,21MB" },
-  ];
 
-  const ListarFicheiros = ({ fileType, filePath, fileSize }) => {
+  console.log(files)
+
+  const ListarFicheiros = ({ fileType, fileName, fileSize }) => {
     const icon = iconImageUpload.find(({ type }) => type === fileType);
     return (
       <div className="flex flex-col justify-between items-start pb-4 w-full">
         <div className="flex flex-row justify-between items-center gap-4 order-none w-full">
           <div className="flex flex-row items-center mr-4">
             <icon.icon className="mr-2 flex" />
-            <div className="pl-4 font-normal text-xs">{filePath} •</div>
+            <div className="pl-4 font-normal text-xs">{fileType}<span className="pl-3 pr-3">•</span>{fileName}</div>
           </div>
           <div className="order-1 pr-[20px]">
             <div className="flex font-normal text-xs ">{fileSize}</div>
@@ -76,8 +73,8 @@ export const PublicacaoDetalhes = ({
       <div className="flex flex-row order-1 justify-between items-center pl-4 pt-4 pr-4">
         <div className="flex order-1 justify-between w-full">
           <div className="flex gap-4">
-            {tags.map((tag, index) => (
-              <Tag key={index} tagName={tag} />
+            {tags.map((tag) => (
+              <Tag key={tag} tagName={tag}/>
             ))}
           </div>
           <div className="" onClick={arquivarPublicacaoHandler}>
@@ -87,7 +84,7 @@ export const PublicacaoDetalhes = ({
       </div>
 
       {/*Retangulo Formacao Associado*/}
-      <div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mt-4 mr-[20px] mb-4 justify-between">
+      {nomeFormacao!=null && nomeFormacao!="" && (<div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mt-4 mr-[20px] mb-4 justify-between">
         <div className="flex flex-col items-start order-none ">
           <p className="order-none text-gray3 font-bold pt-3 text-xl pl-4 ">
             Formação Associada
@@ -105,7 +102,7 @@ export const PublicacaoDetalhes = ({
           <p className="text-xs text-gray4 font-medium">ID da Formação</p>
           <p className="text-base font-normal text-white">{formacaoId}</p>
         </div>
-      </div>
+      </div>)}
 
       {/*Retangulo Descrição*/}
       <div className="flex-none order-4 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] pb-4 mb-4">
@@ -129,13 +126,13 @@ export const PublicacaoDetalhes = ({
         </p>
       </div>
       <div className="flex flex-none order-5 pt-4">
-        {files.length > 0 && (
+        {files!=null && files.length > 0 && (
           <div className="w-full pl-4">
             {files?.map((file) => (
               <ListarFicheiros
-                key={file.name}
+                key={file.nome}
                 fileType={file.type}
-                filePath={file.path}
+                fileName={file.nome}
                 fileSize={file.size}
               />
             ))}

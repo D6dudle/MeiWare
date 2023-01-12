@@ -160,94 +160,87 @@ export default function AprovarPublicacao() {
   };
 
   return (
-    <div className="flex flex-col pl-8 pr-8 w-full h-full overflow-hidden">
-      <div className="sticky top-5">
-        <h1 className=" text-white font-bold text-3xl">Aprovar publicação</h1>
-        <div className="pt-4">
-          <TextInput
-            index={1}
-            name={"pesquisa..."}
-            type={"searchbar"}
-            style={"w-full"}
-            showTitle={false}
-            callback={handleType}
-            value={search}
-          />
+    <div className="pl-8 pr-8 h-full overflow-hidden">
+      <div className="h-full flex flex-col">
+        <div className="sticky top-5">
+          <h1 className=" text-white font-bold text-3xl">Aprovar publicação</h1>
+          <div className="mt-4">
+            <TextInput
+              index={1}
+              name={"pesquisa..."}
+              type={"searchbar"}
+              //style={"w-full"}
+              showTitle={false}
+              callback={handleType}
+              value={search}
+            />
 
-          <div className="mt-2 justify-evenly">
-            <div className="flex flex-row w-full gap-4 mb-2">
-              <div className="flex flex-row h-fit justify-between items-center gap-8">
-                <div className="pt-4">
-                  <TextInput
-                    index={1}
-                    name={"tags"}
-                    type="dropsearch"
-                    titleStyle={"font-bold mb-1 text-2xl"}
-                    style={"w-[50rem]"}
-                    placeholder="tags..."
-                    list={colabList}
-                    multi={true}
-                    showTitle={false}
-                    error={"Por favor selecione ou adicione uma tag"}
-                    value={tagValues[1]}
-                    callback={handleDropdownTags}
-                    searchCall={filterTags}
-                  />
-                </div>
-
-                <div>
-                  <TextInput
-                    index={1}
-                    name={"colaborador"}
-                    type="dropdown"
-                    titleStyle={"font-bold mb-1 text-2xl"}
-                    style={"w-[50rem]"}
-                    placeholder="colaborador..."
-                    list={colabList}
-                    multi={true}
-                    showTitle={false}
-                    error={"Por favor selecione ou adicione um nome"}
-                    value={values[1]}
-                    callback={handleDropdown}
-                    searchCall={filterColab}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="w-full h-full mt-8 overflow-scroll scrollbar-hide">
-        <ul className="justify-start">
-          {Object.keys(filteredList).length > 0 && filteredList !== null ? (
-            filteredList.map((pub, index) => (
-              <li key={index}>
-                <div className="pb-4">
-                  <div>
-                    <ForumTopic
-                      username={pub.quemPublicou}
-                      dataPublicacao={pub.dataCriacao}
-                      titulo={pub.titulo}
-                      nomeformacao={pub.tituloformacao}
-                      descricao={pub.descricao}
-                      formacaoId={pub.formacaoId}
-                      anexos={pub.anexos}
-                      tags={pub.tags}
-                      arquivar={false}
-                      aprovar={true}
-                      urlBack={"/home/knowledge/aprovar-publicacao"}
-                      onForumTopicArchive={() => handleArquivarPublicacao(pub)}
-                      onForumTopicAprovar={() => handleAprovarPublicacao(pub)}
+              <div className="flex flex-row w-full items-center gap-4 pt-2 pb-2">
+                  <div className="flex-grow">
+                    <TextInput
+                      index={1}
+                      name={"tags"}
+                      type="dropsearch"
+                      titleStyle={"font-bold mb-1 text-2xl"}
+                      //style={"w-[50rem]"}
+                      placeholder="tags..."
+                      list={colabList}
+                      multi={true}
+                      showTitle={false}
+                      error={"Por favor selecione ou adicione uma tag"}
+                      value={tagValues[1]}
+                      callback={handleDropdownTags}
+                      searchCall={filterTags}
                     />
                   </div>
-                </div>
-              </li>
-            ))
-          ) : (
-            <EmptyState />
-          )}
-        </ul>
+
+                  <div className="flex-grow">
+                    <TextInput
+                      index={1}
+                      name={"colaborador"}
+                      type="dropdown"
+                      titleStyle={"font-bold mb-1 text-2xl"}
+                      style={"h-[3.4rem]"}
+                      placeholder="colaborador..."
+                      list={colabList}
+                      multi={true}
+                      showTitle={false}
+                      error={"Por favor selecione ou adicione um nome"}
+                      value={values[1]}
+                      callback={handleDropdown}
+                      searchCall={filterColab}
+                    />
+                  </div>
+              </div>
+            </div>
+        </div>
+
+        <div className="pt-3 pb-3 overflow-y-scroll scrollbar-hide">
+            <div className="overflowy-y-visible flex flex-nowrap justify-between flex-col gap-3">
+              {Object.keys(filteredList).length > 0 && filteredList !== null ? (
+                filteredList.map((pub, index) => (
+                  <ForumTopic
+                    key={index}
+                    username={pub.quemPublicou}
+                    dataPublicacao={pub.dataCriacao}
+                    titulo={pub.titulo}
+                    nomeFormacao={pub.tituloFormacao}
+                    descricao={pub.descricao}
+                    formacaoId={pub.formacaoId}
+                    anexos={pub.anexos}
+                    tags={pub.tags}
+                    arquivar={false}
+                    aprovar={true}
+                    urlBack={"/home/knowledge/aprovar-publicacao"}
+                    onForumTopicArchive={() => handleArquivarPublicacao(pub)}
+                    onForumTopicAprovar={() => handleAprovarPublicacao(pub)}
+                  />
+                ))
+              ) : (
+                <EmptyState />
+              )}
+          </div>
+        </div>
       </div>
     </div>
   );

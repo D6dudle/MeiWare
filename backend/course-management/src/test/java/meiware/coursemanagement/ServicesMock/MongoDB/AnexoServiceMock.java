@@ -46,7 +46,8 @@ public class AnexoServiceMock{
     @BeforeEach
     public void setup(){
         for(int i = 0; i < 3 ; i++){
-            anexos.add(new Anexo(String.valueOf(i), "Anexo " + i));
+            //anexos.add(new Anexo(String.valueOf(i), "Anexo " + i));
+            anexos.add(new Anexo("Anexo" + i, "image", "10MB"));
             anexosRef.add(new AnexoRef("Path" + i, "Nome" + i));
         }
     }
@@ -70,7 +71,7 @@ public class AnexoServiceMock{
     public void createAnexo() throws IOException {
         // given - precondition or setup
         MockMultipartFile file = new MockMultipartFile("teste", new byte[0]);
-        Anexo anexo = new Anexo("abc", file.getOriginalFilename());
+        Anexo anexo = new Anexo( file.getOriginalFilename(), "image", "10MB");
         anexo.setConteudo(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
 
         // when - action or behavior that we are going to test

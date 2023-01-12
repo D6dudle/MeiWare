@@ -47,7 +47,7 @@ export const ForumTopic = ({
         <div className="flex flex-row justify-between items-center gap-4 order-none w-full">
           <div className="flex flex-row items-center mr-4">
             {icon != null && (<icon.icon className="mr-2 flex" />)}
-            <div className="pl-4 font-normal text-xs">{fileName} •</div>
+            <div className="pl-4 font-normal text-xs">{fileType}<span className="pl-3 pr-3">•</span>{fileName}</div>
           </div>
           <div className="order-1 pr-[20px]">
             <div className="flex font-normal text-xs ">{fileSize}</div>
@@ -172,7 +172,7 @@ export const ForumTopic = ({
       </div>
       
       {/*Retangulo Curso Associado*/}
-      <div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] mb-4">
+      {nomeFormacao!=null && nomeFormacao!="" && (<div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] mb-4">
         <div className="flex flex-col items-start order-none w-4/5">
           <p className="order-none text-gray3 font-bold pt-3 text-xl pl-4 ">
             Formação Associada
@@ -189,7 +189,7 @@ export const ForumTopic = ({
           <p className="text-xs text-gray4 font-medium">ID da Formação</p>
           <p className="text-base font-normal text-white">{formacaoId}</p>
         </div>*/}
-      </div>
+      </div>)}
 
       {/*Retangulo Ficheiros Adicionados*/}
       <div className="flex flex-none order-5 pt-4">
@@ -219,6 +219,8 @@ export const ForumTopic = ({
               descricao,
               formacaoId,
               urlBack,
+              tags,
+              files : anexos
             })
           }
         >

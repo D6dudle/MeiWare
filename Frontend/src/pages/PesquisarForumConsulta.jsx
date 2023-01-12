@@ -18,13 +18,12 @@ export const PesquisarForumConsulta = ({}) => {
                     descricao={location.state.descricao}
                     justificacaoFormacao={location.state.justificacaoFormacao}
                     formacaoId={location.state.formacaoId}
-                    preco={"79€"}
-                    tags={["ReactJS", "Frontend"]}
+                    tags={location.state.tags}
                     urlBack={location.state.urlBack}
+                    files={location.state.files}
                     />
 
                 </div>
-
         </div>
     );
 }

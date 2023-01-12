@@ -40,13 +40,10 @@ async function submitPublicacao(publicacao, files) {
   var bodyFormData = new FormData();
   bodyFormData.append('publicacao', new Blob([JSON.stringify(publicacao)], { type: 'application/json' }));
   files.map(file => {
-    console.log(file)
     bodyFormData.append('files', file);
   })
   try {
       const {data:response} = await axios.post(API_URL + "createPublicacao", bodyFormData, { headers: { ...authHeader(), ContentType : "multipart/form-data" } })
-      console.log(response)
-      //return 
     }
     catch (error) {
       console.log(error);

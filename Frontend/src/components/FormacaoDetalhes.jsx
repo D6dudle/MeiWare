@@ -18,20 +18,20 @@ export const FormacaoDetalhes = ({
   urlBack,
 }) => {
   const files = [
-    { type: "application/pdf", path: "Montemor-o-Velho.pdf", size: "2,59MB" },
-    { type: "image/png", path: "Portugal.png", size: "5,58MB" },
-    { type: "image/jpeg", path: "Sporting.jpeg", size: "6,66MB" },
-    { type: "application/zip", path: "Benfica.zip", size: "11,21MB" },
+    { type: "application/pdf", nome: "Montemor-o-Velho.pdf", size: "2,59MB" },
+    { type: "image/png", nome: "Portugal.png", size: "5,58MB" },
+    { type: "image/jpeg", nome: "Sporting.jpeg", size: "6,66MB" },
+    { type: "application/zip", nome: "Benfica.zip", size: "11,21MB" },
   ];
 
-  const ListarFicheiros = ({ fileType, filePath, fileSize }) => {
+  const ListarFicheiros = ({ fileType, fileName, fileSize }) => {
     const icon = iconImageUpload.find(({ type }) => type === fileType);
     return (
       <div className="flex flex-col justify-between items-start pb-4 w-full">
         <div className="flex flex-row justify-between items-center gap-4 order-none w-full">
           <div className="flex flex-row items-center mr-4">
             <icon.icon className="mr-2 flex" />
-            <div className="pl-4 font-normal text-xs">{filePath} •</div>
+            <div className="pl-4 font-normal text-xs">{fileType}<span className="pl-3 pr-3">•</span>{fileName}</div>
           </div>
           <div className="order-1 pr-[20px]">
             <div className="flex font-normal text-xs ">{fileSize}</div>
@@ -151,7 +151,7 @@ export const FormacaoDetalhes = ({
               <ListarFicheiros
                 key={index}
                 fileType={file.type}
-                filePath={file.path}
+                fileName={file.nome}
                 fileSize={file.size}
               />
             ))}
