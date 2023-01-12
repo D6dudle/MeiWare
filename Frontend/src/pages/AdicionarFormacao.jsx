@@ -11,6 +11,8 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import "./calendar.css";
 import ListaUtilizadoresService from "../services/getListaUtilizadoresService";
 import { customStyles } from "../components/TextInput";
+import ListaFormacaoUserService from "../services/getListaFormacaoUser";
+import UserService from "../services/user.service";
 
 export default function AdicionarFormacao() {
   const navigate = useNavigate();
@@ -28,18 +30,56 @@ export default function AdicionarFormacao() {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [listaUtilizadores, setListaUtilizadores] = useState([]);
+  const [files, setFiles] = useState([]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validate(formationCamps));
     setIsSubmit(true);
-    console.log("Button Submeter pressed!");
+  };
+
+  const handleFiles = (files) => {
+    console.log(files);
+    setFiles(files);
   };
 
   useEffect(() => {
+    const user = UserService.getCurrentUser();
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       //sucess
-      console.log(formationCamps);
+      //Communicate with Backend to write in DB
+
+      //create a float number with . decimal cases
+      const preco = parseFloat(formationCamps.precoFormacao.replace(/,/g, "."));
+
+      const pedidoFormacao = {
+        nome: formationCamps.nomeFormacao,
+        descricao: formationCamps.descricaoFormacao,
+        formador: formationCamps.fornecedor,
+        dataInicio: formationCamps.dataFormacao,
+        preco: preco,
+        justificacao: formationCamps.justificacaoFormacao,
+        quemFezPedido: {
+          id: user.id,
+        },
+      };
+
+      const formandos = [];
+      formationCamps.nomeColaborador.forEach((nome) => {
+        formandos.push({
+          id: nome.id,
+        });
+      });
+
+      ListaFormacaoUserService.criaPedidoFormacao(
+        files,
+        pedidoFormacao,
+        formandos
+      ).then((data) => {
+        console.log(data);
+      });
+
+      //console.log(formationCamps);
       navigate("/home/formacao");
     }
   }, [formErrors]);
@@ -81,50 +121,6 @@ export default function AdicionarFormacao() {
     });
   }, []);
 
-  const aquaticCreatures = [
-    { label: "Shark", value: "Shark", id: 2 },
-    { label: "Dolphin", value: "Dolphin", id: 2 },
-    { label: "Whale", value: "Whale", id: 2 },
-    { label: "Octopus", value: "Octopus", id: 2 },
-    { label: "Crab", value: "Crab", id: 2 },
-    { label: "Lobster", value: "Lobster", id: 2 },
-  ];
-
-  /* const customStyles = {
-    option: (provided) => ({
-      ...provided,
-      color: "#F2F2F2",
-      background: "#282828",
-      primary25: "#E0E0E0",
-    }),
-    control: (base, state) => ({
-      ...base,
-      background: "#282828",
-      color: "#F2F2F2",
-      backgroundColor: state.isFocused ? "#ECC039" : "3e3e3e",
-
-      // Overwrittes the different states of border
-
-      borderColor:
-        formationCamps.nomeColaborador.length == 0 && isSubmit === true
-          ? "#FF9090"
-          : "#6D6D6D",
-
-      // Removes weird border around container
-      boxShadow: state.isFocused ? "#ECC039" : "#ECC039",
-      "&:hover": {
-        // Overwrittes the different states of border
-        borderColor: state.isFocused ? "#ECC039" : "#ECC039",
-      },
-    }),
-
-    menuList: (base) => ({
-      ...base,
-      // kill the white space on first and last option
-      padding: 0,
-    }),
-  }; */
-
   const [file, setFile] = useState();
   function handleChange(event) {
     setFile(event.target.files[0]);
@@ -138,7 +134,13 @@ export default function AdicionarFormacao() {
 
       <div className="w-full h-full overflow-scroll scrollbar-hide">
         <div className="flex justify-evenly items-center">
-          <form onSubmit={handleFormSubmit} className="" noValidate>
+          <form
+            method="POST"
+            onSubmit={handleFormSubmit}
+            className=""
+            noValidate
+            encType="multipart/form-data"
+          >
             <div className="flex flex-wrap justify-between sm:justify-start">
               <div className="mr-20 w-[332px]">
                 {/* NOME */}
@@ -374,7 +376,7 @@ export default function AdicionarFormacao() {
               </div>
             </div>
 
-            <DropzoneFiles />
+            <DropzoneFiles callback={handleFiles} />
 
             <div className="absolute right-20 bottom-10">
               <button className="sticky bottom-0 px-4 py-2 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white">

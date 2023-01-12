@@ -259,6 +259,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
         }
       }
     } else {
+      //Change validation method to parse the username string with includes
       if (values.length > 0) {
         for (let i = 0; i < values[1].length; i++) {
           list = list.filter((item) => item.username == values[1][i].label);

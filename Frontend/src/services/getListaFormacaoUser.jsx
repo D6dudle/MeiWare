@@ -79,6 +79,53 @@ const rejeitarPedidoFormacaoGestor = (formacaoId, gestorId, comentario) => {
     .then((r) => r.data);
 };
 
+const criaPedidoFormacao = (files, pedidoFormacao, formandos) => {
+  var bodyFormData = new FormData();
+  bodyFormData.append(
+    "pedidoFormacao",
+    new Blob([JSON.stringify(pedidoFormacao)], { type: "application/json" })
+  );
+
+  bodyFormData.append(
+    "formandos",
+    new Blob([JSON.stringify(formandos)], { type: "application/json" })
+  );
+
+  files.map((file) => {
+    console.log(file);
+    bodyFormData.append("files", file);
+  });
+
+  console.log("PEDIDO FORMACAO");
+  console.log(pedidoFormacao);
+  console.log("FORMANDOS");
+  console.log(formandos);
+
+  return axios
+    .post(API_URL + "createPedidoFormacao", bodyFormData, {
+      headers: { ...authHeader(), "Content-Type": "multipart/form-data;" },
+    })
+    .then((r) => r.data);
+
+  /*
+    var bodyFormData = new FormData();
+  bodyFormData.append('publicacao', new Blob([JSON.stringify(publicacao)], { type: 'application/json' }));
+  files.map(file => {
+    console.log(file)
+    bodyFormData.append('files', file);
+  })
+  try {
+      const {data:response} = await axios.post(API_URL + "createPublicacao", bodyFormData, { headers: { ...authHeader(), ContentType : "multipart/form-data" } })
+      console.log(response)
+      //return 
+    }
+    catch (error) {
+      console.log(error);
+    }
+};
+    */
+};
+
 const ListaFormacaoUserService = {
   getListaFormacaoUser,
   finalizaFormacaoUser,
@@ -86,6 +133,7 @@ const ListaFormacaoUserService = {
   aprovarPedidoFormacaoGestor,
   rejeitarPedidoFormacaoAdmin,
   rejeitarPedidoFormacaoGestor,
+  criaPedidoFormacao,
 };
 
 export default ListaFormacaoUserService;

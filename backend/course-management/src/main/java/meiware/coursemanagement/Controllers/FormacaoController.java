@@ -267,7 +267,7 @@ public class FormacaoController {
 
     @PostMapping(value = "/createPedidoFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> createPedidoFormacao(@RequestPart("files") List<MultipartFile> files,
+    public ResponseEntity<?> createPedidoFormacao(@RequestPart(value = "files", required = false) List<MultipartFile> files,
                                                   @RequestPart("pedidoFormacao") PedidoFormacao pedidoFormacao,
                                                   @RequestPart("formandos") List<Utilizador> formandos){
 
