@@ -1,7 +1,9 @@
 package meiware.coursemanagement.Services.JPA;
 
+import meiware.coursemanagement.Entities.JPA.Role;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
+import org.json.JSONObject;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -9,8 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UtilizadorService implements IUtilizadorService {
@@ -138,13 +139,38 @@ public class UtilizadorService implements IUtilizadorService {
     }
 
     @Override
-    public void updateUtilizador(Utilizador updatedUtilizador) {
+    public void updateUtilizador(JSONObject object, Utilizador utilizador) {
         try {
-            Utilizador utilizador = this.getUtilizadorById(updatedUtilizador.getId());
-            if(utilizador != null) {
-                mapper.map(updatedUtilizador, utilizador);
-                utilizadorRepository.save(utilizador);
+            Set<Role> roles = new HashSet<>();
+            if(object.has("nome")){
+                utilizador.setNome(object.getString("nome"));
             }
+            if(object.has("email")){
+                utilizador.setEmail(object.getString("email"));
+            }
+            if(object.has("role")){
+                System.out.println(object.getString("role"));
+                if(object.getString("role").equals("administrador")){
+                    roles.add(Role.COLABORADOR);
+                    roles.add(Role.GESTOR);
+                    roles.add(Role.ADMINISTRADOR);
+
+                }
+                else if(object.getString("role").equals("gestor")){
+                    roles.add(Role.COLABORADOR);
+                    roles.add(Role.GESTOR);
+
+                }
+                else {
+                    roles.add(Role.COLABORADOR);
+                }
+                utilizador.setRoles(roles);
+            }
+            if(object.has("managerId")) {
+                utilizador.setManager(getUtilizadorById(object.getLong("managerId")));
+            }
+            utilizadorRepository.save(utilizador);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

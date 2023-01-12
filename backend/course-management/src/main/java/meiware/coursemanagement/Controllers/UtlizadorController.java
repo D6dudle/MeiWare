@@ -1,8 +1,11 @@
 package meiware.coursemanagement.Controllers;
 
+import meiware.coursemanagement.Entities.JPA.Role;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
+import meiware.coursemanagement.Services.JPA.UtilizadorService;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 //TODO: corrigir returns
 
@@ -72,6 +77,33 @@ public class UtlizadorController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(value = "/listaGestores")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> getListaGestores() {
+
+        try{
+            List<Utilizador> listaUtilizadores = utilizadorService.getGestores();
+
+            JSONArray arr = new JSONArray();
+
+
+            for (Utilizador u : listaUtilizadores){
+                //Devolve a lista de acordo com o dropdown existente na frontend
+                arr.put(u.colaboradorToJSON().toMap());
+            }
+            System.out.println(arr);
+            return new ResponseEntity<>(
+                    arr.toString(),
+                    HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(
+                    "Erro ao aceder aos utilizadores.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 
     @GetMapping(value = "/colaboradores")
     @PreAuthorize("hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
@@ -226,16 +258,27 @@ public class UtlizadorController {
      */
     @PutMapping(value = "/updateUtilizador")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> updateUtilizador(@RequestBody Utilizador updatedUtilizador) {
+    public ResponseEntity<?> updateUtilizador(@RequestBody String JSONBody) {
 
         try{
-            utilizadorService.updateUtilizador(updatedUtilizador);
+
+
+            JSONObject object = new JSONObject(JSONBody);
+
+            Long utilizadorId = object.getLong("id");
+            Utilizador utilizador = utilizadorService.getUtilizadorById(utilizadorId);
+
+
+            utilizadorService.updateUtilizador(object, utilizador);
+
+
+
             return new ResponseEntity<>(
                     "Utilizador atualizado com sucesso",
                     HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(
-                    "Erro ao atualizar o utilizador: " + updatedUtilizador.getNome(),
+                    "Erro ao atualizar o utilizador",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

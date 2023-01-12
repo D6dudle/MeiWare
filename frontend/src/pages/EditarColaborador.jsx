@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { PlusCircle } from "react-feather";
+import { List, PlusCircle } from "react-feather";
 import TextInput from "../components/TextInput";
 import GoBackButton from "../components/GoBackButton";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,111 +11,72 @@ export default function EditarColaborador() {
   const navigate = useNavigate();
   const personId = useLocation().search.slice(4);
 
-  const [userEdit, setUserEdit] = useState([]);
+
   const [initialData, setInitialData] = useState([]);
   const [isLoading, setLoading] = useState(true); // Loading state
   const [gestList, setGestList] = useState([]);
   const [gestAssociado, setGestAssociado] = useState([]);
+  const [roleAssociado, setRoleAssociado] = useState([]);
 
-  const fakeManagerList = [
-    { label: "Francisco", value: "Francisco" },
-    { label: "Jon Jones", value: "Jon Jones" },
-  ];
+  const [search, setSearch] = useState();
 
-  const ManagerList = [];
+  const rolesList = [
+    { label: "Administrador", value: "administrador"},
+    { label: "Gestor", value: "gestor"},
+    { label: "Colaborador", value: "colaborador"},
+  ]
+
+  var ManagerList = [];
   
   useEffect(() => {
     //Obter lista de gestores
-    UtilizadoresService.getGestoresAll().then((data)=>{
+    UtilizadoresService.getGestoresDropdown().then((data)=>{
       setGestList(data);
-
-      for(var i = 0; i < data.length; i++){
       
-        var manager = {
-          label: data[i].nome,
-          value: data[i].nome,
-          id: data[i].id,
-        }
-
-        if(ManagerList.some(manager => m.id === manager.id)){
-          console.log("Object found inside the array." + m.id);
-
-          
-        }else{
-          ManagerList.push(manager);
-        }
-      }
-
+      
     }); 
   }, []);
 
   useEffect(() => {
     UtilizadoresService.getUtilizadoresById(personId).then((utilizador)=>{
       setInitialData(utilizador);
-      
-      console.log(utilizador);
 
       pubFields[0]["value"] = utilizador.nome;
       pubFields[1]["value"] = utilizador.email;
 
       if(utilizador.isAdministrador){
         pubFields[2]["value"] = rolesList[0];
+        setRoleAssociado(rolesList[0]);
+
       }
       else if(utilizador.isGestor){
         pubFields[2]["value"] = rolesList[1];
+        setRoleAssociado(rolesList[1]);
       }
       else{
         pubFields[2]["value"] = rolesList[2];
-      }
-      
-      for(var i = 0; i < ManagerList.length; i++){
-        if(ManagerList[i].id = utilizador.managerId){
-          console.log("Encontroyu." + ManagerList[i].nome);
-          //pubFields[3]["value"]["value"] = ManagerList[i].nome;
-          //setGestAssociado(ManagerList[i]);
-        }
+        setRoleAssociado(rolesList[2]);
       }
       
 
     });
   }, []);
 
-
-
-  
+  useEffect(() => {
+    console.log(gestList);
+    pubFields[3]["list"] = gestList;
     
-  
+    for(var i = 0; i < gestList.length; i++){
+      if(gestList[i].id == initialData.managerId){
+        pubFields[3]["value"] = gestList[i];
+        setGestAssociado(gestList[i]);
+      }
+    }
+  }, [gestList]);
 
-
-
-  //Dumb Data
-  const initialDatas = {
-    id: 1,
-    name: "Jenny Wilson",
-    email: "jenny.wilson@example.com",
-    role: "Colaborador",
-    age: 29,
-    imgUrl:
-      "https://images.unsplash.com/photo-1498551172505-8ee7ad69f235?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-    budgetUsed: "300,00 €",
-    emAprovacao: "40,00 €",
-    numFormacao: 2,
-    manager: {
-      id: 2,
-      name: "Jon Jones",
-      email: "jon.jones@example.com",
-      role: "Gestor",
-      age: 31,
-    },
-  };
 
   
-  const rolesList = [
-    { label: "Administrador", value: "administrador" },
-    { label: "Gestor", value: "gestor" },
-    { label: "Colaborador", value: "colaborador" },
-  ]
-
+  
   var prevUrl = useLocation().state;
   if (prevUrl === null) {
     prevUrl = "/home/controlo/colaboradores";
@@ -147,31 +108,32 @@ export default function EditarColaborador() {
       required: true,
       callback: handleType,
       value: initialData.name,
-      trigger: references[0],
+      //trigger: references[0],
     });
     fields.push({
       name: "email",
       required: true,
       callback: handleType,
       value: initialData.email,
-      trigger: references[1],
+      //trigger: references[1],
     });
     fields.push({
       name: "cargo",
-      type: "dropsearch",
+      type: "dropdown",
+      list: rolesList,
       required: true,
-      callback: handleType,
-      value: rolesList[0],
-      trigger: references[2],
+      callback: handleDropdown,
+      value: search,
+      //trigger: references[2],
     });
     fields.push({
       name: "gestor responsável",
       type: "dropdown",
-      list: ManagerList,
+      list: gestList,
       callback: handleDropdown,
       value: gestAssociado, //Preencher com manager
-      searchCall: filterManager,
-      trigger: references[3],
+      //searchCall: filterManager,
+      //trigger: references[3],
     });
     return fields;
   };
@@ -205,7 +167,6 @@ export default function EditarColaborador() {
     const handleDropdown = (index, opt) => {
       let data = [...pubFields];
       data[index]["value"] = opt;
-      console.log("DATA: " + data);
       setPubFields(data);
     };
 
@@ -213,6 +174,7 @@ export default function EditarColaborador() {
   });
 
   const handleFormSubmit = (e) => {
+    
     e.preventDefault();
 
     console.log("Button Submeter pressed!");
@@ -223,35 +185,26 @@ export default function EditarColaborador() {
       }
     }
 
-    initialData.nome = pubFields[0]["value"];
-    initialData.email = pubFields[1]["value"];
-    if(pubFields[2]["value"] == rolesList[0].value){
-      initialData.isAdministrador = true;
-      initialData.isGestor = false;
-      initialData.isColaborador = false;
-    }
-    else if(pubFields[2]["value"] ==  rolesList[1].value){
-      initialData.isAdministrador = false;
-      initialData.isGestor = true;
-      initialData.isColaborador = true;
-    }
-    else{
-      initialData.isAdministrador = false;
-      initialData.isGestor = false;
-      initialData.isColaborador = true;
-    }
-
-    console.log("manager" +  pubFields[3]["value"].id);
+    console.log("Initial Data" + JSON.stringify(pubFields[3]));
+    
+    var sent = {
+      id: Number(personId),
+      nome: pubFields[0]["value"],
+      email: pubFields[1]["value"],
+      managerId: pubFields[3]["value"].id,
+      role: pubFields[2]["value"]["value"],
+    };
 
     initialData.managerId = pubFields[3]["value"].id;
 
     //initialData.manager.name = pubFields[3]["value"]["value"];
-    console.log(initialData);
+    console.log("Data a enviar: " + JSON.stringify(sent));
 
-    /*
-    UtilizadoresService.updateUtilizador(initialData).then((data)=>{
+    
+    UtilizadoresService.updateUtilizador(sent).then((data)=>{
       console.log(data);
-    });*/
+      goBack();
+    });
 
     
   };

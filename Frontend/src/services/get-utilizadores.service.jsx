@@ -26,8 +26,15 @@ const getGestoresAll = () => {
 
 const updateUtilizador = (updatedUtilizador) => {
   //console.log("Entrou no service" + authHeader);
-  return axios.put(API_URL + "updateUtilizador", {params: { Utilzador: updatedUtilizador }, headers: authHeader() }).then((r) => r.data);
+  return axios.put(API_URL + "updateUtilizador", updatedUtilizador, { headers: authHeader() }).then((r) => r.data);
 };
+
+const getGestoresDropdown = () => {
+  //console.log("Entrou no service" + authHeader);
+  return axios.get(API_URL + "listaGestores", { headers: authHeader() }).then((r) => r.data);
+};
+
+
 
 
 const UtilizadoresService = {
@@ -36,6 +43,7 @@ const UtilizadoresService = {
   removeUtilizador,
   getGestoresAll,
   updateUtilizador,
+  getGestoresDropdown,
 };
 
 
