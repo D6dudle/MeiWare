@@ -81,18 +81,20 @@ export default function AdicionarPublicacao({updateSidebar=null}) {
 
     //Ver se os campos obrigatórios estão preenchidos
     if(values[0] && values[1] && values[3]){
-      console.log(values[0])
-      console.log(values[1])
-      console.log(values[2])
-      console.log(values[3])
       let publicacao = {
         "titulo" : values[0],
         "tags" : values[1].map(data => data.label),
         "tituloFormacao" : (values[2] == undefined ? "" : values[2].label),
-        "descricao" : values[3]
+        "descricao" : values[3],
+        "quemPublicou" : user.nome
       }
-      console.log(publicacao)
+
       PublicacaoService.submitPublicacao(publicacao, files)
+
+      if(updateSidebar){
+        updateSidebar( "/home/knowledge","/home/knowledge/adicionar-publicacao")
+      }
+      navigate("/home/knowledge")
     }
 
   };

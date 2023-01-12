@@ -65,7 +65,7 @@ function DropzoneFiles({callback}) {
   const ListarFicheiros = ({ fileType, filePath, fileSize }) => {
     function handleRemoveFile(filePath) {
       const newList = files.filter((file) => file.path !== filePath);
-
+      if(callback) callback(newList);
       setFiles(newList);
     }
 
