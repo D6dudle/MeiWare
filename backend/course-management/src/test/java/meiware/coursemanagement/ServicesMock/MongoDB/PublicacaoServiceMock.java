@@ -34,7 +34,7 @@ public class PublicacaoServiceMock {
     @BeforeEach
     public void setup(){
         for(int i = 0; i < 3 ; i++){
-            publicacoes.add(new Publicacao("Titulo" + i, "Descricao" + i, new HashSet<>(Arrays.asList("a" + i, "b" + i)), "TituloForamacao" + i));
+            publicacoes.add(new Publicacao("Titulo" + i, "Descricao" + i, new HashSet<>(Arrays.asList("a" + i, "b" + i)), "TituloForamacao" + i, "João"));
             publicacoes.get(i).setId(String.valueOf(i));
         }
     }
@@ -58,7 +58,7 @@ public class PublicacaoServiceMock {
     @Test
     public void arquivarPublicacao() {
         // given - precondition or setup
-        Publicacao auxPublicacao = new Publicacao("Titulo", "Descricao", new HashSet<>(Arrays.asList("a", "b")), "TituloForamacao");
+        Publicacao auxPublicacao = new Publicacao("Titulo", "Descricao", new HashSet<>(Arrays.asList("a", "b")), "TituloForamacao", "João");
         given(publicacaoRepository.findById(auxPublicacao.getId())).willReturn(Optional.of(auxPublicacao));
 
         // when - action or behavior that we are going to test

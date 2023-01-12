@@ -57,6 +57,7 @@ export const Menus = [
       {
         title: "Aprovar publicações",
         to: "knowledge/aprovar-publicacao",
+        gestor: true,
         opened: false,
       },
     ],
@@ -68,6 +69,7 @@ export const iconImageUpload = [
   { type: "image/jpeg", icon: Image },
   { type: "application/pdf", icon: File },
   { type: "application/zip", icon: Archive },
+  { type: "application/x-zip-compressed", icon: Archive },
 ];
 
 export const dataCard = [

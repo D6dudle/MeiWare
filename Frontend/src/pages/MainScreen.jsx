@@ -90,10 +90,9 @@ export default function MainScreen() {
               path="/knowledge/adicionar-publicacao"
               element={<AdicionarPublicacao updateSidebar={handleChange}/>}
             />
-            <Route
-              path="/knowledge/aprovar-publicacao"
-              element={<AprovarPublicacao />}
-            />
+            <Route path="/knowledge/aprovar-publicacao" element={<PrivateRoutes.GestorRoute/>}>
+              <Route path="" element={<AprovarPublicacao />}/>
+            </Route>
             <Route path="/knowledge" element={<PesquisarForum />} />
             <Route
               path="/knowledge/ver-publicacao-completa"
