@@ -3,17 +3,22 @@ import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:8080/api/publicacao/";
 
-const getPublicacoesPendentes = (gestorId) => {
-    return axios.get(API_URL + "publicacoesPendentes", { params: { id: gestorId }, headers: authHeader() }).then((r) => r.data);
+const getPublicacoesPendentes = () => {
+    return axios.get(API_URL + "publicacoesPendentes", { headers: authHeader() }).then((r) => r.data);
 };
 
 const getPublicacoesAprovadas = () => {
     return axios.get(API_URL + "publicacoesAprovadas", { headers: authHeader() }).then((r) => r.data);
 };
 
+const arquivarPublicacao = (publicacaoId) => {
+  return axios.put(API_URL + "arquivarPublicacao", { id: publicacaoId }, { headers: authHeader() }).then((r) => r.data);
+};
+
 const PublicacaoService = {
   getPublicacoesPendentes,
-  getPublicacoesAprovadas
+  getPublicacoesAprovadas,
+  arquivarPublicacao
 };
 
 export default PublicacaoService;

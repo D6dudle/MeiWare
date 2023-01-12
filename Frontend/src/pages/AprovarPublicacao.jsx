@@ -59,10 +59,12 @@ export default function AprovarPublicacao() {
   }, []);
 
   useEffect(() => {
-    PublicacaoService.getPublicacoesPendentes(UserService.getCurrentUser().id).then((data) => {
-      setPublicacoes(data);
-      setFilteredList(data);
-    });
+    if(UserService.getCurrentUser().isGestor) {
+      PublicacaoService.getPublicacoesPendentes().then((data) => {
+        setPublicacoes(data);
+        setFilteredList(data);
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -138,7 +140,13 @@ export default function AprovarPublicacao() {
   };
 
   const handleArquivarPublicacao = (list) => {
-    setPublicacoes(publicacoes.filter((data) => data.cursoId !== list.cursoId));
+    if(UserService.getCurrentUser().isGestor) {
+      PublicacaoService.arquivarPublicacao(list.id).then(() => {
+        var filtered = publicacoes.filter((data) => data.cursoId !== list.cursoId);
+        setPublicacoes(filtered);
+        window.location.reload(false);
+      });
+    }
   };
 
   return (

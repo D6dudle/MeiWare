@@ -106,9 +106,13 @@ export const PesquisarForum = ({}) => {
   ];
 
   const handleArquivarPublicacao = (list) => {
-    setListKnowledgeBase(
-      listKnowledgeBase.filter((data) => data.formacaoId !== list.formacaoId)
-    );
+    if(UserService.getCurrentUser().isGestor) {
+      PublicacaoService.arquivarPublicacao(list.id).then(() => {
+        var filtered = listKnowledgeBase.filter((data) => data.id !== list.id);
+        setListKnowledgeBase(filtered);
+        window.location.reload(false);
+      });
+    }
   };
 
   const handleType = (index, event) => {
