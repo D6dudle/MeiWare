@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.persistence.*;
+import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -127,6 +128,14 @@ public class Utilizador {
         return listBudget;
     }
 
+    public void decrementBudget(Float cost){
+        for (Budget listaBudget : listBudget){
+            if(listaBudget.getAno() == Year.now().getValue()){
+                listaBudget.setBudget(listaBudget.getBudget() - cost);
+            }
+        }
+    }
+
     public void setListBudget(Set<Budget> listBudget) {
         this.listBudget = listBudget;
     }
@@ -205,11 +214,12 @@ public class Utilizador {
         //System.out.println("Formacoes: " + listaFormacaoUsertoJSON());
         obj.put("listaFormacoesHandled", listaFormacaoUsertoJSON(id));
 
-        JSONArray listsBudget = new JSONArray();
+
         for (Budget listaBudget : listBudget){
-            listsBudget.put(listaBudget.toJSON());
+            if(listaBudget.getAno() == Year.now().getValue()){
+                obj.put("BudgetRestante", listaBudget.toJSON());
+            }
         }
-        obj.put("listBudget", listsBudget);
 
         return obj;
         }

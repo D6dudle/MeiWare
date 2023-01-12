@@ -92,7 +92,6 @@ public class UtlizadorController {
                 //Devolve a lista de acordo com o dropdown existente na frontend
                 arr.put(u.colaboradorToJSON().toMap());
             }
-            System.out.println(arr);
             return new ResponseEntity<>(
                     arr.toString(),
                     HttpStatus.OK);
