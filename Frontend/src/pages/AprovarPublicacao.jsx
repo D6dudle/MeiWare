@@ -141,6 +141,16 @@ export default function AprovarPublicacao() {
     setPublicacoes(publicacoes.filter((data) => data.cursoId !== list.cursoId));
   };
 
+  const handleAprovarPublicacao = (list) => {
+    if(UserService.getCurrentUser().isGestor) {
+      PublicacaoService.aprovarPublicacao(list.id).then(() => {
+        var filtered = publicacoes.filter((data) => data.cursoId !== list.cursoId);
+        setPublicacoes(filtered);
+        window.location.reload(false);
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col pl-8 pr-8 w-full h-full overflow-hidden">
       <div className="sticky top-5">
@@ -220,6 +230,7 @@ export default function AprovarPublicacao() {
                       aprovar={true}
                       urlBack={"/home/knowledge/aprovar-publicacao"}
                       onForumTopicArchive={() => handleArquivarPublicacao(pub)}
+                      onForumTopicAprovar={() => handleAprovarPublicacao(pub)}
                     />
                   </div>
                 </div>
