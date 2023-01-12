@@ -43,7 +43,7 @@ export default function Modal({ closeModal, confirmeActionModal, data }) {
       setJustificacaoFormacao({ ...justificacaoFormacao, error: true });
       setIsSubmit(true);
     } else {
-      confirmeActionModal();
+      confirmeActionModal(justificacaoFormacao);
     }
   };
 
@@ -55,7 +55,6 @@ export default function Modal({ closeModal, confirmeActionModal, data }) {
 
   const dataModal = constDataModal.find(({ tipo }) => tipo == data);
 
-  console.log("entrou no modal");
   return (
     <div className="flex justify-center items-center w-full overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none filter backdrop-blur-sm">
       <div className="flex w-auto my-6 mx-auto max-w-3xl">

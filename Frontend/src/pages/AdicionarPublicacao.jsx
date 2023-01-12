@@ -3,28 +3,29 @@ import { DollarSign, Search } from 'react-feather';
 import TextInput from '../components/TextInput';
 import DropzoneFiles from "../components/Dropzone";
 import { useNavigate} from "react-router-dom";
+import PublicacaoService from '../services/publicacao.service';
+import getListaFormacaoUser from '../services/getListaFormacaoUser';
+import UserService from '../services/user.service';
+
+const mapResponseToValuesAndLabels = (data) => ({
+    value: data.id,
+    label: data.nomeFormacao,
+  });
 
 export default function AdicionarPublicacao({updateSidebar=null}) {
 
   const navigate = useNavigate();
+  const user = UserService.getCurrentUser();
 
-  const formation = [
-    { label: 'Shark', value: 'Shark' },
-    { label: 'Dolphin', value: 'Dolphin' },
-    { label: 'Whale', value: 'Whale' },
-    { label: 'Octopus', value: 'Octopus' },
-    { label: 'Crab', value: 'Crab' },
-    { label: 'Lobster', value: 'Lobster' },
-  ];
+  const [tagList, setTagList] = useState([]);
+  const [formation, setFormation] = useState([]);
+  const [files, setFiles] = useState([]);
 
-  const tagList = [
-    { label: 'React', value: 'React' },
-    { label: 'Angular', value: 'Angular' },
-    { label: 'C++', value: 'C++' },
-    { label: 'Java', value: 'Java' },
-    { label: 'Python', value: 'Python' },
-    { label: 'Javascript', value: 'Javascript' },
-  ];
+  useEffect(() => {
+    //Obter lista de tags no dropdown
+    PublicacaoService.getExistingTags().then(r => setTagList(r))
+    getListaFormacaoUser.getListaFormacaoUser(user.id).then((r) => r.listaFormacoes.map(mapResponseToValuesAndLabels)).then(r => setFormation(r))
+  }, []);
 
   const filterTags = (inputValue) => {
     return tagList.filter((i) =>
@@ -41,8 +42,13 @@ export default function AdicionarPublicacao({updateSidebar=null}) {
   const [values, setValues] = useState([]);
 
   const references = [];
-  for(let i=0; i<4; i++){
+  for(let i=0; i<3; i++){
     references.push(useRef(null))
+  }
+
+  const handleFiles = (files) => {
+    console.log(files)
+    setFiles(files)
   }
 
   const handleType = (index, event) => {
@@ -69,10 +75,28 @@ export default function AdicionarPublicacao({updateSidebar=null}) {
       }
     }
 
-    for(let i=0; i<pubFields.length; i++){
-      console.log("Field -> ",pubFields[i]);
+    /* for(let i=0; i<values.length; i++){
+      console.log("Field -> ",values[i]);
+    } */
+
+    //Ver se os campos obrigatórios estão preenchidos
+    if(values[0] && values[1] && values[3]){
+      let publicacao = {
+        "titulo" : values[0],
+        "tags" : values[1].map(data => data.label),
+        "tituloFormacao" : (values[2] == undefined ? "" : values[2].label),
+        "descricao" : values[3],
+        "quemPublicou" : user.nome
+      }
+
+      PublicacaoService.submitPublicacao(publicacao, files)
+
+      if(updateSidebar){
+        updateSidebar( "/home/knowledge","/home/knowledge/adicionar-publicacao")
+      }
+      navigate("/home/knowledge")
     }
-    //navigate(`/home`); 
+
   };
 
   
@@ -107,9 +131,9 @@ export default function AdicionarPublicacao({updateSidebar=null}) {
           <div className='w-[40rem] mb-4'>
             <TextInput index={1}
               name={"tags"} 
-              type="dropsearch" 
+              type="creatable" 
               titleStyle={"font-bold mb-1 text-2xl"}
-              list={tagList} 
+              list={ tagList }
               multi={true}
               error={"Por favor selecione ou adicione uma tag"} 
               placeholder="tags..."
@@ -129,7 +153,7 @@ export default function AdicionarPublicacao({updateSidebar=null}) {
             placeholder="formação..."
             error={"Por favor selecione a formação associada"} 
             value={values[2]}
-            trigger={references[2]}
+            clearable={true}
             searchCall={filterFormation}/>
           </div>
 
@@ -139,12 +163,12 @@ export default function AdicionarPublicacao({updateSidebar=null}) {
             callback={handleType} 
             type="textarea" 
             value={values[3]}
-            trigger={references[3]}
+            trigger={references[2]}
             />
           </div>
 
           <div className='w-fit mb-4'>
-          <DropzoneFiles />
+          <DropzoneFiles callback={handleFiles}/>
           </div>
             
 

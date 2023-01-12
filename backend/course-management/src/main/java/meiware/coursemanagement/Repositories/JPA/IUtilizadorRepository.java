@@ -1,5 +1,6 @@
 package meiware.coursemanagement.Repositories.JPA;
 
+import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,5 @@ public interface IUtilizadorRepository extends CrudRepository<Utilizador, Long> 
 
     void deleteUtilizadorById(Long id);
     Boolean existsByEmail(String email);
+
 }

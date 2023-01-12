@@ -39,15 +39,15 @@ public class PedidoFormacao {
     private LocalDate dataFim;
 
     @NotNull
-    private float preco;
+    private Float preco;
 
     private String justificacao;
 
-    private boolean status;
+    private Boolean status = false;
 
-    private boolean cancelada;
+    private Boolean cancelada = false;
 
-    private boolean apagada = false;
+    private Boolean apagada = false;
 
     @Column(columnDefinition = "DATE")
     private LocalDate apagadaNaData;
@@ -59,20 +59,22 @@ public class PedidoFormacao {
     private LocalDate dataUltimoUpdate;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<AnexoRef> listAnexoRefs = new HashSet<>();
+    private Set<AnexoRef> listAnexoRefs;
 
     @ManyToOne(optional = false)
     private Utilizador quemFezPedido;
 
-    public PedidoFormacao() {
+    @ManyToMany
+    private Set<Utilizador> formandos;
 
+    public PedidoFormacao() {
     }
 
-    public PedidoFormacao(long id) {
+    public PedidoFormacao(Long id) {
         this.id = id;
     }
 
-    public PedidoFormacao(String nome, String descricao, String formador, LocalDate dataInicio, float preco, Utilizador quemFezPedido) {
+    public PedidoFormacao(String nome, String descricao, String formador, LocalDate dataInicio, Float preco, Utilizador quemFezPedido) {
         this.nome = nome;
         this.descricao = descricao;
         this.formador = formador;
@@ -82,7 +84,7 @@ public class PedidoFormacao {
         this.quemFezPedido = quemFezPedido;
     }
 
-    public PedidoFormacao(long id, String nome, String descricao, String formador, LocalDate dataInicio, float preco, Utilizador quemFezPedido) {
+    public PedidoFormacao(Long id, String nome, String descricao, String formador, LocalDate dataInicio, Float preco, Utilizador quemFezPedido) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -137,11 +139,11 @@ public class PedidoFormacao {
         this.dataFim = dataFim;
     }
 
-    public float getPreco() {
+    public Float getPreco() {
         return preco;
     }
 
-    public void setPreco(float preco) {
+    public void setPreco(Float preco) {
         this.preco = preco;
     }
 
@@ -153,19 +155,19 @@ public class PedidoFormacao {
         this.justificacao = justificacao;
     }
 
-    public boolean isStatus() {
+    public Boolean isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
-    public boolean isCancelada() {
+    public Boolean isCancelada() {
         return cancelada;
     }
 
-    public void setCancelada(boolean cancelada) {
+    public void setCancelada(Boolean cancelada) {
         this.cancelada = cancelada;
     }
 
@@ -177,11 +179,11 @@ public class PedidoFormacao {
         this.quemFezPedido = quemFezPedido;
     }
 
-    public boolean isApagada() {
+    public Boolean isApagada() {
         return apagada;
     }
 
-    public void setApagada(boolean apagada) {
+    public void setApagada(Boolean apagada) {
         this.apagada = apagada;
     }
 
@@ -225,6 +227,26 @@ public class PedidoFormacao {
         this.getListAnexoRefs().remove(anexoRef);
     }
 
+    public Set<Utilizador> getFormandos() {
+        return formandos;
+    }
+
+    public void setFormandos(Set<Utilizador> formandos) {
+        this.formandos = formandos;
+    }
+
+    public void addFormando(Utilizador utilizador) {
+        if(this.formandos == null)
+            this.formandos = new HashSet<>();
+        this.formandos.add(utilizador);
+    }
+
+    public void remFormando(Utilizador utilizador) {
+        if(this.formandos == null)
+            this.formandos = new HashSet<>();
+        this.formandos.remove(utilizador);
+    }
+
     public JSONObject toJSON(){
         JSONObject obj = new JSONObject();
         obj.put("idCurso", id);
@@ -247,6 +269,29 @@ public class PedidoFormacao {
         return obj;
     }
 
+
+    public JSONObject toJSONEquipa(String nomeFormando){
+        JSONObject obj = new JSONObject();
+        obj.put("idCurso", id);
+        obj.put("nomeFormacao", nome);
+        obj.put("descricao", descricao);
+        obj.put("formador", formador);
+        obj.put("dataFormacao", dataInicio);
+        obj.put("dataFim", dataFim);
+        obj.put("preco", preco);
+        obj.put("justificacaoFormacao", justificacao);
+        obj.put("status", status);
+        obj.put("cancelada", cancelada);
+        obj.put("apagada", apagada);
+        obj.put("apagadaNaData", apagadaNaData);
+        obj.put("dataCriacao", dataCriacao);
+        obj.put("dataUltimoUpdate", dataUltimoUpdate);
+        obj.put("listAnexoRef", listAnexoRefs);
+        obj.put("quemFezPedidoId", quemFezPedido.getId());
+        obj.put("quemFezPedidoNome", quemFezPedido.getNome());
+        obj.put("username", nomeFormando);
+        return obj;
+    }
 
 
     @Transient

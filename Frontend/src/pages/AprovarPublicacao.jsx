@@ -6,6 +6,8 @@ import users from "../constants/usersAux.json";
 import ForumTopic from "../components/ForumTopic";
 import { EmptyState } from "../components/EmptyState";
 import ListaUtilizadoresService from "../services/getListaUtilizadoresService";
+import PublicacaoService from "../services/publicacao.service";
+import UserService from "../services/user.service";
 
 export default function AprovarPublicacao() {
   const pubList = [
@@ -40,8 +42,8 @@ export default function AprovarPublicacao() {
     { label: "Javascript", value: "Javascript" },
   ];
 
-  const [publicacoes, setPublicacoes] = useState(pubList);
-  const [filteredList, setFilteredList] = useState(publicacoes);
+  const [publicacoes, setPublicacoes] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
   const [search, setSearch] = useState();
   const [colabList, setColabList] = useState([]);
   const [tagList, setTags] = useState(tags);
@@ -54,6 +56,15 @@ export default function AprovarPublicacao() {
     ListaUtilizadoresService.getListaUtilizadores().then((data) => {
       setColabList(data);
     });
+  }, []);
+
+  useEffect(() => {
+    if(UserService.getCurrentUser().isGestor) {
+      PublicacaoService.getPublicacoesPendentes().then((data) => {
+        setPublicacoes(data);
+        setFilteredList(data);
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -129,7 +140,23 @@ export default function AprovarPublicacao() {
   };
 
   const handleArquivarPublicacao = (list) => {
-    setPublicacoes(publicacoes.filter((data) => data.cursoId !== list.cursoId));
+    if(UserService.getCurrentUser().isGestor) {
+      PublicacaoService.arquivarPublicacao(list.id).then(() => {
+        var filtered = publicacoes.filter((data) => data.cursoId !== list.cursoId);
+        setPublicacoes(filtered);
+        window.location.reload(false);
+      });
+    }
+  };
+
+  const handleAprovarPublicacao = (list) => {
+    if(UserService.getCurrentUser().isGestor) {
+      PublicacaoService.aprovarPublicacao(list.id).then(() => {
+        var filtered = publicacoes.filter((data) => data.cursoId !== list.cursoId);
+        setPublicacoes(filtered);
+        window.location.reload(false);
+      });
+    }
   };
 
   return (
@@ -199,17 +226,19 @@ export default function AprovarPublicacao() {
                 <div className="pb-4">
                   <div>
                     <ForumTopic
-                      username={pub.username}
-                      dataFormacao={pub.dataFormacao}
+                      username={pub.quemPublicou}
+                      dataPublicacao={pub.dataCriacao}
                       titulo={pub.titulo}
-                      nomeformacao={pub.nomeformacao}
+                      nomeformacao={pub.tituloformacao}
                       descricao={pub.descricao}
-                      cursoId={pub.cursoId}
+                      formacaoId={pub.formacaoId}
+                      anexos={pub.anexos}
+                      tags={pub.tags}
                       arquivar={false}
-                      publicacaoCompleta={true}
                       aprovar={true}
                       urlBack={"/home/knowledge/aprovar-publicacao"}
                       onForumTopicArchive={() => handleArquivarPublicacao(pub)}
+                      onForumTopicAprovar={() => handleAprovarPublicacao(pub)}
                     />
                   </div>
                 </div>

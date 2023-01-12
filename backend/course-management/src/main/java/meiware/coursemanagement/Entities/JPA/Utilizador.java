@@ -1,6 +1,7 @@
 package meiware.coursemanagement.Entities.JPA;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.json.JSONArray;
@@ -41,18 +42,15 @@ public class Utilizador {
     @OneToMany(mappedBy = "quemFezPedido", fetch = FetchType.EAGER)
     private Set<PedidoFormacao> listPedidos;
 
-
     @ManyToMany(mappedBy = "formandos", cascade = CascadeType.ALL)
-    private Set<PedidoAprovado> listFormacoes;
-
-
+    private Set<PedidoFormacao> listFormacoes;
 
 
     private Boolean apagado = false;
 
     public Utilizador(){    }
 
-    public Utilizador(long id) {
+    public Utilizador(Long id) {
         this.id = id;
     }
 
@@ -141,23 +139,35 @@ public class Utilizador {
         this.listPedidos = listPedidos;
     }
 
-    public Set<PedidoAprovado> getListFormacoes() {
+    public Set<PedidoFormacao> getListFormacoes() {
         return listFormacoes;
     }
 
-    public void setListFormacoes(Set<PedidoAprovado> listFormacoes) {
+    public void setListFormacoes(Set<PedidoFormacao> listFormacoes) {
         this.listFormacoes = listFormacoes;
     }
 
-    public boolean isAdministrador() {
+    public void addFormacao(PedidoFormacao pedidoAprovado){
+        if(this.listFormacoes == null)
+            this.listFormacoes = new HashSet<>();
+        this.listFormacoes.add(pedidoAprovado);
+    }
+
+    public void remFormacao(PedidoFormacao pedidoAprovado){
+        if(this.listFormacoes == null)
+            this.listFormacoes = new HashSet<>();
+        this.listFormacoes.remove(pedidoAprovado);
+    }
+
+    public Boolean isAdministrador() {
         return roles.contains(Role.ADMINISTRADOR);
     }
 
-    public boolean isGestor() {
+    public Boolean isGestor() {
         return roles.contains(Role.GESTOR);
     }
 
-    public boolean isColaborador() {
+    public Boolean isColaborador() {
         return roles.contains(Role.COLABORADOR);
     }
 
@@ -180,28 +190,29 @@ public class Utilizador {
         //System.out.println("Lista de Pedidos: " + listPedidos.size());
 
         JSONArray lists = new JSONArray();
-        JSONArray listsBudget = new JSONArray();
+        for (PedidoFormacao listaPedidos : listFormacoes) {
+            lists.put(listaPedidos.toJSON());
+        }
+        obj.put("listaFormacoes", lists);
 
+        lists = new JSONArray();
+        for (PedidoFormacao listaPedidos1 : listPedidos){
+            lists.put(listaPedidos1.toJSON());
+        }
+        obj.put("listaPedidos", lists);
 
-        //for (PedidoFormacao listaPedidos : listPedidos){
-
-            //lists.put(listaPedidos.toJSON());
-
-        //}
-
-        //obj.put("listaFormacoes", lists);
 
         //System.out.println("Formacoes: " + listaFormacaoUsertoJSON());
-        obj.put("listaFormacoesHandled", listaFormacaoUsertoJSON());
+        obj.put("listaFormacoesHandled", listaFormacaoUsertoJSON(id));
 
+        JSONArray listsBudget = new JSONArray();
         for (Budget listaBudget : listBudget){
-
             listsBudget.put(listaBudget.toJSON());
         }
         obj.put("listBudget", listsBudget);
 
         return obj;
-    }
+        }
 
     public JSONObject toJSONAuth(){
         JSONObject obj = new JSONObject();
@@ -219,6 +230,7 @@ public class Utilizador {
         System.out.println(obj);
         return obj;
     }
+
     @Override
     public String toString() {
         return "Utilizador{" +
@@ -240,21 +252,35 @@ public class Utilizador {
         return obj;
     }
 
-    public JSONObject listaFormacaoUsertoJSON(){
+    public JSONObject listaFormacaoUsertoJSON(Long userID){
         JSONObject obj = new JSONObject();
 
         JSONArray lists = new JSONArray();
-        for (PedidoFormacao listaPedidos : listPedidos){
-            //Retorna um JSON Object com a formacao
-            lists.put(listaFormacaoToJSON(listaPedidos));
+        for (PedidoFormacao listaPedidos : listFormacoes){
+           //Retorna um JSON Object com a formacao
+            lists.put(listaFormacaoToJSON(listaPedidos, userID));
         }
         obj.put("listaFormacoes", lists);
+
+        lists = new JSONArray();
+        for (PedidoFormacao listaPedidos : listPedidos){
+            //Retorna um JSON Object com a formacao
+            lists.put(listaFormacaoToJSON(listaPedidos, userID));
+        }
+        obj.put("listaPedidos", lists);
         return obj;
     }
 
-    public JSONObject listaFormacaoToJSON(PedidoFormacao listaFormacao){
+    public JSONObject listaFormacaoToJSON(PedidoFormacao listaFormacao, Long userID){
         JSONObject obj = new JSONObject();
-        obj.put("username", listaFormacao.getQuemFezPedido().getNome());
+        obj.put("id", listaFormacao.getId());
+        for (Utilizador u : listaFormacao.getFormandos()){
+            //Correspondem às pessoas que vão fazer a formacao
+            if (u.getId() == userID)
+                obj.put("username", u.getNome());
+        }
+
+        //obj.put("username", listaFormacao.getQuemFezPedido().getNome());
         obj.put("nomeFormacao", listaFormacao.getNome());
         obj.put("dataFormacao", listaFormacao.getDataCriacao());
         obj.put("idCurso", listaFormacao.getId());

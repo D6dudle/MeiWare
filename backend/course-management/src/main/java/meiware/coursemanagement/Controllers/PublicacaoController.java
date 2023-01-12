@@ -1,7 +1,10 @@
 package meiware.coursemanagement.Controllers;
 
+import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
+import meiware.coursemanagement.Entities.JPA.PedidoRejeitado;
 import meiware.coursemanagement.Entities.MongoDB.Publicacao;
 import meiware.coursemanagement.Services.MongoDB.IPublicacaoService;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,13 +13,31 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/publicacao")
+@CrossOrigin(origins = {"http://127.0.0.1:5173/", "http://localhost:5173/"})
 public class PublicacaoController {
     @Autowired
     private IPublicacaoService publicacaoService;
+
+    @GetMapping(value = "/tags")
+    @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
+    public ResponseEntity<?> getTags() {
+        try {
+            List<String> tags = publicacaoService.getExistingTags();
+            return new ResponseEntity<>(
+                    tags,
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    "Erro ao ir buscar a lista de tags",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping(value = "/publicacoesPendentes")
     @PreAuthorize("hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
@@ -66,10 +87,13 @@ public class PublicacaoController {
 
     @PostMapping(value = "/createPublicacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> createPublicacao(@RequestPart("files") List<MultipartFile> files,
+    public ResponseEntity<?> createPublicacao(@RequestPart(value = "files", required = false) List<MultipartFile> files,
                                                   @RequestPart("publicacao") Publicacao publicacao) {
 
         try {
+            if(files==null){
+                files = new ArrayList<>();
+            }
             Publicacao newPublicacao = publicacaoService.createPublicacao(publicacao, files);
             return new ResponseEntity<>(
                     newPublicacao,

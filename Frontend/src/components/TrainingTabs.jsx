@@ -9,7 +9,7 @@ import UserService from "../services/user.service";
 import { Loading } from "./Loading";
 import ListaFormacaoUserService from "../services/getListaFormacaoUser";
 import { AlertCircle, Zap, Check } from "react-feather";
-import PedidoFormacaoService from "../services/pedido-formacao.serivce";
+import PedidoFormacaoService from "../services/pedido-formacao.service";
 import ListaUtilizadoresService from "../services/getListaUtilizadoresService";
 
 export default function TrainingTabs({ sideBarName, nomeEcra }) {
@@ -18,6 +18,8 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
   const [originalList, setOriginalList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [colabList, setColabList] = useState([]);
+
+  const user = UserService.getCurrentUser(); //Admin ID
 
   var urlBack = "";
 
@@ -60,6 +62,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
     }, []);
     useEffect(() => {
       if (rawList != null) {
+        console.log(rawList);
         const arr = Object.values(rawList)[0];
         for (const property in arr) {
           // Resposta com a lista de formações do user
@@ -100,6 +103,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
 
     useEffect(() => {
       if (rawList != null) {
+        console.log(rawList);
         for (const property in rawList) {
           // Resposta com a lista de formações do user
           if (rawList[property]?.tipoFormacao === "PENDENTE") {
@@ -129,8 +133,27 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
   const [search, setSearch] = useState();
   const [values, setValues] = useState([]);
 
-  const handleCancelarFormacao = (card) => {
+  const handleCancelarFormacao = (card, justificacaoFormacao) => {
     //Gets the index of object to remove the formation
+
+    if (user.isAdministrador) {
+      ListaFormacaoUserService.rejeitarPedidoFormacaoAdmin(
+        card.idCurso,
+        user.id,
+        justificacaoFormacao?.data
+      ).then((data) => {
+        console.log(data);
+      });
+    } else {
+      ListaFormacaoUserService.rejeitarPedidoFormacaoGestor(
+        card.idCurso,
+        user.id,
+        justificacaoFormacao?.data
+      ).then((data) => {
+        console.log(data);
+      });
+    }
+
     const indexList = originalList.findIndex((element) => {
       return element.label === activeFilter;
     });
@@ -149,6 +172,23 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
   const handleAceitarFormacaoPendente = (card) => {
     //Igual ao handleCancelarFormacao (remove o elemento da lista)
     //Gets the index of object to remove the formation
+
+    if (user.isAdministrador) {
+      ListaFormacaoUserService.aprovarFormacaoUserAdmin(
+        card.idCurso,
+        user.id
+      ).then((data) => {
+        console.log(data);
+      });
+    } else {
+      ListaFormacaoUserService.aprovarPedidoFormacaoGestor(
+        card.idCurso,
+        user.id
+      ).then((data) => {
+        console.log(data);
+      });
+    }
+
     const indexList = originalList.findIndex((element) => {
       return element.label === activeFilter;
     });
@@ -361,10 +401,13 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
                     tipoFormacao={card.tipoFormacao}
                     consultar={true}
                     urlBack={urlBack}
-                    onItemDelete={() => handleCancelarFormacao(card)}
+                    onItemDelete={(justificacaoFormacao) =>
+                      handleCancelarFormacao(card, justificacaoFormacao)
+                    }
                     sidebarName={sideBarName}
                     onAceitarclick={() => handleAceitarFormacaoPendente(card)}
                     onFinalizarClick={() => handleFinalizarFormacao(card)}
+                    nomeEcra={nomeEcra}
                   />
                 );
               })

@@ -14,19 +14,22 @@ public class Publicacao {
     private String id;
     private String titulo;
     private String descricao;
+
+    private String quemPublicou;
     private LocalDate dataCriacao;
     private Set<String> tags;
     private String tituloFormacao;
-    private boolean aprovada;
-    private boolean arquivada;
+    private Boolean aprovada;
+    private Boolean arquivada;
     private LocalDate arquivadaEm;
     private List<Anexo> anexos;
     public Publicacao() {
     }
 
-    public Publicacao(String titulo, String descricao, Set<String> tags, String tituloFormacao) {
+    public Publicacao(String titulo, String descricao, Set<String> tags, String tituloFormacao, String quemPublicou) {
         this.titulo = titulo;
         this.descricao = descricao;
+        this.quemPublicou = quemPublicou;
         this.dataCriacao = LocalDate.now();
         this.tags = tags;
         this.tituloFormacao = tituloFormacao;
@@ -58,6 +61,14 @@ public class Publicacao {
         this.descricao = descricao;
     }
 
+    public String getQuemPublicou() {
+        return quemPublicou;
+    }
+
+    public void setQuemPublicou(String quemPublicou) {
+        this.quemPublicou = quemPublicou;
+    }
+
     public LocalDate getDataCriacao() {
         return dataCriacao;
     }
@@ -82,15 +93,15 @@ public class Publicacao {
         this.tituloFormacao = tituloFormacao;
     }
 
-    public boolean isAprovada() {
+    public Boolean isAprovada() {
         return aprovada;
     }
 
-    public void setAprovada(boolean aprovada) {
+    public void setAprovada(Boolean aprovada) {
         this.aprovada = aprovada;
     }
 
-    public boolean isArquivada() {
+    public Boolean isArquivada() {
         return arquivada;
     }
 
@@ -98,7 +109,7 @@ public class Publicacao {
         this.arquivada = true;
     }
 
-    public void setArquivada(boolean arquivada) {
+    public void setArquivada(Boolean arquivada) {
         this.arquivada = arquivada;
     }
 
@@ -124,6 +135,7 @@ public class Publicacao {
                 "id='" + id + '\'' +
                 ", titulo='" + titulo + '\'' +
                 ", descricao='" + descricao + '\'' +
+                ", quemPublicou='" + quemPublicou + '\'' +
                 ", dataCriacao=" + dataCriacao +
                 ", tags=" + tags +
                 ", tituloFormacao='" + tituloFormacao + '\'' +

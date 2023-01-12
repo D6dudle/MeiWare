@@ -1,8 +1,6 @@
 package meiware.coursemanagement.Controllers;
 
-import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
-import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +85,6 @@ public class UtlizadorController {
                 if(!u.isApagado()) {
                     arr.put(u.toJSON());
                 }
-
             }
 
             return new ResponseEntity<>(

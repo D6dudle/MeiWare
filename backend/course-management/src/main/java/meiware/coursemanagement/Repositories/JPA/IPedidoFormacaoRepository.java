@@ -10,8 +10,8 @@ import java.util.Optional;
 @Repository
 public interface IPedidoFormacaoRepository extends CrudRepository<PedidoFormacao, Long> {
     PedidoFormacao findByApagadaFalseAndNome(String nome);
-    Optional<PedidoFormacao> findByApagadaFalseAndId(long id);
+    Optional<PedidoFormacao> findByApagadaFalseAndId(Long id);
     List<PedidoFormacao> findAllByOrderByDataCriacaoDesc();
     List<PedidoFormacao> findPedidoFormacaoByApagadaFalseOrderByDataCriacaoDesc();
-    List<PedidoFormacao> findPedidoFormacaoByApagadaFalseAndQuemFezPedidoManagerIdOrderByDataCriacaoDesc(long managerId);
+    List<PedidoFormacao> findPedidoFormacaoByApagadaFalseAndQuemFezPedidoManagerIdOrderByDataCriacaoDesc(Long managerId);
 }

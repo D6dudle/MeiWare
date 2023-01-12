@@ -4,11 +4,8 @@ import meiware.coursemanagement.Entities.JPA.PedidoAprovado;
 import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import meiware.coursemanagement.Entities.JPA.PedidoRejeitado;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
-import meiware.coursemanagement.Images.PedidoFormacaoImage;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
-import meiware.coursemanagement.Services.MongoDB.IAnexoService;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,21 +44,35 @@ public class FormacaoController {
 
             for (PedidoFormacao p : pedidosFormacaoList) {
                 JSONObject auxP = p.toJSON();
-                auxP.put("username", p.getQuemFezPedido().getNome());
-                if (p.getDiscriminatorValue().equals("PedidoFormacao") && !p.isApagada()){
+
+                String username = "";
+                int i = 0;
+                for (Utilizador u : p.getFormandos()){
+                    //Correspondem ao nome das pessoas que vão fazer uma formação
+                    auxP.put("username", u.getNome());
+                    username += u.getNome();
+                    if (i != p.getFormandos().size() - 1)
+                        username += ", ";
+                    i++;
+                }
+                auxP.put("username", username);
+
+                //NOTA quem fez o pedido pode não ser a pessoa a quem o curso se destina no caso de ser admin
+                //auxP.put("username", p.getQuemFezPedido().getNome());
+                if (p.getDiscriminatorValue().equals("PedidoFormacao") && !p.isApagada()) {
                     // A formacao ainda esta pendente
                     auxP.put("tipoFormacao", "PENDENTE");
-                }else if (p.getDiscriminatorValue().equals("APROVADA") && !p.isApagada()){
-                    if (p instanceof PedidoAprovado){
-                        PedidoAprovado auxAprovado = (PedidoAprovado)p;
+                } else if (p.getDiscriminatorValue().equals("APROVADA") && !p.isApagada()) {
+                    if (p instanceof PedidoAprovado) {
+                        PedidoAprovado auxAprovado = (PedidoAprovado) p;
                         if (auxAprovado.isConcluida())
                             auxP.put("tipoFormacao", "TERMINADA");
-                        else{
+                        else {
                             auxP.put("tipoFormacao", "CURSO");
                         }
 
                     }
-                }else if (p.getDiscriminatorValue().equals("REJEITADA") && !p.isApagada() ) {
+                } else if (p.getDiscriminatorValue().equals("REJEITADA") && !p.isApagada()) {
                     auxP.put("tipoFormacao", "REJEITADA");
                 }
                 arr.put(auxP);
@@ -81,13 +92,40 @@ public class FormacaoController {
     @PreAuthorize("hasRole('GESTOR')")
     public ResponseEntity<?> getPedidosFormacaoEquipa(@RequestParam("id") String id_str) {
         try {
-            long gestorId = Long.parseLong(id_str);
-            List<PedidoFormacao> pedidosFormacaoList = pedidoFormacaoService.getPedidosFormacaoEquipa(gestorId);
+            Long gestorId = Long.parseLong(id_str);
+            Utilizador gestor = utilizadorService.getUtilizadorById(gestorId);
+            List<PedidoFormacao> pedidosFormacaoList = pedidoFormacaoService.getPedidosFormacaoEquipa(gestor);
             JSONArray arr = new JSONArray();
 
             for (PedidoFormacao p : pedidosFormacaoList) {
-                arr.put(p.toJSON());
+
+                for (Utilizador u : p.getFormandos()) {
+                    JSONObject auxP = new JSONObject();
+                    //Correspondem às pessoas que vão fazer a formacao
+                    if (!u.getId().equals(gestor.getId())){
+                        auxP = p.toJSONEquipa(u.getNome());
+                    }
+
+                    if (p.getDiscriminatorValue().equals("PedidoFormacao") && !p.isApagada()) {
+                        // A formacao ainda esta pendente
+                        auxP.put("tipoFormacao", "PENDENTE");
+                    } else if (p.getDiscriminatorValue().equals("APROVADA") && !p.isApagada()) {
+                        if (p instanceof PedidoAprovado) {
+                            PedidoAprovado auxAprovado = (PedidoAprovado) p;
+                            if (auxAprovado.isConcluida())
+                                auxP.put("tipoFormacao", "TERMINADA");
+                            else {
+                                auxP.put("tipoFormacao", "CURSO");
+                            }
+
+                        }
+                    } else if (p.getDiscriminatorValue().equals("REJEITADA") && !p.isApagada()) {
+                        auxP.put("tipoFormacao", "REJEITADA");
+                    }
+                    arr.put(auxP);
+                }
             }
+
             return new ResponseEntity<>(
                     arr.toString(),
                     HttpStatus.OK);
@@ -103,7 +141,7 @@ public class FormacaoController {
     public ResponseEntity<?> getListaFormacaoByUser(@RequestParam("id") String id) {
         try {
             Utilizador utilizador = utilizadorService.getUtilizadorById(Long.valueOf(id));
-            JSONObject obj = utilizador.listaFormacaoUsertoJSON();
+            JSONObject obj = utilizador.listaFormacaoUsertoJSON(Long.valueOf(id));
 
             return new ResponseEntity<>(
                     obj.toMap(),
@@ -167,7 +205,7 @@ public class FormacaoController {
         try {
             PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(id);
             return new ResponseEntity<>(
-                    pedidoFormacao.toJSON(),
+                    pedidoFormacao.toJSON().toMap(),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(
@@ -178,11 +216,11 @@ public class FormacaoController {
     // ByNomeFormação
     /*
      * @GetMapping(value = "/pedidoFormacaoByNome")
-     * 
+     *
      * @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')"
      * )
      * public ResponseEntity<?> getPedidoFormacaoByNome(@RequestParam String nome) {
-     * 
+     *
      * try{
      * //TODO: verificar se não podem haver formações como o mesmo nome
      * PedidoFormacao pedidoFormacao =
@@ -196,14 +234,14 @@ public class FormacaoController {
      * HttpStatus.INTERNAL_SERVER_ERROR);
      * }
      * }
-     * 
+     *
      * @PostMapping (value = "/createPedidoFormacao")
-     * 
+     *
      * @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')"
      * )
      * public ResponseEntity<?> createPedidoFormacao(@RequestBody
      * PedidoFormacaoImage pedidoFormacaoImage) {
-     * 
+     *
      * System.out.println("[createPedidoFormacao]pedidoFormacao: " +
      * pedidoFormacaoImage.getPedidoFormacao().toString());
      * if(!pedidoFormacaoImage.getFiles().isEmpty())
@@ -212,7 +250,7 @@ public class FormacaoController {
      * else{
      * throw new RuntimeException("files está vazio ou null");
      * }
-     * 
+     *
      * try{
      * pedidoFormacaoService.createPedidoFormacao(pedidoFormacaoImage.
      * getPedidoFormacao(), pedidoFormacaoImage.getFiles());
@@ -230,10 +268,11 @@ public class FormacaoController {
     @PostMapping(value = "/createPedidoFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
     public ResponseEntity<?> createPedidoFormacao(@RequestPart("files") List<MultipartFile> files,
-            @RequestPart("pedidoFormacao") PedidoFormacao pedidoFormacao) {
+                                                  @RequestPart("pedidoFormacao") PedidoFormacao pedidoFormacao,
+                                                  @RequestPart("formandos") List<Utilizador> formandos){
 
         try {
-            pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files);
+            pedidoFormacaoService.createPedidoFormacao(pedidoFormacao, files, formandos);
             return new ResponseEntity<>(
                     "Pedido de formação criado com sucesso.",
                     HttpStatus.OK);
@@ -265,15 +304,15 @@ public class FormacaoController {
     public ResponseEntity<?> finalizaPedidoFormacao(@RequestBody String JSONBody) {
         try {
             JSONObject object = new JSONObject(JSONBody);
-            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            Long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
             String nomeFormacao = object.getString("nomeFormacao");
 
             pedidoFormacaoService.finalizaPedidoFormacao(pedidoFormacaoId);
-                return new ResponseEntity<>(
-                        "Pedido de formação: " + nomeFormacao + " aprovado com sucesso.",
-                        HttpStatus.OK);
+            return new ResponseEntity<>(
+                    "Pedido de formação: " + nomeFormacao + " aprovado com sucesso.",
+                    HttpStatus.OK);
 
-            } catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(
                     "Erro ao aprovar o pedido de formação.",
@@ -286,8 +325,8 @@ public class FormacaoController {
     public ResponseEntity<?> aprovarPedidoFormacaoAdmin(@RequestBody String JSONBody) {
         try {
             JSONObject object = new JSONObject(JSONBody);
-            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
-            long adminId = object.getLong("adminId");
+            Long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            Long adminId = object.getLong("adminId");
 
             PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
             if (pedidoFormacao != null
@@ -312,13 +351,13 @@ public class FormacaoController {
     public ResponseEntity<?> rejeitarPedidoFormacaoAdmin(@RequestBody String JSONBody) {
         try {
             JSONObject object = new JSONObject(JSONBody);
-            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
-            long adminId = object.getLong("adminId");
+            Long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            Long adminId = object.getLong("adminId");
             String comentario = object.getString("comentario");
 
             PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
             if (pedidoFormacao != null
-                    && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
+                    && !((pedidoFormacao instanceof PedidoRejeitado))) {
                 pedidoFormacaoService.rejeitarPedidoFormacao(pedidoFormacaoId, adminId, comentario);
                 return new ResponseEntity<>(
                         "Pedido de formação: " + pedidoFormacao.getNome() + " rejeitado com sucesso.",
@@ -339,8 +378,8 @@ public class FormacaoController {
     public ResponseEntity<?> aprovarPedidoFormacaoGestor(@RequestBody String JSONBody) {
         try {
             JSONObject object = new JSONObject(JSONBody);
-            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
-            long gestorId = object.getLong("gestorId");
+            Long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            Long gestorId = object.getLong("gestorId");
 
             PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
             if (pedidoFormacao != null
@@ -371,8 +410,8 @@ public class FormacaoController {
     public ResponseEntity<?> rejeitarPedidoFormacaoGestor(@RequestBody String JSONBody) {
         try {
             JSONObject object = new JSONObject(JSONBody);
-            long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
-            long gestorId = object.getLong("gestorId");
+            Long pedidoFormacaoId = object.getLong("pedidoFormacaoId");
+            Long gestorId = object.getLong("gestorId");
             String comentario = object.getString("comentario");
 
             PedidoFormacao pedidoFormacao = pedidoFormacaoService.getPedidoFormacaoById(pedidoFormacaoId);
@@ -401,19 +440,30 @@ public class FormacaoController {
 
     @DeleteMapping(value = "/removePedidoFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> removePedidoFormacao(@RequestBody PedidoFormacao pedidoFormacao) {
+    public ResponseEntity<?> removePedidoFormacao(@RequestBody String id_str) {
 
         try {
-            pedidoFormacaoService.removePedidoFormacao(pedidoFormacao);
-            return new ResponseEntity<>(
-                    "Pedido de formação: " + pedidoFormacao.getNome() + " eliminado com sucesso.",
-                    HttpStatus.OK);
+            JSONObject obj = new JSONObject(id_str);
+            PedidoFormacao p = pedidoFormacaoService.getPedidoFormacaoById(obj.getLong("id"));
+            if (p != null) {
+                pedidoFormacaoService.removePedidoFormacao(p);
+                return new ResponseEntity<>(
+                        "Pedido de formação: " + p.getNome() + " eliminado com sucesso.",
+                        HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>(
+                        "Pedido de formação inexistente",
+                        HttpStatus.BAD_REQUEST);
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(
-                    "Erro ao eliminar o pedido de formação: " + pedidoFormacao.getNome() + ".",
+                    "Erro ao eliminar o pedido de formação",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 
 

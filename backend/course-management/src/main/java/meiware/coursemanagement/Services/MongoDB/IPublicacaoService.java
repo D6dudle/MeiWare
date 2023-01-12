@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public interface IPublicacaoService {
     List<Publicacao> getPublicacoesPendentes();
@@ -14,4 +15,5 @@ public interface IPublicacaoService {
     void aprovarPublicacao(Publicacao publicacao);
     void arquivarPublicacao(Publicacao publicacaoArquivada);
     void removePublicacao(Publicacao publicacao);
+    List<String> getExistingTags();
 }

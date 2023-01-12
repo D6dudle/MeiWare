@@ -51,10 +51,10 @@ public class PedidoFormacaoServiceMock {
     @BeforeEach
     public void setup(){
         for(int i = 0; i < 3 ; i++){
-            PedidoAprovado pedidoAprovado = new PedidoAprovado(i+3, "Pedido aprovado " + i+3, "Descricao " + i+3, "Formador " + i+3, LocalDate.now(), i*300, new Utilizador(),  LocalDate.now());
-            PedidoRejeitado pedidoRejeitado = new PedidoRejeitado(i+6,"Pedido rejeitado " + i+6, "Descricao " + i+6, "Formador " + i+6, LocalDate.now(), i*600, new Utilizador(),  LocalDate.now());
+            PedidoAprovado pedidoAprovado = new PedidoAprovado(i+3l, "Pedido aprovado " + i+3, "Descricao " + i+3, "Formador " + i+3, LocalDate.now(), i*300f, new Utilizador(),  LocalDate.now());
+            PedidoRejeitado pedidoRejeitado = new PedidoRejeitado(i+6l,"Pedido rejeitado " + i+6, "Descricao " + i+6, "Formador " + i+6, LocalDate.now(), i*600f, new Utilizador(),  LocalDate.now());
 
-            pedidosFormacao.add(new PedidoFormacao(i,"Pedido de formacao " + i, "Descricao " + i, "Formador " + i, LocalDate.now(), i*100, new Utilizador()));
+            pedidosFormacao.add(new PedidoFormacao(i*1l,"Pedido de formacao " + i, "Descricao " + i, "Formador " + i, LocalDate.now(), i*100f, new Utilizador()));
             pedidosFormacao.add(pedidoAprovado);
             pedidosFormacao.add(pedidoRejeitado);
 
@@ -138,11 +138,11 @@ public class PedidoFormacaoServiceMock {
     @Test
     public void createPedidoFormacao() {
         // given - precondition or setup
-        PedidoFormacao newPedidoFormacao = new PedidoFormacao(20,"Pedido de formacao 20", "Descricao 20", "Formador 20", LocalDate.now(), 2000, new Utilizador());
+        PedidoFormacao newPedidoFormacao = new PedidoFormacao(20L,"Pedido de formacao 20", "Descricao 20", "Formador 20", LocalDate.now(), 2000f, new Utilizador());
         given(pedidoFormacaoRepository.save(newPedidoFormacao)).willReturn(newPedidoFormacao);
 
         // when - action or behavior that we are going to test
-        PedidoFormacao pedidoFormacao = pedidoFormacaoService.createPedidoFormacao(newPedidoFormacao, new ArrayList<>());
+        PedidoFormacao pedidoFormacao = pedidoFormacaoService.createPedidoFormacao(newPedidoFormacao, new ArrayList<>(), new ArrayList<>());
 
         // then
         assertNotNull(pedidoFormacao);

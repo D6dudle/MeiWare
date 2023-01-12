@@ -13,6 +13,8 @@ public class Anexo {
     @Id
     private String id;
     private String nome;
+    private String type;
+    private String size;
     @JsonIgnore
     private Binary conteudo;
 
@@ -20,8 +22,10 @@ public class Anexo {
 
     }
 
-    public Anexo(String nome) {
+    public Anexo(String nome, String type, String size) {
         this.nome = nome;
+        this.type = type;
+        this.size = size + " KB";
     }
 
     public Anexo(String id, String nome) {
@@ -45,6 +49,22 @@ public class Anexo {
         this.nome = nome;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
     public Binary getConteudo() {
         return conteudo;
     }
@@ -58,6 +78,8 @@ public class Anexo {
         return "Anexo{" +
                 "id='" + id + '\'' +
                 ", nome='" + nome + '\'' +
+                ", type='" + type + '\'' +
+                ", size='" + size + '\'' +
                 ", conteudo=" + conteudo +
                 '}';
     }
