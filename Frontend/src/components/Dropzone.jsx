@@ -23,9 +23,9 @@ function DropzoneFiles({callback}) {
     });
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("State: " + Date.now(), files);
-  }, [files]);
+  }, [files]); */
 
   const {
     getRootProps,

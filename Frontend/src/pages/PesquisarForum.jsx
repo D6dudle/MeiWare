@@ -11,23 +11,19 @@ import { EmptyState } from "../components/EmptyState";
 import ListaUtilizadoresService from "../services/getListaUtilizadoresService";
 import PublicacaoService from "../services/publicacao.service";
 import UserService from "../services/user.service";
+import { Loading } from "../components/Loading";
 
 export const PesquisarForum = ({}) => {
   const [listKnowledgeBase, setListKnowledgeBase] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
-  const [query, setQuery] = useState("");
   const [search, setSearch] = useState();
   const [dateSortIncreasing, setDateSort] = useState(false);
   const [values, setValues] = useState([]);
   const [colabList, setColabList] = useState([]);
-  const [formationCamps, setFormationCamps] = useState({
-    nomeColaborador: [],
-    data: new Date(),
-  });
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     //Obter lista de colaboradores no dropdown
-
     ListaUtilizadoresService.getListaUtilizadores().then((data) => {
       setColabList(data);
     });
@@ -37,8 +33,23 @@ export const PesquisarForum = ({}) => {
     PublicacaoService.getPublicacoesAprovadas().then((data) => {
       setListKnowledgeBase(data);
       setFilteredList(data);
+      setLoading(false);
     });
   }, []);
+
+  const sortByDate = (data) => {
+    if (dateSortIncreasing) {
+      return data.sort(
+        (objA, objB) =>
+          Date.parse(objA.dataCriacao) - Date.parse(objB.dataCriacao)
+      );
+    } else {
+      return data.sort(
+        (objA, objB) =>
+          Date.parse(objB.dataCriacao) - Date.parse(objA.dataCriacao)
+      );
+    }
+  };
 
   useEffect(() => {
     var list = listKnowledgeBase;
@@ -47,63 +58,36 @@ export const PesquisarForum = ({}) => {
         item.titulo.toLowerCase().includes(search.toLowerCase())
       );
       if (values.length > 0) {
-        for (let i = 0; i < values[1].length; i++) {
-          list = list.filter((item) => item.username == values[1][i].label);
+        if(values[1].length > 0){
+          let selected_colab = values[1].map(item => item.label)
+          list = list.filter(f => selected_colab.includes(f.quemPublicou))
         }
       }
     } else {
       if (values.length > 0) {
-        for (let i = 0; i < values[1].length; i++) {
-          list = list.filter((item) => item.username == values[1][i].label);
+        if(values[1].length > 0){
+          let selected_colab = values[1].map(item => item.label)
+          list = list.filter(f => selected_colab.includes(f.quemPublicou))
         }
       }
     }
 
-    var tempData = [...list];
-    setFilteredList(tempData);
+    if (list != null) {
+      var tempData = [...list];
+      tempData = sortByDate(tempData);
+      setFilteredList(tempData);
+    }
   }, [search, values, knowledgeBaseList, dateSortIncreasing]);
 
   const filterColab = (inputValue) => {
-    return colabList.filter((i) =>
-      i.label.toLowerCase().includes(inputValue.toLowerCase())
+    let lista = [...knowledgeBaseList]
+    console.log(lista)
+    lista.filter((i) =>
+      i.quemPublicou.toLowerCase().includes(inputValue.toLowerCase())
     );
+    setFilteredList(lista)
+    return lista
   };
-
-  const colaboradorStyles = {
-    option: (provided) => ({
-      ...provided,
-      color: "#F2F2F2",
-      background: "#282828",
-      primary25: "#E0E0E0",
-    }),
-    control: (base, state) => ({
-      ...base,
-      background: "#282828",
-      color: "#F2F2F2",
-      backgroundColor: state.isFocused ? "#ECC039" : "3e3e3e",
-
-      // Removes weird border around container
-      boxShadow: state.isFocused ? "#ECC039" : "#ECC039",
-      "&:hover": {
-        // Overwrittes the different states of border
-        borderColor: state.isFocused ? "#ECC039" : "#ECC039",
-      },
-    }),
-
-    menuList: (base) => ({
-      ...base,
-      // kill the white space on first and last option
-      padding: 0,
-    }),
-  };
-  const colaboradores = [
-    { label: "Bruno", value: "Bruno" },
-    { label: "Diogo", value: "Diogo" },
-    { label: "Henrique", value: "Henrique" },
-    { label: "José", value: "José" },
-    { label: "Nuno", value: "Nuno" },
-    { label: "Pedro", value: "Pedro" },
-  ];
 
   const handleArquivarPublicacao = (list) => {
     if(UserService.getCurrentUser().isGestor) {
@@ -128,6 +112,9 @@ export const PesquisarForum = ({}) => {
   const handleDateChanged = (increasing) => {
     setDateSort(increasing);
   };
+
+  if (isLoading)
+    return <Loading />;
 
   return (
     <div className="pl-8 pr-8 h-full scrollbar-hide">
@@ -165,7 +152,6 @@ export const PesquisarForum = ({}) => {
                     error={"Por favor selecione ou adicione um nome"}
                     value={values[1]}
                     callback={handleDropdown}
-                    searchCall={filterColab}
                   />
                 </div>
 

@@ -17,8 +17,6 @@ export const PublicacaoDetalhes = ({
   files
 }) => {
 
-  console.log(files)
-
   const ListarFicheiros = ({ fileType, fileName, fileSize }) => {
     const icon = iconImageUpload.find(({ type }) => type === fileType);
     return (

@@ -57,9 +57,9 @@ export const ForumTopic = ({
     );
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("Mudança no modal para " + modalArquivar.show);
-  }, [modalArquivar]);
+  }, [modalArquivar]); */
 
   const handleCloseModalArquivar = () => {
     setModalArquivar({ show: false, data: null });

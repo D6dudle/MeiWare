@@ -1,61 +1,28 @@
-import { useState, useEffect, useRef } from "react";
-import { DollarSign, Search } from "react-feather";
+import { useState, useEffect } from "react";
 import TextInput from "../components/TextInput";
-import DropzoneFiles from "../components/Dropzone";
-import users from "../constants/usersAux.json";
 import ForumTopic from "../components/ForumTopic";
 import { EmptyState } from "../components/EmptyState";
 import ListaUtilizadoresService from "../services/getListaUtilizadoresService";
 import PublicacaoService from "../services/publicacao.service";
 import UserService from "../services/user.service";
+import { Loading } from "../components/Loading";
 
 export default function AprovarPublicacao() {
-  const pubList = [
-    {
-      username: "Bruno Gandres",
-      dataFormacao: "21/11/2000",
-      titulo: "Materiais React JS",
-      nomeformacao: "Introdução",
-      descricao:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget lobortis lectus, non sodales purus. Duis eget ex congue, mattis nulla vel, suscipit velit. Cras sollicitudin lectus ut nibh sollicitudin, eu sodales ligula bibendum. Integer elementum congue ultrices. Curabitur justo nulla, scelerisque id pellentesque nec, placerat vel urna. Duis condimentum lacinia auctor. Morbi sed nisl non magna congue convallis vitae sed enim.",
-      cursoId: "G-C-765",
-      tags: ["React", "Java"],
-    },
-    {
-      username: "Nelso Gervásio",
-      dataFormacao: "25/12/1969",
-      titulo: "Materiais MongoDB",
-      nomeformacao: "Introdução",
-      descricao:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget lobortis lectus, non sodales purus. Duis eget ex congue, mattis nulla vel, suscipit velit. Cras sollicitudin lectus ut nibh sollicitudin, eu sodales ligula bibendum. Integer elementum congue ultrices. Curabitur justo nulla, scelerisque id pellentesque nec, placerat vel urna. Duis condimentum lacinia auctor. Morbi sed nisl non magna congue convallis vitae sed enim.",
-      cursoId: "G-C-777",
-      tags: ["React", "Java"],
-    },
-  ];
-
-  const tags = [
-    { label: "React", value: "React" },
-    { label: "Angular", value: "Angular" },
-    { label: "C++", value: "C++" },
-    { label: "Java", value: "Java" },
-    { label: "Python", value: "Python" },
-    { label: "Javascript", value: "Javascript" },
-  ];
-
   const [publicacoes, setPublicacoes] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [search, setSearch] = useState();
   const [colabList, setColabList] = useState([]);
-  const [tagList, setTags] = useState(tags);
+  const [tagList, setTags] = useState([]);
   const [values, setValues] = useState([]);
   const [tagValues, setTagValues] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     //Obter lista de colaboradores no dropdown
-
     ListaUtilizadoresService.getListaUtilizadores().then((data) => {
       setColabList(data);
     });
+    PublicacaoService.getExistingTags().then(r => setTags(r))
   }, []);
 
   useEffect(() => {
@@ -63,6 +30,7 @@ export default function AprovarPublicacao() {
       PublicacaoService.getPublicacoesPendentes().then((data) => {
         setPublicacoes(data);
         setFilteredList(data);
+        setLoading(false);
       });
     }
   }, []);
@@ -71,27 +39,31 @@ export default function AprovarPublicacao() {
     var list = publicacoes;
     if (search && search !== "") {
       list = list.filter((item) =>
-        item.nomeformacao.toLowerCase().includes(search.toLowerCase())
+        item.titulo.toLowerCase().includes(search.toLowerCase())
       );
       if (values.length > 0) {
-        for (let i = 0; i < values[1].length; i++) {
-          list = list.filter((item) => item.username == values[1][i].label);
+        if(values[1].length > 0){
+          let selected_colab = values[1].map(item => item.label)
+          list = list.filter(f => selected_colab.includes(f.quemPublicou))
         }
       }
       if (tagValues.length > 0) {
-        for (let i = 0; i < tagValues[1].length; i++) {
-          list = list.filter((item) => item.tags == tagValues[1][i].label);
+        if(tagValues[1].length > 0){
+          let selected_tags = tagValues[1].map(item => item.label)
+          list = list.filter(f => f.tags.some(o => selected_tags.includes(o)))
         }
       }
     } else {
       if (values.length > 0) {
-        for (let i = 0; i < values[1].length; i++) {
-          list = list.filter((item) => item.username == values[1][i].label);
+        if(values[1].length > 0){
+          let selected_colab = values[1].map(item => item.label)
+          list = list.filter(f => selected_colab.includes(f.quemPublicou))
         }
       }
       if (tagValues.length > 0) {
-        for (let i = 0; i < tagValues[1].length; i++) {
-          list = list.filter((item) => item.tags == tagValues[1][i].label);
+        if(tagValues[1].length > 0){
+          let selected_tags = tagValues[1].map(item => item.label)
+          list = list.filter(f => f.tags.some(o => selected_tags.includes(o)))
         }
       }
     }
@@ -116,27 +88,10 @@ export default function AprovarPublicacao() {
     setTagValues(data);
   };
 
-  const filterColab = (inputValue) => {
-    return colabList.filter((i) =>
-      i.label.toLowerCase().includes(inputValue.toLowerCase())
-    );
-  };
-
   const filterTags = (inputValue) => {
     return tagList.filter((i) =>
       i.label.toLowerCase().includes(inputValue.toLowerCase())
     );
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-
-    console.log("Button Submeter pressed!");
-
-    for (let i = 0; i < pubFields.length; i++) {
-      console.log("Field -> ", pubFields[i]);
-    }
-    //navigate(`/home`);
   };
 
   const handleArquivarPublicacao = (list) => {
@@ -158,6 +113,9 @@ export default function AprovarPublicacao() {
       });
     }
   };
+
+  if (isLoading)
+    return <Loading />;
 
   return (
     <div className="pl-8 pr-8 h-full overflow-hidden">
@@ -184,7 +142,7 @@ export default function AprovarPublicacao() {
                       titleStyle={"font-bold mb-1 text-2xl"}
                       //style={"w-[50rem]"}
                       placeholder="tags..."
-                      list={colabList}
+                      list={tagList}
                       multi={true}
                       showTitle={false}
                       error={"Por favor selecione ou adicione uma tag"}
@@ -208,7 +166,6 @@ export default function AprovarPublicacao() {
                       error={"Por favor selecione ou adicione um nome"}
                       value={values[1]}
                       callback={handleDropdown}
-                      searchCall={filterColab}
                     />
                   </div>
               </div>
