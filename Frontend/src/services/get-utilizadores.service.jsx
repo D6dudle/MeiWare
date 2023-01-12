@@ -19,11 +19,31 @@ const removeUtilizador = (utilizadorId) => {
   return axios.delete(API_URL + "removeUtilizador", { params: { id: utilizadorId }, headers: authHeader() }).then((r) => r.data);
 };
 
+const getGestoresAll = () => {
+  //console.log("Entrou no service" + authHeader);
+  return axios.get(API_URL + "gestores", { headers: authHeader() }).then((r) => r.data);
+};
+
+const updateUtilizador = (updatedUtilizador) => {
+  //console.log("Entrou no service" + authHeader);
+  return axios.put(API_URL + "updateUtilizador", updatedUtilizador, { headers: authHeader() }).then((r) => r.data);
+};
+
+const getGestoresDropdown = () => {
+  //console.log("Entrou no service" + authHeader);
+  return axios.get(API_URL + "listaGestores", { headers: authHeader() }).then((r) => r.data);
+};
+
+
+
 
 const UtilizadoresService = {
   getUtilizadoresAll,
   getUtilizadoresById,
   removeUtilizador,
+  getGestoresAll,
+  updateUtilizador,
+  getGestoresDropdown,
 };
 
 

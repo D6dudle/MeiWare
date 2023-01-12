@@ -4,6 +4,7 @@ import meiware.coursemanagement.Entities.JPA.PedidoAprovado;
 import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
 import meiware.coursemanagement.Entities.JPA.PedidoRejeitado;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
+import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
 import org.json.JSONArray;
@@ -30,6 +31,8 @@ public class FormacaoController {
 
     @Autowired
     IUtilizadorService utilizadorService; // Necessario para buscar as formacoes por utilizador via email
+    @Autowired
+    IUtilizadorRepository utilizadorRepository;
 
     // TODO: perguntar ao Jordão como é que ele vai tratar da aceitação/recusa das
     // formações
@@ -332,6 +335,12 @@ public class FormacaoController {
             if (pedidoFormacao != null
                     && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
                 pedidoFormacaoService.aprovarPedidoFormacao(pedidoFormacaoId, adminId);
+                for(Utilizador u : pedidoFormacao.getFormandos()){
+                    u.decrementBudget(pedidoFormacao.getPreco());
+                    utilizadorRepository.save(u);
+
+                }
+
                 return new ResponseEntity<>(
                         "Pedido de formação: " + pedidoFormacao.getNome() + " aprovado com sucesso.",
                         HttpStatus.OK);
@@ -386,6 +395,11 @@ public class FormacaoController {
                     && !((pedidoFormacao instanceof PedidoRejeitado) || (pedidoFormacao instanceof PedidoAprovado))) {
                 if (pedidoFormacao.getQuemFezPedido().getManager().getId() == gestorId) {
                     pedidoFormacaoService.aprovarPedidoFormacao(pedidoFormacaoId, gestorId);
+                    for(Utilizador u : pedidoFormacao.getFormandos()){
+
+                        u.decrementBudget(pedidoFormacao.getPreco());
+                        utilizadorRepository.save(u);
+                    }
                     return new ResponseEntity<>(
                             "Pedido de formação: " + pedidoFormacao.getNome() + " aprovado com sucesso.",
                             HttpStatus.OK);
