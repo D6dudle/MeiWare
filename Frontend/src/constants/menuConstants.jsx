@@ -57,6 +57,7 @@ export const Menus = [
       {
         title: "Aprovar publicações",
         to: "knowledge/aprovar-publicacao",
+        gestor: true,
         opened: false,
       },
     ],

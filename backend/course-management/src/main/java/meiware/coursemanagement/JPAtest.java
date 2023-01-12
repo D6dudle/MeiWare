@@ -216,7 +216,7 @@ public class JPAtest {
                 log.info(post.toString());
             }*/
 
-        //MongoDb files
+        /*//MongoDb files
         File file = new File("backend/course-management/src/main/resources/files/2022_CM_Theoretical_Work.zip");
         FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
@@ -247,7 +247,7 @@ public class JPAtest {
 
         Publicacao publicacao = new Publicacao("Publicacao Teste 3", "Isto e uma publicacao teste...", new HashSet<>(), "Formacao 1", "Diogo");
 
-        publicacaoService.createPublicacao(publicacao, files);
+        publicacaoService.createPublicacao(publicacao, files);*/
         //publicacaoService.arquivarPublicacao(pub);
         //publicacaoService.removePublicacao(pub);
         //String id = anexoService.createAnexo(multipartFile);

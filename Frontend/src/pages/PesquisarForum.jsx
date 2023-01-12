@@ -41,7 +41,6 @@ export const PesquisarForum = ({}) => {
   }, []);
 
   useEffect(() => {
-    console.log(listKnowledgeBase);
     var list = listKnowledgeBase;
     if (search && search !== "") {
       list = list.filter((item) =>
@@ -183,6 +182,7 @@ export const PesquisarForum = ({}) => {
                 descricao={list.descricao}
                 formacaoId={list.formacaoId}
                 anexos={list.anexos}
+                tags={list.tags}
                 arquivar={UserService.getCurrentUser().isGestor}
                 urlBack={"/home/knowledge"}
                 onForumTopicArchive={() => handleArquivarPublicacao(list)}

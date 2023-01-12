@@ -14,6 +14,7 @@ export const ForumTopic = ({
   descricao,
   formacaoId,
   anexos,
+  tags,
   arquivar = true,
   aprovar = false,
   urlBack,
@@ -39,12 +40,12 @@ export const ForumTopic = ({
 
   const ListarFicheiros = ({ fileType, fileName, fileSize }) => {
     const icon = iconImageUpload.find(({ type }) => type === fileType);
-    console.log(fileName)
+    
     return (
       <div className="flex flex-col justify-between items-start pb-4 w-full">
         <div className="flex flex-row justify-between items-center gap-4 order-none w-full">
           <div className="flex flex-row items-center mr-4">
-            <icon.icon className="mr-2 flex" />
+            {icon != null && (<icon.icon className="mr-2 flex" />)}
             <div className="pl-4 font-normal text-xs">{fileName} •</div>
           </div>
           <div className="order-1 pr-[20px]">
@@ -120,9 +121,9 @@ export const ForumTopic = ({
       <div className="flex flex-row order-1 justify-between items-center pl-4 pt-4 pr-4">
         <div className="flex order-1 justify-between w-full">
           <div className="flex gap-4">
-            <Tag key={"React"} tagName={"React"} />
-            <Tag key={"teste"} tagName={"teste"} />
-            <Tag key={"JAVA"} tagName={"Java"} />
+            {tags.map((tag) => (
+              <Tag key={tag} tagName={tag}/>
+            ))}
           </div>
           <div style={{ display: arquivar ? "block" : "none" }}>
             <Button
