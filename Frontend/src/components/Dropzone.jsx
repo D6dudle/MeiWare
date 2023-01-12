@@ -6,15 +6,19 @@ import { useEffect } from "react";
 import { iconImageUpload } from "../constants/menuConstants";
 import { X } from "react-feather";
 
-function DropzoneFiles() {
+function DropzoneFiles({callback}) {
   const [files, setFiles] = useState([]);
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     acceptedFiles.some((file) => {
       setFiles((prevState) => {
         if (prevState.findIndex((f) => f.name === file.name) === -1) {
+          if(callback) callback([...prevState, file])
           return [...prevState, file];
-        } else return [...prevState];
+        } else{ 
+          if(callback) callback([...prevState])
+          return [...prevState]
+        };
       });
     });
   }, []);

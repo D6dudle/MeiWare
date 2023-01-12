@@ -273,7 +273,7 @@ public class Utilizador {
 
     public JSONObject listaFormacaoToJSON(PedidoFormacao listaFormacao, Long userID){
         JSONObject obj = new JSONObject();
-
+        obj.put("id", listaFormacao.getId());
         for (Utilizador u : listaFormacao.getFormandos()){
             //Correspondem às pessoas que vão fazer a formacao
             if (u.getId() == userID)

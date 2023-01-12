@@ -1,6 +1,7 @@
 package meiware.coursemanagement.Security.JWT;
 
 import meiware.coursemanagement.Security.Services.UserDetailsServiceImpl;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     }
 
     private String parseJwt(HttpServletRequest request) {
+        /*String marshalledXml = null;
+        try {
+            marshalledXml = IOUtils.toString(request.getInputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("AQUI");
+        System.out.println(marshalledXml);*/
         String headerAuth = request.getHeader("Authorization");
 
 

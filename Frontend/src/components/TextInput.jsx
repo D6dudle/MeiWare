@@ -3,6 +3,7 @@ import { Search } from "react-feather";
 import React from "react";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
+import AsyncCreatableSelect from "react-select/async-creatable";
 import { Calendar } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
@@ -152,6 +153,7 @@ function TextInput({
   showTitle = true,
   titleStyle = null,
   placeholder,
+  clearable=false
 }) {
   const [isSubmitted, setSubmitted] = useState(false);
   const [isValid, setValid] = useState(false);
@@ -187,12 +189,57 @@ function TextInput({
   }
 
   const loadOptions = (inputValue, fetch) => {
-    setTimeout(() => {
+    return new Promise((resolve, reject) => { 
+      resolve(fetch(searchCall(inputValue)))
+    })
+    
+    /* setTimeout(() => {
       fetch(searchCall(inputValue));
-    }, 1000);
+    }, 1000); */
   };
 
   switch (type) {
+    case "creatable":
+      return (
+        <div className="mb-4">
+          <label
+            style={{ display: showTitle ? "block" : "none" }}
+            htmlFor={name}
+            className={`text-gray5 text-[14px] ${titleStyle}`}
+          >
+            {name}
+          </label>
+          <AsyncCreatableSelect
+            noOptionsMessage={() => "Não encontrado"}
+            loadingMessage={() => "a pesquisar..."}
+            formatCreateLabel={userInput => `Criar \"${userInput}\"`}
+            placeholder={placeholder ? placeholder : "pesquisa..."}
+            className={` ${style}`}
+            styles={
+              multi
+                ? value.length == 0
+                  ? customStyles(true, "lupa", false)
+                  : customStyles(true, "lupa", true)
+                : customStyles(true, "lupa", false)
+            }
+            isMulti={multi}
+            cacheOptions
+            loadOptions={loadOptions}
+            defaultOptions={list}
+            value={value}
+            onChange={(e) => {
+              callback(index, e);
+              value == null ? setValid(false) : setValid(true);
+            }}
+          />
+          <p
+            style={{ display: isSubmitted && !isValid ? "block" : "none" }}
+            className="inputTextErrors bottom-0"
+          >
+            {errorMsg}
+          </p>
+        </div>
+      );
     case "dropsearch":
       return (
         <div className="mb-4">
@@ -218,8 +265,9 @@ function TextInput({
             isMulti={multi}
             cacheOptions
             loadOptions={loadOptions}
-            defaultOptions
+            defaultOptions={list}
             value={value}
+            isClearable={clearable}
             onChange={(e) => {
               callback(index, e);
               value == null ? setValid(false) : setValid(true);
@@ -331,6 +379,7 @@ function TextInput({
               isMulti={multi}
               placeholder={placeholder ? placeholder : name}
               value={value}
+              isClearable={clearable}
               onChange={(e) => {
                 callback(index, e);
                 value == null ? setValid(false) : setValid(true);
