@@ -356,23 +356,25 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
             callback={handleType}
             value={search}
           />
-          <div>
-            <TextInput
-              index={1}
-              name={"colaborador"}
-              type="dropdown"
-              titleStyle={"font-bold mb-1 text-2xl"}
-              style={"w-[30rem]"}
-              placeholder="colaborador..."
-              list={colabList}
-              multi={true}
-              showTitle={false}
-              error={"Por favor selecione ou adicione um nome"}
-              value={values[1]}
-              callback={handleDropdown}
-              searchCall={filterColab}
-            />
-          </div>
+          {nomeEcra !== "LISTARFORMACOES" && (
+            <div>
+              <TextInput
+                index={1}
+                name={"colaborador"}
+                type="dropdown"
+                titleStyle={"font-bold mb-1 text-2xl"}
+                style={"w-[30rem]"}
+                placeholder="colaborador..."
+                list={colabList}
+                multi={true}
+                showTitle={false}
+                error={"Por favor selecione ou adicione um nome"}
+                value={values[1]}
+                callback={handleDropdown}
+                searchCall={filterColab}
+              />
+            </div>
+          )}
           <div className="flex justify-center items-center">
             <DateOrder callback={handleDateChanged} />
           </div>
