@@ -19,13 +19,28 @@ const mapResponseToValuesAndLabels = (data) => ({
       }
 };
 
-/* const getExistingTags = () => {
-    //console.log("Entrou no service" + authHeader);
-    return axios.get(API_URL + "tags", { headers: authHeader() });
-}; */
+async function submitPublicacao(publicacao, files) {
+  //console.log("Entrou no service" + authHeader);
+  var bodyFormData = new FormData();
+  bodyFormData.append('publicacao', new Blob([JSON.stringify(publicacao)], { type: 'application/json' }));
+  files.map(file => {
+    console.log(file)
+    bodyFormData.append('files', file);
+  })
+  try {
+      const {data:response} = await axios.post(API_URL + "createPublicacao", bodyFormData, { headers: { ...authHeader(), ContentType : "multipart/form-data" } })
+      console.log(response)
+      //return 
+    }
+    catch (error) {
+      console.log(error);
+    }
+};
+
 
 const PublicacaoService = {
   getExistingTags,
+  submitPublicacao
 };
 
 export default PublicacaoService;

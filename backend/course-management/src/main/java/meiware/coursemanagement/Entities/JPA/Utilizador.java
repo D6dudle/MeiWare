@@ -254,6 +254,7 @@ public class Utilizador {
 
     public JSONObject listaFormacaoToJSON(PedidoFormacao listaFormacao){
         JSONObject obj = new JSONObject();
+        obj.put("id", listaFormacao.getId());
         obj.put("username", listaFormacao.getQuemFezPedido().getNome());
         obj.put("nomeFormacao", listaFormacao.getNome());
         obj.put("dataFormacao", listaFormacao.getDataCriacao());

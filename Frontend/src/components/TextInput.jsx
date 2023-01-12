@@ -153,6 +153,7 @@ function TextInput({
   showTitle = true,
   titleStyle = null,
   placeholder,
+  clearable=false
 }) {
   const [isSubmitted, setSubmitted] = useState(false);
   const [isValid, setValid] = useState(false);
@@ -266,6 +267,7 @@ function TextInput({
             loadOptions={loadOptions}
             defaultOptions={list}
             value={value}
+            isClearable={clearable}
             onChange={(e) => {
               callback(index, e);
               value == null ? setValid(false) : setValid(true);
@@ -377,6 +379,7 @@ function TextInput({
               isMulti={multi}
               placeholder={placeholder ? placeholder : name}
               value={value}
+              isClearable={clearable}
               onChange={(e) => {
                 callback(index, e);
                 value == null ? setValid(false) : setValid(true);
