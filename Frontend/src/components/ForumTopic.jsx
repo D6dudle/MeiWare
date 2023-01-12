@@ -18,6 +18,7 @@ export const ForumTopic = ({
   arquivar = true,
   aprovar = false,
   urlBack,
+  onForumTopicAprovar,
   onForumTopicArchive,
 }) => {
   const navigate = useNavigate();
@@ -84,6 +85,11 @@ export const ForumTopic = ({
   const verPublicacaoHandler = (e, formacao) => {
     e.preventDefault();
     navigate(`/home/knowledge/ver-publicacao-completa`, { state: formacao });
+  };
+
+  const handleAprovarPublicacaoClick = (e) => {
+    e.preventDefault();
+    onForumTopicAprovar();
   };
 
   const handleRejeitarPublicacaoClick = (e) => {
@@ -237,7 +243,7 @@ export const ForumTopic = ({
               data={modalRejeitar.data}
             />
           )}
-          <Button iconName={"FINALIZAR"} textButton={"Aprovar"} />
+          <Button iconName={"FINALIZAR"} textButton={"Aprovar"} handleClick={handleAprovarPublicacaoClick} />
         </div>
       </div>
     </div>

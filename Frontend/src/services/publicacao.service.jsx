@@ -13,12 +13,17 @@ const getPublicacoesAprovadas = () => {
 
 const arquivarPublicacao = (publicacaoId) => {
   return axios.put(API_URL + "arquivarPublicacao", { id: publicacaoId }, { headers: authHeader() }).then((r) => r.data);
+}
+
+const aprovarPublicacao = (publicacaoId) => {
+  return axios.put(API_URL + "aprovarPublicacao", { id: publicacaoId }, { headers: authHeader() }).then((r) => r.data);
 };
 
 const PublicacaoService = {
   getPublicacoesPendentes,
   getPublicacoesAprovadas,
-  arquivarPublicacao
+  arquivarPublicacao,
+  aprovarPublicacao
 };
 
 export default PublicacaoService;
