@@ -11,7 +11,7 @@ import DateOrder from "../components/DateOrder";
 import { dataCard } from "../constants/menuConstants";
 import { useEffect } from "react";
 import { EmptyState } from "../components/EmptyState";
-import PedidoFormacaoService from "../services/pedido-formacao.serivce";
+import PedidoFormacaoService from "../services/pedido-formacao.service";
 import UserService from "../services/user.service";
 
 export const PesquisarFormacao = ({}) => {

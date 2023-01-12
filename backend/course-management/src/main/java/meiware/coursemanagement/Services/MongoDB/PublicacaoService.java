@@ -69,7 +69,7 @@ public class PublicacaoService implements IPublicacaoService {
     @Override
     public Publicacao createPublicacao(Publicacao newPublicacao, List<MultipartFile> files) {
         try {
-            Publicacao publicacao = new Publicacao(newPublicacao.getTitulo(), newPublicacao.getDescricao(), newPublicacao.getTags(), newPublicacao.getTituloFormacao());
+            Publicacao publicacao = new Publicacao(newPublicacao.getTitulo(), newPublicacao.getDescricao(), newPublicacao.getTags(), newPublicacao.getTituloFormacao(), newPublicacao.getQuemPublicou());
             if (files.size() > 0) {
                 List<Anexo> anexos = new ArrayList<>();
                 for (MultipartFile file: files) {

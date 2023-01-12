@@ -9,10 +9,12 @@ import DateOrder from "../components/DateOrder";
 import { knowledgeBaseList } from "../constants/menuConstants";
 import { EmptyState } from "../components/EmptyState";
 import ListaUtilizadoresService from "../services/getListaUtilizadoresService";
+import PublicacaoService from "../services/publicacao.service";
+import UserService from "../services/user.service";
 
 export const PesquisarForum = ({}) => {
-  const [listKnowledgeBase, setListKnowledgeBase] = useState(knowledgeBaseList);
-  const [filteredList, setFilteredList] = useState(listKnowledgeBase);
+  const [listKnowledgeBase, setListKnowledgeBase] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
   const [query, setQuery] = useState("");
   const [search, setSearch] = useState();
   const [dateSortIncreasing, setDateSort] = useState(false);
@@ -32,10 +34,17 @@ export const PesquisarForum = ({}) => {
   }, []);
 
   useEffect(() => {
-    var list = knowledgeBaseList;
+    PublicacaoService.getPublicacoesAprovadas().then((data) => {
+      setListKnowledgeBase(data);
+      setFilteredList(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    var list = listKnowledgeBase;
     if (search && search !== "") {
       list = list.filter((item) =>
-        item.nomeFormacao.toLowerCase().includes(search.toLowerCase())
+        item.titulo.toLowerCase().includes(search.toLowerCase())
       );
       if (values.length > 0) {
         for (let i = 0; i < values[1].length; i++) {
@@ -166,14 +175,15 @@ export const PesquisarForum = ({}) => {
             filteredList.map((list, index) => (
               <ForumTopic
                 key={index}
-                username={list.username}
-                dataPublicacao={list.dataPublicacao}
+                username={list.quemPublicou}
+                dataPublicacao={list.dataCriacao}
                 titulo={list.titulo}
-                nomeFormacao={list.nomeFormacao}
+                nomeFormacao={list.tituloFormacao}
                 descricao={list.descricao}
                 formacaoId={list.formacaoId}
-                arquivar={list.arquivar}
-                publicacaoCompleta={list.publicacaoCompleta}
+                anexos={list.anexos}
+                tags={list.tags}
+                arquivar={UserService.getCurrentUser().isGestor}
                 urlBack={"/home/knowledge"}
                 onForumTopicArchive={() => handleArquivarPublicacao(list)}
               />
