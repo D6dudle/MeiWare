@@ -13,6 +13,8 @@ const getColaboradoresManager = (gestorId) => {
     return axios.get(API_URL + "pedidosFormacaoEquipa", { params: { id: gestorId }, headers: authHeader() }).then((r) => r.data);
 };
 
+
+
 const ColaboradoresService = {
   getColaboradoresAll,
   getColaboradoresManager

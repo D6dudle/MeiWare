@@ -1,6 +1,7 @@
 package meiware.coursemanagement.Services.JPA;
 
 import meiware.coursemanagement.Entities.JPA.Utilizador;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface IUtilizadorService {
     Utilizador getUtilizadorById(Long id);
     Utilizador getUtilizadorByEmail(String email);
     Utilizador createUtilizador(Utilizador newUtilizador);
-    void updateUtilizador(Utilizador updatedUtilizador);
+    void updateUtilizador(JSONObject object, Utilizador utilizador);
     void removeUtilizador(Long id);
 
 }

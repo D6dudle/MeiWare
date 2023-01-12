@@ -18,6 +18,10 @@ export const getColumnsTable = () => {
       accessor: "emAprovacao",
     },
     {
+      Header: "Budget Restante",
+      accessor: "budgetRestante",
+    },
+    {
       Header: "Formações feitas",
       accessor: "numFormacao",
     },

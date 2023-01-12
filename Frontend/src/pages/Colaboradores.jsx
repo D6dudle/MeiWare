@@ -40,8 +40,8 @@ export default function Colaboradores() {
 
   useEffect(() => {
     const user = UserService.getCurrentUser();
-    if (user.isAdministrador) {
-      console.log("O USER É ADMIN -> A IMPRIMIR ALL COLABORADORES");
+    if(user.isAdministrador) {
+      //console.log("O USER É ADMIN -> A IMPRIMIR ALL COLABORADORES");
 
       UtilizadoresService.getUtilizadoresAll().then((data) => {
         var role,
@@ -49,6 +49,7 @@ export default function Colaboradores() {
           budgetPendente,
           formacoesFeitas = 0,
           formacoesPendentes = 0,
+          budgetRestante = 0,
           id;
         const dataHandled = [];
         var colaborador = {};
@@ -59,6 +60,7 @@ export default function Colaboradores() {
             formacoesPendentes = 0;
             budgetUtilizado = 0;
             budgetPendente = 0;
+            budgetRestante = 0;
 
             var nome = data[c].nome;
             var email = data[c].email;
@@ -89,7 +91,7 @@ export default function Colaboradores() {
                 }
               }
             }
-
+            budgetRestante = data[c].BudgetRestante.budget;
             colaborador = {
               id: id,
               nome: nome,
@@ -99,6 +101,7 @@ export default function Colaboradores() {
               numFormacao: formacoesFeitas,
               numFormacaoPendentes: formacoesPendentes,
               emAprovacao: budgetPendente,
+              budgetRestante: budgetRestante,
             };
 
             dataHandled.push(colaborador);
@@ -110,13 +113,14 @@ export default function Colaboradores() {
     }
     //Se o user logado for Gestor só aparecem os colaboradores associados a ele
     else if (user.isGestor) {
-      console.log("O user é gestor");
+      //console.log("O user é gestor");
       ColaboradoresService.getColaboradoresAll().then((data) => {
         var role,
           budgetUtilizado,
           budgetPendente,
           formacoesFeitas,
           formacoesPendentes,
+          budgetRestante = 0,
           id;
         const dataHandled = [];
         var colaborador = {};
@@ -128,6 +132,7 @@ export default function Colaboradores() {
             formacoesPendentes = 0;
             budgetUtilizado = 0;
             budgetPendente = 0;
+            budgetRestante = 0;
 
             var nome = data[c].nome;
             var email = data[c].email;
@@ -154,7 +159,7 @@ export default function Colaboradores() {
                 }
               }
             }
-
+            budgetRestante = data[c].BudgetRestante.budget;
             colaborador = {
               id: id,
               nome: nome,
@@ -164,6 +169,8 @@ export default function Colaboradores() {
               numFormacao: formacoesFeitas,
               numFormacaoPendentes: formacoesPendentes,
               emAprovacao: budgetPendente,
+              budgetRestante: budgetRestante,
+
             };
 
             dataHandled.push(colaborador);

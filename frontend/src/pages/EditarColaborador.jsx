@@ -1,39 +1,82 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { PlusCircle } from "react-feather";
+import { List, PlusCircle } from "react-feather";
 import TextInput from "../components/TextInput";
 import GoBackButton from "../components/GoBackButton";
 import { useLocation, useNavigate } from "react-router-dom";
+import UtilizadoresService from "../services/get-utilizadores.service";
 
+import { Loading } from "../components/Loading";
 export default function EditarColaborador() {
   const navigate = useNavigate();
   const personId = useLocation().search.slice(4);
-  //Dumb Data
-  const initialData = {
-    id: 1,
-    name: "Jenny Wilson",
-    email: "jenny.wilson@example.com",
-    role: "Colaborador",
-    age: 29,
-    imgUrl:
-      "https://images.unsplash.com/photo-1498551172505-8ee7ad69f235?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-    budgetUsed: "300,00 €",
-    emAprovacao: "40,00 €",
-    numFormacao: 2,
-    manager: {
-      id: 2,
-      name: "Jon Jones",
-      email: "jon.jones@example.com",
-      role: "Gestor",
-      age: 31,
-    },
-  };
 
-  const fakeManagerList = [
-    { label: "Francisco", value: "Francisco" },
-    { label: "Jon Jones", value: "Jon Jones" },
-  ];
 
+  const [initialData, setInitialData] = useState([]);
+  const [isLoading, setLoading] = useState(true); // Loading state
+  const [gestList, setGestList] = useState([]);
+  const [gestAssociado, setGestAssociado] = useState([]);
+  const [roleAssociado, setRoleAssociado] = useState([]);
+
+  const [search, setSearch] = useState();
+
+  const rolesList = [
+    { label: "Administrador", value: "administrador"},
+    { label: "Gestor", value: "gestor"},
+    { label: "Colaborador", value: "colaborador"},
+  ]
+
+  var ManagerList = [];
+  
+  useEffect(() => {
+    //Obter lista de gestores
+    UtilizadoresService.getGestoresDropdown().then((data)=>{
+      setGestList(data);
+      
+      
+    }); 
+  }, []);
+
+  useEffect(() => {
+    UtilizadoresService.getUtilizadoresById(personId).then((utilizador)=>{
+      setInitialData(utilizador);
+
+      pubFields[0]["value"] = utilizador.nome;
+      pubFields[1]["value"] = utilizador.email;
+
+      if(utilizador.isAdministrador){
+        pubFields[2]["value"] = rolesList[0];
+        setRoleAssociado(rolesList[0]);
+
+      }
+      else if(utilizador.isGestor){
+        pubFields[2]["value"] = rolesList[1];
+        setRoleAssociado(rolesList[1]);
+      }
+      else{
+        pubFields[2]["value"] = rolesList[2];
+        setRoleAssociado(rolesList[2]);
+      }
+      
+
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(gestList);
+    pubFields[3]["list"] = gestList;
+    
+    for(var i = 0; i < gestList.length; i++){
+      if(gestList[i].id == initialData.managerId){
+        pubFields[3]["value"] = gestList[i];
+        setGestAssociado(gestList[i]);
+      }
+    }
+  }, [gestList]);
+
+
+  
+  
   var prevUrl = useLocation().state;
   if (prevUrl === null) {
     prevUrl = "/home/controlo/colaboradores";
@@ -47,44 +90,50 @@ export default function EditarColaborador() {
   });
 
   const filterManager = (inputValue) => {
-    return fakeManagerList.filter((i) =>
+    return ManagerList.filter((i) =>
       i.label.toLowerCase().includes(inputValue.toLowerCase())
     );
   };
 
   const references = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
+  
+
   const config = (handleType, handleDropdown) => {
     const fields = [];
+
+
     fields.push({
-      name: "nome",
+      name: "Nome",
       required: true,
       callback: handleType,
       value: initialData.name,
-      trigger: references[0],
+      //trigger: references[0],
     });
     fields.push({
       name: "email",
       required: true,
       callback: handleType,
       value: initialData.email,
-      trigger: references[1],
+      //trigger: references[1],
     });
     fields.push({
       name: "cargo",
+      type: "dropdown",
+      list: rolesList,
       required: true,
-      callback: handleType,
-      value: initialData.role,
-      trigger: references[2],
+      callback: handleDropdown,
+      value: search,
+      //trigger: references[2],
     });
     fields.push({
       name: "gestor responsável",
-      type: "dropsearch",
-      list: fakeManagerList,
+      type: "dropdown",
+      list: gestList,
       callback: handleDropdown,
-      value: fakeManagerList[1], //Preencher com manager
-      searchCall: filterManager,
-      trigger: references[3],
+      value: gestAssociado, //Preencher com manager
+      //searchCall: filterManager,
+      //trigger: references[3],
     });
     return fields;
   };
@@ -125,6 +174,7 @@ export default function EditarColaborador() {
   });
 
   const handleFormSubmit = (e) => {
+    
     e.preventDefault();
 
     console.log("Button Submeter pressed!");
@@ -135,19 +185,35 @@ export default function EditarColaborador() {
       }
     }
 
-    //TODO: UPLOAD DA FOTO PARA A BASE DE DADOS
-    // ver: https://www.bezkoder.com/react-file-upload-spring-boot/
-    initialData.name = pubFields[0]["value"];
-    initialData.email = pubFields[1]["value"];
-    initialData.role = pubFields[2]["value"];
-    initialData.manager.name = pubFields[3]["value"]["value"];
+    console.log("Initial Data" + JSON.stringify(pubFields[3]));
+    
+    var sent = {
+      id: Number(personId),
+      nome: pubFields[0]["value"],
+      email: pubFields[1]["value"],
+      managerId: pubFields[3]["value"].id,
+      role: pubFields[2]["value"]["value"],
+    };
 
-    console.log(initialData);
+    initialData.managerId = pubFields[3]["value"].id;
+
+    //initialData.manager.name = pubFields[3]["value"]["value"];
+    console.log("Data a enviar: " + JSON.stringify(sent));
+
+    
+    UtilizadoresService.updateUtilizador(sent).then((data)=>{
+      console.log(data);
+      goBack();
+    });
+
+    
   };
 
   const goBack = () => {
     navigate("/home/controlo/colaboradores");
   };
+
+
 
   return (
     <div className="w-full h-full overflow-y-hidden ml-8 mr-8">
@@ -172,6 +238,7 @@ export default function EditarColaborador() {
                     <input {...getInputProps()} />
                   </div>
                 </div>
+
                 <ul className="grid grid-cols-2">
                   {pubFields.map((field, index) => (
                     <li key={index}>
@@ -188,7 +255,7 @@ export default function EditarColaborador() {
                           style={field.style}
                           error={field.error}
                           trigger={field.trigger}
-                          searchCall={field.searchCall}
+                          searchCall={filterManager}
                         />
                       </div>
                     </li>

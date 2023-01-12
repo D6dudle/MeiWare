@@ -15,7 +15,7 @@ public class Budget {
     @ManyToOne
     private Utilizador user;
     @NotNull
-    private Integer budget;
+    private Float budget;
     @NotNull
     private Integer ano;
 
@@ -23,7 +23,7 @@ public class Budget {
 
     }
 
-    public Budget(Utilizador user, Integer budget, Integer ano) {
+    public Budget(Utilizador user, Float budget, Integer ano) {
         this.user = user;
         this.budget = budget;
         this.ano = ano;
@@ -45,11 +45,11 @@ public class Budget {
         this.user = user;
     }
 
-    public Integer getBudget() {
+    public Float getBudget() {
         return budget;
     }
 
-    public void setBudget(Integer budget) {
+    public void setBudget(Float budget) {
         this.budget = budget;
     }
 
