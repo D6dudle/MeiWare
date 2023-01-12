@@ -193,7 +193,7 @@ export const ForumTopic = ({
 
       {/*Retangulo Ficheiros Adicionados*/}
       <div className="flex flex-none order-5 pt-4">
-        {anexos.length > 0 && (
+        {anexos != null && anexos.length > 0 && (
           <div className="w-full pl-4">
             {anexos.map((file) => (
               <ListarFicheiros
