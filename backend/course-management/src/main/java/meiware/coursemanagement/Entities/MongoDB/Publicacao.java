@@ -14,6 +14,8 @@ public class Publicacao {
     private String id;
     private String titulo;
     private String descricao;
+
+    private String quemPublicou;
     private LocalDate dataCriacao;
     private Set<String> tags;
     private String tituloFormacao;
@@ -24,9 +26,10 @@ public class Publicacao {
     public Publicacao() {
     }
 
-    public Publicacao(String titulo, String descricao, Set<String> tags, String tituloFormacao) {
+    public Publicacao(String titulo, String descricao, Set<String> tags, String tituloFormacao, String quemPublicou) {
         this.titulo = titulo;
         this.descricao = descricao;
+        this.quemPublicou = quemPublicou;
         this.dataCriacao = LocalDate.now();
         this.tags = tags;
         this.tituloFormacao = tituloFormacao;
@@ -56,6 +59,14 @@ public class Publicacao {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getQuemPublicou() {
+        return quemPublicou;
+    }
+
+    public void setQuemPublicou(String quemPublicou) {
+        this.quemPublicou = quemPublicou;
     }
 
     public LocalDate getDataCriacao() {
@@ -124,6 +135,7 @@ public class Publicacao {
                 "id='" + id + '\'' +
                 ", titulo='" + titulo + '\'' +
                 ", descricao='" + descricao + '\'' +
+                ", quemPublicou='" + quemPublicou + '\'' +
                 ", dataCriacao=" + dataCriacao +
                 ", tags=" + tags +
                 ", tituloFormacao='" + tituloFormacao + '\'' +

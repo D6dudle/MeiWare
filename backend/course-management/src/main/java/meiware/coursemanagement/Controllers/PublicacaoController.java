@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/publicacao")
+@CrossOrigin(origins = {"http://127.0.0.1:5173/", "http://localhost:5173/"})
 public class PublicacaoController {
     @Autowired
     private IPublicacaoService publicacaoService;
