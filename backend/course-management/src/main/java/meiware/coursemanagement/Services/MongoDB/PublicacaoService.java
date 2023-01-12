@@ -4,12 +4,15 @@ import meiware.coursemanagement.Entities.MongoDB.Anexo;
 import meiware.coursemanagement.Entities.MongoDB.Publicacao;
 import meiware.coursemanagement.Repositories.MongoDB.IPublicacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PublicacaoService implements IPublicacaoService {
@@ -18,6 +21,16 @@ public class PublicacaoService implements IPublicacaoService {
     private IPublicacaoRepository publicacaoRepository;
     @Autowired
     private IAnexoService anexoService;
+
+    public List<String> getExistingTags(){
+        Set<String> tags = new HashSet<>();
+        List<Publicacao> publicacoes = publicacaoRepository.findAllByTagsNotNull();
+        for(Publicacao p: publicacoes){
+            tags.addAll(p.getTags());
+        }
+        List<String> tag_list = new ArrayList<>(tags);
+        return tag_list;
+    }
 
     @Override
     public List<Publicacao> getPublicacoesPendentes() {

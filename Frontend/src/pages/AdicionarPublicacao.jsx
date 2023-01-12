@@ -3,6 +3,7 @@ import { DollarSign, Search } from 'react-feather';
 import TextInput from '../components/TextInput';
 import DropzoneFiles from "../components/Dropzone";
 import { useNavigate} from "react-router-dom";
+import PublicacaoService from '../services/publicacao.service';
 
 export default function AdicionarPublicacao({updateSidebar=null}) {
 
@@ -17,14 +18,12 @@ export default function AdicionarPublicacao({updateSidebar=null}) {
     { label: 'Lobster', value: 'Lobster' },
   ];
 
-  const tagList = [
-    { label: 'React', value: 'React' },
-    { label: 'Angular', value: 'Angular' },
-    { label: 'C++', value: 'C++' },
-    { label: 'Java', value: 'Java' },
-    { label: 'Python', value: 'Python' },
-    { label: 'Javascript', value: 'Javascript' },
-  ];
+  const [tagList, setTagList] = useState([]);
+
+  useEffect(() => {
+    //Obter lista de tags no dropdown
+    PublicacaoService.getExistingTags().then(r => setTagList(r))
+  }, []);
 
   const filterTags = (inputValue) => {
     return tagList.filter((i) =>
@@ -107,9 +106,9 @@ export default function AdicionarPublicacao({updateSidebar=null}) {
           <div className='w-[40rem] mb-4'>
             <TextInput index={1}
               name={"tags"} 
-              type="dropsearch" 
+              type="creatable" 
               titleStyle={"font-bold mb-1 text-2xl"}
-              list={tagList} 
+              list={ tagList }
               multi={true}
               error={"Por favor selecione ou adicione uma tag"} 
               placeholder="tags..."
