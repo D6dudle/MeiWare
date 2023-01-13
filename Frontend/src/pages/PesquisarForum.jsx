@@ -58,16 +58,16 @@ export const PesquisarForum = ({}) => {
         item.titulo.toLowerCase().includes(search.toLowerCase())
       );
       if (values.length > 0) {
-        if(values[1].length > 0){
-          let selected_colab = values[1].map(item => item.label)
-          list = list.filter(f => selected_colab.includes(f.quemPublicou))
+        if (values[1].length > 0) {
+          let selected_colab = values[1].map((item) => item.label);
+          list = list.filter((f) => selected_colab.includes(f.quemPublicou));
         }
       }
     } else {
       if (values.length > 0) {
-        if(values[1].length > 0){
-          let selected_colab = values[1].map(item => item.label)
-          list = list.filter(f => selected_colab.includes(f.quemPublicou))
+        if (values[1].length > 0) {
+          let selected_colab = values[1].map((item) => item.label);
+          list = list.filter((f) => selected_colab.includes(f.quemPublicou));
         }
       }
     }
@@ -80,17 +80,16 @@ export const PesquisarForum = ({}) => {
   }, [search, values, knowledgeBaseList, dateSortIncreasing]);
 
   const filterColab = (inputValue) => {
-    let lista = [...knowledgeBaseList]
-    console.log(lista)
+    let lista = [...knowledgeBaseList];
     lista.filter((i) =>
       i.quemPublicou.toLowerCase().includes(inputValue.toLowerCase())
     );
-    setFilteredList(lista)
-    return lista
+    setFilteredList(lista);
+    return lista;
   };
 
   const handleArquivarPublicacao = (list) => {
-    if(UserService.getCurrentUser().isGestor) {
+    if (UserService.getCurrentUser().isGestor) {
       PublicacaoService.arquivarPublicacao(list.id).then(() => {
         var filtered = listKnowledgeBase.filter((data) => data.id !== list.id);
         setListKnowledgeBase(filtered);
@@ -113,8 +112,7 @@ export const PesquisarForum = ({}) => {
     setDateSort(increasing);
   };
 
-  if (isLoading)
-    return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <div className="pl-8 pr-8 h-full scrollbar-hide">
@@ -174,7 +172,7 @@ export const PesquisarForum = ({}) => {
                   titulo={list.titulo}
                   nomeFormacao={list.tituloFormacao}
                   descricao={list.descricao}
-                  formacaoId={list.formacaoId}
+                  publicacaoId={list.id}
                   anexos={list.anexos}
                   tags={list.tags}
                   arquivar={UserService.getCurrentUser().isGestor}
@@ -185,7 +183,7 @@ export const PesquisarForum = ({}) => {
             ) : (
               <EmptyState />
             )}
-        </div>
+          </div>
         </div>
       </div>
     </div>

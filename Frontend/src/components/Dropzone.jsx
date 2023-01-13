@@ -23,10 +23,6 @@ function DropzoneFiles({ callback }) {
     });
   }, []);
 
-  /* useEffect(() => {
-    console.log("State: " + Date.now(), files);
-  }, [files]); */
-
   const {
     getRootProps,
     getInputProps,

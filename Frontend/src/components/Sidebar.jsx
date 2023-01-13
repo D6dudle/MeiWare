@@ -21,7 +21,7 @@ const Sidebar = ({ trigger }) => {
 
   useEffect(() => {
     const user = UserService.getCurrentUser();
-  
+
     var highestRole = "COLABORADOR";
     if (user.isGestor) highestRole = "GESTOR";
     if (user.isAdministrador) highestRole = "ADMIN";
@@ -60,9 +60,6 @@ const Sidebar = ({ trigger }) => {
       oldPossiblePaths = possiblePaths(oldPath);
     }
 
-    //console.log("OLD ",oldPossiblePaths)
-    //console.log("NEW ",newPossiblePaths)
-
     let final = JSON.stringify(menus, (_, nestedValue) => {
       if (nestedValue && newPossiblePaths.includes(nestedValue["to"])) {
         nestedValue["opened"] = true;
@@ -83,7 +80,6 @@ const Sidebar = ({ trigger }) => {
   }, []);
 
   const navigate = (tab, old) => {
-    console.log("SIDEBAR - Cliquei no ",tab," OLD ",old)
     updateMenu(tab, old);
   };
 
@@ -97,15 +93,12 @@ const Sidebar = ({ trigger }) => {
   };
 
   function showMenu(g) {
-    if(!g) {
+    if (!g) {
       return true;
-    }
-    else if(UserService.getCurrentUser().isGestor) {
-      return true
-    }
-    else {
+    } else if (UserService.getCurrentUser().isGestor) {
+      return true;
+    } else {
       return false;
-      
     }
   }
 
@@ -132,7 +125,7 @@ const Sidebar = ({ trigger }) => {
 
         {/* Menu */}
         {menus.map((menu, index) => {
-          if(showMenu(menu.gestor))
+          if (showMenu(menu.gestor))
             return (
               <div key={index} className="relative top-24">
                 <div className="divMenuItem">
@@ -164,25 +157,32 @@ const Sidebar = ({ trigger }) => {
                 {menu.submenu && menu.opened && open && (
                   <ul>
                     {menu.submenuItems.map((submenuItem, index) => {
-                      if(showMenu(submenuItem.gestor))
-                        return(<div
-                          key={index}
-                          className={`divSubmenu ${
-                            submenuItem.opened && "border-r-2 border-r-primary "
-                          }`}
-                        >
-                          <NavLink
+                      if (showMenu(submenuItem.gestor))
+                        return (
+                          <div
                             key={index}
-                            to={submenuItem.to}
-                            className={`submenuItem ${
-                              submenuItem.opened ? "text-primary" : "text-white"
+                            className={`divSubmenu ${
+                              submenuItem.opened &&
+                              "border-r-2 border-r-primary "
                             }`}
-                            onClick={(event) => updateMenu(submenuItem.to, path)}
                           >
-                            {submenuItem.title}
-                          </NavLink>
-                        </div>);
-                   })}
+                            <NavLink
+                              key={index}
+                              to={submenuItem.to}
+                              className={`submenuItem ${
+                                submenuItem.opened
+                                  ? "text-primary"
+                                  : "text-white"
+                              }`}
+                              onClick={(event) =>
+                                updateMenu(submenuItem.to, path)
+                              }
+                            >
+                              {submenuItem.title}
+                            </NavLink>
+                          </div>
+                        );
+                    })}
                   </ul>
                 )}
               </div>

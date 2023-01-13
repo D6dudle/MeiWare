@@ -92,7 +92,6 @@ const criaPedidoFormacao = (files, pedidoFormacao, formandos) => {
   );
 
   files.map((file) => {
-    console.log(file);
     bodyFormData.append("files", file);
   });
 

@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useCallback} from "react";
-import 'regenerator-runtime/runtime'
+import React, { useState, useEffect, useCallback } from "react";
+import "regenerator-runtime/runtime";
 import {
   useTable,
   useFilters,
@@ -13,7 +13,7 @@ import { Button, PageButton } from "./Button";
 import { classNames } from "./Utils";
 import { SortIcon, SortUpIcon, SortDownIcon } from "./Icons";
 //import { PencilAltIcon } from '@heroicons/react/solid'
-import { useNavigate, useLocation, createSearchParams} from "react-router-dom";
+import { useNavigate, useLocation, createSearchParams } from "react-router-dom";
 import Modal from "../Modal";
 import UtilizadoresService from "../../services/get-utilizadores.service";
 import { Plus } from "react-feather";
@@ -27,7 +27,6 @@ import {
   HiTrash,
 } from "react-icons/hi";
 
-
 import { isConstructorDeclaration } from "typescript";
 // Define a default UI for filtering
 function GlobalFilter({
@@ -40,8 +39,6 @@ function GlobalFilter({
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
   }, 200);
-
-
 
   return (
     <label className="flex gap-x-2 items-baseline w-fit">
@@ -57,9 +54,7 @@ function GlobalFilter({
         placeholder={`${count} entradas...`}
       />
     </label>
-    
   );
-  
 }
 
 // This is a custom filter UI for selecting
@@ -138,8 +133,6 @@ export function AvatarCell({ value, column, row }) {
   );
 }
 
-
-
 const tableHooks = (hooks) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -147,13 +140,11 @@ const tableHooks = (hooks) => {
   const [, updateState] = React.useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
 
-
   const handleCloseModal = () => {
     setModalUser({ show: false, data: null });
   };
 
   const confirmeActionModal = (u) => {
-    console.log("Vou excluir o colaborador");
     /*
     setUsers(usersList.filter((user) => u.email !== user.email));
     setUser(users[0]);
@@ -161,14 +152,10 @@ const tableHooks = (hooks) => {
   };
 
   const handleExcluir = (u) => {
-    console.log("handle excluir" + u);
-    UtilizadoresService.removeUtilizador(u).then((data)=>{
-      
-      console.log(data);  
+    UtilizadoresService.removeUtilizador(u).then((data) => {
       window.location.reload(true);
-      
     });
-  }
+  };
 
   hooks.visibleColumns.push((columns) => [
     ...columns,
@@ -177,7 +164,7 @@ const tableHooks = (hooks) => {
       Header: "",
       Cell: ({ row }) => (
         <div className="flex gap-12">
-         <HiPencilAlt
+          <HiPencilAlt
             className="text-white cursor-pointer"
             onClick={() => {
               const params = {
@@ -189,29 +176,28 @@ const tableHooks = (hooks) => {
                   search: createSearchParams(params).toString(),
                 },
                 {
-                state: {
-                  prevUrl: location.pathname,}}
-            );
-          }}
-        />
-        <HiTrash 
-          className="text-white cursor-pointer"
-          onClick={() => {
-            handleExcluir(row.original.id);
-          }}
-
-        />
-        {
-        modalUser.show && (
+                  state: {
+                    prevUrl: location.pathname,
+                  },
+                }
+              );
+            }}
+          />
+          <HiTrash
+            className="text-white cursor-pointer"
+            onClick={() => {
+              handleExcluir(row.original.id);
+            }}
+          />
+          {modalUser.show && (
             <Modal
               closeModal={handleCloseModal}
               confirmeActionModal={() => confirmeActionModal(row.original.age)}
               //data={modal.data}
             />
-        )}
+          )}
         </div>
       ),
-
     },
   ]);
 };
@@ -257,7 +243,6 @@ function Table({ columns, data }) {
     navigate("/home/controlo/colaboradores/adicionar-colaborador");
   };
 
-
   // Render the UI for your table
   return (
     <>
@@ -266,8 +251,6 @@ function Table({ columns, data }) {
           preGlobalFilteredRows={preGlobalFilteredRows}
           globalFilter={state.globalFilter}
           setGlobalFilter={setGlobalFilter}
-          
-          
         />
         {headerGroups.map((headerGroup) =>
           headerGroup.headers.map((column) =>
@@ -278,13 +261,14 @@ function Table({ columns, data }) {
             ) : null
           )
         )}
-        
+
         <button
           className="actionButtons bg-primary"
-          onClick={() => handleAdicionar()}>
-            <Plus className="w-4 h-4 text-black" />
-            <p className="actionBtnInsideInfo">Adicionar colaborador</p>
-          </button>
+          onClick={() => handleAdicionar()}
+        >
+          <Plus className="w-4 h-4 text-black" />
+          <p className="actionBtnInsideInfo">Adicionar colaborador</p>
+        </button>
       </div>
       {/* Pagination */}
       <div className="py-3 flex items-center justify-between">
@@ -366,9 +350,8 @@ function Table({ columns, data }) {
             </nav>
           </div>
         </div>
-        
       </div>
-      
+
       {/* table */}
       <div className="mt-4 flex flex-col">
         <div className="-my-2 overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
@@ -446,7 +429,6 @@ function Table({ columns, data }) {
           </div>
         </div>
       </div>
-      
     </>
   );
 }

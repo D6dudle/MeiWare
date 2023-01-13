@@ -5,7 +5,6 @@ import FormacaoDetalhes from "../components/FormacaoDetalhes";
 
 export const PesquisarDetalhes = ({}) => {
   const location = useLocation(); // location.state --> formacao
-  console.log(location.state);
 
   return (
     <div className="pl-8 pr-8 h-full overflow-scroll scrollbar-hide">

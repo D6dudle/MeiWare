@@ -107,7 +107,6 @@ export default function EditarFormacao() {
 
   var prevUrl = useLocation().state;
   if (prevUrl === null) {
-    console.log("NADA");
     prevUrl = "/home/formacao/pesquisar-formacao/";
   } else {
     prevUrl = prevUrl.prevUrl;
@@ -185,10 +184,7 @@ export default function EditarFormacao() {
     e.preventDefault();
     setFormErrors(validate(formationCamps));
     setIsSubmit(true);
-    console.log("Button Submeter pressed!");
   };
-
-  //console.log("ID DO SELECIONADO: " + formationId);
 
   return (
     <div className="flex flex-col pl-8 pr-8 w-full h-full overflow-hidden">
@@ -216,7 +212,7 @@ export default function EditarFormacao() {
       </div>
 
       <div className="w-full h-full overflow-scroll scrollbar-hide">
-          <form onSubmit={handleFormSubmit} className="" noValidate>
+        <form onSubmit={handleFormSubmit} className="" noValidate>
           <div className="flex flex-col justify-evenly w-full">
             <div className="max-w-6xl w-full flex flex-wrap justify-between">
               <div className="w-[332px]">
@@ -331,7 +327,6 @@ export default function EditarFormacao() {
                       placeholder="nome"
                       value={formationCamps.nomeColaborador}
                       onChange={(opt) => {
-                        console.log("DROPDWON: " + opt);
                         setFormationCamps({
                           ...formationCamps,
                           nomeColaborador: opt,
@@ -463,8 +458,8 @@ export default function EditarFormacao() {
                 Submeter
               </button>
             </div>
-            </div>
-          </form>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -32,7 +32,6 @@ export default function Colaboradores() {
   };
 
   const confirmeActionModal = (u) => {
-    console.log("Vou excluir o colaborador");
     setUsers(usersList.filter((user) => u.email !== user.email));
     setUser(users[0]);
     setModal({ show: false, data: null });
@@ -40,9 +39,7 @@ export default function Colaboradores() {
 
   useEffect(() => {
     const user = UserService.getCurrentUser();
-    if(user.isAdministrador) {
-      //console.log("O USER É ADMIN -> A IMPRIMIR ALL COLABORADORES");
-
+    if (user.isAdministrador) {
       UtilizadoresService.getUtilizadoresAll().then((data) => {
         var role,
           budgetUtilizado,
@@ -113,7 +110,6 @@ export default function Colaboradores() {
     }
     //Se o user logado for Gestor só aparecem os colaboradores associados a ele
     else if (user.isGestor) {
-      //console.log("O user é gestor");
       ColaboradoresService.getColaboradoresAll().then((data) => {
         var role,
           budgetUtilizado,
@@ -170,7 +166,6 @@ export default function Colaboradores() {
               numFormacaoPendentes: formacoesPendentes,
               emAprovacao: budgetPendente,
               budgetRestante: budgetRestante,
-
             };
 
             dataHandled.push(colaborador);
@@ -198,7 +193,6 @@ export default function Colaboradores() {
   };
 
   const onItemClick = (e) => {
-    console.log("e", e);
     if (e === "all") {
       setFilteredData(dataColaborators);
     } else {
@@ -210,13 +204,11 @@ export default function Colaboradores() {
 
   const onSearchbarChange = (e) => {
     const value = e.target.value;
-    console.log(filteredData);
     if (value === "") {
       setFilteredData(dataColaborators);
     } else {
       if (filteredData.length > 0) {
         const result = filteredData.filter((item) => item.nome === value);
-        console.log(result);
         setFilteredData(result);
       } else {
         const result = dataColaborators.filter((item) => item.nome === value);

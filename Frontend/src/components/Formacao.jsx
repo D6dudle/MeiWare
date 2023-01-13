@@ -34,7 +34,6 @@ export const Formacao = ({
   };
 
   const confirmeActionModal = (justificacaoFormacao) => {
-    console.log(justificacaoFormacao);
     onItemDelete(justificacaoFormacao);
     setModal({ show: false, data: null });
   };
@@ -54,7 +53,6 @@ export const Formacao = ({
 
   const handleConsultarFormacaoClick = (e, formacao) => {
     e.preventDefault();
-    console.log(formacao);
     navigate(`/home/formacao/pesquisar-detalhes`, { state: formacao });
   };
 
@@ -73,7 +71,6 @@ export const Formacao = ({
 
   const handleFinalizarFormacaoClick = (e) => {
     e.preventDefault();
-    alert("Click em Finalizar formação");
     onFinalizarClick();
   };
 

@@ -4,6 +4,8 @@ import { Button } from "./Button";
 import Tag from "./Tag";
 import { iconImageUpload } from "../constants/menuConstants";
 import GoBackButton from "./GoBackButton";
+import PublicacaoService from "../services/publicacao.service";
+import { useNavigate } from "react-router-dom";
 
 export const PublicacaoDetalhes = ({
   titulo,
@@ -11,11 +13,12 @@ export const PublicacaoDetalhes = ({
   dataPublicacao,
   nomeFormacao,
   descricao,
-  formacaoId,
-  tags=[],
+  publicacaoId,
+  tags = [],
   urlBack,
-  files
+  files,
 }) => {
+  const navigate = useNavigate();
 
   const ListarFicheiros = ({ fileType, fileName, fileSize }) => {
     const icon = iconImageUpload.find(({ type }) => type === fileType);
@@ -24,7 +27,11 @@ export const PublicacaoDetalhes = ({
         <div className="flex flex-row justify-between items-center gap-4 order-none w-full">
           <div className="flex flex-row items-center mr-4">
             <icon.icon className="mr-2 flex" />
-            <div className="pl-4 font-normal text-xs">{fileType}<span className="pl-3 pr-3">•</span>{fileName}</div>
+            <div className="pl-4 font-normal text-xs">
+              {fileType}
+              <span className="pl-3 pr-3">•</span>
+              {fileName}
+            </div>
           </div>
           <div className="order-1 pr-[20px]">
             <div className="flex font-normal text-xs ">{fileSize}</div>
@@ -36,7 +43,9 @@ export const PublicacaoDetalhes = ({
 
   const arquivarPublicacaoHandler = (e) => {
     e.preventDefault();
-    alert("Click em Arquivar formação");
+    PublicacaoService.arquivarPublicacao(publicacaoId).then(() => {
+      navigate(urlBack);
+    });
   };
 
   return (
@@ -72,7 +81,7 @@ export const PublicacaoDetalhes = ({
         <div className="flex order-1 justify-between w-full">
           <div className="flex gap-4">
             {tags.map((tag) => (
-              <Tag key={tag} tagName={tag}/>
+              <Tag key={tag} tagName={tag} />
             ))}
           </div>
           <div className="" onClick={arquivarPublicacaoHandler}>
@@ -82,25 +91,27 @@ export const PublicacaoDetalhes = ({
       </div>
 
       {/*Retangulo Formacao Associado*/}
-      {nomeFormacao!=null && nomeFormacao!="" && (<div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mt-4 mr-[20px] mb-4 justify-between">
-        <div className="flex flex-col items-start order-none ">
-          <p className="order-none text-gray3 font-bold pt-3 text-xl pl-4 ">
-            Formação Associada
-          </p>
-
-          <div className="flex-none order-1 self-stretch pl-4 flex-row pb-[18px] font-semibold text-sm">
-            <p className="text-sm text-white font-semibold pt-3">
-              <span className="text-gray3">Nome: </span>
-              {nomeFormacao}
+      {nomeFormacao != null && nomeFormacao != "" && (
+        <div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mt-4 mr-[20px] mb-4 justify-between">
+          <div className="flex flex-col items-start order-none ">
+            <p className="order-none text-gray3 font-bold pt-3 text-xl pl-4 ">
+              Formação Associada
             </p>
+
+            <div className="flex-none order-1 self-stretch pl-4 flex-row pb-[18px] font-semibold text-sm">
+              <p className="text-sm text-white font-semibold pt-3">
+                <span className="text-gray3">Nome: </span>
+                {nomeFormacao}
+              </p>
+            </div>
+          </div>
+          {/* ID da Publicação*/}
+          <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
+            <p className="text-xs text-gray4 font-medium">ID da Publicação</p>
+            <p className="text-base font-normal text-white">{publicacaoId}</p>
           </div>
         </div>
-        {/* ID da Formação*/}
-        <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
-          <p className="text-xs text-gray4 font-medium">ID da Formação</p>
-          <p className="text-base font-normal text-white">{formacaoId}</p>
-        </div>
-      </div>)}
+      )}
 
       {/*Retangulo Descrição*/}
       <div className="flex-none order-4 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] pb-4 mb-4">
@@ -124,7 +135,7 @@ export const PublicacaoDetalhes = ({
         </p>
       </div>
       <div className="flex flex-none order-5 pt-4">
-        {files!=null && files.length > 0 && (
+        {files != null && files.length > 0 && (
           <div className="w-full pl-4">
             {files?.map((file) => (
               <ListarFicheiros

@@ -40,7 +40,6 @@ export default function AdicionarFormacao() {
   };
 
   const handleFiles = (files) => {
-    console.log(files);
     setFiles(files);
   };
 
@@ -65,7 +64,6 @@ export default function AdicionarFormacao() {
       };
 
       const formandos = [];
-      console.log(formationCamps.nomeColaborador);
       formationCamps.nomeColaborador.forEach((nome) => {
         formandos.push({
           id: nome.id,
@@ -76,11 +74,7 @@ export default function AdicionarFormacao() {
         files,
         pedidoFormacao,
         formandos
-      ).then((data) => {
-        //console.log(data);
-      });
-
-      //console.log(formationCamps);
+      ).then((data) => {});
       navigate("/home/formacao");
     }
   }, [formErrors]);
@@ -262,7 +256,6 @@ export default function AdicionarFormacao() {
                         placeholder="colaborador..."
                         value={formationCamps.nomeColaborador}
                         onChange={(opt) => {
-                          console.log(opt);
                           setFormationCamps({
                             ...formationCamps,
                             nomeColaborador: opt,

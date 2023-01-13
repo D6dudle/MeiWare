@@ -62,21 +62,16 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
     }, []);
     useEffect(() => {
       if (rawList != null) {
-        console.log(rawList);
         const arr = Object.values(rawList)[0];
         for (const property in arr) {
           // Resposta com a lista de formações do user
           if (arr[property]?.tipoFormacao === "PENDENTE") {
             JSONList[0].formacoes.push(arr[property]);
-            //console.log("PENDENTE");
           } else if (arr[property]?.tipoFormacao === "CURSO") {
             JSONList[1].formacoes.push(arr[property]);
-            //console.log("CURSO");
           } else if (arr[property]?.tipoFormacao === "TERMINADA") {
             JSONList[2].formacoes.push(arr[property]);
-            //console.log("TERMINADA");
           } else {
-            //console.log("REJEITADA");
           }
         }
 
@@ -103,20 +98,15 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
 
     useEffect(() => {
       if (rawList != null) {
-        console.log(rawList);
         for (const property in rawList) {
           // Resposta com a lista de formações do user
           if (rawList[property]?.tipoFormacao === "PENDENTE") {
             JSONList[0].formacoes.push(rawList[property]);
-            //console.log("PENDENTE");
           } else if (rawList[property]?.tipoFormacao === "CURSO") {
             JSONList[1].formacoes.push(rawList[property]);
-            //console.log("CURSO");
           } else if (rawList[property]?.tipoFormacao === "TERMINADA") {
             JSONList[2].formacoes.push(rawList[property]);
-            //console.log("TERMINADA");
           } else {
-            //console.log("REJEITADA");
           }
         }
 
@@ -141,17 +131,13 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
         card.idCurso,
         user.id,
         justificacaoFormacao?.data
-      ).then((data) => {
-        console.log(data);
-      });
+      ).then((data) => {});
     } else {
       ListaFormacaoUserService.rejeitarPedidoFormacaoGestor(
         card.idCurso,
         user.id,
         justificacaoFormacao?.data
-      ).then((data) => {
-        console.log(data);
-      });
+      ).then((data) => {});
     }
 
     const indexList = originalList.findIndex((element) => {
@@ -177,16 +163,12 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
       ListaFormacaoUserService.aprovarFormacaoUserAdmin(
         card.idCurso,
         user.id
-      ).then((data) => {
-        console.log(data);
-      });
+      ).then((data) => {});
     } else {
       ListaFormacaoUserService.aprovarPedidoFormacaoGestor(
         card.idCurso,
         user.id
-      ).then((data) => {
-        console.log(data);
-      });
+      ).then((data) => {});
     }
 
     const indexList = originalList.findIndex((element) => {
@@ -216,9 +198,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
     ListaFormacaoUserService.finalizaFormacaoUser(
       card.idCurso,
       card.nomeFormacao
-    ).then((data) => {
-      console.log(data);
-    });
+    ).then((data) => {});
     //Igual ao handleCancelarFormacao (remove o elemento da lista)
     //Gets the index of object to remove the formation
 
@@ -240,7 +220,6 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
     //Passar a formação atual para a formação a decorrer
     card.tipoFormacao = "TERMINADA";
     tempData[indexFormacaoDecorrer].formacoes.push(card);
-    console.log(card);
     setOriginalList(tempData);
     setFilteredList(updatedList);
   };

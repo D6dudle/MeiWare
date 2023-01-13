@@ -88,11 +88,6 @@ export const PesquisarFormacao = ({}) => {
     );
   };
 
-  useEffect(() => {
-    console.log("Alteração na lista:");
-    console.log(dataCardList);
-  }, [dataCardList]);
-
   return (
     <div className="pl-8 pr-8 w-full h-full overflow-scroll scrollbar-hide">
       <h1 className="text-white font-bold text-3xl mt-8 mb-8">
@@ -132,7 +127,6 @@ export const PesquisarFormacao = ({}) => {
                   placeholder="colaborador..."
                   value={formationCamps.nomeColaborador}
                   onChange={(opt) => {
-                    console.log(opt);
                     setFormationCamps({
                       ...formationCamps,
                       nomeColaborador: opt,

@@ -12,7 +12,7 @@ export const ForumTopic = ({
   titulo,
   nomeFormacao,
   descricao,
-  formacaoId,
+  publicacaoId,
   anexos,
   tags,
   arquivar = true,
@@ -41,13 +41,17 @@ export const ForumTopic = ({
 
   const ListarFicheiros = ({ fileType, fileName, fileSize }) => {
     const icon = iconImageUpload.find(({ type }) => type === fileType);
-    
+
     return (
       <div className="flex flex-col justify-between items-start pb-4 w-full">
         <div className="flex flex-row justify-between items-center gap-4 order-none w-full">
           <div className="flex flex-row items-center mr-4">
-            {icon != null && (<icon.icon className="mr-2 flex" />)}
-            <div className="pl-4 font-normal text-xs">{fileType}<span className="pl-3 pr-3">•</span>{fileName}</div>
+            {icon != null && <icon.icon className="mr-2 flex" />}
+            <div className="pl-4 font-normal text-xs">
+              {fileType}
+              <span className="pl-3 pr-3">•</span>
+              {fileName}
+            </div>
           </div>
           <div className="order-1 pr-[20px]">
             <div className="flex font-normal text-xs ">{fileSize}</div>
@@ -57,13 +61,8 @@ export const ForumTopic = ({
     );
   };
 
-  /* useEffect(() => {
-    console.log("Mudança no modal para " + modalArquivar.show);
-  }, [modalArquivar]); */
-
   const handleCloseModalArquivar = () => {
     setModalArquivar({ show: false, data: null });
-    console.log("cliquei no fechar!");
   };
 
   const handleCloseModalRejeitar = () => {
@@ -71,13 +70,11 @@ export const ForumTopic = ({
   };
 
   const confirmeActionModal = () => {
-    console.log("Vou arquivar a formação");
     setModalArquivar({ show: false, data: null });
     onForumTopicArchive();
   };
 
   const confirmeActionModalRejeitar = () => {
-    console.log("Vou rejeitar a formação");
     onForumTopicArchive();
     setModalRejeitar({ show: false, data: null });
   };
@@ -128,7 +125,7 @@ export const ForumTopic = ({
         <div className="flex order-1 justify-between w-full">
           <div className="flex gap-4">
             {tags.map((tag) => (
-              <Tag key={tag} tagName={tag}/>
+              <Tag key={tag} tagName={tag} />
             ))}
           </div>
           <div style={{ display: arquivar ? "block" : "none" }}>
@@ -170,26 +167,28 @@ export const ForumTopic = ({
           </p>
         </div>
       </div>
-      
-      {/*Retangulo Curso Associado*/}
-      {nomeFormacao!=null && nomeFormacao!="" && (<div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] mb-4">
-        <div className="flex flex-col items-start order-none w-4/5">
-          <p className="order-none text-gray3 font-bold pt-3 text-xl pl-4 ">
-            Formação Associada
-          </p>
 
-          <div className="flex-none order-1 self-stretch pl-4 flex-row pb-[18px] font-semibold text-sm">
-            <p className="text-sm text-white font-semibold pt-3">
-              <span className="text-gray3">Nome da formação: </span>
-              {nomeFormacao}
+      {/*Retangulo Curso Associado*/}
+      {nomeFormacao != null && nomeFormacao != "" && (
+        <div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mr-[20px] mb-4">
+          <div className="flex flex-col items-start order-none w-4/5">
+            <p className="order-none text-gray3 font-bold pt-3 text-xl pl-4 ">
+              Formação Associada
             </p>
+
+            <div className="flex-none order-1 self-stretch pl-4 flex-row pb-[18px] font-semibold text-sm">
+              <p className="text-sm text-white font-semibold pt-3">
+                <span className="text-gray3">Nome da formação: </span>
+                {nomeFormacao}
+              </p>
+            </div>
           </div>
-        </div>
-        {/* Form ID <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
+          {/* Form ID <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
           <p className="text-xs text-gray4 font-medium">ID da Formação</p>
           <p className="text-base font-normal text-white">{formacaoId}</p>
         </div>*/}
-      </div>)}
+        </div>
+      )}
 
       {/*Retangulo Ficheiros Adicionados*/}
       <div className="flex flex-none order-5 pt-4">
@@ -208,25 +207,23 @@ export const ForumTopic = ({
       </div>
 
       <div className="flex flex-none order-6 pr-[20px] pl-4 pb-3 gap-4">
-        <div
-          className="flex flex-row justify-end items-center w-full "
-          onClick={(e) =>
-            verPublicacaoHandler(e, {
-              username,
-              dataPublicacao,
-              titulo,
-              nomeFormacao,
-              descricao,
-              formacaoId,
-              urlBack,
-              tags,
-              files : anexos
-            })
-          }
-        >
+        <div className="flex flex-row justify-end items-center w-full ">
           <Button
             iconName={"CONSULTAR"}
             textButton={"Ver Publicação Completa"}
+            handleClick={(e) =>
+              verPublicacaoHandler(e, {
+                username,
+                dataPublicacao,
+                titulo,
+                nomeFormacao,
+                descricao,
+                publicacaoId,
+                urlBack,
+                tags,
+                files: anexos,
+              })
+            }
           />
         </div>
         <div
@@ -245,7 +242,11 @@ export const ForumTopic = ({
               data={modalRejeitar.data}
             />
           )}
-          <Button iconName={"FINALIZAR"} textButton={"Aprovar"} handleClick={handleAprovarPublicacaoClick} />
+          <Button
+            iconName={"FINALIZAR"}
+            textButton={"Aprovar"}
+            handleClick={handleAprovarPublicacaoClick}
+          />
         </div>
       </div>
     </div>

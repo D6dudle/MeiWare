@@ -90,7 +90,6 @@ export default function AdicionarColaborador() {
     AuthService.register(nome, email, password, roleList).then(
       () => {
         navigate(`/home/controlo/colaboradores`);
-        alert("Success!");
       },
       (error) => {
         setErrorMsg({

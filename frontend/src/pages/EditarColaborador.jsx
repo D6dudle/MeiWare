@@ -11,7 +11,6 @@ export default function EditarColaborador() {
   const navigate = useNavigate();
   const personId = useLocation().search.slice(4);
 
-
   const [initialData, setInitialData] = useState([]);
   const [isLoading, setLoading] = useState(true); // Loading state
   const [gestList, setGestList] = useState([]);
@@ -21,62 +20,51 @@ export default function EditarColaborador() {
   const [search, setSearch] = useState();
 
   const rolesList = [
-    { label: "Administrador", value: "administrador"},
-    { label: "Gestor", value: "gestor"},
-    { label: "Colaborador", value: "colaborador"},
-  ]
+    { label: "Administrador", value: "administrador" },
+    { label: "Gestor", value: "gestor" },
+    { label: "Colaborador", value: "colaborador" },
+  ];
 
   var ManagerList = [];
-  
+
   useEffect(() => {
     //Obter lista de gestores
-    UtilizadoresService.getGestoresDropdown().then((data)=>{
+    UtilizadoresService.getGestoresDropdown().then((data) => {
       setGestList(data);
-      
-      
-    }); 
+    });
   }, []);
 
   useEffect(() => {
-    UtilizadoresService.getUtilizadoresById(personId).then((utilizador)=>{
+    UtilizadoresService.getUtilizadoresById(personId).then((utilizador) => {
       setInitialData(utilizador);
 
       pubFields[0]["value"] = utilizador.nome;
       pubFields[1]["value"] = utilizador.email;
 
-      if(utilizador.isAdministrador){
+      if (utilizador.isAdministrador) {
         pubFields[2]["value"] = rolesList[0];
         setRoleAssociado(rolesList[0]);
-
-      }
-      else if(utilizador.isGestor){
+      } else if (utilizador.isGestor) {
         pubFields[2]["value"] = rolesList[1];
         setRoleAssociado(rolesList[1]);
-      }
-      else{
+      } else {
         pubFields[2]["value"] = rolesList[2];
         setRoleAssociado(rolesList[2]);
       }
-      
-
     });
   }, []);
 
   useEffect(() => {
-    console.log(gestList);
     pubFields[3]["list"] = gestList;
-    
-    for(var i = 0; i < gestList.length; i++){
-      if(gestList[i].id == initialData.managerId){
+
+    for (var i = 0; i < gestList.length; i++) {
+      if (gestList[i].id == initialData.managerId) {
         pubFields[3]["value"] = gestList[i];
         setGestAssociado(gestList[i]);
       }
     }
   }, [gestList]);
 
-
-  
-  
   var prevUrl = useLocation().state;
   if (prevUrl === null) {
     prevUrl = "/home/controlo/colaboradores";
@@ -97,11 +85,8 @@ export default function EditarColaborador() {
 
   const references = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
-  
-
   const config = (handleType, handleDropdown) => {
     const fields = [];
-
 
     fields.push({
       name: "Nome",
@@ -174,10 +159,7 @@ export default function EditarColaborador() {
   });
 
   const handleFormSubmit = (e) => {
-    
     e.preventDefault();
-
-    console.log("Button Submeter pressed!");
 
     for (let i = 0; i < pubFields.length; i++) {
       if (pubFields[i]["trigger"]) {
@@ -185,8 +167,6 @@ export default function EditarColaborador() {
       }
     }
 
-    console.log("Initial Data" + JSON.stringify(pubFields[3]));
-    
     var sent = {
       id: Number(personId),
       nome: pubFields[0]["value"],
@@ -198,22 +178,15 @@ export default function EditarColaborador() {
     initialData.managerId = pubFields[3]["value"].id;
 
     //initialData.manager.name = pubFields[3]["value"]["value"];
-    console.log("Data a enviar: " + JSON.stringify(sent));
 
-    
-    UtilizadoresService.updateUtilizador(sent).then((data)=>{
-      console.log(data);
+    UtilizadoresService.updateUtilizador(sent).then((data) => {
       goBack();
     });
-
-    
   };
 
   const goBack = () => {
     navigate("/home/controlo/colaboradores");
   };
-
-
 
   return (
     <div className="w-full h-full overflow-y-hidden ml-8 mr-8">
