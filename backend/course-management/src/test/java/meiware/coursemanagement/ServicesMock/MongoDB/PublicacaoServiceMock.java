@@ -7,10 +7,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 
 import java.util.*;
 
@@ -28,6 +29,8 @@ public class PublicacaoServiceMock {
     @InjectMocks
     private PublicacaoService publicacaoService;
 
+    @Captor
+    ArgumentCaptor<Publicacao> publicacaoCaptor;
 
     List<Publicacao> publicacoes = new ArrayList<>();
 
@@ -36,10 +39,11 @@ public class PublicacaoServiceMock {
         for(int i = 0; i < 3 ; i++){
             publicacoes.add(new Publicacao("Titulo" + i, "Descricao" + i, new HashSet<>(Arrays.asList("a" + i, "b" + i)), "TituloForamacao" + i, "João"));
             publicacoes.get(i).setId(String.valueOf(i));
+            publicacoes.get(i).setTags(new HashSet<>(Arrays.asList(String.valueOf(i))));
         }
     }
 
-    @DisplayName("Junit test 20 - Teste unitário do método getPublicacoes de PublicacaoService.")
+    /*@DisplayName("Junit test 20 - Teste unitário do método getPublicacoes de PublicacaoService.") // CANCELADO
     @Test
     public void getPublicacoes() {
         // given - precondition or setup
@@ -51,23 +55,25 @@ public class PublicacaoServiceMock {
         // then
         assertNotNull(publicacoes1);
         assertEquals(this.publicacoes, publicacoes1);
-    }
+    }*/
 
 
     @DisplayName("Junit test 21 - Teste unitário do método arquivarPublicacao de PublicacaoService.")
     @Test
     public void arquivarPublicacao() {
         // given - precondition or setup
-        Publicacao auxPublicacao = new Publicacao("Titulo", "Descricao", new HashSet<>(Arrays.asList("a", "b")), "TituloForamacao", "João");
-        given(publicacaoRepository.findById(auxPublicacao.getId())).willReturn(Optional.of(auxPublicacao));
+        Publicacao auxPub = new Publicacao("Titulo", "Descricao", new HashSet<>(Arrays.asList("a", "b")), "TituloForamacao", "João");
 
         // when - action or behavior that we are going to test
-        assertFalse(auxPublicacao.isArquivada());
-        publicacaoService.arquivarPublicacao(auxPublicacao);
+        assertFalse(auxPub.isArquivada());
+        publicacaoService.arquivarPublicacao(auxPub);
 
         // then;
-        assertNotNull(auxPublicacao);
-        assertTrue(auxPublicacao.isArquivada());
+        verify(publicacaoRepository).save(publicacaoCaptor.capture());
+        Publicacao publicacao = publicacaoCaptor.getValue();
+
+        assertNotNull(publicacao);
+        assertTrue(publicacao.isArquivada());
     }
 
     @DisplayName("Junit test 45 - Teste unitário do método getPublicacaoById de PublicacaoService.")
@@ -89,15 +95,18 @@ public class PublicacaoServiceMock {
     @Test
     public void createPublicacao() {
         // given - precondition or setup
-        Publicacao auxPub = publicacoes.get(1);
-        given(publicacaoRepository.insert(auxPub)).willReturn(auxPub);
+        Publicacao auxPub = new Publicacao("Titulo", "Descricao", new HashSet<>(Arrays.asList("a", "b")), "TituloForamacao", "Ptiagosma");
+        //given(publicacaoRepository.save(auxPub)).willReturn(auxPub);
 
         // when - action or behavior that we are going to test
-        String publicacaoId = publicacaoService.createPublicacao(auxPub, null);
+        publicacaoService.createPublicacao(auxPub, null);
 
         // then
-        assertNotNull(publicacaoId);
-        assertEquals(publicacaoId, auxPub.getId());
+        verify(publicacaoRepository).save(publicacaoCaptor.capture());
+        Publicacao publicacao = publicacaoCaptor.getValue();
+
+        assertNotNull(publicacao);
+        assertEquals(publicacao.getTitulo(), auxPub.getTitulo());
     }
 
     @DisplayName("Junit test 48 - Teste unitário do método removePublicacao de PublicacaoService.")
@@ -113,5 +122,62 @@ public class PublicacaoServiceMock {
         verify(publicacaoRepository, times(1)).delete(auxPub);
     }
 
-}
+    @DisplayName("Junit test 49 - Teste unitário do método getExistingTags de PublicacaoService.")
+    @Test
+    public void getExistingTags() {
+        // given - precondition or setup
+        given(publicacaoRepository.findAllByTagsNotNull()).willReturn(publicacoes);
+
+        // when - action or behavior that we are going to test
+        List<String> tags = publicacaoService.getExistingTags();
+
+        // then
+        assertNotNull(tags);
+        assertEquals(Arrays.asList("0", "1", "2"), tags);
+    }
+
+    @DisplayName("Junit test 50 - Teste unitário do método getPublicacoesPendentes de PublicacaoService.")
+    @Test
+    public void getPublicacoesPendentes() {
+        // given - precondition or setup
+        given(publicacaoRepository.findAllByArquivadaIsFalseAndAprovadaIsFalseOrderByDataCriacaoDesc()).willReturn(publicacoes);
+
+        // when - action or behavior that we are going to test
+        List<Publicacao> publicacoes1 = publicacaoService.getPublicacoesPendentes();
+
+        // then
+        assertNotNull(publicacoes1);
+        assertEquals(this.publicacoes, publicacoes1);
+    }
+
+    @DisplayName("Junit test 51 - Teste unitário do método getPublicacoesAprovadas de PublicacaoService.")
+    @Test
+    public void getPublicacoesAprovadas() {
+        // given - precondition or setup
+        given(publicacaoRepository.findAllByArquivadaIsFalseAndAprovadaIsTrueOrderByDataCriacaoDesc()).willReturn(publicacoes);
+
+        // when - action or behavior that we are going to test
+        List<Publicacao> publicacoes1 = publicacaoService.getPublicacoesAprovadas();
+
+        // then
+        assertNotNull(publicacoes1);
+        assertEquals(this.publicacoes, publicacoes1);
+    }
+
+    @DisplayName("Junit test 52 - Teste unitário do método aprovarPublicacao de PublicacaoService.")
+    @Test
+    public void aprovarPublicacao() {
+        // given - precondition or setup
+        Publicacao auxPub = new Publicacao("Titulo", "Descricao", new HashSet<>(Arrays.asList("a", "b")), "TituloForamacao", "Ptiagosma");
+        given(publicacaoRepository.save(auxPub)).willReturn(auxPub);
+
+        // when - action or behavior that we are going to test
+        publicacaoService.aprovarPublicacao(auxPub);
+
+        // then
+        assertNotNull(auxPub);
+        assertTrue(auxPub.isAprovada());
+    }
+
+    }
 

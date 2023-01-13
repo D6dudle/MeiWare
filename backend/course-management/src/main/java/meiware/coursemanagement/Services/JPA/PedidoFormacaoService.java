@@ -151,8 +151,10 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
                 pedidoFormacao.setListAnexoRefs(anexoRefs);
             }
 
-            for (Utilizador formando : formandos) {
-                pedidoFormacao.addFormando(utilizadorService.getUtilizadorById(formando.getId()));
+            if( formandos != null) {
+                for (Utilizador formando : formandos) {
+                    pedidoFormacao.addFormando(utilizadorService.getUtilizadorById(formando.getId()));
+                }
             }
 
             return pedidoFormacaoRepository.save(pedidoFormacao);
