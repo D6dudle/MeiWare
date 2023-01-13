@@ -10,18 +10,7 @@ export const PesquisarDetalhes = ({}) => {
     <div className="pl-8 pr-8 h-full overflow-scroll scrollbar-hide">
       {/*Forum componente*/}
       <div className="mt-4">
-        <FormacaoDetalhes
-          fornecedor={"CodeAcademy"}
-          username={location.state.username}
-          dataFormacao={location.state.dataFormacao}
-          nomeformacao={location.state.nomeFormacao}
-          descricao={"Descricao formacao"}
-          justificacaoFormacao={location.state.justificacaoFormacao}
-          cursoId={location.state.idCurso}
-          preco={"79€"}
-          tags={["React", "TypeScript"]}
-          urlBack={location.state.urlBack}
-        />
+        <FormacaoDetalhes urlBack={location.state.prevUrl} />
       </div>
     </div>
   );

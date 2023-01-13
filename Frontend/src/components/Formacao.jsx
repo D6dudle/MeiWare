@@ -51,11 +51,6 @@ export const Formacao = ({
 
   const navigate = useNavigate();
 
-  const handleConsultarFormacaoClick = (e, formacao) => {
-    e.preventDefault();
-    navigate(`/home/formacao/pesquisar-detalhes`, { state: formacao });
-  };
-
   const handleCancelarFormacaoClick = (e) => {
     e.preventDefault();
     setModal({
@@ -93,18 +88,23 @@ export const Formacao = ({
               {consultar ? (
                 <div
                   className=""
-                  onClick={(e) =>
-                    handleConsultarFormacaoClick(e, {
-                      username,
-                      nomeFormacao,
-                      dataFormacao,
-                      justificacaoFormacao,
-                      idCurso,
-                      tipoFormacao,
-                      consultar,
-                      urlBack,
-                    })
-                  }
+                  onClick={(e) => {
+                    const params = {
+                      id: idCurso,
+                    };
+
+                    navigate(
+                      {
+                        pathname: window.location.pathname + "/detalhes",
+                        search: createSearchParams(params).toString(),
+                      },
+                      {
+                        state: {
+                          prevUrl: urlBack,
+                        },
+                      }
+                    );
+                  }}
                 >
                   <Button className="h-10" iconName="CONSULTAR" textButton="" />
                 </div>

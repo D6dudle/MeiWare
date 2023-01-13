@@ -4,19 +4,31 @@ import { Button } from "./Button";
 import Tag from "./Tag";
 import { iconImageUpload } from "../constants/menuConstants";
 import GoBackButton from "../components/GoBackButton";
+import PedidoFormacaoService from "../services/pedido-formacao.service";
+import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Loading } from "./Loading";
 
-export const FormacaoDetalhes = ({
-  fornecedor,
-  username,
-  dataFormacao,
-  nomeformacao,
-  descricao,
-  justificacaoFormacao,
-  cursoId,
-  preco,
-  tags,
-  urlBack,
-}) => {
+export const FormacaoDetalhes = ({ urlBack }) => {
+  const formacaoId = useLocation().search.slice(4);
+  const [formacao, setFormacao] = useState({});
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    PedidoFormacaoService.getPedidoFormacaoById(formacaoId).then((data) => {
+      setFormacao({
+        fornecedor: data.formador,
+        username: data.username,
+        dataFormacao: data.dataFormacao,
+        nomeformacao: data.nomeFormacao,
+        descricao: data.descricao,
+        justificacaoFormacao: data.justificacaoFormacao,
+        preco: data.preco,
+      });
+      setLoading(false);
+    });
+  }, []);
+
   const files = [
     { type: "application/pdf", nome: "Montemor-o-Velho.pdf", size: "2,59MB" },
     { type: "image/png", nome: "Portugal.png", size: "5,58MB" },
@@ -31,7 +43,11 @@ export const FormacaoDetalhes = ({
         <div className="flex flex-row justify-between items-center gap-4 order-none w-full">
           <div className="flex flex-row items-center mr-4">
             <icon.icon className="mr-2 flex" />
-            <div className="pl-4 font-normal text-xs">{fileType}<span className="pl-3 pr-3">•</span>{fileName}</div>
+            <div className="pl-4 font-normal text-xs">
+              {fileType}
+              <span className="pl-3 pr-3">•</span>
+              {fileName}
+            </div>
           </div>
           <div className="order-1 pr-[20px]">
             <div className="flex font-normal text-xs ">{fileSize}</div>
@@ -40,6 +56,13 @@ export const FormacaoDetalhes = ({
       </div>
     );
   };
+
+  if (isLoading)
+    return (
+      <div className="h-screen">
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="flex-none order-none grow-0 ">
@@ -51,13 +74,15 @@ export const FormacaoDetalhes = ({
           <GoBackButton url={urlBack} />
           <p className="text-white font-semibold pt-3 text-xl pl-4 pb-4">
             <span className="text-gray3 text-xl ">Titulo: </span>
-            {nomeformacao}
+            {formacao.nomeformacao}
           </p>
         </div>
         {/*pedida em*/}
         <div className="flex-row-reverse items-center pr-4 pt-4">
           <p className="text-xs text-gray4 font-medium">Pedida em</p>
-          <p className="text-base font-normal text-white">{dataFormacao}</p>
+          <p className="text-base font-normal text-white">
+            {formacao.dataFormacao}
+          </p>
         </div>
       </div>
 
@@ -66,12 +91,13 @@ export const FormacaoDetalhes = ({
         <div className="flex flex-row justify-start pt-4 pl-4 items-center">
           <Image className="w-6 h-6 mr-4" />
           <p className="text-sm text-white font-semibold">
-            {username}{" "}
+            {formacao.username}{" "}
             <span className="text-gray3">publicou uma formação </span>
           </p>
         </div>
       </div>
 
+      {/*
       <div className="flex flex-row order-1 justify-between items-center pl-4 pt-4 pr-4">
         <div className="flex order-1 justify-between w-full">
           <div className="flex gap-4">
@@ -80,7 +106,7 @@ export const FormacaoDetalhes = ({
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/*Retangulo Fornecedor*/}
       <div className="flex flex-row order-3 grow-0 border border-primary rounded pt-4 ml-4 mt-4 mr-[20px] mb-4 justify-between">
@@ -92,19 +118,19 @@ export const FormacaoDetalhes = ({
           <div className="flex-none order-1 self-stretch pl-4 flex-row pb-[18px] font-semibold text-sm">
             <p className="text-sm text-white font-semibold pt-3">
               <span className="text-gray3">Nome: </span>
-              {fornecedor}
+              {formacao.fornecedor}
             </p>
           </div>
         </div>
         {/* Preço*/}
         <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
           <p className="text-xs text-gray4 font-medium">preço</p>
-          <p className="text-base font-normal text-white">{preco}</p>
+          <p className="text-base font-normal text-white">{formacao.preco}</p>
         </div>
         {/* Course ID*/}
         <div className="flex-none order-1 pr-[18px] pt-[19px] pb-[24px] pl-[14px]">
           <p className="text-xs text-gray4 font-medium">Course ID</p>
-          <p className="text-base font-normal text-white">{cursoId}</p>
+          <p className="text-base font-normal text-white">{formacaoId}</p>
         </div>
       </div>
 
@@ -118,7 +144,7 @@ export const FormacaoDetalhes = ({
         {/*Texto Descricao*/}
         <div className="order-1 pr-4 pt-4 mb-4">
           <p className="pl-4 order-1 font-medium text-xs text-justify ">
-            {descricao}
+            {formacao.descricao}
           </p>
         </div>
       </div>
@@ -133,7 +159,7 @@ export const FormacaoDetalhes = ({
         {/*Texto Descricao*/}
         <div className="order-1 pr-4 pt-4 mb-4">
           <p className="pl-4 order-1 font-medium text-xs text-justify ">
-            {justificacaoFormacao}
+            {formacao.justificacaoFormacao}
           </p>
         </div>
       </div>

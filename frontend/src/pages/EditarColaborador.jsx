@@ -11,7 +11,7 @@ export default function EditarColaborador() {
   const navigate = useNavigate();
   const personId = useLocation().search.slice(4);
 
-  const [initialData, setInitialData] = useState([]);
+  const [initialData, setInitialData] = useState({});
   const [isLoading, setLoading] = useState(true); // Loading state
   const [gestList, setGestList] = useState([]);
   const [gestAssociado, setGestAssociado] = useState([]);
@@ -211,7 +211,9 @@ export default function EditarColaborador() {
                     */}
                     <div className="inline-flex items-center justify-center w-16 h-16 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
                       <span className="font-medium text-gray-600 dark:text-gray-300">
-                        {pubFields[0]["value"].charAt(0)}
+                        {pubFields[0]["value"]
+                          ? pubFields[0]["value"].charAt(0)
+                          : ""}
                       </span>
                     </div>
                     <PlusCircle className="bottom-0 left-10 absolute w-5 h-5 text-primary" />

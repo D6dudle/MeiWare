@@ -266,6 +266,16 @@ public class PedidoFormacao {
         obj.put("listAnexoRef", listAnexoRefs);
         obj.put("quemFezPedidoId", quemFezPedido.getId());
         obj.put("quemFezPedidoNome", quemFezPedido.getNome());
+        StringBuilder nomes = new StringBuilder();
+        int i = 0;
+        for(Utilizador u: getFormandos()) {
+            if (i != getFormandos().size() - 1)
+                nomes.append(u.getNome() + ", ");
+            else
+                nomes.append(u.getNome());
+            i++;
+        }
+        obj.put("username", nomes);
         return obj;
     }
 

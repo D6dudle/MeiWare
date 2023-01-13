@@ -83,15 +83,18 @@ export default function MainScreen() {
               element={<EditarFormacao />}
             />
             <Route
-              path="/formacao/pesquisar-detalhes"
+              path="/formacao/minhas-formacoes/detalhes"
               element={<PesquisarDetalhes />}
             />
             <Route
               path="/knowledge/adicionar-publicacao"
               element={<AdicionarPublicacao updateSidebar={handleChange} />}
             />
-            <Route path="/knowledge/aprovar-publicacao" element={<PrivateRoutes.GestorRoute/>}>
-              <Route path="" element={<AprovarPublicacao />}/>
+            <Route
+              path="/knowledge/aprovar-publicacao"
+              element={<PrivateRoutes.GestorRoute />}
+            >
+              <Route path="" element={<AprovarPublicacao />} />
             </Route>
             <Route path="/knowledge" element={<PesquisarForum />} />
             <Route
@@ -104,6 +107,10 @@ export default function MainScreen() {
               <Route
                 path="/controlo/gerir-formacoes"
                 element={<GerirPedidos />}
+              />
+              <Route
+                path="/controlo/gerir-formacoes/detalhes"
+                element={<PesquisarDetalhes />}
               />
               <Route
                 path="/controlo/gerir-formacoes/editar-formacao"

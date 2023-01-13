@@ -50,6 +50,7 @@ public class FormacaoController {
 
                 String username = "";
                 int i = 0;
+                /*
                 for (Utilizador u : p.getFormandos()){
                     //Correspondem ao nome das pessoas que vão fazer uma formação
                     auxP.put("username", u.getNome());
@@ -58,7 +59,7 @@ public class FormacaoController {
                         username += ", ";
                     i++;
                 }
-                auxP.put("username", username);
+                auxP.put("username", username);*/
 
                 //NOTA quem fez o pedido pode não ser a pessoa a quem o curso se destina no caso de ser admin
                 //auxP.put("username", p.getQuemFezPedido().getNome());
@@ -85,6 +86,7 @@ public class FormacaoController {
                     arr.toString(),
                     HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(
                     "Erro ao aceder aos pedidos de formações.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
