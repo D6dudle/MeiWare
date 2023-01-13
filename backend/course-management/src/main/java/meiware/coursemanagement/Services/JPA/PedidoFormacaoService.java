@@ -164,13 +164,22 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
     }
 
     @Override
-    public void updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao) {
+    public void updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao, List<MultipartFile> addedFiles, List<AnexoRef> removedFiles) {
         try {
             PedidoFormacao pedidoFormacao = this.getPedidoFormacaoById(updatedPedidoFormacao.getId());
             if(pedidoFormacao != null) {
-                System.out.println(updatedPedidoFormacao);
-                System.out.println(pedidoFormacao);
                 mapper.map(updatedPedidoFormacao, pedidoFormacao);
+
+                if(addedFiles != null) {
+                    this.addAnexosToPedidoFormacao(pedidoFormacao, addedFiles);
+                    System.out.println("Added: " + addedFiles);
+                }
+
+                if(removedFiles != null) {
+                    this.removeAnexosFromPedidoFormacao(pedidoFormacao, removedFiles);
+                    System.out.println("Removed: " + removedFiles);
+                }
+
                 pedidoFormacaoRepository.save(pedidoFormacao);
             }
 
@@ -209,34 +218,30 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
         }
     }
 
-
-
-
     @Override
-    public void addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file) {
+    public void addAnexosToPedidoFormacao(PedidoFormacao pedidoFormacao, List<MultipartFile> files) {
         try {
-            PedidoFormacao pedido = this.getPedidoFormacaoById(pedidoFormacao.getId());
-            if(pedido != null) {
-                Anexo anexo = anexoService.createAnexo(file);
+            List<AnexoRef> addedAnexos = new ArrayList<>();
+            for (MultipartFile f: files) {
+                Anexo anexo = anexoService.createAnexo(f);
                 AnexoRef anexoRef = new AnexoRef(anexo.getId(), anexo.getNome(), anexo.getType(), anexo.getSize());
-                anexoRefRepository.save(anexoRef);
-                pedido.addAnexoRef(anexoRef);
-                pedidoFormacaoRepository.save(pedido);
+                addedAnexos.add(anexoRef);
             }
+            anexoRefRepository.saveAll(addedAnexos);
+            pedidoFormacao.addAnexoRef(addedAnexos);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void removeAnexoFromPedidoFormacao(PedidoFormacao pedidoFormacao, AnexoRef anexoRef) {
+    public void removeAnexosFromPedidoFormacao(PedidoFormacao pedidoFormacao, List<AnexoRef> anexoRefs) {
         try {
-            PedidoFormacao pedido = this.getPedidoFormacaoById(pedidoFormacao.getId());
-            if(pedido != null) {
-                pedido.removeAnexoRef(anexoRef);
-                pedidoFormacaoRepository.save(pedido);
-                anexoService.removeAnexo(anexoRef.getPath());
-                anexoRefRepository.delete(anexoRef);
+            List<AnexoRef> removedAnexos = new ArrayList<>();
+            for (AnexoRef a: anexoRefs) {
+                pedidoFormacao.removeAnexoRef(a);
+                anexoService.removeAnexo(a.getPath());
+                anexoRefRepository.delete(a);
             }
         } catch (Exception e) {
             e.printStackTrace();

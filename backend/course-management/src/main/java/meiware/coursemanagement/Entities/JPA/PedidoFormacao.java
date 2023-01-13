@@ -219,8 +219,10 @@ public class PedidoFormacao {
         this.listAnexoRefs = listAnexoRefs;
     }
 
-    public void addAnexoRef(AnexoRef anexoRef) {
-        this.getListAnexoRefs().add(anexoRef);
+    public void addAnexoRef(List<AnexoRef> anexoRefs) {
+        for (AnexoRef a: anexoRefs) {
+            this.getListAnexoRefs().add(a);
+        }
     }
 
     public void removeAnexoRef(AnexoRef anexoRef) {

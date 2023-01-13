@@ -20,7 +20,7 @@ function DropzoneFiles({callback, anexos}) {
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     acceptedFiles.some((file) => {
       setFiles((prevState) => {
-        if (prevState.findIndex((f) => f.name === file.name) === -1) {
+        if (prevState.findIndex((f) => (f.nome || f.name) === (file.nome || file.name)) === -1) {
           if (callback) callback([...prevState, file]);
           return [...prevState, file];
         } else {
@@ -33,8 +33,10 @@ function DropzoneFiles({callback, anexos}) {
 
   const mapResponseToValuesAndLabels = (data) => ({
     type: data.type,
-    path: data.nome,
-    size: data.size
+    path: data.path,
+    size: data.size,
+    nome: data.nome,
+    id: data.id
   });
 
   const {
@@ -77,9 +79,9 @@ function DropzoneFiles({callback, anexos}) {
     }
   }
 
-  const ListarFicheiros = ({ fileType, filePath, fileSize }) => {
-    function handleRemoveFile(filePath) {
-      const newList = files.filter((file) => file.path !== filePath);
+  const ListarFicheiros = ({ fileType, fileName, fileSize }) => {
+    function handleRemoveFile(fileName) {
+      const newList = files.filter((file) => (file.name || file.nome) !== fileName);
       if (callback) callback(newList);
       setFiles(newList);
     }
@@ -92,7 +94,7 @@ function DropzoneFiles({callback, anexos}) {
           <div className="flex flex-row justify-start items-center ml-2 gap-4 w-full">
             <div className="flex flex-row w-3/5">
               {icon != null && <icon.icon className="mr-2 flex" />}
-              <div className="">{filePath}• </div>
+              <div className="">{fileName}• </div>
             </div>
             <div className="relative w-2/5">
               <div className="flex columns-2 gap-8">{sizeFile}</div>
@@ -100,7 +102,7 @@ function DropzoneFiles({callback, anexos}) {
             <div className="pb-12">
               <button
                 className="flex h-[24px] w-[24px] px-1 bg-primary text-darkBlack font-semibold text-sm rounded-sm hover:shadow-btn focus:border-white"
-                onClick={() => handleRemoveFile(filePath)}
+                onClick={() => handleRemoveFile(fileName)}
               >
                 <X className="" />
               </button>
@@ -146,7 +148,7 @@ function DropzoneFiles({callback, anexos}) {
             <ListarFicheiros
               key={index}
               fileType={file.type}
-              filePath={file.path}
+              fileName={file.nome || file.name}
               fileSize={file.size}
             />
           ))}

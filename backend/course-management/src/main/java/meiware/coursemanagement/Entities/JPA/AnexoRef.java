@@ -86,7 +86,7 @@ public class AnexoRef {
         return "AnexoRef{" +
                 "id=" + id +
                 ", path='" + path + '\'' +
-                ", nome='" + nome + '\'' +
+                ", name='" + nome + '\'' +
                 ", type='" + type + '\'' +
                 ", size='" + size + '\'' +
                 '}';
