@@ -32,9 +32,9 @@ function DropzoneFiles({callback, anexos}) {
   }, []);
 
   const mapResponseToValuesAndLabels = (data) => ({
-    type: "image/jpg",
+    type: data.type,
     path: data.nome,
-    size: data.id
+    size: data.size
   });
 
   const {
@@ -65,11 +65,16 @@ function DropzoneFiles({callback, anexos}) {
   });
 
   function bytesToSize(bytes) {
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-    if (bytes === 0) return "n/a";
-    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
-    if (i === 0) return `${bytes} ${sizes[i]}`;
-    return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`;
+    if (typeof bytes === 'string' || bytes instanceof String) {
+      return bytes;
+    }
+    else {
+      const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+      if (bytes === 0) return "n/a";
+      const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+      if (i === 0) return `${bytes} ${sizes[i]}`;
+      return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`;
+    }
   }
 
   const ListarFicheiros = ({ fileType, filePath, fileSize }) => {
