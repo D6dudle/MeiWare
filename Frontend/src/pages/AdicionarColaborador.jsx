@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { PlusCircle, XOctagon } from "react-feather";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import TextInput from "../components/TextInput";
 import DefaultAvatar from "../assets/DefaultAvatar.png";
 import GoBackButton from "../components/GoBackButton";
 import AuthService from "../services/auth.service";
+import { roleList } from "../constants/menuConstants";
 
 export default function AdicionarColaborador() {
   const navigate = useNavigate();
@@ -15,11 +16,16 @@ export default function AdicionarColaborador() {
     raw: DefaultAvatar,
   });
 
-  const config = (handleType) => {
+  const references = [];
+  for(let i=0; i<3; i++){
+    references.push(useRef(null))
+  }
+
+  const config = (handleType, handleDropdown) => {
     const fields = [];
-    fields.push({ name: "nome", required: true, callback: handleType });
-    fields.push({ name: "email", required: true, callback: handleType });
-    fields.push({ name: "cargo", required: true, callback: handleType });
+    fields.push({ name: "nome", trigger: references[0], callback: handleType });
+    fields.push({ name: "email", trigger: references[1], callback: handleType });
+    fields.push({ name: "cargo", trigger: references[2], callback: handleDropdown, type:"dropsearch",placeholder:"cargo...", list:roleList});
     return fields;
   };
 
@@ -49,7 +55,13 @@ export default function AdicionarColaborador() {
       setPubFields(data);
     };
 
-    return config(handleType);
+    const handleDropdown = (index, opt) => {
+      let data = [...pubFields];
+      data[index]["value"] = opt;
+      setPubFields(data);
+    };
+
+    return config(handleType, handleDropdown);
   });
 
   const [errorMsg, setErrorMsg] = useState({
@@ -59,47 +71,58 @@ export default function AdicionarColaborador() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    var nome = pubFields[0].value;
-    var email = pubFields[1].value;
-    var password = "123456";
-    var maxRole = pubFields[2].value;
-    var roleList = [];
-    if (maxRole) {
-      if (
-        maxRole.toLowerCase() == "colaborador" ||
-        maxRole.toLowerCase() == "colab"
-      ) {
-        roleList.push("COLABORADOR");
-      } else if (maxRole.toLowerCase() == "gestor") {
-        roleList.push("COLABORADOR");
-        roleList.push("GESTOR");
-      } else if (
-        maxRole.toLowerCase() == "admin" ||
-        maxRole.toLowerCase() == "administrador"
-      ) {
-        roleList.push("COLABORADOR");
-        roleList.push("GESTOR");
-        roleList.push("ADMINISTRADOR");
-      } else {
-        roleList.push(maxRole);
+
+    //Verificar se estão vazios
+    for(let i=0; i<references.length; i++){
+      if(references[i]){
+        references[i].current();
       }
-    } else {
-      roleList.push(maxRole);
     }
 
-    AuthService.register(nome, email, password, roleList).then(
-      () => {
-        navigate(`/home/controlo/colaboradores`);
-      },
-      (error) => {
-        setErrorMsg({
-          show: true,
-          msg: error.response.data.message
-            ? error.response.data.message
-            : error.response.data.error,
-        });
-      }
-    );
+    //Ver se os campos obrigatórios estão preenchidos
+    if(pubFields[0].value && pubFields[1].value && pubFields[2].value){
+        var nome = pubFields[0].value;
+        var email = pubFields[1].value;
+        var password = "123456";
+        var maxRole = pubFields[2].value.value;
+        var roleList = [];
+        if (maxRole) {
+          if (
+            maxRole.toLowerCase() == "colaborador" ||
+            maxRole.toLowerCase() == "colab"
+          ) {
+            roleList.push("COLABORADOR");
+          } else if (maxRole.toLowerCase() == "gestor") {
+            roleList.push("COLABORADOR");
+            roleList.push("GESTOR");
+          } else if (
+            maxRole.toLowerCase() == "admin" ||
+            maxRole.toLowerCase() == "administrador"
+          ) {
+            roleList.push("COLABORADOR");
+            roleList.push("GESTOR");
+            roleList.push("ADMINISTRADOR");
+          } else {
+            roleList.push(maxRole);
+          }
+        } else {
+          roleList.push(maxRole);
+        }
+
+      AuthService.register(nome, email, password, roleList).then(
+        () => {
+          navigate(`/home/controlo/colaboradores`);
+        },
+        (error) => {
+          setErrorMsg({
+            show: true,
+            msg: error.response.data.message
+              ? error.response.data.message
+              : error.response.data.error,
+          });
+        }
+      );
+    }
   };
 
   return (
@@ -138,6 +161,8 @@ export default function AdicionarColaborador() {
                           type={field.type}
                           list={field.list}
                           multi={field.multi}
+                          trigger={field.trigger}
+                          placeholder={field.placeholder}
                         />
                       </div>
                     </li>

@@ -72,6 +72,12 @@ export const iconImageUpload = [
   { type: "application/x-zip-compressed", icon: Archive },
 ];
 
+export const roleList = [
+  { label: "Colaborador", value: "colaborador" },
+  { label: "Gestor", value: "gestor" },
+  { label: "Admin", value: "admin" },
+];
+
 export const dataCard = [
   {
     username: "Pedro",
