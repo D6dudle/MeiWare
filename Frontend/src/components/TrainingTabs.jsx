@@ -103,7 +103,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
 
     useEffect(() => {
       if (rawList != null) {
-        console.log(rawList);
+        //console.log(rawList);
         for (const property in rawList) {
           // Resposta com a lista de formações do user
           if (rawList[property]?.tipoFormacao === "PENDENTE") {
@@ -254,15 +254,17 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
         item.nomeFormacao.toLowerCase().includes(search.toLowerCase())
       );
       if (values.length > 0) {
-        for (let i = 0; i < values[1].length; i++) {
-          list = list.filter((item) => item.username == values[1][i].label);
+        if(values[1].length > 0){
+          let selected_users = values[1].map(item => item.label)
+          list = list.filter((item) => item.username.split(", ").some(o => selected_users.includes(o)) );
         }
       }
     } else {
       //Change validation method to parse the username string with includes
       if (values.length > 0) {
-        for (let i = 0; i < values[1].length; i++) {
-          list = list.filter((item) => item.username == values[1][i].label);
+        if(values[1].length > 0){
+          let selected_users = values[1].map(item => item.label)
+          list = list.filter((item) => item.username.split(", ").some(o => selected_users.includes(o)));
         }
       }
     }

@@ -36,7 +36,7 @@ export const PublicacaoDetalhes = ({
 
   const arquivarPublicacaoHandler = (e) => {
     e.preventDefault();
-    alert("Click em Arquivar formação");
+    //alert("Click em Arquivar formação");
   };
 
   return (

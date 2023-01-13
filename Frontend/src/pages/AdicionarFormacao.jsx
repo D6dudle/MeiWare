@@ -135,12 +135,13 @@ export default function AdicionarFormacao() {
   }
 
   return (
-    <div className="ml-8 mr-8 w-full h-full overflow-hidden ">
+    <div className="pl-8 pr-8 w-full h-full overflow-hidden ">
+      <div className="h-full flex flex-col">
       <h1 className="sticky top-5 text-white font-bold text-3xl mt-8">
         Adicionar formação
       </h1>
 
-      <div className="w-full h-full overflow-scroll scrollbar-hide">
+      <div className="pb-4 w-full h-full overflow-scroll scrollbar-hide">
         <div className="flex justify-evenly items-center">
           <form
             method="POST"
@@ -149,8 +150,8 @@ export default function AdicionarFormacao() {
             noValidate
             encType="multipart/form-data"
           >
-            <div className="flex flex-wrap justify-between sm:justify-start">
-              <div className="mr-20 w-[332px]">
+            <div className="flex flex-wrap flex-row gap-16 justify-between sm:justify-start">
+              <div className="flex-grow w-[332px]">
                 {/* NOME */}
                 <div className="mb-4">
                   <label
@@ -239,10 +240,10 @@ export default function AdicionarFormacao() {
                 </div>
               </div>
 
-              <div className="mr-20 w-[332px]">
+              <div className="flex-grow w-[332px]">
                 {/* NOME COLABORADOR*/}
                 {user.isAdministrador && (
-                  <div className="mb-4">
+                  <div className="pt-2 mb-4">
                     <label
                       htmlFor="nomeColaborador"
                       className="text-gray5 text-[14px] "
@@ -276,7 +277,7 @@ export default function AdicionarFormacao() {
                   </div>
                 )}
                 {/* DATA */}
-                <div className="mb-4">
+                <div className="pt-4 mb-4">
                   <label htmlFor="data" className="text-gray5 text-[14px]">
                     data
                   </label>
@@ -354,7 +355,7 @@ export default function AdicionarFormacao() {
                 </div>
               </div>
 
-              <div className="mr-20 w-[332px]">
+              <div className="flex-grow w-[332px]">
                 {/* DESCRICAO DA FORMACAO */}
                 <div className="mb-4">
                   <label
@@ -395,6 +396,7 @@ export default function AdicionarFormacao() {
             </div>
           </form>
         </div>
+      </div>
       </div>
     </div>
   );

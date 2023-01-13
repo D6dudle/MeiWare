@@ -54,7 +54,7 @@ export const Formacao = ({
 
   const handleConsultarFormacaoClick = (e, formacao) => {
     e.preventDefault();
-    console.log(formacao);
+    //console.log(formacao);
     navigate(`/home/formacao/pesquisar-detalhes`, { state: formacao });
   };
 
@@ -73,7 +73,7 @@ export const Formacao = ({
 
   const handleFinalizarFormacaoClick = (e) => {
     e.preventDefault();
-    alert("Click em Finalizar formação");
+    //alert("Click em Finalizar formação");
     onFinalizarClick();
   };
 
