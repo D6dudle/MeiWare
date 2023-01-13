@@ -84,7 +84,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
         setFilteredList(JSONList[0].formacoes);
       }
     }, [rawList]);
-    urlBack = "/home/formacao/listar-formacao";
+    urlBack = "/home/formacao/minhas-formacoes";
   } else if (nomeEcra == "GERIRPEDIDOS") {
     useEffect(() => {
       const user = UserService.getCurrentUser();
