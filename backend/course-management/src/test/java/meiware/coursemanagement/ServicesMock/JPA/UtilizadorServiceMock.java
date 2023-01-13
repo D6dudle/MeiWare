@@ -297,10 +297,11 @@ public class UtilizadorServiceMock {
         auxUserRoles.add(Role.COLABORADOR);
         Utilizador auxUser = new Utilizador("Ptiago", "ptiago@email.com", "123456", auxUserRoles);
 
+        given(utilizadorRepository.findById(auxUser.getId())).willReturn(Optional.of(auxUser));
         given(utilizadorRepository.findByEmail(auxUser.getEmail())).willReturn(null);
 
         // when - action or behavior that we are going to test
-        utilizadorService.removeUtilizador(auxUser);
+        utilizadorService.removeUtilizador(auxUser.getId());
         Utilizador user = utilizadorService.getUtilizadorByEmail(auxUser.getEmail());
 
         // then

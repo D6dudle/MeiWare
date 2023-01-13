@@ -129,16 +129,16 @@ describe('Smoke Tests', () => {
 
     })*/
 
-    it('TC06 - Smoke Test do ecrã Listar formações.', () => {
+    it('TC06 - Smoke Test do ecrã Gerir formações.', () => {
       // Opens Search Formation Screen
       cy.wait(2000);
-      cy.visit('/home/formacao/listar-formacao');
+      cy.visit('/home/controlo/gerir-formacoes');
 
       // Asserts URL
-      cy.url().should('include', '/home/formacao/listar-formacao');
+      cy.url().should('include', '/home/controlo/gerir-formacoes');
 
-      // Título corresponde a “Listar formações“
-      cy.xpath("(//h1[normalize-space()='Listar formações'])[1]").should('have.text', 'Listar formações');
+      // Título corresponde a “Gerir formações“
+      cy.xpath("(//h1[normalize-space()='Gerir formações'])[1]").should('have.text', 'Gerir formações');
 
       // Campo de “pesquisa…” está enabled
       cy.xpath("(//input[@id='pesquisa...'])[1]").should('be.enabled');
