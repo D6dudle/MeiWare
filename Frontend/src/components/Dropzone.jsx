@@ -6,8 +6,16 @@ import { useEffect } from "react";
 import { iconImageUpload } from "../constants/menuConstants";
 import { X } from "react-feather";
 
-function DropzoneFiles({callback}) {
+function DropzoneFiles({callback, anexos}) {
   const [files, setFiles] = useState([]);
+  const [listAnexos, setListAnexos] = useState();
+
+  useEffect(() => {
+    if(anexos != null) {
+      setFiles(anexos.map(mapResponseToValuesAndLabels));
+      console.log(files);
+    }
+  }, [anexos]);
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     acceptedFiles.some((file) => {
@@ -23,9 +31,11 @@ function DropzoneFiles({callback}) {
     });
   }, []);
 
-  /* useEffect(() => {
-    console.log("State: " + Date.now(), files);
-  }, [files]); */
+  const mapResponseToValuesAndLabels = (data) => ({
+    type: "image/jpg",
+    path: data.nome,
+    size: data.id
+  });
 
   const {
     getRootProps,
@@ -36,7 +46,7 @@ function DropzoneFiles({callback}) {
   } = useDropzone({
     onDrop,
     accept: {
-      "image/*": [".jpeg", ".png"],
+      "image/*": [".jpg", ".jpeg", ".png"],
       "application/pdf": [
         ".doc",
         ".docx",
@@ -58,7 +68,7 @@ function DropzoneFiles({callback}) {
     const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
     if (bytes === 0) return "n/a";
     const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
-    if (i === 0) return `${bytes} ${sizes[i]})`;
+    if (i === 0) return `${bytes} ${sizes[i]}`;
     return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`;
   }
 
@@ -76,7 +86,7 @@ function DropzoneFiles({callback}) {
         <div className="flex flex-col justify-center items-start w-[483px] h-[62px] border-2 border-primary rounded-sm mt-2">
           <div className="flex flex-row justify-start items-center ml-2 gap-4 w-full">
             <div className="flex flex-row w-3/5">
-              <icon.icon className="mr-2 flex" />
+              {icon != null && <icon.icon className="mr-2 flex" />}
               <div className="">{filePath}• </div>
             </div>
             <div className="relative w-2/5">

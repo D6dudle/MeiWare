@@ -12,12 +12,13 @@ const getPedidosFormacaoEquipa = (gestorId) => {
 };
 
 const getPedidoFormacaoById = (pedidosFormacaoId) => {
-  return axios.get(API_URL + "pedidosFormacaoEquipa", { params: { id: pedidosFormacaoId }, headers: authHeader() }).then((r) => r.data);
+  return axios.get(API_URL + "pedidoFormacaoById", { params: { id: pedidosFormacaoId }, headers: authHeader() }).then((r) => r.data);
 };
 
 const PedidoFormacaoService = {
   getPedidosFormacaoAll,
-  getPedidosFormacaoEquipa
+  getPedidosFormacaoEquipa,
+  getPedidoFormacaoById
 };
 
 export default PedidoFormacaoService;

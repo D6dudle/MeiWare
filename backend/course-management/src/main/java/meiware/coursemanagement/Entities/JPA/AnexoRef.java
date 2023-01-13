@@ -18,13 +18,18 @@ public class AnexoRef {
     @NotNull
     private String nome;
 
+    private String type;
+    private String size;
+
     public AnexoRef() {
 
     }
 
-    public AnexoRef(String path, String nome) {
+    public AnexoRef(String path, String nome, String type, String size) {
         this.path = path;
         this.nome = nome;
+        this.type = type;
+        this.size = size;
     }
 
     public Long getId() {
@@ -47,6 +52,22 @@ public class AnexoRef {
         this.nome = nome;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,6 +86,9 @@ public class AnexoRef {
         return "AnexoRef{" +
                 "id=" + id +
                 ", path='" + path + '\'' +
+                ", nome='" + nome + '\'' +
+                ", type='" + type + '\'' +
+                ", size='" + size + '\'' +
                 '}';
     }
 }

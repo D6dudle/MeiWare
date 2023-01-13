@@ -11,21 +11,13 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import "./calendar.css";
 import GoBackButton from "../components/GoBackButton";
 import { useLocation } from "react-router-dom";
+import PedidoFormacaoService from "../services/pedido-formacao.service";
 
 export default function EditarFormacao() {
   const formationId = useLocation().search.slice(4); //ID da formação que vem da outra página
   const [datePick, setDatePick] = useState(false);
 
-  const [formationCamps, setFormationCamps] = useState({
-    nomeFormacao: "",
-    fornecedor: "",
-    justificacaoFormacao: "",
-    nomeColaborador: [],
-    dataFormacao: new Date(),
-    precoFormacao: "",
-    descricaoFormacao: "",
-    formationId: formationId,
-  });
+  const [formationCamps, setFormationCamps] = useState([]);
   const dataCard = [
     {
       username: "Pedro",
@@ -36,9 +28,9 @@ export default function EditarFormacao() {
       idCurso: "P-T-331",
       tipoFormacao: "TERMINADA",
       consultar: true,
-      descricaoFormacao: "ALLEZ PORTO ALLEZ",
-      fornecedor: "Benfica ao Colo LDA",
-      precoFormacao: 100.1,
+      descricao: "ALLEZ PORTO ALLEZ",
+      formador: "Benfica ao Colo LDA",
+      preco: 100.1,
     },
     {
       username: "Henrique",
@@ -69,38 +61,12 @@ export default function EditarFormacao() {
     { label: "Pedro", value: "Pedro" },
   ];
 
-  //SIMULAR O JSON DEVOLVIDO PELO BACKEND -> APAGAR
-  //Este useEffect só corre uma vez quando se dá load à página
+  
   useEffect(() => {
-    for (var i = 0; i < dataCard.length; i++) {
-      if (dataCard[i].idCurso == formationId) {
-        for (var j = 0; j < colaboradores.length; j++) {
-          if (colaboradores[j].value == dataCard[i].username) {
-            setFormationCamps({
-              ...formationCamps,
-              nomeFormacao: dataCard[i].nomeformacao,
-              justificacaoFormacao: dataCard[i].justificacaoFormacao,
-              dataFormacao: dataCard[i].dataFormacao,
-              descricaoFormacao: dataCard[i].descricaoFormacao,
-              fornecedor: dataCard[i].fornecedor,
-              precoFormacao: dataCard[i].precoFormacao,
-              nomeColaborador: colaboradores[j],
-            });
-          } else {
-            //Caso não tenha nenhum colaborador associado à formação - é só para não ter Null no dropwdown
-            setFormationCamps({
-              ...formationCamps,
-              nomeFormacao: dataCard[i].nomeformacao,
-              justificacaoFormacao: dataCard[i].justificacaoFormacao,
-              dataFormacao: dataCard[i].dataFormacao,
-              descricaoFormacao: dataCard[i].descricaoFormacao,
-              fornecedor: dataCard[i].fornecedor,
-              precoFormacao: dataCard[i].precoFormacao,
-            });
-          }
-        }
-      }
-    }
+    PedidoFormacaoService.getPedidoFormacaoById(formationId).then((data) => {
+      data.dataFormacao = new Date(data.dataFormacao);
+      setFormationCamps(data);
+    });
   }, []);
 
   //Aqui vai levar uma query para ir buscar os campos de informação à BD para preencher os campos
@@ -129,7 +95,7 @@ export default function EditarFormacao() {
       // Overwrittes the different states of border
 
       borderColor:
-        formationCamps.nomeColaborador.length == 0 && isSubmit === true
+      formationCamps.quemFezPedidoNome != null && formationCamps.quemFezPedidoNome.length == 0 && isSubmit === true
           ? "#FF9090"
           : "#6D6D6D",
 
@@ -153,23 +119,23 @@ export default function EditarFormacao() {
     if (!formValues.nomeFormacao) {
       errors.nomeFormacao = "Nome da formação é obrigatório";
     }
-    if (!formValues.fornecedor) {
-      errors.fornecedor = "Fornecedor é obrigatório";
+    if (!formValues.formador) {
+      errors.formador = "Formador é obrigatório";
     }
     if (!formValues.justificacaoFormacao) {
       errors.justificacaoFormacao = "Justificação da formação é obrigatório";
     }
-    if (formValues.nomeColaborador.length == 0) {
-      errors.nomeColaborador = "Nome do colaborador é obrigatório";
+    if (formValues.quemFezPedidoNome.length == 0) {
+      errors.quemFezPedidoNome = "Nome do colaborador é obrigatório";
     }
     if (!formValues.dataFormacao) {
       errors.dataFormacao = "Data de formação é obrigatório";
     }
-    if (!formValues.precoFormacao) {
-      errors.precoFormacao = "Preço da formação é obrigatório";
+    if (!formValues.preco) {
+      errors.preco = "Preço da formação é obrigatório";
     }
-    if (!formValues.descricaoFormacao) {
-      errors.descricaoFormacao = "Descrição da formação é obrigatório";
+    if (!formValues.descricao) {
+      errors.descricao = "Descrição da formação é obrigatório";
     }
     return errors;
   };
@@ -195,7 +161,7 @@ export default function EditarFormacao() {
       <div className="sticky top-0 mt-8">
         <div className="flex flex-row items-center gap-5">
           <GoBackButton url={prevUrl} />
-          <h1 className="text-white font-bold text-3xl">Editar Formacao</h1>
+          <h1 className="text-white font-bold text-3xl">Editar Formação</h1>
         </div>
       </div>
       <div className="sticky top-16 pb-8">
@@ -209,7 +175,7 @@ export default function EditarFormacao() {
           <p className="text-sm text-white font-semibold pt-3">
             Colaborador Requisitante:
             <span className="text-white font-light">
-              {formationCamps.nomeColaborador.label}
+              {formationCamps.quemFezPedidoNome}
             </span>
           </p>
         </div>
@@ -253,29 +219,29 @@ export default function EditarFormacao() {
                 {/* FORNECEDOR */}
                 <div className="mb-4">
                   <label
-                    htmlFor="fornecedor"
+                    htmlFor="formador"
                     className="text-gray5 text-[14px]"
                   >
-                    fornecedor
+                    formador
                   </label>
                   <input
                     type="text"
                     className={`inputText ${
-                      formationCamps.fornecedor || isSubmit === false
+                      formationCamps.formador || isSubmit === false
                         ? null
                         : "border-error"
                     }`}
-                    id="fornecedor"
-                    placeholder="fornecedor"
+                    id="formador"
+                    placeholder="formador"
                     onChange={(e) => {
                       setFormationCamps({
                         ...formationCamps,
-                        fornecedor: e.target.value,
+                        formador: e.target.value,
                       });
                     }}
-                    value={formationCamps.fornecedor}
+                    value={formationCamps.formador}
                   />
-                  <p className="inputTextErrors">{formErrors.fornecedor}</p>
+                  <p className="inputTextErrors">{formErrors.formador}</p>
                 </div>
 
                 {/* JUSTIFICACAO DA FORMACAO */}
@@ -312,7 +278,7 @@ export default function EditarFormacao() {
                 {/* NOME COLABORADOR*/}
                 <div className="mb-4">
                   <label
-                    htmlFor="nomeColaborador"
+                    htmlFor="quemFezPedidoNome"
                     className="text-gray5 text-[14px] "
                   >
                     nome colaborador
@@ -320,26 +286,26 @@ export default function EditarFormacao() {
                   <div className="relative">
                     <Select
                       className={` ${
-                        formationCamps.nomeColaborador || isSubmit === false
+                        formationCamps.quemFezPedidoNome || isSubmit === false
                           ? null
                           : "border-error"
                       } mt-2 mb-8`}
                       styles={customStyles}
                       options={colaboradores}
-                      defaultValue={formationCamps.nomeColaborador}
+                      defaultValue={formationCamps.quemFezPedidoNome}
                       isMulti
                       placeholder="nome"
-                      value={formationCamps.nomeColaborador}
+                      value={formationCamps.quemFezPedidoNome}
                       onChange={(opt) => {
                         console.log("DROPDWON: " + opt);
                         setFormationCamps({
                           ...formationCamps,
-                          nomeColaborador: opt,
+                          quemFezPedidoNome: opt,
                         });
                       }}
                     />
                     <p className="relative top-1 text-xs text-error">
-                      {formErrors.nomeColaborador}
+                      {formErrors.quemFezPedidoNome}
                     </p>
                   </div>
                 </div>
@@ -365,7 +331,7 @@ export default function EditarFormacao() {
                           dataFormacao: e.target.value,
                         });
                       }}
-                      value={formationCamps.dataFormacao.toLocaleDateString()}
+                      value={formationCamps.dataFormacao != undefined && formationCamps.dataFormacao.toLocaleDateString()}
                       onClick={showCalendar}
                     />
                     <p className="inputTextErrors">{formErrors.dataFormacao}</p>
@@ -395,20 +361,20 @@ export default function EditarFormacao() {
                     <CurrencyInput
                       id="preco"
                       className={`inputText ${
-                        formationCamps.precoFormacao || isSubmit === false
+                        formationCamps.preco || isSubmit === false
                           ? null
                           : "border-error"
                       }`}
                       name="input-name"
                       placeholder="preço"
-                      value={formationCamps.precoFormacao}
+                      value={formationCamps.preco}
                       decimalsLimit={2}
                       decimalSeparator=","
                       groupSeparator="."
                       onValueChange={(value, name) =>
                         setFormationCamps({
                           ...formationCamps,
-                          precoFormacao: value,
+                          preco: value,
                         })
                       }
                     />
@@ -416,7 +382,7 @@ export default function EditarFormacao() {
                       <BiEuro className="h-6 w-6" />
                     </div>
                     <p className="inputTextErrors">
-                      {formErrors.precoFormacao}
+                      {formErrors.preco}
                     </p>
                   </div>
                 </div>
@@ -426,36 +392,36 @@ export default function EditarFormacao() {
                 {/* DESCRICAO DA FORMACAO */}
                 <div className="mb-4">
                   <label
-                    htmlFor="descricaoFormacao"
+                    htmlFor="descricao"
                     className="text-gray5 text-[14px] "
                   >
                     descrição da formação
                   </label>
                   <textarea
                     className={`inputText min-h-[130px] ${
-                      formationCamps.descricaoFormacao || isSubmit === false
+                      formationCamps.descricao || isSubmit === false
                         ? null
                         : "border-error"
                     }`}
-                    id="descricaoFormacao"
+                    id="descricao"
                     placeholder="descrição da formação"
                     onChange={(e) => {
                       setFormationCamps({
                         ...formationCamps,
-                        descricaoFormacao: e.target.value,
+                        descricao: e.target.value,
                       });
                     }}
-                    value={formationCamps.descricaoFormacao}
+                    value={formationCamps.descricao}
                   />
                   <p className="inputTextErrors">
-                    {formErrors.descricaoFormacao}
+                    {formErrors.descricao}
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="max-w-6xl w-full items-center">
-              <DropzoneFiles />
+              <DropzoneFiles anexos={formationCamps.listAnexoRef} />
             </div>
 
             <div className="absolute right-20 bottom-10">

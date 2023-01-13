@@ -67,6 +67,7 @@ export const Menus = [
 export const iconImageUpload = [
   { type: "image/png", icon: Image },
   { type: "image/jpeg", icon: Image },
+  { type: "image/jpg", icon: Image },
   { type: "application/pdf", icon: File },
   { type: "application/zip", icon: Archive },
   { type: "application/x-zip-compressed", icon: Archive },

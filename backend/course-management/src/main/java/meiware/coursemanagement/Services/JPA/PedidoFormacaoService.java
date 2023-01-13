@@ -145,7 +145,7 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
                 Set<AnexoRef> anexoRefs = new HashSet<>();
                 for (MultipartFile file: files) {
                     Anexo anexo = anexoService.createAnexo(file);
-                    anexoRefs.add(new AnexoRef(anexo.getId(), anexo.getNome()));
+                    anexoRefs.add(new AnexoRef(anexo.getId(), anexo.getNome(), anexo.getType(), anexo.getSize()));
                 }
                 anexoRefRepository.saveAll(anexoRefs);
                 pedidoFormacao.setListAnexoRefs(anexoRefs);
@@ -218,7 +218,7 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
             PedidoFormacao pedido = this.getPedidoFormacaoById(pedidoFormacao.getId());
             if(pedido != null) {
                 Anexo anexo = anexoService.createAnexo(file);
-                AnexoRef anexoRef = new AnexoRef(anexo.getId(), anexo.getNome());
+                AnexoRef anexoRef = new AnexoRef(anexo.getId(), anexo.getNome(), anexo.getType(), anexo.getSize());
                 anexoRefRepository.save(anexoRef);
                 pedido.addAnexoRef(anexoRef);
                 pedidoFormacaoRepository.save(pedido);
