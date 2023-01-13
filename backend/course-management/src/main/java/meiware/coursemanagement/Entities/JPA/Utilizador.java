@@ -292,7 +292,7 @@ public class Utilizador {
 
         //obj.put("username", listaFormacao.getQuemFezPedido().getNome());
         obj.put("nomeFormacao", listaFormacao.getNome());
-        obj.put("dataFormacao", listaFormacao.getDataCriacao());
+        obj.put("dataFormacao", listaFormacao.getDataInicio());
         obj.put("idCurso", listaFormacao.getId());
         obj.put("preco", listaFormacao.getPreco());
 

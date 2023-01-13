@@ -25,9 +25,7 @@ import Modal from "../components/Modal";
 import PrivateRoutes from "../components/PrivateRoutes";
 import UserService from "../services/user.service";
 
-
 function MenuInicial() {
-
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -63,32 +61,34 @@ export default function MainScreen() {
             <Route path="/exemplo" element={<Exemplo />} />
             <Route path="/modal" element={<Modal />} />
 
-
             {/* Definir todas as routes existentes */}
             {/*
             <Route path="/formacao/pesquisar-formacao" element={<PrivateRoutes.GestorRoute/>}>
               <Route path="" element={<PesquisarFormacao />}/>
             </Route> */}
-            
+
             <Route path="/" element={<MenuInicial />} />
             <Route path="/formacao" element={<Formacao />} />
             <Route
               path="/formacao/adicionar-formacao"
               element={<AdicionarFormacao />}
             />
-            
+
             <Route
               path="/formacao/minhas-formacoes"
               element={<ListarFormacao />}
             />
-            <Route path="/formacao/minhas-formacoes/editar-formacao" element={<EditarFormacao />}/>
+            <Route
+              path="/formacao/minhas-formacoes/editar-formacao"
+              element={<EditarFormacao />}
+            />
             <Route
               path="/formacao/pesquisar-detalhes"
               element={<PesquisarDetalhes />}
             />
             <Route
               path="/knowledge/adicionar-publicacao"
-              element={<AdicionarPublicacao updateSidebar={handleChange}/>}
+              element={<AdicionarPublicacao updateSidebar={handleChange} />}
             />
             <Route path="/knowledge/aprovar-publicacao" element={<PrivateRoutes.GestorRoute/>}>
               <Route path="" element={<AprovarPublicacao />}/>
@@ -99,20 +99,29 @@ export default function MainScreen() {
               element={<PesquisarForumConsulta />}
             />
 
-          <Route path="/controlo" element={<PrivateRoutes.GestorRoute/>}>
-            <Route path="" element={<ControloBudget />} />
-            <Route path="/controlo/gerir-formacoes" element={<GerirPedidos />} />
-            <Route path="/controlo/gerir-formacoes/editar-formacao" element={<EditarFormacao />}/>
-            <Route path="/controlo/colaboradores" element={<Colaboradores />} />
-            <Route
-              path="/controlo/colaboradores/adicionar-colaborador"
-              element={<AdicionarColaborador />}
-            />
-            <Route
-              path="/controlo/colaboradores/editar-colaborador/"
-              element={<EditarColaborador />}
-            />
-          </Route>
+            <Route path="/controlo" element={<PrivateRoutes.GestorRoute />}>
+              <Route path="" element={<ControloBudget />} />
+              <Route
+                path="/controlo/gerir-formacoes"
+                element={<GerirPedidos />}
+              />
+              <Route
+                path="/controlo/gerir-formacoes/editar-formacao"
+                element={<EditarFormacao />}
+              />
+              <Route
+                path="/controlo/colaboradores"
+                element={<Colaboradores />}
+              />
+              <Route
+                path="/controlo/colaboradores/adicionar-colaborador"
+                element={<AdicionarColaborador />}
+              />
+              <Route
+                path="/controlo/colaboradores/editar-colaborador/"
+                element={<EditarColaborador />}
+              />
+            </Route>
 
             <Route path="*" element={<ErrorPage />} />
           </Routes>

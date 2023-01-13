@@ -6,19 +6,19 @@ import { useEffect } from "react";
 import { iconImageUpload } from "../constants/menuConstants";
 import { X } from "react-feather";
 
-function DropzoneFiles({callback}) {
+function DropzoneFiles({ callback }) {
   const [files, setFiles] = useState([]);
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     acceptedFiles.some((file) => {
       setFiles((prevState) => {
         if (prevState.findIndex((f) => f.name === file.name) === -1) {
-          if(callback) callback([...prevState, file])
+          if (callback) callback([...prevState, file]);
           return [...prevState, file];
-        } else{ 
-          if(callback) callback([...prevState])
-          return [...prevState]
-        };
+        } else {
+          if (callback) callback([...prevState]);
+          return [...prevState];
+        }
       });
     });
   }, []);
@@ -65,7 +65,7 @@ function DropzoneFiles({callback}) {
   const ListarFicheiros = ({ fileType, filePath, fileSize }) => {
     function handleRemoveFile(filePath) {
       const newList = files.filter((file) => file.path !== filePath);
-      if(callback) callback(newList);
+      if (callback) callback(newList);
       setFiles(newList);
     }
 

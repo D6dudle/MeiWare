@@ -54,6 +54,7 @@ export const Formacao = ({
 
   const handleConsultarFormacaoClick = (e, formacao) => {
     e.preventDefault();
+    console.log(formacao);
     navigate(`/home/formacao/pesquisar-detalhes`, { state: formacao });
   };
 
