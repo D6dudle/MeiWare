@@ -141,7 +141,7 @@ public class PedidoFormacaoService implements IPedidoFormacaoService{
             PedidoFormacao pedidoFormacao = new PedidoFormacao();
             mapper.map(newPedidoFormacao, pedidoFormacao);
 
-            if (files.size() > 0) {
+            if (files != null && files.size() > 0) {
                 Set<AnexoRef> anexoRefs = new HashSet<>();
                 for (MultipartFile file: files) {
                     Anexo anexo = anexoService.createAnexo(file);

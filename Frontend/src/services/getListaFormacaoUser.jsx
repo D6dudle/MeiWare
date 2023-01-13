@@ -79,6 +79,30 @@ const rejeitarPedidoFormacaoGestor = (formacaoId, gestorId, comentario) => {
     .then((r) => r.data);
 };
 
+const criaPedidoFormacao = (files, pedidoFormacao, formandos) => {
+  var bodyFormData = new FormData();
+  bodyFormData.append(
+    "pedidoFormacao",
+    new Blob([JSON.stringify(pedidoFormacao)], { type: "application/json" })
+  );
+
+  bodyFormData.append(
+    "formandos",
+    new Blob([JSON.stringify(formandos)], { type: "application/json" })
+  );
+
+  files.map((file) => {
+    console.log(file);
+    bodyFormData.append("files", file);
+  });
+
+  return axios
+    .post(API_URL + "createPedidoFormacao", bodyFormData, {
+      headers: { ...authHeader(), "Content-Type": "multipart/form-data;" },
+    })
+    .then((r) => r.data);
+};
+
 const ListaFormacaoUserService = {
   getListaFormacaoUser,
   finalizaFormacaoUser,
@@ -86,6 +110,7 @@ const ListaFormacaoUserService = {
   aprovarPedidoFormacaoGestor,
   rejeitarPedidoFormacaoAdmin,
   rejeitarPedidoFormacaoGestor,
+  criaPedidoFormacao,
 };
 
 export default ListaFormacaoUserService;

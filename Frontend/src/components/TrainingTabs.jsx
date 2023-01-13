@@ -84,7 +84,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
         setFilteredList(JSONList[0].formacoes);
       }
     }, [rawList]);
-    urlBack = "/home/formacao/listar-formacao";
+    urlBack = "/home/formacao/minhas-formacoes";
   } else if (nomeEcra == "GERIRPEDIDOS") {
     useEffect(() => {
       const user = UserService.getCurrentUser();
@@ -259,6 +259,7 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
         }
       }
     } else {
+      //Change validation method to parse the username string with includes
       if (values.length > 0) {
         for (let i = 0; i < values[1].length; i++) {
           list = list.filter((item) => item.username == values[1][i].label);
@@ -355,23 +356,25 @@ export default function TrainingTabs({ sideBarName, nomeEcra }) {
             callback={handleType}
             value={search}
           />
-          <div>
-            <TextInput
-              index={1}
-              name={"colaborador"}
-              type="dropdown"
-              titleStyle={"font-bold mb-1 text-2xl"}
-              style={"w-[30rem]"}
-              placeholder="colaborador..."
-              list={colabList}
-              multi={true}
-              showTitle={false}
-              error={"Por favor selecione ou adicione um nome"}
-              value={values[1]}
-              callback={handleDropdown}
-              searchCall={filterColab}
-            />
-          </div>
+          {nomeEcra !== "LISTARFORMACOES" && (
+            <div>
+              <TextInput
+                index={1}
+                name={"colaborador"}
+                type="dropdown"
+                titleStyle={"font-bold mb-1 text-2xl"}
+                style={"w-[30rem]"}
+                placeholder="colaborador..."
+                list={colabList}
+                multi={true}
+                showTitle={false}
+                error={"Por favor selecione ou adicione um nome"}
+                value={values[1]}
+                callback={handleDropdown}
+                searchCall={filterColab}
+              />
+            </div>
+          )}
           <div className="flex justify-center items-center">
             <DateOrder callback={handleDateChanged} />
           </div>
