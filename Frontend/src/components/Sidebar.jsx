@@ -208,8 +208,15 @@ const Sidebar = ({ trigger }) => {
         <div className="absolute bottom-5">
           <div className="relative left-[1.625rem] flex flex-row items-center gap-4 h-12 w-[12.5rem] py-[0.813rem]">
             {/* User photo */}
+            {/*
             <div className="w-8 h-8 flex flex-grow-0 ">
               <img src={LogoGrama} className="rounded-full" />
+            </div>
+            */}
+            <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+              <span className="font-medium text-gray-600 dark:text-gray-300">
+                {userDetails.name[0]}
+              </span>
             </div>
             <div className={`flex flex-col items-start ${!open && "hidden"}`}>
               <span className="font-IBM font-normal text-sm text-white ">

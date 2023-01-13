@@ -11,6 +11,7 @@ import Table from "../components/TableComponent/Table";
 import ColaboradoresService from "../services/get-colaboradores.service";
 import UserService from "../services/user.service";
 import UtilizadoresService from "../services/get-utilizadores.service";
+import LogoGrama from "../assets/sidebar/logoGrama.png";
 import TableV2 from "../components/TableV2/Table";
 import Searchbar from "../components/TableV2/SearchBar";
 import DropDown from "../components/TableV2/Dropdown";
@@ -99,6 +100,8 @@ export default function Colaboradores() {
               numFormacaoPendentes: formacoesPendentes,
               emAprovacao: budgetPendente,
               budgetRestante: budgetRestante,
+              // SUBSTITUIR O LogoGrama PELA IMAGEM PERSONALIZADA
+              imgUrl: LogoGrama,
             };
 
             dataHandled.push(colaborador);

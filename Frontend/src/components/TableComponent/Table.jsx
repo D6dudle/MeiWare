@@ -117,11 +117,19 @@ export function AvatarCell({ value, column, row }) {
   return (
     <div className="flex items-center">
       <div className="flex-shrink-0 h-10 w-10">
+        <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+          <span className="font-medium text-gray-600 dark:text-gray-300">
+            {value[0]}
+          </span>
+        </div>
+
+        {/* PARA POR AVATAR PERSONALIZADO DESCOMENTAR E SUBSTITUIR PELAS LINHAS ACIMA
         <img
           className="h-10 w-10 rounded-full"
           src={row.original[column.imgAccessor]}
           alt=""
-        />
+        /> 
+        */}
       </div>
       <div className="ml-4">
         <div className="text-sm font-medium text-white">{value}</div>
