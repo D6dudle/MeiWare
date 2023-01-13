@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { BiEuro } from "react-icons/bi";
 import CurrencyInput from "react-currency-input-field";
 import Select from "react-select";
@@ -18,6 +18,9 @@ export default function EditarFormacao() {
   const [datePick, setDatePick] = useState(false);
   const [files, setFiles] = useState([]);
   const [formationCamps, setFormationCamps] = useState([]);
+
+  const navigate = useNavigate();
+
   const dataCard = [
     {
       username: "Pedro",
@@ -158,30 +161,25 @@ export default function EditarFormacao() {
     let errors = validate(formationCamps)
     setFormErrors(errors);
     setIsSubmit(true);
-    console.log("Button Submeter pressed!");
 
     if(Object.keys(errors).length === 0) {
       var removedAnexos = [];
       var addedAnexos = [];
 
       for(let i = 0; i < formationCamps.listAnexoRef.length; i++) {
-        //console.log(formationCamps.listAnexoRef[i])
         if(files.find(a => a.id == formationCamps.listAnexoRef[i].id) == undefined) {
           removedAnexos.push(formationCamps.listAnexoRef[i]);
-          console.log("removido")
         }
       }
 
       for(let i = 0; i < files.length; i++) {
-        //console.log(formationCamps.listAnexoRef[i])
         if(formationCamps.listAnexoRef.find(a => a.id == files[i].id) == undefined) {
           addedAnexos.push(files[i]);
-          console.log("adicionado")
         }
       }
-      console.log(removedAnexos)
-      console.log(addedAnexos)
+
       PedidoFormacaoService.updatePedidoFormacao(formationCamps, addedAnexos, removedAnexos);
+      navigate(prevUrl);
     }
   };
 
