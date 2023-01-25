@@ -361,17 +361,14 @@ function Table({ columns, data }) {
       </div>
 
       {/* table */}
-      <div className="mt-4 flex flex-col">
-        <div className="-my-2 overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
-          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <div className="shadow flex overflow-hidden w-full border-b border-gray-200 sm:rounded-lg">
               <table
                 {...getTableProps()}
-                className="min-w-full divide-y divide-gray4"
+                className=" divide-y divide-gray4 w-full"
               >
                 <thead className="bg-darkBlack">
                   {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
+                    <tr {...headerGroup.getHeaderGroupProps()} className="w-full">
                       {headerGroup.headers.map((column) => (
                         // Add the sorting props to control sorting. For this example
                         // we can add them into the header props
@@ -434,9 +431,6 @@ function Table({ columns, data }) {
                 </tbody>
               </table>
             </div>
-          </div>
-        </div>
-      </div>
     </>
   );
 }

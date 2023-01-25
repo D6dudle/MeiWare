@@ -222,50 +222,20 @@ export default function Colaboradores() {
   };
 
   return (
-    <div className="w-full h-full overflow-scroll scrollbar-hide">
-      <h1 className="text-white font-bold text-3xl pt-8 pl-8">
-        Gestão de Colaboradores
-      </h1>
-
-      <div className="pt-8 pl-4 pr-8">
-        <div className="pr-8">
-          {/*
-          <div className="flex md:flex-row flex-col justify-evenly md:justify-between md:items-center items-start gap-8 pt-2">
-            <div className="flex gap-14">
-              
-              <button
-                className="actionButtons bg-error"
-                onClick={() => handleExcluir(actualUser)}
-              >
-                <Minus className="w-4 h-4 text-black" />
-                <p className="actionBtnInsideInfo">Excluir colaborador</p>
-              </button>
-              {modal.show && (
-                <Modal
-                  closeModal={handleCloseModal}
-                  confirmeActionModal={() => confirmeActionModal(actualUser)}
-                  data={modal.data}
-                />
-              )}
-              
-
-              <button
-                className="actionButtons bg-primary"
-                onClick={() => handleAdicionar()}
-              >
-                <Plus className="w-4 h-4 text-black" />
-                <p className="actionBtnInsideInfo">Adicionar colaborador</p>
-              </button>
-            </div>
-              </div>*/}
+    <div className="pl-8 pr-8 h-full overflow-hidden">
+      <div className="h-full flex flex-col">
+        <div className="sticky top-5">
+          <h1 className="text-white font-bold text-3xl pt-8 pl-8">
+            Gestão de Colaboradores
+          </h1>
         </div>
 
-        <div className="pt-4 pl-4 pr-8 mx-auto">
+        <div className="flex flex-col pt-4 pl-4 pr-8 mx-auto w-full">
           <Table columns={columns} data={dataColaborators} />
           {/*
             <TableV2 columns={columns} data={filteredData.length > 0 ? filteredData : dataColaborators}/>*/}
         </div>
-      </div>
+    </div>
     </div>
   );
 }

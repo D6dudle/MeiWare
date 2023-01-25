@@ -1,11 +1,13 @@
 package meiware.coursemanagement.Controllers;
 
+import meiware.coursemanagement.Entities.JPA.Budget;
 import meiware.coursemanagement.Entities.JPA.Role;
 import meiware.coursemanagement.Entities.JPA.Utilizador;
 import meiware.coursemanagement.Payload.Request.LoginRequest;
 import meiware.coursemanagement.Payload.Request.SignupRequest;
 import meiware.coursemanagement.Payload.Response.JwtResponse;
 import meiware.coursemanagement.Payload.Response.MessageResponse;
+import meiware.coursemanagement.Repositories.JPA.IBudgetRepository;
 import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
 import meiware.coursemanagement.Security.JWT.JwtUtils;
 import meiware.coursemanagement.Security.Services.UserDetailsImpl;
@@ -36,6 +38,9 @@ public class AuthController {
 
     @Autowired
     IUtilizadorRepository utilizadorRepository;
+
+    @Autowired
+    IBudgetRepository budgetRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -99,7 +104,10 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),
                 roles);
+        Budget new_budget = new Budget(user, 500f, 2023);
         utilizadorRepository.save(user);
+        budgetRepository.save(new_budget);
+
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

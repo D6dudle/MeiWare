@@ -44,7 +44,7 @@ const aprovarPedidoFormacaoGestor = (formacaoId, gestorId) => {
       API_URL + "aprovarPedidoFormacaoGestor",
       {
         pedidoFormacaoId: formacaoId,
-        adminId: gestorId,
+        gestorId: gestorId,
       },
       { headers: authHeader() }
     )
