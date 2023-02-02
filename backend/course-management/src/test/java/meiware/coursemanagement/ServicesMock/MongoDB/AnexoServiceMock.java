@@ -48,7 +48,7 @@ public class AnexoServiceMock{
         for(int i = 0; i < 3 ; i++){
             //anexos.add(new Anexo(String.valueOf(i), "Anexo " + i));
             anexos.add(new Anexo("Anexo" + i, "image", "10MB"));
-            anexosRef.add(new AnexoRef("Path" + i, "Nome" + i));
+            anexosRef.add(new AnexoRef("Path" + i, "Nome" + i, "Type" + i, "Size" + i));
         }
     }
 

@@ -77,7 +77,7 @@ public class Anexo {
     public String toString() {
         return "Anexo{" +
                 "id='" + id + '\'' +
-                ", nome='" + nome + '\'' +
+                ", name='" + nome + '\'' +
                 ", type='" + type + '\'' +
                 ", size='" + size + '\'' +
                 ", conteudo=" + conteudo +

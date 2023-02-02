@@ -1,9 +1,6 @@
 package meiware.coursemanagement.Controllers;
 
-import meiware.coursemanagement.Entities.JPA.PedidoAprovado;
-import meiware.coursemanagement.Entities.JPA.PedidoFormacao;
-import meiware.coursemanagement.Entities.JPA.PedidoRejeitado;
-import meiware.coursemanagement.Entities.JPA.Utilizador;
+import meiware.coursemanagement.Entities.JPA.*;
 import meiware.coursemanagement.Repositories.JPA.IUtilizadorRepository;
 import meiware.coursemanagement.Services.JPA.IPedidoFormacaoService;
 import meiware.coursemanagement.Services.JPA.IUtilizadorService;
@@ -290,10 +287,14 @@ public class FormacaoController {
 
     @PutMapping(value = "/updatePedidoFormacao")
     @PreAuthorize("hasRole('COLABORADOR') || hasRole('GESTOR') || hasRole('ADMINISTRADOR')")
-    public ResponseEntity<?> updatePedidoFormacao(@RequestBody PedidoFormacao pedidoFormacao) {
-
+    public ResponseEntity<?> updatePedidoFormacao(@RequestPart(value = "addedFiles", required = false) List<MultipartFile> addedFiles,
+                                                  @RequestPart(value = "removedFiles", required = false) List<AnexoRef> removedFiles,
+                                                  @RequestPart("pedidoFormacao") PedidoFormacao pedidoFormacao) {
         try {
-            pedidoFormacaoService.updatePedidoFormacao(pedidoFormacao);
+            System.out.println(pedidoFormacao);
+            System.out.println(addedFiles);
+            System.out.println(removedFiles);
+            pedidoFormacaoService.updatePedidoFormacao(pedidoFormacao, addedFiles, removedFiles);
             return new ResponseEntity<>(
                     "Pedido de formação: " + pedidoFormacao.getNome() + "atualizado com sucesso.",
                     HttpStatus.OK);

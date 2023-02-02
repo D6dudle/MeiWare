@@ -13,11 +13,11 @@ public interface IPedidoFormacaoService {
     PedidoFormacao getPedidoFormacaoById(Long id);
     PedidoFormacao getPedidoFormacaoByNome(String nome);
     PedidoFormacao createPedidoFormacao(PedidoFormacao newPedidoFormacao, List<MultipartFile> files, List<Utilizador> formandos);
-    void updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao);
+    void updatePedidoFormacao(PedidoFormacao updatedPedidoFormacao, List<MultipartFile> addedFiles, List<AnexoRef> removedFiles);
     void aprovarPedidoFormacao(Long pedidoFormacaoId, Long utilizadorId);
     void rejeitarPedidoFormacao(Long pedidoFormacaoId, Long utilizadorId, String comentario);
-    void addAnexoToPedidoFormacao(PedidoFormacao pedidoFormacao, MultipartFile file);
-    void removeAnexoFromPedidoFormacao(PedidoFormacao pedidoFormacao, AnexoRef anexoRef);
+    void addAnexosToPedidoFormacao(PedidoFormacao pedidoFormacao, List<MultipartFile> files);
+    void removeAnexosFromPedidoFormacao(PedidoFormacao pedidoFormacao, List<AnexoRef> anexoRef);
     void removePedidoFormacao(PedidoFormacao pedidoFormacao);
     void finalizaPedidoFormacao(Long pedidoFormacaoId);
 }
